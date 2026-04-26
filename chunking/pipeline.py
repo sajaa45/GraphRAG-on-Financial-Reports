@@ -1,14 +1,26 @@
 import json
 import time
+import asyncio
 import argparse
+import uuid
 from pathlib import Path
 from typing import List, Dict, Tuple, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from qdrant_client import QdrantClient
+from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
 
 from chunker import get_embedding_model, llamaindex_chunker
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'parsing'))
+from parsing_sections import flatten_sections, load_page_index, add_text_from_page_index
+
+_CHUNK_NS = uuid.NAMESPACE_URL
+
+
+def _point_id(key: str) -> str:
+    """Deterministic, collision-resistant UUID5 from a string key."""
+    return str(uuid.uuid5(_CHUNK_NS, key))
 
 
 class UnifiedPipeline:
@@ -29,9 +41,11 @@ class UnifiedPipeline:
         print(f"  Qdrant: {qdrant_host}:{qdrant_port}")
         print(f"  Workers: {workers}")
 
+        self.collection_name = collection_name
         self.buffer_size = buffer_size
         self.threshold = threshold
         self.workers = workers
+        self.clear = clear
 
         print("  Loading embedding model...")
         self.embed_model = get_embedding_model()
@@ -40,31 +54,32 @@ class UnifiedPipeline:
         print("  ✓ Embedding model loaded")
 
         self.vector_size = len(self.embed_model.encode(["test"])[0])
-
-        print("  Connecting to Qdrant...")
-        self.client = QdrantClient(host=qdrant_host, port=qdrant_port)
-        self.collection_name = collection_name
-
-        existing = [c.name for c in self.client.get_collections().collections]
-        if collection_name in existing and clear:
-            self.client.delete_collection(collection_name)
-            print(f"  ✓ Cleared existing collection: {collection_name}")
-
-        if collection_name not in existing or clear:
-            self.client.create_collection(
-                collection_name=collection_name,
-                vectors_config=VectorParams(size=self.vector_size, distance=Distance.COSINE),
-            )
-            print(f"  ✓ Created new collection: {collection_name}")
-        else:
-            print(f"  ✓ Using existing collection: {collection_name}")
-
+        self.client = AsyncQdrantClient(host=qdrant_host, port=qdrant_port)
         print("✓ Pipeline initialized\n")
 
-    def process_section(
-        self, section: Dict, section_idx: int, total_sections: int, source_pdf: str = None
-    ) -> Tuple[int, List[Dict]]:
-        """Chunk a section, embed, store in Qdrant. Returns (chunk_count, chunk_details)."""
+    async def _ensure_collection(self):
+        existing = [c.name for c in (await self.client.get_collections()).collections]
+        if self.collection_name in existing and self.clear:
+            await self.client.delete_collection(self.collection_name)
+            print(f"  ✓ Cleared existing collection: {self.collection_name}")
+        if self.collection_name not in existing or self.clear:
+            await self.client.create_collection(
+                collection_name=self.collection_name,
+                vectors_config=VectorParams(size=self.vector_size, distance=Distance.COSINE),
+            )
+            print(f"  ✓ Created new collection: {self.collection_name}")
+        else:
+            print(f"  ✓ Using existing collection: {self.collection_name}")
+
+    def _chunk_section(
+        self,
+        section: Dict,
+        section_idx: int,
+        total_sections: int,
+        title_embedding: list,
+        source_pdf: str,
+    ) -> Tuple[List[PointStruct], List[Dict]]:
+        """CPU-bound: chunk + embed text, build PointStructs. No Qdrant I/O."""
         section_title = section.get('title', 'Untitled')
         section_text = section.get('text', '')
         has_page_contents = bool(section.get('page_contents'))
@@ -73,30 +88,28 @@ class UnifiedPipeline:
 
         if not has_page_contents and not section_text.strip():
             print(f"  [{section_idx}] ⚠ Empty section, skipping")
-            return 0, []
+            return [], []
 
-        # Store section metadata
+        points: List[PointStruct] = []
+
         if section_text and len(section_text) > 50:
-            self.client.upsert(
-                collection_name=self.collection_name,
-                points=[PointStruct(
-                    id=section_idx,
-                    vector=self.embed_model.encode([section_title])[0].tolist(),
-                    payload={
-                        "type": "section",
-                        "section_id": section_idx,
-                        "title": section_title,
-                        "original_title": section.get('original_title', section_title),
-                        "text": section_text[:1000],
-                        "level": section.get('level', 0),
-                        "start_page": section.get('start_page', 0),
-                        "end_page": section.get('end_page', 0),
-                        "char_count": len(section_text),
-                        "word_count": section.get('word_count', len(section_text.split())),
-                        "source_pdf": source_pdf or "unknown",
-                    },
-                )],
-            )
+            points.append(PointStruct(
+                id=_point_id(f"section_{section_idx}"),
+                vector=title_embedding,
+                payload={
+                    "type": "section",
+                    "section_id": section_idx,
+                    "title": section_title,
+                    "original_title": section.get('original_title', section_title),
+                    "text": section_text[:1000],
+                    "level": section.get('level', 0),
+                    "start_page": section.get('start_page', 0),
+                    "end_page": section.get('end_page', 0),
+                    "char_count": len(section_text),
+                    "word_count": section.get('word_count', len(section_text.split())),
+                    "source_pdf": source_pdf,
+                },
+            ))
 
         chunk_texts, chunk_ids, chunk_metadatas, chunk_embeddings = [], [], [], []
 
@@ -132,7 +145,7 @@ class UnifiedPipeline:
                         "total_chunks_in_page": len(chunks),
                         "char_count": len(chunk['text']),
                         "word_count": len(chunk['text'].split()),
-                        "source_pdf": source_pdf or "unknown",
+                        "source_pdf": source_pdf,
                     })
                     chunk_embeddings.append(chunk['embedding'])
         else:
@@ -145,7 +158,7 @@ class UnifiedPipeline:
 
             if not chunks:
                 print(f"  [{section_idx}] ⚠ No chunks created")
-                return 0, []
+                return points, []
 
             for i, chunk in enumerate(chunks, 1):
                 chunk_texts.append(chunk['text'])
@@ -162,28 +175,25 @@ class UnifiedPipeline:
                     "total_chunks": len(chunks),
                     "char_count": len(chunk['text']),
                     "word_count": len(chunk['text'].split()),
-                    "source_pdf": source_pdf or "unknown",
+                    "source_pdf": source_pdf,
                 })
                 chunk_embeddings.append(chunk['embedding'])
 
         if not chunk_texts:
             print(f"  [{section_idx}] ⚠ No chunks created")
-            return 0, []
+            return points, []
 
-        points = [
-            PointStruct(
-                id=abs(hash(chunk_ids[i])) % (2**63),
+        for i in range(len(chunk_texts)):
+            points.append(PointStruct(
+                id=_point_id(chunk_ids[i]),
                 vector=chunk_embeddings[i],
                 payload={**chunk_metadatas[i], "text": chunk_texts[i]},
-            )
-            for i in range(len(chunk_texts))
-        ]
-        self.client.upsert(collection_name=self.collection_name, points=points)
-        print(f"  [{section_idx}] ✓ Stored {len(chunk_texts)} chunks")
+            ))
 
-        # Build details from what we already have — no Qdrant scroll needed
+        print(f"  [{section_idx}] ✓ Built {len(chunk_texts)} chunks")
+
         details = []
-        for i, (text, meta) in enumerate(zip(chunk_texts, chunk_metadatas)):
+        for text, meta in zip(chunk_texts, chunk_metadatas):
             detail = {
                 'text': text,
                 'length': len(text),
@@ -206,19 +216,9 @@ class UnifiedPipeline:
                 detail['total_chunks'] = meta.get('total_chunks', 0)
             details.append(detail)
 
-        return len(chunk_texts), details
+        return points, details
 
-    @staticmethod
-    def _flatten_sections(sections: List[Dict]) -> List[Dict]:
-        """Recursively flatten nested sections + subsections into a single list."""
-        result = []
-        for section in sections:
-            result.append(section)
-            if section.get('subsections'):
-                result.extend(UnifiedPipeline._flatten_sections(section['subsections']))
-        return result
-
-    def process_sections_file(
+    async def process_sections_file(
         self,
         sections_file: str,
         page_index_file: Optional[str] = None,
@@ -230,11 +230,12 @@ class UnifiedPipeline:
         print("UNIFIED PIPELINE: CHUNK → EMBED → VECTOR STORE (parallel)")
         print("=" * 70)
 
+        await self._ensure_collection()
+
         print(f"\nLoading sections from: {sections_file}")
         with open(sections_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
             top_level_sections = data.get('sections', [])
-            # Support both 'source_pdf' (page_index style) and 'filename' (parsed_sections style)
             source_pdf = data.get('source_pdf') or data.get('filename', 'unknown')
             total_pages = data.get('total_pages') or data.get('num_pages', 0)
 
@@ -242,19 +243,16 @@ class UnifiedPipeline:
             print("✗ No sections found!")
             return
 
-        # Flatten all nested subsections into a single list
-        sections = self._flatten_sections(top_level_sections)
+        sections = flatten_sections(top_level_sections)
         print(f"✓ Found {len(top_level_sections)} top-level sections → {len(sections)} total (including subsections)")
         print(f"✓ Source PDF: {source_pdf}")
         print(f"✓ Total pages: {total_pages}")
 
-        # Always use page_index for PDF-sourced text when available
         if page_index_file:
-            print(f"✓ Loading page index from: {page_index_file}")
-            page_index_data = self._load_page_index(page_index_file)
+            page_index_data = load_page_index(page_index_file)
             if page_index_data:
                 print("✓ Populating section text from PDF page index...")
-                sections = self._add_text_from_page_index(sections, page_index_data)
+                sections = add_text_from_page_index(sections, page_index_data)
                 populated = sum(1 for s in sections if len(s.get('text', '')) > 100)
                 print(f"✓ Populated text for {populated}/{len(sections)} sections")
         else:
@@ -263,29 +261,48 @@ class UnifiedPipeline:
                 print("✗ Sections have no text and no page index provided - cannot proceed")
                 return
 
+        # Batch-encode all section titles in one GPU call instead of one per thread
+        section_titles = [s.get('title', 'Untitled') for s in sections]
+        print(f"\nBatch-encoding {len(section_titles)} section titles...")
+        title_embeddings = self.embed_model.encode(section_titles)
+        print("✓ Title embeddings ready")
+
         print(f"\nProcessing {len(sections)} sections with {self.workers} workers...\n")
 
-        total_chunks = 0
-        # results keyed by section_idx to preserve order in output files
-        results: Dict[int, List[Dict]] = {}
+        results: Dict[int, Tuple[List[PointStruct], List[Dict]]] = {}
 
         with ThreadPoolExecutor(max_workers=self.workers) as executor:
             futures = {
-                executor.submit(self.process_section, section, idx, len(sections), source_pdf): idx
+                executor.submit(
+                    self._chunk_section,
+                    section, idx, len(sections),
+                    title_embeddings[idx - 1].tolist(),
+                    source_pdf,
+                ): idx
                 for idx, section in enumerate(sections, 1)
             }
             for future in as_completed(futures):
                 idx = futures[future]
                 try:
-                    count, details = future.result()
-                    total_chunks += count
-                    if save_chunks and details:
-                        results[idx] = details
+                    points, details = future.result()
+                    results[idx] = (points, details)
                 except Exception as e:
                     print(f"  [section {idx}] ✗ Error: {e}")
 
-        # Flatten details in section order
-        all_chunk_details = [d for idx in sorted(results) for d in results[idx]]
+        all_points = [p for idx in sorted(results) for p in results[idx][0]]
+        all_chunk_details = [d for idx in sorted(results) for d in results[idx][1]]
+        total_chunks = sum(
+            sum(1 for p in pts if p.payload.get('type') == 'chunk')
+            for pts, _ in results.values()
+        )
+
+        if all_points:
+            print(f"\nUploading {len(all_points)} points to Qdrant in one batch...")
+            await self.client.upsert(
+                collection_name=self.collection_name,
+                points=all_points,
+            )
+            print("✓ Upload complete")
 
         if save_chunks and all_chunk_details:
             self._save_chunk_files(sections_file, sections, all_chunk_details, source_pdf)
@@ -302,88 +319,6 @@ class UnifiedPipeline:
             print(f"Speed:             {total_chunks / total_time:.1f} chunks/sec")
         print("\n✓ All embeddings stored in Qdrant")
         print("✓ Ready for semantic search!")
-
-    def _load_page_index(self, page_index_file: str) -> Dict:
-        """Load page index data."""
-        print(f"✓ Loading page index from: {page_index_file}")
-        try:
-            with open(page_index_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                pages = data.get('pages', [])
-            print(f"✓ Loaded {len(pages)} pages")
-            # Convert list to dict for easier lookup
-            return {p['page']: p for p in pages}
-        except FileNotFoundError:
-            print(f"✗ Page index file not found: {page_index_file}")
-            return {}
-        except Exception as e:
-            print(f"✗ Error loading page index file: {e}")
-            return {}
-
-    def _add_text_from_page_index(self, sections: List[Dict], page_index: Dict) -> List[Dict]:
-        """Add text to sections from page index."""
-        for section in sections:
-            section_text = ""
-            page_contents = []
-            
-            for page_num in range(section['start_page'], section['end_page'] + 1):
-                page_data = page_index.get(page_num)
-                if page_data and page_data.get('text'):
-                    page_text = page_data['text']
-                    section_text += page_text + "\n"
-                    page_contents.append({
-                        'page_number': page_num,
-                        'content': page_text,
-                        'sections': page_data.get('sections', [])
-                    })
-
-            section['text'] = section_text.strip()
-            section['text_length'] = len(section_text)
-            section['word_count'] = len(section_text.split())
-            if page_contents:
-                section['page_contents'] = page_contents
-
-            if section.get('subsections'):
-                section['subsections'] = self._add_text_from_page_index(
-                    section['subsections'], 
-                    page_index
-                )
-
-        return sections
-
-    def _load_pages_data(self, pages_file: str) -> Dict:
-        """Legacy method for loading old-style pages data."""
-        print(f"✓ Loading page data from: {pages_file}")
-        try:
-            with open(pages_file, 'r', encoding='utf-8') as f:
-                pages_data = json.load(f).get('pages', {})
-            print(f"✓ Loaded {len(pages_data)} pages")
-            return pages_data
-        except FileNotFoundError:
-            print(f"✗ Pages file not found: {pages_file}")
-            return {}
-        except Exception as e:
-            print(f"✗ Error loading pages file: {e}")
-            return {}
-
-    def _add_text_to_sections(self, sections: List[Dict], pages_data: Dict) -> List[Dict]:
-        for section in sections:
-            section_text = ""
-            page_contents = []
-            for page_num in range(section['start_page'], section['end_page'] + 1):
-                page_text = pages_data.get(str(page_num)) or pages_data.get(page_num)
-                if page_text:
-                    section_text += page_text + "\n"
-                    page_contents.append({'page_number': page_num, 'content': page_text})
-
-            section['text'] = section_text
-            if page_contents:
-                section['page_contents'] = page_contents
-
-            if section.get('subsections'):
-                section['subsections'] = self._add_text_to_sections(section['subsections'], pages_data)
-
-        return sections
 
     def _save_chunk_files(self, sections_file: str, sections: List[Dict], chunks: List[Dict], source_pdf: str = "unknown"):
         output_dir = Path(sections_file).parent
@@ -446,20 +381,23 @@ def main():
     parser.add_argument("--clear", action="store_true", help="Delete and recreate the Qdrant collection")
     args = parser.parse_args()
 
-    pipeline = UnifiedPipeline(
-        collection_name=args.collection,
-        qdrant_host=args.qdrant_host,
-        qdrant_port=args.qdrant_port,
-        buffer_size=args.buffer_size,
-        threshold=args.threshold,
-        clear=args.clear,
-        workers=args.workers,
-    )
-    pipeline.process_sections_file(
-        args.sections_file,
-        page_index_file=args.page_index,
-        save_chunks=not args.no_chunk_files,
-    )
+    async def _run():
+        pipeline = UnifiedPipeline(
+            collection_name=args.collection,
+            qdrant_host=args.qdrant_host,
+            qdrant_port=args.qdrant_port,
+            buffer_size=args.buffer_size,
+            threshold=args.threshold,
+            clear=args.clear,
+            workers=args.workers,
+        )
+        await pipeline.process_sections_file(
+            args.sections_file,
+            page_index_file=args.page_index,
+            save_chunks=not args.no_chunk_files,
+        )
+
+    asyncio.run(_run())
 
 
 if __name__ == "__main__":

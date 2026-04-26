@@ -4,8 +4,8 @@ SemanticSplitterNodeParser Chunks
 
 Source PDF: input/NYSE_MTX_2024.pdf
 Total sections: 64
-Total chunks: 1078
-Created at: 2026-04-25 16:59:30
+Total chunks: 1083
+Created at: 2026-04-26 22:36:19
 ================================================================================
 
 CHUNK 0001
@@ -16682,7 +16682,7 @@ herein by reference.
 CHUNK 0701
 Length: 731 characters
 Words: 107
-Section: 35 - Item 11. Executive Compensation
+Section: 34 - Item 10. Directors, Executive Officers and Corporate Governance
 Section Level: 3
 Source Page: 69
 Chunk 1/5 on page
@@ -16706,7 +16706,7 @@ Item 9B.
 CHUNK 0702
 Length: 289 characters
 Words: 45
-Section: 35 - Item 11. Executive Compensation
+Section: 34 - Item 10. Directors, Executive Officers and Corporate Governance
 Section Level: 3
 Source Page: 69
 Chunk 2/5 on page
@@ -16725,7 +16725,7 @@ Item 9C.
 CHUNK 0703
 Length: 1445 characters
 Words: 196
-Section: 35 - Item 11. Executive Compensation
+Section: 34 - Item 10. Directors, Executive Officers and Corporate Governance
 Section Level: 3
 Source Page: 69
 Chunk 3/5 on page
@@ -16759,7 +16759,7 @@ Controls and Hedging Transaction”, and incorporated herein by reference.
 CHUNK 0704
 Length: 137 characters
 Words: 20
-Section: 35 - Item 11. Executive Compensation
+Section: 34 - Item 10. Directors, Executive Officers and Corporate Governance
 Section Level: 3
 Source Page: 69
 Chunk 4/5 on page
@@ -16773,6 +16773,120 @@ Company.
 ================================================================================
 
 CHUNK 0705
+Length: 305 characters
+Words: 36
+Section: 34 - Item 10. Directors, Executive Officers and Corporate Governance
+Section Level: 3
+Source Page: 69
+Chunk 5/5 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+Item 11.  Executive Compensation 
+ 
+The information appearing in the Company’s Proxy Statement under the captions “Compensation Discussion and Analysis,” 
+“Report of the Compensation Committee”, “Executive Compensation” and “Compensation Tables and Narrative” is incorporated 
+herein by reference. 
+ 
+ 
+ 
+
+
+================================================================================
+
+CHUNK 0706
+Length: 731 characters
+Words: 107
+Section: 35 - Item 11. Executive Compensation
+Section Level: 3
+Source Page: 69
+Chunk 1/5 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+ 
+51 
+Pursuant to Section 404 of the Sarbanes-Oxley Act of 2002, we have included a report of management’s assessment of the design 
+and operating effectiveness of our internal controls as part of this report. Management’s report is included in our consolidated financial 
+statements on page F-42 of this report under the caption entitled “Management’s Report on Internal Control Over Financial Reporting.” 
+ 
+Changes in Internal Control Over Financial Reporting 
+ 
+There were no other changes in the Company’s internal control over financial reporting during the fourth fiscal quarter of 2024 that 
+has materially affected, or is reasonably likely to materially affect, our internal control over financial reporting. 
+ 
+Item 9B.  
+
+================================================================================
+
+CHUNK 0707
+Length: 289 characters
+Words: 45
+Section: 35 - Item 11. Executive Compensation
+Section Level: 3
+Source Page: 69
+Chunk 2/5 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+Other Information 
+ 
+During the three months ended December 31, 2024, none of our directors or executive officers adopted or terminated any 
+Rule 10b5-1 trading arrangement or any non-Rule 10b5-1 trading arrangement (as such terms are defined in Item 408 of Regulation S-
+K). 
+ 
+Item 9C.  
+
+================================================================================
+
+CHUNK 0708
+Length: 1445 characters
+Words: 196
+Section: 35 - Item 11. Executive Compensation
+Section Level: 3
+Source Page: 69
+Chunk 3/5 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+Disclosure Regarding Foreign Jurisdictions that Prevent Inspections 
+ 
+Not Applicable 
+ 
+PART III 
+ 
+Item 10.  Directors, Executive Officers and Corporate Governance 
+ 
+The information concerning the Company’s Board of Directors required by this item is incorporated herein by reference to 
+the Company’s Proxy Statement, under the captions “The Board of Directors”, “Proposal 1- Election of Directors”, “Corporate 
+Governance” and “Committees of the Board of Directors”.  
+ 
+The Board has established a code of ethics for the Chief Executive Officer, the Chief Financial Officer, and the Chief 
+Accounting Officer entitled “Code of Ethics for the Senior Financial Officers,” which is available on our website, 
+www.mineralstech.com, by clicking the links entitled Our Company, then Corporate Governance and then Policies and Charters. The 
+Company has adopted an insider trading policy governing the purchase, sale and other dispositions of its securities by directors, 
+officers, employees and certain other insiders, and the Company itself, that is reasonably designed to promote compliance with insider 
+trading laws, rules and regulations and any applicable listing standards. Additional information regarding such policy is set forth in the 
+Company’s Proxy Statement, under the caption “Compensation Discussion and Analysis—Other Policies and Practices—Trading 
+Controls and Hedging Transaction”, and incorporated herein by reference. 
+ 
+
+
+================================================================================
+
+CHUNK 0709
+Length: 137 characters
+Words: 20
+Section: 35 - Item 11. Executive Compensation
+Section Level: 3
+Source Page: 69
+Chunk 4/5 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+See “Information About Our Executive Officers” in Part I of this report for information regarding executive officers of the 
+Company. 
+ 
+
+
+================================================================================
+
+CHUNK 0710
 Length: 305 characters
 Words: 36
 Section: 35 - Item 11. Executive Compensation
@@ -16793,142 +16907,10 @@ herein by reference.
 
 ================================================================================
 
-CHUNK 0706
-Length: 441 characters
-Words: 58
-Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
-Section Level: 3
-Source Page: 70
-Chunk 1/5 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
- 
-52 
-Item 12.  Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters 
- 
-The information appearing in the Company’s Proxy Statement under the caption “Security Ownership of Certain Beneficial 
-Owners and Management” is incorporated herein by reference. 
- 
-Equity Compensation Plan Information 
- 
-The following table summarizes information about our equity compensation plans as of December 31, 2024. 
-
-================================================================================
-
-CHUNK 0707
-Length: 78 characters
-Words: 12
-Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
-Section Level: 3
-Source Page: 70
-Chunk 2/5 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-All of our equity 
-compensation plans have been approved by our stockholders. 
-
-================================================================================
-
-CHUNK 0708
-Length: 939 characters
-Words: 127
-Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
-Section Level: 3
-Source Page: 70
-Chunk 3/5 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-All outstanding awards relate to our common stock. 
- 
-Plan Category 
-Number of Securities to 
-be Issued Upon Exercise 
-of Outstanding Options, 
-Warrants and Rights(1) 
-Weighted Average 
-Exercise Price of 
-Outstanding Options, 
-Warrants and Rights (2) 
-Number of Securities 
-Remaining Available 
-for Future Issuance 
-under Equity 
-Compensation Plans 
-(excluding securities 
-reflected in column (a)) 
-(a) 
-(b) 
-(c) 
-Equity compensation plans approved by 
-security holders 
-1,624,430  $ 
-65.06  
-1,419,611
-  
- 
-Total 
-1,624,430  $ 
-65.06  
-1,419,611
- 
-(1) Includes shares issuable upon exercise of outstanding stock options and shares issuable upon vesting of time-based deferred 
-restricted stock units (DRSUs). 
-(2) The weighted-average exercise price includes all outstanding stock options but does not include DRSUs which do not have an 
-exercise price. 
- 
-For further information, see Note 6 to the Consolidated Financial Statements. 
- 
-
-
-================================================================================
-
-CHUNK 0709
-Length: 674 characters
-Words: 82
-Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
-Section Level: 3
-Source Page: 70
-Chunk 4/5 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-Item 13.  Certain Relationships and Related Transactions, and Director Independence 
- 
-The information appearing in the Company’s Proxy Statement under the caption “Certain Relationships and Related 
-Transactions” is incorporated herein by reference. 
- 
-The Board has established Corporate Governance principles which include guidelines for determining Director independence, 
-which is available on our website, www.mineralstech.com, by clicking the links entitled “Investors”, then “Corporate Governance”.  
-The information appearing in the Company’s Proxy Statement under the caption “Corporate Governance – Director Independence” is 
-incorporated herein by reference. 
- 
-
-
-================================================================================
-
-CHUNK 0710
-Length: 215 characters
-Words: 28
-Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
-Section Level: 3
-Source Page: 70
-Chunk 5/5 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-Item 14.  Principal Accountant Fees and Services 
- 
-The information appearing in the Company’s Proxy Statement under the caption “Principal Accountant Fees and Services” is 
-incorporated herein by reference. 
- 
- 
- 
-
-
-================================================================================
-
 CHUNK 0711
 Length: 441 characters
 Words: 58
-Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
+Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
 Section Level: 3
 Source Page: 70
 Chunk 1/5 on page
@@ -16950,7 +16932,7 @@ The following table summarizes information about our equity compensation plans a
 CHUNK 0712
 Length: 78 characters
 Words: 12
-Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
+Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
 Section Level: 3
 Source Page: 70
 Chunk 2/5 on page
@@ -16964,7 +16946,7 @@ compensation plans have been approved by our stockholders.
 CHUNK 0713
 Length: 939 characters
 Words: 127
-Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
+Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
 Section Level: 3
 Source Page: 70
 Chunk 3/5 on page
@@ -17017,7 +16999,7 @@ For further information, see Note 6 to the Consolidated Financial Statements.
 CHUNK 0714
 Length: 674 characters
 Words: 82
-Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
+Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
 Section Level: 3
 Source Page: 70
 Chunk 4/5 on page
@@ -17040,7 +17022,7 @@ incorporated herein by reference.
 CHUNK 0715
 Length: 215 characters
 Words: 28
-Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
+Section: 36 - Item 12. Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters
 Section Level: 3
 Source Page: 70
 Chunk 5/5 on page
@@ -17060,7 +17042,7 @@ incorporated herein by reference.
 CHUNK 0716
 Length: 441 characters
 Words: 58
-Section: 38 - Item 14. Principal Accountant Fees and Services
+Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
 Section Level: 3
 Source Page: 70
 Chunk 1/5 on page
@@ -17082,7 +17064,7 @@ The following table summarizes information about our equity compensation plans a
 CHUNK 0717
 Length: 78 characters
 Words: 12
-Section: 38 - Item 14. Principal Accountant Fees and Services
+Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
 Section Level: 3
 Source Page: 70
 Chunk 2/5 on page
@@ -17096,7 +17078,7 @@ compensation plans have been approved by our stockholders.
 CHUNK 0718
 Length: 939 characters
 Words: 127
-Section: 38 - Item 14. Principal Accountant Fees and Services
+Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
 Section Level: 3
 Source Page: 70
 Chunk 3/5 on page
@@ -17149,7 +17131,7 @@ For further information, see Note 6 to the Consolidated Financial Statements.
 CHUNK 0719
 Length: 674 characters
 Words: 82
-Section: 38 - Item 14. Principal Accountant Fees and Services
+Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
 Section Level: 3
 Source Page: 70
 Chunk 4/5 on page
@@ -17172,7 +17154,7 @@ incorporated herein by reference.
 CHUNK 0720
 Length: 215 characters
 Words: 28
-Section: 38 - Item 14. Principal Accountant Fees and Services
+Section: 37 - Item 13. Certain Relationships and Related Transactions, and Director Independence
 Section Level: 3
 Source Page: 70
 Chunk 5/5 on page
@@ -17190,101 +17172,233 @@ incorporated herein by reference.
 ================================================================================
 
 CHUNK 0721
-Length: 143 characters
-Words: 22
-Section: 39 - PART IV
-Section Level: 2
-Source Page: 71
-Chunk 1/12 on page
+Length: 441 characters
+Words: 58
+Section: 38 - Item 14. Principal Accountant Fees and Services
+Section Level: 3
+Source Page: 70
+Chunk 1/5 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
  
-53 
+52 
+Item 12.  Security Ownership of Certain Beneficial Owners and Management and Related Stockholder Matters 
  
-PART IV 
+The information appearing in the Company’s Proxy Statement under the caption “Security Ownership of Certain Beneficial 
+Owners and Management” is incorporated herein by reference. 
  
-Item 15.  Exhibits and Financial Statement Schedules 
+Equity Compensation Plan Information 
  
-(a) The following documents are filed as part of this report: 
- 
-1. 
+The following table summarizes information about our equity compensation plans as of December 31, 2024. 
 
 ================================================================================
 
 CHUNK 0722
-Length: 22 characters
-Words: 2
-Section: 39 - PART IV
-Section Level: 2
-Source Page: 71
-Chunk 2/12 on page
+Length: 78 characters
+Words: 12
+Section: 38 - Item 14. Principal Accountant Fees and Services
+Section Level: 3
+Source Page: 70
+Chunk 2/5 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
-Financial Statements. 
+All of our equity 
+compensation plans have been approved by our stockholders. 
 
 ================================================================================
 
 CHUNK 0723
-Length: 867 characters
-Words: 124
-Section: 39 - PART IV
-Section Level: 2
-Source Page: 71
-Chunk 3/12 on page
+Length: 939 characters
+Words: 127
+Section: 38 - Item 14. Principal Accountant Fees and Services
+Section Level: 3
+Source Page: 70
+Chunk 3/5 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
-The following Consolidated Financial Statements of Mineral Technologies Inc. and subsidiary companies 
-and Reports of Independent Registered Public Accounting Firm are set forth on pages F-2 to F-41. 
+All outstanding awards relate to our common stock. 
  
-Consolidated Balance Sheets as of December 31, 2024 and 2023 
-Consolidated Statements of Income for the years ended December 31, 2024, 2023 and 2022 
-Consolidated Statements of Comprehensive Income for the years ended December 31, 2024, 2023 and 2022 
-Consolidated Statements of Cash Flows for the years ended December 31, 2024, 2023 and 2022 
-Consolidated Statements of Changes in Shareholders’ Equity for the years ended December 31, 2024, 2023 and 2022 
-Notes to the Consolidated Financial Statements 
-Reports of Independent Registered Public Accounting Firm 
-Management’s Report on Internal Control Over Financial Reporting 
+Plan Category 
+Number of Securities to 
+be Issued Upon Exercise 
+of Outstanding Options, 
+Warrants and Rights(1) 
+Weighted Average 
+Exercise Price of 
+Outstanding Options, 
+Warrants and Rights (2) 
+Number of Securities 
+Remaining Available 
+for Future Issuance 
+under Equity 
+Compensation Plans 
+(excluding securities 
+reflected in column (a)) 
+(a) 
+(b) 
+(c) 
+Equity compensation plans approved by 
+security holders 
+1,624,430  $ 
+65.06  
+1,419,611
+  
  
-2. Financial Statement Schedule. 
+Total 
+1,624,430  $ 
+65.06  
+1,419,611
+ 
+(1) Includes shares issuable upon exercise of outstanding stock options and shares issuable upon vesting of time-based deferred 
+restricted stock units (DRSUs). 
+(2) The weighted-average exercise price includes all outstanding stock options but does not include DRSUs which do not have an 
+exercise price. 
+ 
+For further information, see Note 6 to the Consolidated Financial Statements. 
+ 
+
 
 ================================================================================
 
 CHUNK 0724
-Length: 340 characters
-Words: 51
-Section: 39 - PART IV
-Section Level: 2
-Source Page: 71
-Chunk 4/12 on page
+Length: 674 characters
+Words: 82
+Section: 38 - Item 14. Principal Accountant Fees and Services
+Section Level: 3
+Source Page: 70
+Chunk 4/5 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
-The following financial statement schedule is filed as part of this report: 
+Item 13.  Certain Relationships and Related Transactions, and Director Independence 
  
-Schedule II – Valuation and Qualifying Accounts 
+The information appearing in the Company’s Proxy Statement under the caption “Certain Relationships and Related 
+Transactions” is incorporated herein by reference. 
  
-All other schedules for which provision is made in the applicable accounting regulations of the SEC are not required under the 
-related instructions or are inapplicable and, therefore, have been omitted. 
+The Board has established Corporate Governance principles which include guidelines for determining Director independence, 
+which is available on our website, www.mineralstech.com, by clicking the links entitled “Investors”, then “Corporate Governance”.  
+The information appearing in the Company’s Proxy Statement under the caption “Corporate Governance – Director Independence” is 
+incorporated herein by reference. 
  
-3. 
+
 
 ================================================================================
 
 CHUNK 0725
-Length: 106 characters
-Words: 16
-Section: 39 - PART IV
-Section Level: 2
-Source Page: 71
-Chunk 5/12 on page
+Length: 215 characters
+Words: 28
+Section: 38 - Item 14. Principal Accountant Fees and Services
+Section Level: 3
+Source Page: 70
+Chunk 5/5 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
-Exhibits. The following exhibits are filed as part of, or incorporated by reference into, this report. 
+Item 14.  Principal Accountant Fees and Services 
+ 
+The information appearing in the Company’s Proxy Statement under the caption “Principal Accountant Fees and Services” is 
+incorporated herein by reference. 
+ 
+ 
  
 
 
 ================================================================================
 
 CHUNK 0726
+Length: 143 characters
+Words: 22
+Section: 39 - PART IV
+Section Level: 2
+Source Page: 71
+Chunk 1/12 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+ 
+53 
+ 
+PART IV 
+ 
+Item 15.  Exhibits and Financial Statement Schedules 
+ 
+(a) The following documents are filed as part of this report: 
+ 
+1. 
+
+================================================================================
+
+CHUNK 0727
+Length: 22 characters
+Words: 2
+Section: 39 - PART IV
+Section Level: 2
+Source Page: 71
+Chunk 2/12 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+Financial Statements. 
+
+================================================================================
+
+CHUNK 0728
+Length: 867 characters
+Words: 124
+Section: 39 - PART IV
+Section Level: 2
+Source Page: 71
+Chunk 3/12 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+The following Consolidated Financial Statements of Mineral Technologies Inc. and subsidiary companies 
+and Reports of Independent Registered Public Accounting Firm are set forth on pages F-2 to F-41. 
+ 
+Consolidated Balance Sheets as of December 31, 2024 and 2023 
+Consolidated Statements of Income for the years ended December 31, 2024, 2023 and 2022 
+Consolidated Statements of Comprehensive Income for the years ended December 31, 2024, 2023 and 2022 
+Consolidated Statements of Cash Flows for the years ended December 31, 2024, 2023 and 2022 
+Consolidated Statements of Changes in Shareholders’ Equity for the years ended December 31, 2024, 2023 and 2022 
+Notes to the Consolidated Financial Statements 
+Reports of Independent Registered Public Accounting Firm 
+Management’s Report on Internal Control Over Financial Reporting 
+ 
+2. Financial Statement Schedule. 
+
+================================================================================
+
+CHUNK 0729
+Length: 340 characters
+Words: 51
+Section: 39 - PART IV
+Section Level: 2
+Source Page: 71
+Chunk 4/12 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+The following financial statement schedule is filed as part of this report: 
+ 
+Schedule II – Valuation and Qualifying Accounts 
+ 
+All other schedules for which provision is made in the applicable accounting regulations of the SEC are not required under the 
+related instructions or are inapplicable and, therefore, have been omitted. 
+ 
+3. 
+
+================================================================================
+
+CHUNK 0730
+Length: 106 characters
+Words: 16
+Section: 39 - PART IV
+Section Level: 2
+Source Page: 71
+Chunk 5/12 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+Exhibits. The following exhibits are filed as part of, or incorporated by reference into, this report. 
+ 
+
+
+================================================================================
+
+CHUNK 0731
 Length: 424 characters
 Words: 67
 Section: 39 - PART IV
@@ -17305,7 +17419,7 @@ with the Company’s Current Report on Form 8-K (file no.
 
 ================================================================================
 
-CHUNK 0727
+CHUNK 0732
 Length: 184 characters
 Words: 29
 Section: 39 - PART IV
@@ -17321,7 +17435,7 @@ Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0728
+CHUNK 0733
 Length: 670 characters
 Words: 109
 Section: 39 - PART IV
@@ -17343,7 +17457,7 @@ to the Company’s Current Report on Form 8-K (file no. 001-11430) filed on June
 
 ================================================================================
 
-CHUNK 0729
+CHUNK 0734
 Length: 133 characters
 Words: 20
 Section: 39 - PART IV
@@ -17358,7 +17472,7 @@ Inc.
 
 ================================================================================
 
-CHUNK 0730
+CHUNK 0735
 Length: 918 characters
 Words: 130
 Section: 39 - PART IV
@@ -17382,7 +17496,7 @@ Reorganization Agreement, dated as of September 28, 1992, by and between the Com
 
 ================================================================================
 
-CHUNK 0731
+CHUNK 0736
 Length: 1084 characters
 Words: 157
 Section: 39 - PART IV
@@ -17410,7 +17524,7 @@ Form S-1 (Registration No.
 
 ================================================================================
 
-CHUNK 0732
+CHUNK 0737
 Length: 52 characters
 Words: 7
 Section: 39 - PART IV
@@ -17426,7 +17540,7 @@ Source PDF: input/NYSE_MTX_2024.pdf
 
 ================================================================================
 
-CHUNK 0733
+CHUNK 0738
 Length: 837 characters
 Words: 132
 Section: 39 - PART IV
@@ -17452,7 +17566,7 @@ filed with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0734
+CHUNK 0739
 Length: 233 characters
 Words: 37
 Section: 39 - PART IV
@@ -17468,7 +17582,7 @@ filed with the Company’s Current Report on form 8-K (file no.
 
 ================================================================================
 
-CHUNK 0735
+CHUNK 0740
 Length: 603 characters
 Words: 95
 Section: 39 - PART IV
@@ -17489,7 +17603,7 @@ filed with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0736
+CHUNK 0741
 Length: 263 characters
 Words: 41
 Section: 39 - PART IV
@@ -17506,7 +17620,7 @@ Cipolla, Erin N. Cutler, Douglas T. Dietrich, Jonathan J. Hastings, Timothy J. J
 
 ================================================================================
 
-CHUNK 0737
+CHUNK 0742
 Length: 167 characters
 Words: 26
 Section: 39 - PART IV
@@ -17521,7 +17635,7 @@ on Form 8-K (file no.
 
 ================================================================================
 
-CHUNK 0738
+CHUNK 0743
 Length: 292 characters
 Words: 44
 Section: 39 - PART IV
@@ -17538,7 +17652,7 @@ on Form 10-Q (file no.
 
 ================================================================================
 
-CHUNK 0739
+CHUNK 0744
 Length: 2620 characters
 Words: 405
 Section: 39 - PART IV
@@ -17591,7 +17705,7 @@ Amendment to the Company Savings and Investment Plan, as amended and restated, d
 
 ================================================================================
 
-CHUNK 0740
+CHUNK 0745
 Length: 3162 characters
 Words: 481
 Section: 39 - PART IV
@@ -17655,7 +17769,7 @@ exhibit 10.16(d) filed with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0741
+CHUNK 0746
 Length: 538 characters
 Words: 85
 Section: 39 - PART IV
@@ -17677,7 +17791,7 @@ by reference to exhibit 10.14 filed with the Company’s Annual Report on Form 1
 
 ================================================================================
 
-CHUNK 0742
+CHUNK 0747
 Length: 243 characters
 Words: 38
 Section: 39 - PART IV
@@ -17694,7 +17808,7 @@ with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0743
+CHUNK 0748
 Length: 726 characters
 Words: 112
 Section: 39 - PART IV
@@ -17717,7 +17831,7 @@ filed with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0744
+CHUNK 0749
 Length: 552 characters
 Words: 86
 Section: 39 - PART IV
@@ -17738,7 +17852,7 @@ Trust Company (Incorporated by reference to exhibit 10.1 filed with the Company�
 
 ================================================================================
 
-CHUNK 0745
+CHUNK 0750
 Length: 89 characters
 Words: 13
 Section: 39 - PART IV
@@ -17753,7 +17867,7 @@ Agreement and Amendment No.
 
 ================================================================================
 
-CHUNK 0746
+CHUNK 0751
 Length: 277 characters
 Words: 46
 Section: 39 - PART IV
@@ -17768,7 +17882,7 @@ April 1, 2010, by and between the Company and the Wilmington Trust Company (Inco
 
 ================================================================================
 
-CHUNK 0747
+CHUNK 0752
 Length: 58 characters
 Words: 8
 Section: 39 - PART IV
@@ -17785,7 +17899,7 @@ Source PDF: input/NYSE_MTX_2024.pdf
 
 ================================================================================
 
-CHUNK 0748
+CHUNK 0753
 Length: 651 characters
 Words: 92
 Section: 39 - PART IV
@@ -17808,7 +17922,7 @@ reference to the exhibit so designated filed with the Company’s Registration S
 
 ================================================================================
 
-CHUNK 0749
+CHUNK 0754
 Length: 579 characters
 Words: 75
 Section: 39 - PART IV
@@ -17841,7 +17955,7 @@ Minerals Technologies Inc.
 
 ================================================================================
 
-CHUNK 0750
+CHUNK 0755
 Length: 960 characters
 Words: 134
 Section: 39 - PART IV
@@ -17878,7 +17992,7 @@ Cover Page Interactive Data File (formatted as Inline XBRL and contained in Exhi
 
 ================================================================================
 
-CHUNK 0751
+CHUNK 0756
 Length: 143 characters
 Words: 22
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -17900,7 +18014,7 @@ Item 15.  Exhibits and Financial Statement Schedules
 
 ================================================================================
 
-CHUNK 0752
+CHUNK 0757
 Length: 22 characters
 Words: 2
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -17913,7 +18027,7 @@ Financial Statements.
 
 ================================================================================
 
-CHUNK 0753
+CHUNK 0758
 Length: 867 characters
 Words: 124
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -17938,7 +18052,7 @@ Management’s Report on Internal Control Over Financial Reporting
 
 ================================================================================
 
-CHUNK 0754
+CHUNK 0759
 Length: 340 characters
 Words: 51
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -17958,7 +18072,7 @@ related instructions or are inapplicable and, therefore, have been omitted.
 
 ================================================================================
 
-CHUNK 0755
+CHUNK 0760
 Length: 106 characters
 Words: 16
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -17973,7 +18087,7 @@ Exhibits. The following exhibits are filed as part of, or incorporated by refere
 
 ================================================================================
 
-CHUNK 0756
+CHUNK 0761
 Length: 424 characters
 Words: 67
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -17994,7 +18108,7 @@ with the Company’s Current Report on Form 8-K (file no.
 
 ================================================================================
 
-CHUNK 0757
+CHUNK 0762
 Length: 184 characters
 Words: 29
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18010,7 +18124,7 @@ Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0758
+CHUNK 0763
 Length: 670 characters
 Words: 109
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18032,7 +18146,7 @@ to the Company’s Current Report on Form 8-K (file no. 001-11430) filed on June
 
 ================================================================================
 
-CHUNK 0759
+CHUNK 0764
 Length: 133 characters
 Words: 20
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18047,7 +18161,7 @@ Inc.
 
 ================================================================================
 
-CHUNK 0760
+CHUNK 0765
 Length: 918 characters
 Words: 130
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18071,7 +18185,7 @@ Reorganization Agreement, dated as of September 28, 1992, by and between the Com
 
 ================================================================================
 
-CHUNK 0761
+CHUNK 0766
 Length: 1084 characters
 Words: 157
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18099,7 +18213,7 @@ Form S-1 (Registration No.
 
 ================================================================================
 
-CHUNK 0762
+CHUNK 0767
 Length: 52 characters
 Words: 7
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18115,7 +18229,7 @@ Source PDF: input/NYSE_MTX_2024.pdf
 
 ================================================================================
 
-CHUNK 0763
+CHUNK 0768
 Length: 837 characters
 Words: 132
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18141,7 +18255,7 @@ filed with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0764
+CHUNK 0769
 Length: 233 characters
 Words: 37
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18157,7 +18271,7 @@ filed with the Company’s Current Report on form 8-K (file no.
 
 ================================================================================
 
-CHUNK 0765
+CHUNK 0770
 Length: 603 characters
 Words: 95
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18178,7 +18292,7 @@ filed with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0766
+CHUNK 0771
 Length: 263 characters
 Words: 41
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18195,7 +18309,7 @@ Cipolla, Erin N. Cutler, Douglas T. Dietrich, Jonathan J. Hastings, Timothy J. J
 
 ================================================================================
 
-CHUNK 0767
+CHUNK 0772
 Length: 167 characters
 Words: 26
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18210,7 +18324,7 @@ on Form 8-K (file no.
 
 ================================================================================
 
-CHUNK 0768
+CHUNK 0773
 Length: 292 characters
 Words: 44
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18227,7 +18341,7 @@ on Form 10-Q (file no.
 
 ================================================================================
 
-CHUNK 0769
+CHUNK 0774
 Length: 2620 characters
 Words: 405
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18280,7 +18394,7 @@ Amendment to the Company Savings and Investment Plan, as amended and restated, d
 
 ================================================================================
 
-CHUNK 0770
+CHUNK 0775
 Length: 3162 characters
 Words: 481
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18344,7 +18458,7 @@ exhibit 10.16(d) filed with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0771
+CHUNK 0776
 Length: 538 characters
 Words: 85
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18366,7 +18480,7 @@ by reference to exhibit 10.14 filed with the Company’s Annual Report on Form 1
 
 ================================================================================
 
-CHUNK 0772
+CHUNK 0777
 Length: 243 characters
 Words: 38
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18383,7 +18497,7 @@ with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0773
+CHUNK 0778
 Length: 726 characters
 Words: 112
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18406,7 +18520,7 @@ filed with the Company’s Annual Report on Form 10-K (file no.
 
 ================================================================================
 
-CHUNK 0774
+CHUNK 0779
 Length: 552 characters
 Words: 86
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18427,7 +18541,7 @@ Trust Company (Incorporated by reference to exhibit 10.1 filed with the Company�
 
 ================================================================================
 
-CHUNK 0775
+CHUNK 0780
 Length: 89 characters
 Words: 13
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18442,7 +18556,7 @@ Agreement and Amendment No.
 
 ================================================================================
 
-CHUNK 0776
+CHUNK 0781
 Length: 277 characters
 Words: 46
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18457,7 +18571,7 @@ April 1, 2010, by and between the Company and the Wilmington Trust Company (Inco
 
 ================================================================================
 
-CHUNK 0777
+CHUNK 0782
 Length: 58 characters
 Words: 8
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18474,7 +18588,7 @@ Source PDF: input/NYSE_MTX_2024.pdf
 
 ================================================================================
 
-CHUNK 0778
+CHUNK 0783
 Length: 651 characters
 Words: 92
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18497,7 +18611,7 @@ reference to the exhibit so designated filed with the Company’s Registration S
 
 ================================================================================
 
-CHUNK 0779
+CHUNK 0784
 Length: 579 characters
 Words: 75
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18530,7 +18644,7 @@ Minerals Technologies Inc.
 
 ================================================================================
 
-CHUNK 0780
+CHUNK 0785
 Length: 960 characters
 Words: 134
 Section: 40 - Item 15. Exhibits and Financial Statement Schedules
@@ -18567,7 +18681,7 @@ Cover Page Interactive Data File (formatted as Inline XBRL and contained in Exhi
 
 ================================================================================
 
-CHUNK 0781
+CHUNK 0786
 Length: 1800 characters
 Words: 250
 Section: 41 - SIGNATURES
@@ -18734,7 +18848,7 @@ Attorney-in-Fact
 
 ================================================================================
 
-CHUNK 0782
+CHUNK 0787
 Length: 976 characters
 Words: 129
 Section: 42 - INDEX TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -18808,7 +18922,7 @@ S-1
 
 ================================================================================
 
-CHUNK 0783
+CHUNK 0788
 Length: 2059 characters
 Words: 253
 Section: 43 - CONSOLIDATED BALANCE SHEETS
@@ -18992,7 +19106,7 @@ Total Minerals Technologies Inc.
 
 ================================================================================
 
-CHUNK 0784
+CHUNK 0789
 Length: 314 characters
 Words: 36
 Section: 43 - CONSOLIDATED BALANCE SHEETS
@@ -19029,7 +19143,7 @@ See Notes to Consolidated Financial Statements, which are an integral part of th
 
 ================================================================================
 
-CHUNK 0785
+CHUNK 0790
 Length: 1443 characters
 Words: 189
 Section: 44 - CONSOLIDATED STATEMENTS OF INCOME
@@ -19184,7 +19298,7 @@ Net income attributable to Minerals Technologies Inc.
 
 ================================================================================
 
-CHUNK 0786
+CHUNK 0791
 Length: 576 characters
 Words: 78
 Section: 44 - CONSOLIDATED STATEMENTS OF INCOME
@@ -19264,7 +19378,7 @@ See Notes to Consolidated Financial Statements, which are an integral part of th
 
 ================================================================================
 
-CHUNK 0787
+CHUNK 0792
 Length: 989 characters
 Words: 119
 Section: 45 - CONSOLIDATED STATEMENTS OF COMPREHENSIVE INCOME
@@ -19348,7 +19462,7 @@ Comprehensive income attributable to Minerals Technologies Inc.
 
 ================================================================================
 
-CHUNK 0788
+CHUNK 0793
 Length: 132 characters
 Words: 20
 Section: 45 - CONSOLIDATED STATEMENTS OF COMPREHENSIVE INCOME
@@ -19371,7 +19485,7 @@ See Notes to Consolidated Financial Statements, which are an integral part of th
 
 ================================================================================
 
-CHUNK 0789
+CHUNK 0794
 Length: 3377 characters
 Words: 450
 Section: 46 - CONSOLIDATED STATEMENTS OF CASH FLOWS
@@ -19677,7 +19791,7 @@ See Notes to Consolidated Financial Statements, which are an integral part of th
 
 ================================================================================
 
-CHUNK 0790
+CHUNK 0795
 Length: 2683 characters
 Words: 405
 Section: 47 - CONSOLIDATED STATEMENTS OF CHANGES IN SHAREHOLDERS’ EQUITY
@@ -19979,7 +20093,7 @@ See Notes to Consolidated Financial Statements, which are an integral part of th
 
 ================================================================================
 
-CHUNK 0791
+CHUNK 0796
 Length: 644 characters
 Words: 80
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20006,7 +20120,7 @@ pharmaceutical, automotive, construction, steel and foundry, environmental, and 
 
 ================================================================================
 
-CHUNK 0792
+CHUNK 0797
 Length: 425 characters
 Words: 57
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20027,7 +20141,7 @@ The Company employs accounting policies that are in accordance with U.S.
 
 ================================================================================
 
-CHUNK 0793
+CHUNK 0798
 Length: 578 characters
 Words: 78
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20044,7 +20158,7 @@ assets, certain pension plan assumptions, valuation of deferred income tax asset
 
 ================================================================================
 
-CHUNK 0794
+CHUNK 0799
 Length: 54 characters
 Words: 7
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20060,7 +20174,7 @@ results could differ from those estimates.
 
 ================================================================================
 
-CHUNK 0795
+CHUNK 0800
 Length: 1599 characters
 Words: 226
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20089,7 +20203,7 @@ means of collection have been exhausted and the potential for recovery is consid
 
 ================================================================================
 
-CHUNK 0796
+CHUNK 0801
 Length: 314 characters
 Words: 46
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20108,7 +20222,7 @@ date.  Our credit exposure includes an unfunded loan commitment.
 
 ================================================================================
 
-CHUNK 0797
+CHUNK 0802
 Length: 269 characters
 Words: 41
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20126,7 +20240,7 @@ Inventories are valued at the lower of cost or market.
 
 ================================================================================
 
-CHUNK 0798
+CHUNK 0803
 Length: 64 characters
 Words: 9
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20141,7 +20255,7 @@ Cost is determined by the first-in, first-out (FIFO) method.
 
 ================================================================================
 
-CHUNK 0799
+CHUNK 0804
 Length: 141 characters
 Words: 19
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20155,7 +20269,7 @@ period charges.
 
 ================================================================================
 
-CHUNK 0800
+CHUNK 0805
 Length: 219 characters
 Words: 32
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20172,7 +20286,7 @@ production facility.  Fixed overhead costs associated with idle capacity are exp
 
 ================================================================================
 
-CHUNK 0801
+CHUNK 0806
 Length: 189 characters
 Words: 24
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20191,7 +20305,7 @@ Property, plant and equipment are recorded at cost.
 
 ================================================================================
 
-CHUNK 0802
+CHUNK 0807
 Length: 125 characters
 Words: 15
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20205,7 +20319,7 @@ expenditures are charged to operations as incurred.
 
 ================================================================================
 
-CHUNK 0803
+CHUNK 0808
 Length: 83 characters
 Words: 12
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20219,7 +20333,7 @@ The Company capitalizes interest cost as a component of construction in progress
 
 ================================================================================
 
-CHUNK 0804
+CHUNK 0809
 Length: 599 characters
 Words: 90
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20238,7 +20352,7 @@ stone mining and processing plants and our chemical plants are 15 years.
 
 ================================================================================
 
-CHUNK 0805
+CHUNK 0810
 Length: 71 characters
 Words: 10
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20251,7 +20365,7 @@ Property, plant and equipment are depreciated over their useful lives.
 
 ================================================================================
 
-CHUNK 0806
+CHUNK 0811
 Length: 562 characters
 Words: 86
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20268,7 +20382,7 @@ terms of many of these agreements have been extended, often in connection with a
 
 ================================================================================
 
-CHUNK 0807
+CHUNK 0812
 Length: 1025 characters
 Words: 153
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20297,7 +20411,7 @@ amount of an asset may not be recoverable.
 
 ================================================================================
 
-CHUNK 0808
+CHUNK 0813
 Length: 256 characters
 Words: 39
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20312,7 +20426,7 @@ and its ultimate disposition.
 
 ================================================================================
 
-CHUNK 0809
+CHUNK 0814
 Length: 1279 characters
 Words: 196
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20339,7 +20453,7 @@ at the reporting unit level. In the first step, the fair value for the reporting
 
 ================================================================================
 
-CHUNK 0810
+CHUNK 0815
 Length: 925 characters
 Words: 148
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20364,7 +20478,7 @@ impairment.
 
 ================================================================================
 
-CHUNK 0811
+CHUNK 0816
 Length: 493 characters
 Words: 74
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20385,7 +20499,7 @@ The Company records the equity in earnings of its investments in joint ventures 
 
 ================================================================================
 
-CHUNK 0812
+CHUNK 0817
 Length: 311 characters
 Words: 44
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20404,7 +20518,7 @@ costs.
 
 ================================================================================
 
-CHUNK 0813
+CHUNK 0818
 Length: 281 characters
 Words: 49
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20419,7 +20533,7 @@ lived asset.
 
 ================================================================================
 
-CHUNK 0814
+CHUNK 0819
 Length: 163 characters
 Words: 23
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20435,7 +20549,7 @@ settlement are conditional on future events.
 
 ================================================================================
 
-CHUNK 0815
+CHUNK 0820
 Length: 589 characters
 Words: 90
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20454,7 +20568,7 @@ the passage of time and changes in estimated future cash outflows.
 
 ================================================================================
 
-CHUNK 0816
+CHUNK 0821
 Length: 699 characters
 Words: 95
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20478,7 +20592,7 @@ the balance sheet.  See Note 12 for a full description of the Company’s hedgin
 
 ================================================================================
 
-CHUNK 0817
+CHUNK 0822
 Length: 317 characters
 Words: 50
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20495,7 +20609,7 @@ derived from the sale of products.
 
 ================================================================================
 
-CHUNK 0818
+CHUNK 0823
 Length: 882 characters
 Words: 140
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20516,7 +20630,7 @@ volume that will be sold to the customer.
 
 ================================================================================
 
-CHUNK 0819
+CHUNK 0824
 Length: 279 characters
 Words: 42
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20531,7 +20645,7 @@ certain customers in our Engineered Solutions segment.
 
 ================================================================================
 
-CHUNK 0820
+CHUNK 0825
 Length: 292 characters
 Words: 40
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20550,7 +20664,7 @@ the respective balance sheet date.
 
 ================================================================================
 
-CHUNK 0821
+CHUNK 0826
 Length: 661 characters
 Words: 84
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20571,7 +20685,7 @@ its subsidiaries in Turkey.
 
 ================================================================================
 
-CHUNK 0822
+CHUNK 0827
 Length: 764 characters
 Words: 111
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20596,7 +20710,7 @@ The Company operates in multiple taxing jurisdictions, both within the U.S.
 
 ================================================================================
 
-CHUNK 0823
+CHUNK 0828
 Length: 454 characters
 Words: 69
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20614,7 +20728,7 @@ The application of income tax law is inherently complex.
 
 ================================================================================
 
-CHUNK 0824
+CHUNK 0829
 Length: 566 characters
 Words: 83
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20631,7 +20745,7 @@ The Company’s accounting policy is to recognize interest and penalties as part
 
 ================================================================================
 
-CHUNK 0825
+CHUNK 0830
 Length: 279 characters
 Words: 37
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20650,7 +20764,7 @@ unremitted earnings, which are expected to be permanently reinvested overseas.
 
 ================================================================================
 
-CHUNK 0826
+CHUNK 0831
 Length: 88 characters
 Words: 11
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20667,7 +20781,7 @@ Research and development costs are expensed as incurred.
 
 ================================================================================
 
-CHUNK 0827
+CHUNK 0832
 Length: 312 characters
 Words: 41
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20687,7 +20801,7 @@ The Company has defined benefit pension plans covering the majority of its eligi
 
 ================================================================================
 
-CHUNK 0828
+CHUNK 0833
 Length: 312 characters
 Words: 47
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20704,7 +20818,7 @@ States.  The Company measures the costs of its obligation based on its best esti
 
 ================================================================================
 
-CHUNK 0829
+CHUNK 0834
 Length: 232 characters
 Words: 30
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20722,7 +20836,7 @@ Expenditures that relate to current operations are expensed or capitalized as ap
 
 ================================================================================
 
-CHUNK 0830
+CHUNK 0835
 Length: 522 characters
 Words: 77
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20745,7 +20859,7 @@ during the period.
 
 ================================================================================
 
-CHUNK 0831
+CHUNK 0836
 Length: 233 characters
 Words: 33
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20762,7 +20876,7 @@ during the period assuming the issuance of common shares for all potentially dil
 
 ================================================================================
 
-CHUNK 0832
+CHUNK 0837
 Length: 235 characters
 Words: 30
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20783,7 +20897,7 @@ The Company has evaluated for subsequent events through the date of issuance of 
 
 ================================================================================
 
-CHUNK 0833
+CHUNK 0838
 Length: 369 characters
 Words: 51
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20800,7 +20914,7 @@ Standards Codification. The Company considers the applicability and impact of al
 
 ================================================================================
 
-CHUNK 0834
+CHUNK 0839
 Length: 1043 characters
 Words: 152
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20824,7 +20938,7 @@ is effective for fiscal years beginning after December 15, 2023 and interim peri
 
 ================================================================================
 
-CHUNK 0835
+CHUNK 0840
 Length: 608 characters
 Words: 81
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20845,7 +20959,7 @@ uncertain tax positions and unrecognized deferred tax liabilities.
 
 ================================================================================
 
-CHUNK 0836
+CHUNK 0841
 Length: 1006 characters
 Words: 132
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20876,7 +20990,7 @@ fiscal years beginning after December 15, 2027.
 
 ================================================================================
 
-CHUNK 0837
+CHUNK 0842
 Length: 128 characters
 Words: 19
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20892,7 +21006,7 @@ Company’s consolidated financial statements.
 
 ================================================================================
 
-CHUNK 0838
+CHUNK 0843
 Length: 9 characters
 Words: 2
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20905,7 +21019,7 @@ Note 2.
 
 ================================================================================
 
-CHUNK 0839
+CHUNK 0844
 Length: 755 characters
 Words: 124
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20927,7 +21041,7 @@ Leases with an initial term of 12 months or less are not recorded on the balance
 
 ================================================================================
 
-CHUNK 0840
+CHUNK 0845
 Length: 235 characters
 Words: 33
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20945,7 +21059,7 @@ for lease components together with non-lease components.
 
 ================================================================================
 
-CHUNK 0841
+CHUNK 0846
 Length: 27 characters
 Words: 3
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -20958,7 +21072,7 @@ MINERALS TECHNOLOGIES INC.
 
 ================================================================================
 
-CHUNK 0842
+CHUNK 0847
 Length: 1847 characters
 Words: 257
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21090,7 +21204,7 @@ $
 
 ================================================================================
 
-CHUNK 0843
+CHUNK 0848
 Length: 114 characters
 Words: 14
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21107,7 +21221,7 @@ Note 3.
 
 ================================================================================
 
-CHUNK 0844
+CHUNK 0849
 Length: 1468 characters
 Words: 220
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21137,7 +21251,7 @@ when the consigned products are consumed by the customer and control is transfer
 
 ================================================================================
 
-CHUNK 0845
+CHUNK 0850
 Length: 1070 characters
 Words: 140
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21212,7 +21326,7 @@ European supplier of pet litter products.
 
 ================================================================================
 
-CHUNK 0846
+CHUNK 0851
 Length: 138 characters
 Words: 21
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21226,7 +21340,7 @@ well as providing additional mineral reserves.
 
 ================================================================================
 
-CHUNK 0847
+CHUNK 0852
 Length: 94 characters
 Words: 15
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21240,7 +21354,7 @@ hand.
 
 ================================================================================
 
-CHUNK 0848
+CHUNK 0853
 Length: 192 characters
 Words: 31
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21254,7 +21368,7 @@ additional $1.8 million of hold back consideration was paid.
 
 ================================================================================
 
-CHUNK 0849
+CHUNK 0854
 Length: 489 characters
 Words: 75
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21271,7 +21385,7 @@ the acquisition date.
 
 ================================================================================
 
-CHUNK 0850
+CHUNK 0855
 Length: 427 characters
 Words: 58
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21290,7 +21404,7 @@ expenses line of the Consolidated Statements of Income.
 
 ================================================================================
 
-CHUNK 0851
+CHUNK 0856
 Length: 27 characters
 Words: 3
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21303,7 +21417,7 @@ MINERALS TECHNOLOGIES INC.
 
 ================================================================================
 
-CHUNK 0852
+CHUNK 0857
 Length: 315 characters
 Words: 45
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21323,7 +21437,7 @@ to its subsidiaries BMI Oldco Inc. (f/k/a Barretts Minerals Inc.)
 
 ================================================================================
 
-CHUNK 0853
+CHUNK 0858
 Length: 368 characters
 Words: 54
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21339,7 +21453,7 @@ liabilities associated with the talc claims.
 
 ================================================================================
 
-CHUNK 0854
+CHUNK 0859
 Length: 40 characters
 Words: 6
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21354,7 +21468,7 @@ See Note 17 for further information.
 
 ================================================================================
 
-CHUNK 0855
+CHUNK 0860
 Length: 1533 characters
 Words: 232
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21438,7 +21552,7 @@ reorganization initiatives.  The Company expects to pay these remaining restruct
 
 ================================================================================
 
-CHUNK 0856
+CHUNK 0861
 Length: 1280 characters
 Words: 193
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21485,7 +21599,7 @@ recent tax law changes.  The Plans are administered by the Compensation Committe
 
 ================================================================================
 
-CHUNK 0857
+CHUNK 0862
 Length: 308 characters
 Words: 54
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21504,7 +21618,7 @@ years.
 
 ================================================================================
 
-CHUNK 0858
+CHUNK 0863
 Length: 251 characters
 Words: 32
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21524,7 +21638,7 @@ date fair value.
 
 ================================================================================
 
-CHUNK 0859
+CHUNK 0864
 Length: 236 characters
 Words: 35
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21538,7 +21652,7 @@ compensation costs, respectively, related to stock option expense as a component
 
 ================================================================================
 
-CHUNK 0860
+CHUNK 0865
 Length: 87 characters
 Words: 12
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21552,7 +21666,7 @@ option expense is recognized in the consolidated statements of operations.
 
 ================================================================================
 
-CHUNK 0861
+CHUNK 0866
 Length: 1932 characters
 Words: 289
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21616,7 +21730,7 @@ stock-price volatility is based upon the historical and implied volatility of th
 
 ================================================================================
 
-CHUNK 0862
+CHUNK 0867
 Length: 59 characters
 Words: 11
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21630,7 +21744,7 @@ implied yield on U.S.
 
 ================================================================================
 
-CHUNK 0863
+CHUNK 0868
 Length: 50 characters
 Words: 7
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21643,7 +21757,7 @@ Treasury bills with an equivalent remaining term.
 
 ================================================================================
 
-CHUNK 0864
+CHUNK 0869
 Length: 1397 characters
 Words: 199
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21718,7 +21832,7 @@ The Company issues new shares of common stock upon the exercise of stock options
 
 ================================================================================
 
-CHUNK 0865
+CHUNK 0870
 Length: 653 characters
 Words: 90
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21765,7 +21879,7 @@ pursuant to the Plans.
 
 ================================================================================
 
-CHUNK 0866
+CHUNK 0871
 Length: 131 characters
 Words: 21
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21779,7 +21893,7 @@ other conditions.
 
 ================================================================================
 
-CHUNK 0867
+CHUNK 0872
 Length: 965 characters
 Words: 144
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21799,7 +21913,7 @@ related mostly to the conversion of units for tax withholding purposes.
 
 ================================================================================
 
-CHUNK 0868
+CHUNK 0873
 Length: 1566 characters
 Words: 222
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21909,7 +22023,7 @@ dilutive, as the exercise prices of the options were greater than the average ma
 
 ================================================================================
 
-CHUNK 0869
+CHUNK 0874
 Length: 27 characters
 Words: 3
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -21922,7 +22036,7 @@ MINERALS TECHNOLOGIES INC.
 
 ================================================================================
 
-CHUNK 0870
+CHUNK 0875
 Length: 1374 characters
 Words: 192
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22040,7 +22154,7 @@ The major elements contributing to the difference between the U.S.
 
 ================================================================================
 
-CHUNK 0871
+CHUNK 0876
 Length: 867 characters
 Words: 115
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22131,7 +22245,7 @@ Consolidated effective tax rate
 
 ================================================================================
 
-CHUNK 0872
+CHUNK 0877
 Length: 1569 characters
 Words: 216
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22236,7 +22350,7 @@ an indefinite period.
 
 ================================================================================
 
-CHUNK 0873
+CHUNK 0878
 Length: 87 characters
 Words: 14
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22249,7 +22363,7 @@ On December 31, 2024, the Company had $1.9 million of total unrecognized tax ben
 
 ================================================================================
 
-CHUNK 0874
+CHUNK 0879
 Length: 1174 characters
 Words: 189
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22294,7 +22408,7 @@ to cover its U.S.
 
 ================================================================================
 
-CHUNK 0875
+CHUNK 0880
 Length: 35 characters
 Words: 4
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22309,7 +22423,7 @@ and foreign tax contingencies.
 
 ================================================================================
 
-CHUNK 0876
+CHUNK 0881
 Length: 421 characters
 Words: 65
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22328,7 +22442,7 @@ for years prior to 2017.
 
 ================================================================================
 
-CHUNK 0877
+CHUNK 0882
 Length: 559 characters
 Words: 82
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22350,7 +22464,7 @@ has been recognized as a result of recent U.S.
 
 ================================================================================
 
-CHUNK 0878
+CHUNK 0883
 Length: 675 characters
 Words: 104
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22372,7 +22486,7 @@ Note 9.
 
 ================================================================================
 
-CHUNK 0879
+CHUNK 0884
 Length: 1267 characters
 Words: 177
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22465,7 +22579,7 @@ to its subsidiaries Oldco and BVT within the Consumer & Specialties segment.
 
 ================================================================================
 
-CHUNK 0880
+CHUNK 0885
 Length: 40 characters
 Words: 6
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22480,7 +22594,7 @@ See Note 17 for further information.
 
 ================================================================================
 
-CHUNK 0881
+CHUNK 0886
 Length: 162 characters
 Words: 23
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22498,7 +22612,7 @@ and $76.3 million, respectively.
 
 ================================================================================
 
-CHUNK 0882
+CHUNK 0887
 Length: 27 characters
 Words: 3
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22511,7 +22625,7 @@ MINERALS TECHNOLOGIES INC.
 
 ================================================================================
 
-CHUNK 0883
+CHUNK 0888
 Length: 88 characters
 Words: 11
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22528,7 +22642,7 @@ Note 11.
 
 ================================================================================
 
-CHUNK 0884
+CHUNK 0889
 Length: 313 characters
 Words: 46
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22545,7 +22659,7 @@ respectively.
 
 ================================================================================
 
-CHUNK 0885
+CHUNK 0890
 Length: 1861 characters
 Words: 259
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22695,7 +22809,7 @@ Income.
 
 ================================================================================
 
-CHUNK 0886
+CHUNK 0891
 Length: 202 characters
 Words: 32
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22711,7 +22825,7 @@ Note 12.
 
 ================================================================================
 
-CHUNK 0887
+CHUNK 0892
 Length: 1340 characters
 Words: 196
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22740,7 +22854,7 @@ major financial institutions.
 
 ================================================================================
 
-CHUNK 0888
+CHUNK 0893
 Length: 911 characters
 Words: 134
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22768,7 +22882,7 @@ recognized in earnings.
 
 ================================================================================
 
-CHUNK 0889
+CHUNK 0894
 Length: 106 characters
 Words: 15
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22781,7 +22895,7 @@ The Company utilizes interest rate swaps to limit exposure to market fluctuation
 
 ================================================================================
 
-CHUNK 0890
+CHUNK 0895
 Length: 365 characters
 Words: 65
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22797,7 +22911,7 @@ Balance Sheet.  This interest rate swap is designated as a cash flow hedge.
 
 ================================================================================
 
-CHUNK 0891
+CHUNK 0896
 Length: 142 characters
 Words: 21
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22813,7 +22927,7 @@ interest rate swap are recorded in accumulated other comprehensive income (loss)
 
 ================================================================================
 
-CHUNK 0892
+CHUNK 0897
 Length: 603 characters
 Words: 82
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22832,7 +22946,7 @@ exchange derivative contracts to mitigate the risk of fluctuations on these expo
 
 ================================================================================
 
-CHUNK 0893
+CHUNK 0898
 Length: 457 characters
 Words: 70
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22851,7 +22965,7 @@ December 31, 2023.
 
 ================================================================================
 
-CHUNK 0894
+CHUNK 0899
 Length: 363 characters
 Words: 57
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22868,7 +22982,7 @@ participants would use in pricing the asset or liability.
 
 ================================================================================
 
-CHUNK 0895
+CHUNK 0900
 Length: 597 characters
 Words: 93
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22887,7 +23001,7 @@ Assets and liabilities measured at fair value are based on one or more of three 
 
 ================================================================================
 
-CHUNK 0896
+CHUNK 0901
 Length: 765 characters
 Words: 109
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22916,7 +23030,7 @@ and attempts to utilize valuation techniques that maximize the use of observable
 
 ================================================================================
 
-CHUNK 0897
+CHUNK 0902
 Length: 461 characters
 Words: 72
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -22935,7 +23049,7 @@ on the lowest level of input that is significant to the fair value measurement.
 
 ================================================================================
 
-CHUNK 0898
+CHUNK 0903
 Length: 1928 characters
 Words: 276
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23064,7 +23178,7 @@ The Company does not have any financial assets or liabilities measured at fair v
 
 ================================================================================
 
-CHUNK 0899
+CHUNK 0904
 Length: 139 characters
 Words: 22
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23080,7 +23194,7 @@ recurring basis.
 
 ================================================================================
 
-CHUNK 0900
+CHUNK 0905
 Length: 746 characters
 Words: 107
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23107,7 +23221,7 @@ debt or similar debt and approximates the carrying amount.
 
 ================================================================================
 
-CHUNK 0901
+CHUNK 0906
 Length: 428 characters
 Words: 58
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23126,7 +23240,7 @@ impact of foreign exchange rate movements on the Company’s operating results.
 
 ================================================================================
 
-CHUNK 0902
+CHUNK 0907
 Length: 251 characters
 Words: 37
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23142,7 +23256,7 @@ Credit risk:  The Company provides credit to customers in the ordinary course of
 
 ================================================================================
 
-CHUNK 0903
+CHUNK 0908
 Length: 244 characters
 Words: 39
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23157,7 +23271,7 @@ failure of another party to perform according to the terms of the contracts.
 
 ================================================================================
 
-CHUNK 0904
+CHUNK 0909
 Length: 420 characters
 Words: 64
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23173,7 +23287,7 @@ maximum principal amount under such Credit Agreement.  See Note 17 for further i
 
 ================================================================================
 
-CHUNK 0905
+CHUNK 0910
 Length: 295 characters
 Words: 45
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23192,7 +23306,7 @@ $4.1 million, respectively.
 
 ================================================================================
 
-CHUNK 0906
+CHUNK 0911
 Length: 1469 characters
 Words: 220
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23253,7 +23367,7 @@ and, together with the Revolving Facility, the "Senior Secured Credit Facilities
 
 ================================================================================
 
-CHUNK 0907
+CHUNK 0912
 Length: 1454 characters
 Words: 239
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23280,7 +23394,7 @@ and were issued with original issue discount at 99.875% of par.
 
 ================================================================================
 
-CHUNK 0908
+CHUNK 0913
 Length: 27 characters
 Words: 3
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23293,7 +23407,7 @@ MINERALS TECHNOLOGIES INC.
 
 ================================================================================
 
-CHUNK 0909
+CHUNK 0914
 Length: 1478 characters
 Words: 271
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23320,7 +23434,7 @@ base rate plus an applicable margin equal to 1.00% per annum.
 
 ================================================================================
 
-CHUNK 0910
+CHUNK 0915
 Length: 1267 characters
 Words: 194
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23346,7 +23460,7 @@ at the refinancing date. All lenders under the previous facility were repaid in 
 
 ================================================================================
 
-CHUNK 0911
+CHUNK 0916
 Length: 2173 characters
 Words: 347
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23383,7 +23497,7 @@ The Company has a committed loan facility in Japan.
 
 ================================================================================
 
-CHUNK 0912
+CHUNK 0917
 Length: 93 characters
 Words: 16
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23397,7 +23511,7 @@ million on this facility.
 
 ================================================================================
 
-CHUNK 0913
+CHUNK 0918
 Length: 81 characters
 Words: 13
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23410,7 +23524,7 @@ Principal will be repaid in accordance with the payment schedule ending in 2026.
 
 ================================================================================
 
-CHUNK 0914
+CHUNK 0919
 Length: 334 characters
 Words: 56
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23428,7 +23542,7 @@ variable interest rate.
 
 ================================================================================
 
-CHUNK 0915
+CHUNK 0920
 Length: 206 characters
 Words: 33
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23447,7 +23561,7 @@ which were in use.
 
 ================================================================================
 
-CHUNK 0916
+CHUNK 0921
 Length: 854 characters
 Words: 121
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23475,7 +23589,7 @@ incurred interest cost.
 
 ================================================================================
 
-CHUNK 0917
+CHUNK 0922
 Length: 510 characters
 Words: 74
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23496,7 +23610,7 @@ The Company also provides postretirement health care and life insurance benefits
 
 ================================================================================
 
-CHUNK 0918
+CHUNK 0923
 Length: 267 characters
 Words: 41
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23513,7 +23627,7 @@ service.  The Company does not pre-fund these benefits and has the right to modi
 
 ================================================================================
 
-CHUNK 0919
+CHUNK 0924
 Length: 39 characters
 Words: 6
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23526,7 +23640,7 @@ The Company’s disclosures for the U.S.
 
 ================================================================================
 
-CHUNK 0920
+CHUNK 0925
 Length: 56 characters
 Words: 10
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23539,7 +23653,7 @@ plans have been combined with those outside of the U.S.
 
 ================================================================================
 
-CHUNK 0921
+CHUNK 0926
 Length: 1348 characters
 Words: 180
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23699,7 +23813,7 @@ $
 
 ================================================================================
 
-CHUNK 0922
+CHUNK 0927
 Length: 594 characters
 Words: 79
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23755,7 +23869,7 @@ The current portion of pension liabilities is included in accrued compensation a
 
 ================================================================================
 
-CHUNK 0923
+CHUNK 0928
 Length: 1871 characters
 Words: 278
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23909,7 +24023,7 @@ The Company’s funding policy for U.S.
 
 ================================================================================
 
-CHUNK 0924
+CHUNK 0929
 Length: 189 characters
 Words: 28
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23923,7 +24037,7 @@ future plan benefits and maintains appropriate funded percentages.  Annual contr
 
 ================================================================================
 
-CHUNK 0925
+CHUNK 0930
 Length: 328 characters
 Words: 48
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -23942,7 +24056,7 @@ primarily in stocks and bonds.
 
 ================================================================================
 
-CHUNK 0926
+CHUNK 0931
 Length: 1292 characters
 Words: 188
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24014,7 +24128,7 @@ asset allocation mix and our historical return, taking into account current and 
 
 ================================================================================
 
-CHUNK 0927
+CHUNK 0932
 Length: 186 characters
 Words: 29
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24030,7 +24144,7 @@ The Company maintains a self-funded health insurance plan for its retirees.
 
 ================================================================================
 
-CHUNK 0928
+CHUNK 0933
 Length: 282 characters
 Words: 47
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24045,7 +24159,7 @@ revised its plan so that increases in expected health care costs would be borne 
 
 ================================================================================
 
-CHUNK 0929
+CHUNK 0934
 Length: 436 characters
 Words: 59
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24096,7 +24210,7 @@ Total
 
 ================================================================================
 
-CHUNK 0930
+CHUNK 0935
 Length: 27 characters
 Words: 3
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24109,7 +24223,7 @@ MINERALS TECHNOLOGIES INC.
 
 ================================================================================
 
-CHUNK 0931
+CHUNK 0936
 Length: 1605 characters
 Words: 220
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24292,7 +24406,7 @@ $
 
 ================================================================================
 
-CHUNK 0932
+CHUNK 0937
 Length: 1114 characters
 Words: 143
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24403,7 +24517,7 @@ capitalization stocks with value, core and growth strategies.
 
 ================================================================================
 
-CHUNK 0933
+CHUNK 0938
 Length: 9 characters
 Words: 1
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24416,7 +24530,7 @@ Non-U.S.
 
 ================================================================================
 
-CHUNK 0934
+CHUNK 0939
 Length: 209 characters
 Words: 25
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24434,7 +24548,7 @@ Fixed income – This class included corporate debt instruments.
 
 ================================================================================
 
-CHUNK 0935
+CHUNK 0940
 Length: 472 characters
 Words: 81
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24451,7 +24565,7 @@ price is based on the underlying investments that are traded on an active market
 
 ================================================================================
 
-CHUNK 0936
+CHUNK 0941
 Length: 1064 characters
 Words: 162
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24509,7 +24623,7 @@ plan in 2025.
 
 ================================================================================
 
-CHUNK 0937
+CHUNK 0942
 Length: 768 characters
 Words: 115
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24562,7 +24676,7 @@ grow plan assets to meet future plan obligations. The Company’s average rate o
 
 ================================================================================
 
-CHUNK 0938
+CHUNK 0943
 Length: 522 characters
 Words: 72
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24583,7 +24697,7 @@ The Company maintains a voluntary Savings and Investment Plan (a 401(k) plan) fo
 
 ================================================================================
 
-CHUNK 0939
+CHUNK 0944
 Length: 280 characters
 Words: 40
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24600,7 +24714,7 @@ Company’s contributions amounted to $6.4 million, $6.2 million and $5.7 millio
 
 ================================================================================
 
-CHUNK 0940
+CHUNK 0945
 Length: 10 characters
 Words: 2
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24613,7 +24727,7 @@ Note 17.
 
 ================================================================================
 
-CHUNK 0941
+CHUNK 0946
 Length: 883 characters
 Words: 131
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24636,7 +24750,7 @@ Minerals Technologies Inc.
 
 ================================================================================
 
-CHUNK 0942
+CHUNK 0947
 Length: 85 characters
 Words: 13
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24651,7 +24765,7 @@ and the Company’s other subsidiaries were not included in the Chapter 11 filin
 
 ================================================================================
 
-CHUNK 0943
+CHUNK 0948
 Length: 847 characters
 Words: 128
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24673,7 +24787,7 @@ any trust.  The mediation process is ongoing.
 
 ================================================================================
 
-CHUNK 0944
+CHUNK 0949
 Length: 452 characters
 Words: 67
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24700,7 +24814,7 @@ Dec.
 
 ================================================================================
 
-CHUNK 0945
+CHUNK 0950
 Length: 19 characters
 Words: 3
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24716,7 +24830,7 @@ Dec.
 
 ================================================================================
 
-CHUNK 0946
+CHUNK 0951
 Length: 1182 characters
 Words: 183
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24763,7 +24877,7 @@ merits, the likelihood that the Company will be found liable, or the magnitude o
 
 ================================================================================
 
-CHUNK 0947
+CHUNK 0952
 Length: 553 characters
 Words: 90
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24782,7 +24896,7 @@ is probable that a liability will be incurred and the amount of the loss can be 
 
 ================================================================================
 
-CHUNK 0948
+CHUNK 0953
 Length: 1161 characters
 Words: 172
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24805,7 +24919,7 @@ exceptions), the Company will not be required to make any payments in respect th
 
 ================================================================================
 
-CHUNK 0949
+CHUNK 0954
 Length: 392 characters
 Words: 63
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24821,7 +24935,7 @@ adjourned, and Pfizer and the Company have agreed to mediate their disputes.
 
 ================================================================================
 
-CHUNK 0950
+CHUNK 0955
 Length: 406 characters
 Words: 59
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24837,7 +24951,7 @@ merit, Oldco opportunistically settled certain talc-related cases in 2022 and 20
 
 ================================================================================
 
-CHUNK 0951
+CHUNK 0956
 Length: 438 characters
 Words: 69
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24858,7 +24972,7 @@ recorded a provision for credit loss of $30 million for the maximum principal am
 
 ================================================================================
 
-CHUNK 0952
+CHUNK 0957
 Length: 389 characters
 Words: 62
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24877,7 +24991,7 @@ oversight by the bankruptcy court.
 
 ================================================================================
 
-CHUNK 0953
+CHUNK 0958
 Length: 568 characters
 Words: 87
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24895,7 +25009,7 @@ mediation process, is scheduled to commence on April 14, 2025 (subject to furthe
 
 ================================================================================
 
-CHUNK 0954
+CHUNK 0959
 Length: 1732 characters
 Words: 268
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24925,7 +25039,7 @@ effect on the Company’s results of operations, cash flows and financial condit
 
 ================================================================================
 
-CHUNK 0955
+CHUNK 0960
 Length: 10 characters
 Words: 2
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24938,7 +25052,7 @@ Note 18.
 
 ================================================================================
 
-CHUNK 0956
+CHUNK 0961
 Length: 454 characters
 Words: 67
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24961,7 +25075,7 @@ Cash dividends of $13.2 million or $0.41 per common share were paid during 2024.
 
 ================================================================================
 
-CHUNK 0957
+CHUNK 0962
 Length: 1056 characters
 Words: 163
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -24985,7 +25099,7 @@ recent tax law changes.  The Plans are administered by the Compensation Committe
 
 ================================================================================
 
-CHUNK 0958
+CHUNK 0963
 Length: 307 characters
 Words: 54
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25004,7 +25118,7 @@ years.
 
 ================================================================================
 
-CHUNK 0959
+CHUNK 0964
 Length: 1317 characters
 Words: 153
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25150,7 +25264,7 @@ Note 19.
 
 ================================================================================
 
-CHUNK 0960
+CHUNK 0965
 Length: 530 characters
 Words: 77
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25190,7 +25304,7 @@ $
 
 ================================================================================
 
-CHUNK 0961
+CHUNK 0966
 Length: 1623 characters
 Words: 209
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25353,7 +25467,7 @@ Note 20.
 
 ================================================================================
 
-CHUNK 0962
+CHUNK 0967
 Length: 516 characters
 Words: 72
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25371,7 +25485,7 @@ except where there are no contractual or legal obligations.
 
 ================================================================================
 
-CHUNK 0963
+CHUNK 0968
 Length: 825 characters
 Words: 122
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25418,7 +25532,7 @@ original condition at the completion of the mining activity.
 
 ================================================================================
 
-CHUNK 0964
+CHUNK 0969
 Length: 136 characters
 Words: 20
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25435,7 +25549,7 @@ activities, and changes in estimated future cash outflows.
 
 ================================================================================
 
-CHUNK 0965
+CHUNK 0970
 Length: 653 characters
 Words: 94
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25461,7 +25575,7 @@ Accretion expense is included in cost of goods sold in the Company’s Consolida
 
 ================================================================================
 
-CHUNK 0966
+CHUNK 0971
 Length: 10 characters
 Words: 2
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25474,7 +25588,7 @@ Note 21.
 
 ================================================================================
 
-CHUNK 0967
+CHUNK 0972
 Length: 507 characters
 Words: 67
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25494,7 +25608,7 @@ managed separately and require different technology and marketing strategies.
 
 ================================================================================
 
-CHUNK 0968
+CHUNK 0973
 Length: 869 characters
 Words: 118
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25516,7 +25630,7 @@ aid in customer processes and projects.
 
 ================================================================================
 
-CHUNK 0969
+CHUNK 0974
 Length: 610 characters
 Words: 78
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25536,7 +25650,7 @@ The accounting policies of the segments are the same as those described in the s
 
 ================================================================================
 
-CHUNK 0970
+CHUNK 0975
 Length: 447 characters
 Words: 67
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25552,7 +25666,7 @@ assets are not included in the segment assets.
 
 ================================================================================
 
-CHUNK 0971
+CHUNK 0976
 Length: 1085 characters
 Words: 163
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25668,7 +25782,7 @@ $
 
 ================================================================================
 
-CHUNK 0972
+CHUNK 0977
 Length: 2008 characters
 Words: 277
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25874,7 +25988,7 @@ $
 
 ================================================================================
 
-CHUNK 0973
+CHUNK 0978
 Length: 1180 characters
 Words: 151
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -25984,7 +26098,7 @@ individual foreign country represents more than 10% of consolidated net sales or
 
 ================================================================================
 
-CHUNK 0974
+CHUNK 0979
 Length: 394 characters
 Words: 52
 Section: 48 - NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
@@ -26033,7 +26147,7 @@ $
 
 ================================================================================
 
-CHUNK 0975
+CHUNK 0980
 Length: 665 characters
 Words: 90
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26058,7 +26172,7 @@ financial statement schedule (collectively, the consolidated financial statement
 
 ================================================================================
 
-CHUNK 0976
+CHUNK 0981
 Length: 333 characters
 Words: 55
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26074,7 +26188,7 @@ U.S.
 
 ================================================================================
 
-CHUNK 0977
+CHUNK 0982
 Length: 688 characters
 Words: 93
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26097,7 +26211,7 @@ These consolidated financial statements are the responsibility of the Company’
 
 ================================================================================
 
-CHUNK 0978
+CHUNK 0983
 Length: 385 characters
 Words: 60
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26115,7 +26229,7 @@ rules and regulations of the Securities and Exchange Commission and the PCAOB.
 
 ================================================================================
 
-CHUNK 0979
+CHUNK 0984
 Length: 844 characters
 Words: 120
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26134,7 +26248,7 @@ presentation of the consolidated financial statements.
 
 ================================================================================
 
-CHUNK 0980
+CHUNK 0985
 Length: 503 characters
 Words: 72
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26154,7 +26268,7 @@ complex judgments.
 
 ================================================================================
 
-CHUNK 0981
+CHUNK 0986
 Length: 668 characters
 Words: 101
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26175,7 +26289,7 @@ Company’s subsidiary BMI Oldco Inc.
 
 ================================================================================
 
-CHUNK 0982
+CHUNK 0987
 Length: 810 characters
 Words: 126
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26199,7 +26313,7 @@ existing talc claims could be made.
 
 ================================================================================
 
-CHUNK 0983
+CHUNK 0988
 Length: 265 characters
 Words: 37
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26215,7 +26329,7 @@ operating effectiveness of certain internal controls related to the Company’s 
 
 ================================================================================
 
-CHUNK 0984
+CHUNK 0989
 Length: 1325 characters
 Words: 185
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26255,7 +26369,7 @@ million as of December 31, 2024.
 
 ================================================================================
 
-CHUNK 0985
+CHUNK 0990
 Length: 507 characters
 Words: 68
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26275,7 +26389,7 @@ discount rates used in the determination of projected pension benefit obligation
 
 ================================================================================
 
-CHUNK 0986
+CHUNK 0991
 Length: 942 characters
 Words: 142
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26302,7 +26416,7 @@ We have served as the Company’s auditor since 1992.
 
 ================================================================================
 
-CHUNK 0987
+CHUNK 0992
 Length: 43 characters
 Words: 7
 Section: 49 - Report of Independent Registered Public Accounting Firm
@@ -26319,7 +26433,7 @@ February 21, 2025
 
 ================================================================================
 
-CHUNK 0988
+CHUNK 0993
 Length: 499 characters
 Words: 67
 Section: 50 - Report of Independent Registered Public Accounting Firm
@@ -26341,7 +26455,7 @@ Sponsoring Organizations of the Treadway Commission.
 
 ================================================================================
 
-CHUNK 0989
+CHUNK 0994
 Length: 1256 characters
 Words: 174
 Section: 50 - Report of Independent Registered Public Accounting Firm
@@ -26367,7 +26481,7 @@ Over Financial Reporting.
 
 ================================================================================
 
-CHUNK 0990
+CHUNK 0995
 Length: 400 characters
 Words: 63
 Section: 50 - Report of Independent Registered Public Accounting Firm
@@ -26385,7 +26499,7 @@ Commission and the PCAOB.
 
 ================================================================================
 
-CHUNK 0991
+CHUNK 0996
 Length: 70 characters
 Words: 12
 Section: 50 - Report of Independent Registered Public Accounting Firm
@@ -26398,7 +26512,7 @@ We conducted our audit in accordance with the standards of the PCAOB.
 
 ================================================================================
 
-CHUNK 0992
+CHUNK 0997
 Length: 1982 characters
 Words: 274
 Section: 50 - Report of Independent Registered Public Accounting Firm
@@ -26429,7 +26543,7 @@ Because of its inherent limitations, internal control over financial reporting m
 
 ================================================================================
 
-CHUNK 0993
+CHUNK 0998
 Length: 252 characters
 Words: 38
 Section: 50 - Report of Independent Registered Public Accounting Firm
@@ -26446,7 +26560,7 @@ conditions, or that the degree of compliance with the policies or procedures may
 
 ================================================================================
 
-CHUNK 0994
+CHUNK 0999
 Length: 53 characters
 Words: 10
 Section: 50 - Report of Independent Registered Public Accounting Firm
@@ -26462,7 +26576,7 @@ February 21, 2025
 
 ================================================================================
 
-CHUNK 0995
+CHUNK 1000
 Length: 238 characters
 Words: 29
 Section: 51 - Management’s Report On Internal Control Over Financial Reporting
@@ -26480,7 +26594,7 @@ consolidated financial statements.
 
 ================================================================================
 
-CHUNK 0996
+CHUNK 1001
 Length: 193 characters
 Words: 27
 Section: 51 - Management’s Report On Internal Control Over Financial Reporting
@@ -26494,7 +26608,7 @@ principles and, as such, include amounts based on judgments and estimates made b
 
 ================================================================================
 
-CHUNK 0997
+CHUNK 1002
 Length: 179 characters
 Words: 25
 Section: 51 - Management’s Report On Internal Control Over Financial Reporting
@@ -26511,7 +26625,7 @@ statements.
 
 ================================================================================
 
-CHUNK 0998
+CHUNK 1003
 Length: 920 characters
 Words: 123
 Section: 51 - Management’s Report On Internal Control Over Financial Reporting
@@ -26533,7 +26647,7 @@ people.
 
 ================================================================================
 
-CHUNK 0999
+CHUNK 1004
 Length: 1401 characters
 Words: 199
 Section: 51 - Management’s Report On Internal Control Over Financial Reporting
@@ -26557,7 +26671,7 @@ reporting, including the possibility of human error and the circumvention or ove
 
 ================================================================================
 
-CHUNK 1000
+CHUNK 1005
 Length: 203 characters
 Words: 26
 Section: 51 - Management’s Report On Internal Control Over Financial Reporting
@@ -26572,7 +26686,7 @@ not prevent or detect misstatements.
 
 ================================================================================
 
-CHUNK 1001
+CHUNK 1006
 Length: 585 characters
 Words: 84
 Section: 51 - Management’s Report On Internal Control Over Financial Reporting
@@ -26593,7 +26707,7 @@ system of internal control over financial reporting was effective.
 
 ================================================================================
 
-CHUNK 1002
+CHUNK 1007
 Length: 852 characters
 Words: 116
 Section: 51 - Management’s Report On Internal Control Over Financial Reporting
@@ -26628,7 +26742,7 @@ February 21, 2025
 
 ================================================================================
 
-CHUNK 1003
+CHUNK 1008
 Length: 1021 characters
 Words: 129
 Section: 52 - SCHEDULE II – VALUATION AND QUALIFYING ACCOUNTS
@@ -26721,7 +26835,7 @@ $
 
 ================================================================================
 
-CHUNK 1004
+CHUNK 1009
 Length: 133 characters
 Words: 19
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26742,7 +26856,7 @@ ADAE, Cetco Sp. Z o.o., s.k.a.
 
 ================================================================================
 
-CHUNK 1005
+CHUNK 1010
 Length: 922 characters
 Words: 120
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26796,7 +26910,7 @@ Ameri-Co Carriers, Inc.
 
 ================================================================================
 
-CHUNK 1006
+CHUNK 1011
 Length: 36 characters
 Words: 4
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26811,7 +26925,7 @@ Ameri-Co Logistics, Inc.
 
 ================================================================================
 
-CHUNK 1007
+CHUNK 1012
 Length: 88 characters
 Words: 12
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26828,7 +26942,7 @@ APP China Specialty Minerals Pte Ltd.
 
 ================================================================================
 
-CHUNK 1008
+CHUNK 1013
 Length: 54 characters
 Words: 8
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26842,7 +26956,7 @@ ASMAS Agir Sanayi Malzemeleri Imal ve Tic.
 
 ================================================================================
 
-CHUNK 1009
+CHUNK 1014
 Length: 37 characters
 Words: 6
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26856,7 +26970,7 @@ A.S (has branch office in Bahrain).
 
 ================================================================================
 
-CHUNK 1010
+CHUNK 1015
 Length: 118 characters
 Words: 16
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26875,7 +26989,7 @@ Batlhako Mining Ltd.
 
 ================================================================================
 
-CHUNK 1011
+CHUNK 1016
 Length: 66 characters
 Words: 8
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26890,7 +27004,7 @@ Beihai Minerals Environmental Technology Co., Ltd.
 
 ================================================================================
 
-CHUNK 1012
+CHUNK 1017
 Length: 73 characters
 Words: 11
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26906,7 +27020,7 @@ CCS, Cetco Sp.
 
 ================================================================================
 
-CHUNK 1013
+CHUNK 1018
 Length: 186 characters
 Words: 28
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26925,7 +27039,7 @@ CETCO Energy Services de México, S.A.
 
 ================================================================================
 
-CHUNK 1014
+CHUNK 1019
 Length: 482 characters
 Words: 65
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26961,7 +27075,7 @@ CETCO Oilfield Services Pty. Ltd.
 
 ================================================================================
 
-CHUNK 1015
+CHUNK 1020
 Length: 242 characters
 Words: 33
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -26985,7 +27099,7 @@ Delaware
 
 ================================================================================
 
-CHUNK 1016
+CHUNK 1021
 Length: 249 characters
 Words: 33
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27008,7 +27122,7 @@ COS Employment Services de México, S.A. de C.V.
 
 ================================================================================
 
-CHUNK 1017
+CHUNK 1022
 Length: 267 characters
 Words: 39
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27033,7 +27147,7 @@ GW North Manufacturing Inc.
 
 ================================================================================
 
-CHUNK 1018
+CHUNK 1023
 Length: 25 characters
 Words: 4
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27048,7 +27162,7 @@ GW North Inc.
 
 ================================================================================
 
-CHUNK 1019
+CHUNK 1024
 Length: 309 characters
 Words: 39
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27071,7 +27185,7 @@ Minerals Technologies Holdings Inc.
 
 ================================================================================
 
-CHUNK 1020
+CHUNK 1025
 Length: 206 characters
 Words: 23
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27092,7 +27206,7 @@ Minerals Technologies (Jinzhou) Co. Ltd.
 
 ================================================================================
 
-CHUNK 1021
+CHUNK 1026
 Length: 89 characters
 Words: 12
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27109,7 +27223,7 @@ Mintech Canada Inc.
 
 ================================================================================
 
-CHUNK 1022
+CHUNK 1027
 Length: 449 characters
 Words: 60
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27144,7 +27258,7 @@ Minteq UK Limited.
 
 ================================================================================
 
-CHUNK 1023
+CHUNK 1028
 Length: 117 characters
 Words: 15
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27162,7 +27276,7 @@ MTI Holding Singapore Pte.
 
 ================================================================================
 
-CHUNK 1024
+CHUNK 1029
 Length: 219 characters
 Words: 30
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27188,7 +27302,7 @@ MTX Singapore Holdings Pte. Ltd.
 
 ================================================================================
 
-CHUNK 1025
+CHUNK 1030
 Length: 168 characters
 Words: 18
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27210,7 +27324,7 @@ Normerica (Thailand) Co.
 
 ================================================================================
 
-CHUNK 1026
+CHUNK 1031
 Length: 6 characters
 Words: 1
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27224,7 +27338,7 @@ Ltd.
 
 ================================================================================
 
-CHUNK 1027
+CHUNK 1032
 Length: 265 characters
 Words: 34
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27251,7 +27365,7 @@ REGOS Geo, s.r.o.
 
 ================================================================================
 
-CHUNK 1028
+CHUNK 1033
 Length: 32 characters
 Words: 4
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27265,7 +27379,7 @@ ROMIN SLOVAKIA, spol.
 
 ================================================================================
 
-CHUNK 1029
+CHUNK 1034
 Length: 158 characters
 Words: 18
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27288,7 +27402,7 @@ Germany
 
 ================================================================================
 
-CHUNK 1030
+CHUNK 1035
 Length: 121 characters
 Words: 14
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27308,7 +27422,7 @@ Sivomatic Immovables B.V.
 
 ================================================================================
 
-CHUNK 1031
+CHUNK 1036
 Length: 96 characters
 Words: 11
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27327,7 +27441,7 @@ Sivomatic Mining B.V.
 
 ================================================================================
 
-CHUNK 1032
+CHUNK 1037
 Length: 28 characters
 Words: 4
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27341,7 +27455,7 @@ SMI Poland Sp.
 
 ================================================================================
 
-CHUNK 1033
+CHUNK 1038
 Length: 180 characters
 Words: 21
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27361,7 +27475,7 @@ Specialty Minerals (Changshan) Environmental Technology Co., Ltd.
 
 ================================================================================
 
-CHUNK 1034
+CHUNK 1039
 Length: 185 characters
 Words: 24
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27382,7 +27496,7 @@ Specialty Minerals France S.A.S. .
 
 ================================================================================
 
-CHUNK 1035
+CHUNK 1040
 Length: 436 characters
 Words: 51
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27413,7 +27527,7 @@ Specialty Minerals (Rugao) Co., Ltd.
 
 ================================================================================
 
-CHUNK 1036
+CHUNK 1041
 Length: 42 characters
 Words: 5
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27427,7 +27541,7 @@ Specialty Minerals Slovakia, spol.
 
 ================================================================================
 
-CHUNK 1037
+CHUNK 1042
 Length: 259 characters
 Words: 32
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27451,7 +27565,7 @@ Specialty Minerals (Yanzhou) Co., Ltd.
 
 ================================================================================
 
-CHUNK 1038
+CHUNK 1043
 Length: 255 characters
 Words: 31
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27474,7 +27588,7 @@ Volclay Trading Co.
 
 ================================================================================
 
-CHUNK 1039
+CHUNK 1044
 Length: 14 characters
 Words: 2
 Section: 53 - SUBSIDIARIES OF THE COMPANY
@@ -27488,7 +27602,7 @@ South Africa
 
 ================================================================================
 
-CHUNK 1040
+CHUNK 1045
 Length: 475 characters
 Words: 61
 Section: 54 - Consent of Independent Registered Public Accounting Firm
@@ -27512,7 +27626,7 @@ financial statements of Minerals Technologies Inc. and subsidiaries and the effe
 
 ================================================================================
 
-CHUNK 1041
+CHUNK 1046
 Length: 59 characters
 Words: 10
 Section: 54 - Consent of Independent Registered Public Accounting Firm
@@ -27531,7 +27645,7 @@ February 21, 2025
 
 ================================================================================
 
-CHUNK 1042
+CHUNK 1047
 Length: 183 characters
 Words: 25
 Section: 55 - RULE 13a-14(a)/15d-14(a) CERTIFICATION
@@ -27552,7 +27666,7 @@ I, Douglas T. Dietrich, certify that:
 
 ================================================================================
 
-CHUNK 1043
+CHUNK 1048
 Length: 3061 characters
 Words: 443
 Section: 55 - RULE 13a-14(a)/15d-14(a) CERTIFICATION
@@ -27605,7 +27719,7 @@ registrant's internal control over financial reporting.
 
 ================================================================================
 
-CHUNK 1044
+CHUNK 1049
 Length: 140 characters
 Words: 19
 Section: 55 - RULE 13a-14(a)/15d-14(a) CERTIFICATION
@@ -27631,7 +27745,7 @@ Officer
 
 ================================================================================
 
-CHUNK 1045
+CHUNK 1050
 Length: 177 characters
 Words: 25
 Section: 55 - RULE 13a-14(a)/15d-14(a) CERTIFICATION
@@ -27652,7 +27766,7 @@ I, Erik C. Aldag, certify that:
 
 ================================================================================
 
-CHUNK 1046
+CHUNK 1051
 Length: 8 characters
 Words: 2
 Section: 55 - RULE 13a-14(a)/15d-14(a) CERTIFICATION
@@ -27667,7 +27781,7 @@ Source PDF: input/NYSE_MTX_2024.pdf
 
 ================================================================================
 
-CHUNK 1047
+CHUNK 1052
 Length: 3268 characters
 Words: 474
 Section: 55 - RULE 13a-14(a)/15d-14(a) CERTIFICATION
@@ -27732,7 +27846,7 @@ Chief Financial Officer
 
 ================================================================================
 
-CHUNK 1048
+CHUNK 1053
 Length: 1361 characters
 Words: 210
 Section: 56 - SECTION 1350 CERTIFICATION
@@ -27790,7 +27904,7 @@ to be incorporated by reference into any filing under the Securities Act of 1933
 
 ================================================================================
 
-CHUNK 1049
+CHUNK 1054
 Length: 1080 characters
 Words: 149
 Section: 57 - ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
@@ -27813,7 +27927,7 @@ historic operating trends.
 
 ================================================================================
 
-CHUNK 1050
+CHUNK 1055
 Length: 61 characters
 Words: 10
 Section: 57 - ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
@@ -27828,7 +27942,7 @@ Dec.
 
 ================================================================================
 
-CHUNK 1051
+CHUNK 1056
 Length: 998 characters
 Words: 146
 Section: 57 - ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
@@ -27923,7 +28037,7 @@ $
 
 ================================================================================
 
-CHUNK 1052
+CHUNK 1057
 Length: 135 characters
 Words: 17
 Section: 57 - ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
@@ -27939,7 +28053,7 @@ Dec.
 
 ================================================================================
 
-CHUNK 1053
+CHUNK 1058
 Length: 1273 characters
 Words: 178
 Section: 57 - ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
@@ -28045,284 +28159,133 @@ $
 
 ================================================================================
 
-CHUNK 1054
-Length: 1800 characters
-Words: 250
-Section: 58 - BOARD OF DIRECTORS
-Section Level: 1
-Source Page: 127
-Chunk 1/4 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-BOARD OF DIRECTORS
-CORPORATE OFFICERS
-DOUGLAS T. DIETRICH
-Chairman of the Board and
-Chief Executive Officer,
-Minerals Technologies Inc.
-JOSEPH C. BREUNIG
-Chief Operating Officer,
-OrthoLite LLC
-JOHN J. CARMOLA
-Former Segment President,
-Goodrich Corporation
-ROBERT L. CLARK
-Lead Independent Director, Minerals 
-Technologies Inc.; Former Provost and 
-Senior Vice President for Research, 
-University of Rochester
-ALISON A. DEANS
-Independent Consultant;
-Former Chief Investment Officer,
-CRT
-FRANKLIN L. FEDER
-Former Regional Chief Executive,
-Officer for Latin America and
-Caribbean, Alcoa Inc.
-KRISTINA M. JOHNSON
-Former President of
-The Ohio State University
-ROCKY MOTWANI
-Chief Executive Officer of Cyphlens 
-(formerly Mission3)
-CAROLYN K. PITTMAN
-Former Senior Vice President
-and Chief Accounting Officer,
-Maxar Technologies
-MARC E. ROBINSON
-Former Senior Vice President, CVS; 
-Former Global President, 
-Pfizer Consumer Healthcare; 
-Former Company Group Chairman, 
-Johnson & Johnson
-DOUGLAS T. DIETRICH*
-Chairman of the Board and
-Chief Executive Officer
-ERIK C. ALDAG*
-Senior Vice President, Finance and
-Treasury and Chief Financial Officer
-BRETT ARGIRAKIS*
-Group President, Engineered
-Solutions
-MICHAEL A. CIPOLLA
-Vice President, Corporate Controller,
-and Chief Accounting Officer
-ERIN N. CUTLER*
-Vice President, Human Resources
-JONATHAN J. HASTINGS*
-Senior Vice President, Strategy and
-M&A
-TIMOTHY J. JORDAN*
-Vice President, General Counsel,
-Secretary, and Chief Compliance
-Officer
-D.J. MONAGLE III*
-Group President, Consumer &
-Specialties
-INVESTOR
-RELATIONS
-LYDIA KOPYLOVA
-Vice President, Investor Relations
-622 Third Avenue, 38th Floor
-New York, NY 10017
-(212) 878 -1831
-STOCK LISTING
-Minerals Technologies Inc. common 
-stock is listed on the New York Stock 
-Exchange (NYSE) under the symbol 
-MTX.
-
-
-================================================================================
-
-CHUNK 1055
-Length: 502 characters
-Words: 68
-Section: 58 - BOARD OF DIRECTORS
-Section Level: 1
-Source Page: 127
-Chunk 2/4 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-SHAREHOLDER SERVICES
-Shareholders of record with 
-questions on account balances, 
-address changes, or other account 
-matters may contact our stock 
-transfer agent and registrar, 
-Computershare.
-BY TELEPHONE
-(800) 426-5523
-BY MAIL
-Computershare Investor Services
-PO Box 505000
-Louisville, KY 40233-5000
-ANNUAL MEETING
-The 2025 Annual Meeting of 
-Shareholders will be held virtually via 
-live webcast on Wednesday, May 14, 
-2025, at 9:00 a.m. Eastern Time at 
-www.virtualshareholdermeeting.com/
-MTX2025.
-
-
-================================================================================
-
-CHUNK 1056
-Length: 80 characters
-Words: 13
-Section: 58 - BOARD OF DIRECTORS
-Section Level: 1
-Source Page: 127
-Chunk 3/4 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-* Member, MTI Leadership Council
-Annual Report Design by Curran & Connors, Inc. 
-
-================================================================================
-
-CHUNK 1057
-Length: 25 characters
-Words: 2
-Section: 58 - BOARD OF DIRECTORS
-Section Level: 1
-Source Page: 127
-Chunk 4/4 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-/ www.curran-connors.com
-
-
-================================================================================
-
-CHUNK 1058
-Length: 1800 characters
-Words: 250
-Section: 59 - CORPORATE OFFICERS
-Section Level: 1
-Source Page: 127
-Chunk 1/4 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-BOARD OF DIRECTORS
-CORPORATE OFFICERS
-DOUGLAS T. DIETRICH
-Chairman of the Board and
-Chief Executive Officer,
-Minerals Technologies Inc.
-JOSEPH C. BREUNIG
-Chief Operating Officer,
-OrthoLite LLC
-JOHN J. CARMOLA
-Former Segment President,
-Goodrich Corporation
-ROBERT L. CLARK
-Lead Independent Director, Minerals 
-Technologies Inc.; Former Provost and 
-Senior Vice President for Research, 
-University of Rochester
-ALISON A. DEANS
-Independent Consultant;
-Former Chief Investment Officer,
-CRT
-FRANKLIN L. FEDER
-Former Regional Chief Executive,
-Officer for Latin America and
-Caribbean, Alcoa Inc.
-KRISTINA M. JOHNSON
-Former President of
-The Ohio State University
-ROCKY MOTWANI
-Chief Executive Officer of Cyphlens 
-(formerly Mission3)
-CAROLYN K. PITTMAN
-Former Senior Vice President
-and Chief Accounting Officer,
-Maxar Technologies
-MARC E. ROBINSON
-Former Senior Vice President, CVS; 
-Former Global President, 
-Pfizer Consumer Healthcare; 
-Former Company Group Chairman, 
-Johnson & Johnson
-DOUGLAS T. DIETRICH*
-Chairman of the Board and
-Chief Executive Officer
-ERIK C. ALDAG*
-Senior Vice President, Finance and
-Treasury and Chief Financial Officer
-BRETT ARGIRAKIS*
-Group President, Engineered
-Solutions
-MICHAEL A. CIPOLLA
-Vice President, Corporate Controller,
-and Chief Accounting Officer
-ERIN N. CUTLER*
-Vice President, Human Resources
-JONATHAN J. HASTINGS*
-Senior Vice President, Strategy and
-M&A
-TIMOTHY J. JORDAN*
-Vice President, General Counsel,
-Secretary, and Chief Compliance
-Officer
-D.J. MONAGLE III*
-Group President, Consumer &
-Specialties
-INVESTOR
-RELATIONS
-LYDIA KOPYLOVA
-Vice President, Investor Relations
-622 Third Avenue, 38th Floor
-New York, NY 10017
-(212) 878 -1831
-STOCK LISTING
-Minerals Technologies Inc. common 
-stock is listed on the New York Stock 
-Exchange (NYSE) under the symbol 
-MTX.
-
-
-================================================================================
-
 CHUNK 1059
-Length: 502 characters
-Words: 68
-Section: 59 - CORPORATE OFFICERS
+Length: 1800 characters
+Words: 250
+Section: 58 - BOARD OF DIRECTORS
 Section Level: 1
 Source Page: 127
-Chunk 2/4 on page
+Chunk 1/4 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
-SHAREHOLDER SERVICES
-Shareholders of record with 
-questions on account balances, 
-address changes, or other account 
-matters may contact our stock 
-transfer agent and registrar, 
-Computershare.
-BY TELEPHONE
-(800) 426-5523
-BY MAIL
-Computershare Investor Services
-PO Box 505000
-Louisville, KY 40233-5000
-ANNUAL MEETING
-The 2025 Annual Meeting of 
-Shareholders will be held virtually via 
-live webcast on Wednesday, May 14, 
-2025, at 9:00 a.m. Eastern Time at 
-www.virtualshareholdermeeting.com/
-MTX2025.
+BOARD OF DIRECTORS
+CORPORATE OFFICERS
+DOUGLAS T. DIETRICH
+Chairman of the Board and
+Chief Executive Officer,
+Minerals Technologies Inc.
+JOSEPH C. BREUNIG
+Chief Operating Officer,
+OrthoLite LLC
+JOHN J. CARMOLA
+Former Segment President,
+Goodrich Corporation
+ROBERT L. CLARK
+Lead Independent Director, Minerals 
+Technologies Inc.; Former Provost and 
+Senior Vice President for Research, 
+University of Rochester
+ALISON A. DEANS
+Independent Consultant;
+Former Chief Investment Officer,
+CRT
+FRANKLIN L. FEDER
+Former Regional Chief Executive,
+Officer for Latin America and
+Caribbean, Alcoa Inc.
+KRISTINA M. JOHNSON
+Former President of
+The Ohio State University
+ROCKY MOTWANI
+Chief Executive Officer of Cyphlens 
+(formerly Mission3)
+CAROLYN K. PITTMAN
+Former Senior Vice President
+and Chief Accounting Officer,
+Maxar Technologies
+MARC E. ROBINSON
+Former Senior Vice President, CVS; 
+Former Global President, 
+Pfizer Consumer Healthcare; 
+Former Company Group Chairman, 
+Johnson & Johnson
+DOUGLAS T. DIETRICH*
+Chairman of the Board and
+Chief Executive Officer
+ERIK C. ALDAG*
+Senior Vice President, Finance and
+Treasury and Chief Financial Officer
+BRETT ARGIRAKIS*
+Group President, Engineered
+Solutions
+MICHAEL A. CIPOLLA
+Vice President, Corporate Controller,
+and Chief Accounting Officer
+ERIN N. CUTLER*
+Vice President, Human Resources
+JONATHAN J. HASTINGS*
+Senior Vice President, Strategy and
+M&A
+TIMOTHY J. JORDAN*
+Vice President, General Counsel,
+Secretary, and Chief Compliance
+Officer
+D.J. MONAGLE III*
+Group President, Consumer &
+Specialties
+INVESTOR
+RELATIONS
+LYDIA KOPYLOVA
+Vice President, Investor Relations
+622 Third Avenue, 38th Floor
+New York, NY 10017
+(212) 878 -1831
+STOCK LISTING
+Minerals Technologies Inc. common 
+stock is listed on the New York Stock 
+Exchange (NYSE) under the symbol 
+MTX.
 
 
 ================================================================================
 
 CHUNK 1060
+Length: 502 characters
+Words: 68
+Section: 58 - BOARD OF DIRECTORS
+Section Level: 1
+Source Page: 127
+Chunk 2/4 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+SHAREHOLDER SERVICES
+Shareholders of record with 
+questions on account balances, 
+address changes, or other account 
+matters may contact our stock 
+transfer agent and registrar, 
+Computershare.
+BY TELEPHONE
+(800) 426-5523
+BY MAIL
+Computershare Investor Services
+PO Box 505000
+Louisville, KY 40233-5000
+ANNUAL MEETING
+The 2025 Annual Meeting of 
+Shareholders will be held virtually via 
+live webcast on Wednesday, May 14, 
+2025, at 9:00 a.m. Eastern Time at 
+www.virtualshareholdermeeting.com/
+MTX2025.
+
+
+================================================================================
+
+CHUNK 1061
 Length: 80 characters
 Words: 13
-Section: 59 - CORPORATE OFFICERS
+Section: 58 - BOARD OF DIRECTORS
 Section Level: 1
 Source Page: 127
 Chunk 3/4 on page
@@ -28333,147 +28296,147 @@ Annual Report Design by Curran & Connors, Inc.
 
 ================================================================================
 
-CHUNK 1061
+CHUNK 1062
 Length: 25 characters
 Words: 2
-Section: 59 - CORPORATE OFFICERS
+Section: 58 - BOARD OF DIRECTORS
 Section Level: 1
 Source Page: 127
 Chunk 4/4 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
 / www.curran-connors.com
-
-
-================================================================================
-
-CHUNK 1062
-Length: 1800 characters
-Words: 250
-Section: 60 - INVESTOR RELATIONS
-Section Level: 1
-Source Page: 127
-Chunk 1/4 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-BOARD OF DIRECTORS
-CORPORATE OFFICERS
-DOUGLAS T. DIETRICH
-Chairman of the Board and
-Chief Executive Officer,
-Minerals Technologies Inc.
-JOSEPH C. BREUNIG
-Chief Operating Officer,
-OrthoLite LLC
-JOHN J. CARMOLA
-Former Segment President,
-Goodrich Corporation
-ROBERT L. CLARK
-Lead Independent Director, Minerals 
-Technologies Inc.; Former Provost and 
-Senior Vice President for Research, 
-University of Rochester
-ALISON A. DEANS
-Independent Consultant;
-Former Chief Investment Officer,
-CRT
-FRANKLIN L. FEDER
-Former Regional Chief Executive,
-Officer for Latin America and
-Caribbean, Alcoa Inc.
-KRISTINA M. JOHNSON
-Former President of
-The Ohio State University
-ROCKY MOTWANI
-Chief Executive Officer of Cyphlens 
-(formerly Mission3)
-CAROLYN K. PITTMAN
-Former Senior Vice President
-and Chief Accounting Officer,
-Maxar Technologies
-MARC E. ROBINSON
-Former Senior Vice President, CVS; 
-Former Global President, 
-Pfizer Consumer Healthcare; 
-Former Company Group Chairman, 
-Johnson & Johnson
-DOUGLAS T. DIETRICH*
-Chairman of the Board and
-Chief Executive Officer
-ERIK C. ALDAG*
-Senior Vice President, Finance and
-Treasury and Chief Financial Officer
-BRETT ARGIRAKIS*
-Group President, Engineered
-Solutions
-MICHAEL A. CIPOLLA
-Vice President, Corporate Controller,
-and Chief Accounting Officer
-ERIN N. CUTLER*
-Vice President, Human Resources
-JONATHAN J. HASTINGS*
-Senior Vice President, Strategy and
-M&A
-TIMOTHY J. JORDAN*
-Vice President, General Counsel,
-Secretary, and Chief Compliance
-Officer
-D.J. MONAGLE III*
-Group President, Consumer &
-Specialties
-INVESTOR
-RELATIONS
-LYDIA KOPYLOVA
-Vice President, Investor Relations
-622 Third Avenue, 38th Floor
-New York, NY 10017
-(212) 878 -1831
-STOCK LISTING
-Minerals Technologies Inc. common 
-stock is listed on the New York Stock 
-Exchange (NYSE) under the symbol 
-MTX.
 
 
 ================================================================================
 
 CHUNK 1063
-Length: 502 characters
-Words: 68
-Section: 60 - INVESTOR RELATIONS
+Length: 1800 characters
+Words: 250
+Section: 59 - CORPORATE OFFICERS
 Section Level: 1
 Source Page: 127
-Chunk 2/4 on page
+Chunk 1/4 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
-SHAREHOLDER SERVICES
-Shareholders of record with 
-questions on account balances, 
-address changes, or other account 
-matters may contact our stock 
-transfer agent and registrar, 
-Computershare.
-BY TELEPHONE
-(800) 426-5523
-BY MAIL
-Computershare Investor Services
-PO Box 505000
-Louisville, KY 40233-5000
-ANNUAL MEETING
-The 2025 Annual Meeting of 
-Shareholders will be held virtually via 
-live webcast on Wednesday, May 14, 
-2025, at 9:00 a.m. Eastern Time at 
-www.virtualshareholdermeeting.com/
-MTX2025.
+BOARD OF DIRECTORS
+CORPORATE OFFICERS
+DOUGLAS T. DIETRICH
+Chairman of the Board and
+Chief Executive Officer,
+Minerals Technologies Inc.
+JOSEPH C. BREUNIG
+Chief Operating Officer,
+OrthoLite LLC
+JOHN J. CARMOLA
+Former Segment President,
+Goodrich Corporation
+ROBERT L. CLARK
+Lead Independent Director, Minerals 
+Technologies Inc.; Former Provost and 
+Senior Vice President for Research, 
+University of Rochester
+ALISON A. DEANS
+Independent Consultant;
+Former Chief Investment Officer,
+CRT
+FRANKLIN L. FEDER
+Former Regional Chief Executive,
+Officer for Latin America and
+Caribbean, Alcoa Inc.
+KRISTINA M. JOHNSON
+Former President of
+The Ohio State University
+ROCKY MOTWANI
+Chief Executive Officer of Cyphlens 
+(formerly Mission3)
+CAROLYN K. PITTMAN
+Former Senior Vice President
+and Chief Accounting Officer,
+Maxar Technologies
+MARC E. ROBINSON
+Former Senior Vice President, CVS; 
+Former Global President, 
+Pfizer Consumer Healthcare; 
+Former Company Group Chairman, 
+Johnson & Johnson
+DOUGLAS T. DIETRICH*
+Chairman of the Board and
+Chief Executive Officer
+ERIK C. ALDAG*
+Senior Vice President, Finance and
+Treasury and Chief Financial Officer
+BRETT ARGIRAKIS*
+Group President, Engineered
+Solutions
+MICHAEL A. CIPOLLA
+Vice President, Corporate Controller,
+and Chief Accounting Officer
+ERIN N. CUTLER*
+Vice President, Human Resources
+JONATHAN J. HASTINGS*
+Senior Vice President, Strategy and
+M&A
+TIMOTHY J. JORDAN*
+Vice President, General Counsel,
+Secretary, and Chief Compliance
+Officer
+D.J. MONAGLE III*
+Group President, Consumer &
+Specialties
+INVESTOR
+RELATIONS
+LYDIA KOPYLOVA
+Vice President, Investor Relations
+622 Third Avenue, 38th Floor
+New York, NY 10017
+(212) 878 -1831
+STOCK LISTING
+Minerals Technologies Inc. common 
+stock is listed on the New York Stock 
+Exchange (NYSE) under the symbol 
+MTX.
 
 
 ================================================================================
 
 CHUNK 1064
+Length: 502 characters
+Words: 68
+Section: 59 - CORPORATE OFFICERS
+Section Level: 1
+Source Page: 127
+Chunk 2/4 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+SHAREHOLDER SERVICES
+Shareholders of record with 
+questions on account balances, 
+address changes, or other account 
+matters may contact our stock 
+transfer agent and registrar, 
+Computershare.
+BY TELEPHONE
+(800) 426-5523
+BY MAIL
+Computershare Investor Services
+PO Box 505000
+Louisville, KY 40233-5000
+ANNUAL MEETING
+The 2025 Annual Meeting of 
+Shareholders will be held virtually via 
+live webcast on Wednesday, May 14, 
+2025, at 9:00 a.m. Eastern Time at 
+www.virtualshareholdermeeting.com/
+MTX2025.
+
+
+================================================================================
+
+CHUNK 1065
 Length: 80 characters
 Words: 13
-Section: 60 - INVESTOR RELATIONS
+Section: 59 - CORPORATE OFFICERS
 Section Level: 1
 Source Page: 127
 Chunk 3/4 on page
@@ -28484,147 +28447,147 @@ Annual Report Design by Curran & Connors, Inc.
 
 ================================================================================
 
-CHUNK 1065
+CHUNK 1066
 Length: 25 characters
 Words: 2
-Section: 60 - INVESTOR RELATIONS
+Section: 59 - CORPORATE OFFICERS
 Section Level: 1
 Source Page: 127
 Chunk 4/4 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
 / www.curran-connors.com
-
-
-================================================================================
-
-CHUNK 1066
-Length: 1800 characters
-Words: 250
-Section: 61 - STOCK LISTING
-Section Level: 1
-Source Page: 127
-Chunk 1/4 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-BOARD OF DIRECTORS
-CORPORATE OFFICERS
-DOUGLAS T. DIETRICH
-Chairman of the Board and
-Chief Executive Officer,
-Minerals Technologies Inc.
-JOSEPH C. BREUNIG
-Chief Operating Officer,
-OrthoLite LLC
-JOHN J. CARMOLA
-Former Segment President,
-Goodrich Corporation
-ROBERT L. CLARK
-Lead Independent Director, Minerals 
-Technologies Inc.; Former Provost and 
-Senior Vice President for Research, 
-University of Rochester
-ALISON A. DEANS
-Independent Consultant;
-Former Chief Investment Officer,
-CRT
-FRANKLIN L. FEDER
-Former Regional Chief Executive,
-Officer for Latin America and
-Caribbean, Alcoa Inc.
-KRISTINA M. JOHNSON
-Former President of
-The Ohio State University
-ROCKY MOTWANI
-Chief Executive Officer of Cyphlens 
-(formerly Mission3)
-CAROLYN K. PITTMAN
-Former Senior Vice President
-and Chief Accounting Officer,
-Maxar Technologies
-MARC E. ROBINSON
-Former Senior Vice President, CVS; 
-Former Global President, 
-Pfizer Consumer Healthcare; 
-Former Company Group Chairman, 
-Johnson & Johnson
-DOUGLAS T. DIETRICH*
-Chairman of the Board and
-Chief Executive Officer
-ERIK C. ALDAG*
-Senior Vice President, Finance and
-Treasury and Chief Financial Officer
-BRETT ARGIRAKIS*
-Group President, Engineered
-Solutions
-MICHAEL A. CIPOLLA
-Vice President, Corporate Controller,
-and Chief Accounting Officer
-ERIN N. CUTLER*
-Vice President, Human Resources
-JONATHAN J. HASTINGS*
-Senior Vice President, Strategy and
-M&A
-TIMOTHY J. JORDAN*
-Vice President, General Counsel,
-Secretary, and Chief Compliance
-Officer
-D.J. MONAGLE III*
-Group President, Consumer &
-Specialties
-INVESTOR
-RELATIONS
-LYDIA KOPYLOVA
-Vice President, Investor Relations
-622 Third Avenue, 38th Floor
-New York, NY 10017
-(212) 878 -1831
-STOCK LISTING
-Minerals Technologies Inc. common 
-stock is listed on the New York Stock 
-Exchange (NYSE) under the symbol 
-MTX.
 
 
 ================================================================================
 
 CHUNK 1067
-Length: 502 characters
-Words: 68
-Section: 61 - STOCK LISTING
+Length: 1800 characters
+Words: 250
+Section: 60 - INVESTOR RELATIONS
 Section Level: 1
 Source Page: 127
-Chunk 2/4 on page
+Chunk 1/4 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
-SHAREHOLDER SERVICES
-Shareholders of record with 
-questions on account balances, 
-address changes, or other account 
-matters may contact our stock 
-transfer agent and registrar, 
-Computershare.
-BY TELEPHONE
-(800) 426-5523
-BY MAIL
-Computershare Investor Services
-PO Box 505000
-Louisville, KY 40233-5000
-ANNUAL MEETING
-The 2025 Annual Meeting of 
-Shareholders will be held virtually via 
-live webcast on Wednesday, May 14, 
-2025, at 9:00 a.m. Eastern Time at 
-www.virtualshareholdermeeting.com/
-MTX2025.
+BOARD OF DIRECTORS
+CORPORATE OFFICERS
+DOUGLAS T. DIETRICH
+Chairman of the Board and
+Chief Executive Officer,
+Minerals Technologies Inc.
+JOSEPH C. BREUNIG
+Chief Operating Officer,
+OrthoLite LLC
+JOHN J. CARMOLA
+Former Segment President,
+Goodrich Corporation
+ROBERT L. CLARK
+Lead Independent Director, Minerals 
+Technologies Inc.; Former Provost and 
+Senior Vice President for Research, 
+University of Rochester
+ALISON A. DEANS
+Independent Consultant;
+Former Chief Investment Officer,
+CRT
+FRANKLIN L. FEDER
+Former Regional Chief Executive,
+Officer for Latin America and
+Caribbean, Alcoa Inc.
+KRISTINA M. JOHNSON
+Former President of
+The Ohio State University
+ROCKY MOTWANI
+Chief Executive Officer of Cyphlens 
+(formerly Mission3)
+CAROLYN K. PITTMAN
+Former Senior Vice President
+and Chief Accounting Officer,
+Maxar Technologies
+MARC E. ROBINSON
+Former Senior Vice President, CVS; 
+Former Global President, 
+Pfizer Consumer Healthcare; 
+Former Company Group Chairman, 
+Johnson & Johnson
+DOUGLAS T. DIETRICH*
+Chairman of the Board and
+Chief Executive Officer
+ERIK C. ALDAG*
+Senior Vice President, Finance and
+Treasury and Chief Financial Officer
+BRETT ARGIRAKIS*
+Group President, Engineered
+Solutions
+MICHAEL A. CIPOLLA
+Vice President, Corporate Controller,
+and Chief Accounting Officer
+ERIN N. CUTLER*
+Vice President, Human Resources
+JONATHAN J. HASTINGS*
+Senior Vice President, Strategy and
+M&A
+TIMOTHY J. JORDAN*
+Vice President, General Counsel,
+Secretary, and Chief Compliance
+Officer
+D.J. MONAGLE III*
+Group President, Consumer &
+Specialties
+INVESTOR
+RELATIONS
+LYDIA KOPYLOVA
+Vice President, Investor Relations
+622 Third Avenue, 38th Floor
+New York, NY 10017
+(212) 878 -1831
+STOCK LISTING
+Minerals Technologies Inc. common 
+stock is listed on the New York Stock 
+Exchange (NYSE) under the symbol 
+MTX.
 
 
 ================================================================================
 
 CHUNK 1068
+Length: 502 characters
+Words: 68
+Section: 60 - INVESTOR RELATIONS
+Section Level: 1
+Source Page: 127
+Chunk 2/4 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+SHAREHOLDER SERVICES
+Shareholders of record with 
+questions on account balances, 
+address changes, or other account 
+matters may contact our stock 
+transfer agent and registrar, 
+Computershare.
+BY TELEPHONE
+(800) 426-5523
+BY MAIL
+Computershare Investor Services
+PO Box 505000
+Louisville, KY 40233-5000
+ANNUAL MEETING
+The 2025 Annual Meeting of 
+Shareholders will be held virtually via 
+live webcast on Wednesday, May 14, 
+2025, at 9:00 a.m. Eastern Time at 
+www.virtualshareholdermeeting.com/
+MTX2025.
+
+
+================================================================================
+
+CHUNK 1069
 Length: 80 characters
 Words: 13
-Section: 61 - STOCK LISTING
+Section: 60 - INVESTOR RELATIONS
 Section Level: 1
 Source Page: 127
 Chunk 3/4 on page
@@ -28635,111 +28598,262 @@ Annual Report Design by Curran & Connors, Inc.
 
 ================================================================================
 
-CHUNK 1069
+CHUNK 1070
 Length: 25 characters
 Words: 2
-Section: 61 - STOCK LISTING
+Section: 60 - INVESTOR RELATIONS
 Section Level: 1
 Source Page: 127
 Chunk 4/4 on page
 Source PDF: input/NYSE_MTX_2024.pdf
 ----------------------------------------
 / www.curran-connors.com
-
-
-================================================================================
-
-CHUNK 1070
-Length: 1800 characters
-Words: 250
-Section: 62 - SHAREHOLDER SERVICES
-Section Level: 1
-Source Page: 127
-Chunk 1/4 on page
-Source PDF: input/NYSE_MTX_2024.pdf
-----------------------------------------
-BOARD OF DIRECTORS
-CORPORATE OFFICERS
-DOUGLAS T. DIETRICH
-Chairman of the Board and
-Chief Executive Officer,
-Minerals Technologies Inc.
-JOSEPH C. BREUNIG
-Chief Operating Officer,
-OrthoLite LLC
-JOHN J. CARMOLA
-Former Segment President,
-Goodrich Corporation
-ROBERT L. CLARK
-Lead Independent Director, Minerals 
-Technologies Inc.; Former Provost and 
-Senior Vice President for Research, 
-University of Rochester
-ALISON A. DEANS
-Independent Consultant;
-Former Chief Investment Officer,
-CRT
-FRANKLIN L. FEDER
-Former Regional Chief Executive,
-Officer for Latin America and
-Caribbean, Alcoa Inc.
-KRISTINA M. JOHNSON
-Former President of
-The Ohio State University
-ROCKY MOTWANI
-Chief Executive Officer of Cyphlens 
-(formerly Mission3)
-CAROLYN K. PITTMAN
-Former Senior Vice President
-and Chief Accounting Officer,
-Maxar Technologies
-MARC E. ROBINSON
-Former Senior Vice President, CVS; 
-Former Global President, 
-Pfizer Consumer Healthcare; 
-Former Company Group Chairman, 
-Johnson & Johnson
-DOUGLAS T. DIETRICH*
-Chairman of the Board and
-Chief Executive Officer
-ERIK C. ALDAG*
-Senior Vice President, Finance and
-Treasury and Chief Financial Officer
-BRETT ARGIRAKIS*
-Group President, Engineered
-Solutions
-MICHAEL A. CIPOLLA
-Vice President, Corporate Controller,
-and Chief Accounting Officer
-ERIN N. CUTLER*
-Vice President, Human Resources
-JONATHAN J. HASTINGS*
-Senior Vice President, Strategy and
-M&A
-TIMOTHY J. JORDAN*
-Vice President, General Counsel,
-Secretary, and Chief Compliance
-Officer
-D.J. MONAGLE III*
-Group President, Consumer &
-Specialties
-INVESTOR
-RELATIONS
-LYDIA KOPYLOVA
-Vice President, Investor Relations
-622 Third Avenue, 38th Floor
-New York, NY 10017
-(212) 878 -1831
-STOCK LISTING
-Minerals Technologies Inc. common 
-stock is listed on the New York Stock 
-Exchange (NYSE) under the symbol 
-MTX.
 
 
 ================================================================================
 
 CHUNK 1071
+Length: 1800 characters
+Words: 250
+Section: 61 - STOCK LISTING
+Section Level: 1
+Source Page: 127
+Chunk 1/4 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+BOARD OF DIRECTORS
+CORPORATE OFFICERS
+DOUGLAS T. DIETRICH
+Chairman of the Board and
+Chief Executive Officer,
+Minerals Technologies Inc.
+JOSEPH C. BREUNIG
+Chief Operating Officer,
+OrthoLite LLC
+JOHN J. CARMOLA
+Former Segment President,
+Goodrich Corporation
+ROBERT L. CLARK
+Lead Independent Director, Minerals 
+Technologies Inc.; Former Provost and 
+Senior Vice President for Research, 
+University of Rochester
+ALISON A. DEANS
+Independent Consultant;
+Former Chief Investment Officer,
+CRT
+FRANKLIN L. FEDER
+Former Regional Chief Executive,
+Officer for Latin America and
+Caribbean, Alcoa Inc.
+KRISTINA M. JOHNSON
+Former President of
+The Ohio State University
+ROCKY MOTWANI
+Chief Executive Officer of Cyphlens 
+(formerly Mission3)
+CAROLYN K. PITTMAN
+Former Senior Vice President
+and Chief Accounting Officer,
+Maxar Technologies
+MARC E. ROBINSON
+Former Senior Vice President, CVS; 
+Former Global President, 
+Pfizer Consumer Healthcare; 
+Former Company Group Chairman, 
+Johnson & Johnson
+DOUGLAS T. DIETRICH*
+Chairman of the Board and
+Chief Executive Officer
+ERIK C. ALDAG*
+Senior Vice President, Finance and
+Treasury and Chief Financial Officer
+BRETT ARGIRAKIS*
+Group President, Engineered
+Solutions
+MICHAEL A. CIPOLLA
+Vice President, Corporate Controller,
+and Chief Accounting Officer
+ERIN N. CUTLER*
+Vice President, Human Resources
+JONATHAN J. HASTINGS*
+Senior Vice President, Strategy and
+M&A
+TIMOTHY J. JORDAN*
+Vice President, General Counsel,
+Secretary, and Chief Compliance
+Officer
+D.J. MONAGLE III*
+Group President, Consumer &
+Specialties
+INVESTOR
+RELATIONS
+LYDIA KOPYLOVA
+Vice President, Investor Relations
+622 Third Avenue, 38th Floor
+New York, NY 10017
+(212) 878 -1831
+STOCK LISTING
+Minerals Technologies Inc. common 
+stock is listed on the New York Stock 
+Exchange (NYSE) under the symbol 
+MTX.
+
+
+================================================================================
+
+CHUNK 1072
+Length: 502 characters
+Words: 68
+Section: 61 - STOCK LISTING
+Section Level: 1
+Source Page: 127
+Chunk 2/4 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+SHAREHOLDER SERVICES
+Shareholders of record with 
+questions on account balances, 
+address changes, or other account 
+matters may contact our stock 
+transfer agent and registrar, 
+Computershare.
+BY TELEPHONE
+(800) 426-5523
+BY MAIL
+Computershare Investor Services
+PO Box 505000
+Louisville, KY 40233-5000
+ANNUAL MEETING
+The 2025 Annual Meeting of 
+Shareholders will be held virtually via 
+live webcast on Wednesday, May 14, 
+2025, at 9:00 a.m. Eastern Time at 
+www.virtualshareholdermeeting.com/
+MTX2025.
+
+
+================================================================================
+
+CHUNK 1073
+Length: 80 characters
+Words: 13
+Section: 61 - STOCK LISTING
+Section Level: 1
+Source Page: 127
+Chunk 3/4 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+* Member, MTI Leadership Council
+Annual Report Design by Curran & Connors, Inc. 
+
+================================================================================
+
+CHUNK 1074
+Length: 25 characters
+Words: 2
+Section: 61 - STOCK LISTING
+Section Level: 1
+Source Page: 127
+Chunk 4/4 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+/ www.curran-connors.com
+
+
+================================================================================
+
+CHUNK 1075
+Length: 1800 characters
+Words: 250
+Section: 62 - SHAREHOLDER SERVICES
+Section Level: 1
+Source Page: 127
+Chunk 1/4 on page
+Source PDF: input/NYSE_MTX_2024.pdf
+----------------------------------------
+BOARD OF DIRECTORS
+CORPORATE OFFICERS
+DOUGLAS T. DIETRICH
+Chairman of the Board and
+Chief Executive Officer,
+Minerals Technologies Inc.
+JOSEPH C. BREUNIG
+Chief Operating Officer,
+OrthoLite LLC
+JOHN J. CARMOLA
+Former Segment President,
+Goodrich Corporation
+ROBERT L. CLARK
+Lead Independent Director, Minerals 
+Technologies Inc.; Former Provost and 
+Senior Vice President for Research, 
+University of Rochester
+ALISON A. DEANS
+Independent Consultant;
+Former Chief Investment Officer,
+CRT
+FRANKLIN L. FEDER
+Former Regional Chief Executive,
+Officer for Latin America and
+Caribbean, Alcoa Inc.
+KRISTINA M. JOHNSON
+Former President of
+The Ohio State University
+ROCKY MOTWANI
+Chief Executive Officer of Cyphlens 
+(formerly Mission3)
+CAROLYN K. PITTMAN
+Former Senior Vice President
+and Chief Accounting Officer,
+Maxar Technologies
+MARC E. ROBINSON
+Former Senior Vice President, CVS; 
+Former Global President, 
+Pfizer Consumer Healthcare; 
+Former Company Group Chairman, 
+Johnson & Johnson
+DOUGLAS T. DIETRICH*
+Chairman of the Board and
+Chief Executive Officer
+ERIK C. ALDAG*
+Senior Vice President, Finance and
+Treasury and Chief Financial Officer
+BRETT ARGIRAKIS*
+Group President, Engineered
+Solutions
+MICHAEL A. CIPOLLA
+Vice President, Corporate Controller,
+and Chief Accounting Officer
+ERIN N. CUTLER*
+Vice President, Human Resources
+JONATHAN J. HASTINGS*
+Senior Vice President, Strategy and
+M&A
+TIMOTHY J. JORDAN*
+Vice President, General Counsel,
+Secretary, and Chief Compliance
+Officer
+D.J. MONAGLE III*
+Group President, Consumer &
+Specialties
+INVESTOR
+RELATIONS
+LYDIA KOPYLOVA
+Vice President, Investor Relations
+622 Third Avenue, 38th Floor
+New York, NY 10017
+(212) 878 -1831
+STOCK LISTING
+Minerals Technologies Inc. common 
+stock is listed on the New York Stock 
+Exchange (NYSE) under the symbol 
+MTX.
+
+
+================================================================================
+
+CHUNK 1076
 Length: 502 characters
 Words: 68
 Section: 62 - SHAREHOLDER SERVICES
@@ -28772,7 +28886,7 @@ MTX2025.
 
 ================================================================================
 
-CHUNK 1072
+CHUNK 1077
 Length: 80 characters
 Words: 13
 Section: 62 - SHAREHOLDER SERVICES
@@ -28786,7 +28900,7 @@ Annual Report Design by Curran & Connors, Inc.
 
 ================================================================================
 
-CHUNK 1073
+CHUNK 1078
 Length: 25 characters
 Words: 2
 Section: 62 - SHAREHOLDER SERVICES
@@ -28800,7 +28914,7 @@ Source PDF: input/NYSE_MTX_2024.pdf
 
 ================================================================================
 
-CHUNK 1074
+CHUNK 1079
 Length: 1800 characters
 Words: 250
 Section: 63 - ANNUAL MEETING
@@ -28890,7 +29004,7 @@ MTX.
 
 ================================================================================
 
-CHUNK 1075
+CHUNK 1080
 Length: 502 characters
 Words: 68
 Section: 63 - ANNUAL MEETING
@@ -28923,7 +29037,7 @@ MTX2025.
 
 ================================================================================
 
-CHUNK 1076
+CHUNK 1081
 Length: 80 characters
 Words: 13
 Section: 63 - ANNUAL MEETING
@@ -28937,7 +29051,7 @@ Annual Report Design by Curran & Connors, Inc.
 
 ================================================================================
 
-CHUNK 1077
+CHUNK 1082
 Length: 25 characters
 Words: 2
 Section: 63 - ANNUAL MEETING
@@ -28951,7 +29065,7 @@ Source PDF: input/NYSE_MTX_2024.pdf
 
 ================================================================================
 
-CHUNK 1078
+CHUNK 1083
 Length: 17 characters
 Words: 1
 Section: 64 - BACK COVER

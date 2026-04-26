@@ -2,20 +2,75 @@ import argparse
 import json
 import re
 import os
-import fitz  
+from typing import Dict, List
+import fitz
+
+_PREFIX_PATTERN = re.compile(r'^[A-Z0-9_]+_\d+_')
+_VERSION_PATTERN = re.compile(r'_v\d+$')
+
+
+def flatten_sections(sections: List[Dict]) -> List[Dict]:
+    """Recursively flatten nested sections + subsections into a single list."""
+    result = []
+    for section in sections:
+        result.append(section)
+        if section.get('subsections'):
+            result.extend(flatten_sections(section['subsections']))
+    return result
+
+
+def load_page_index(page_index_file: str) -> Dict:
+    """Load page index JSON and return a dict keyed by page number."""
+    print(f"✓ Loading page index from: {page_index_file}")
+    try:
+        with open(page_index_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            pages = data.get('pages', [])
+        print(f"✓ Loaded {len(pages)} pages")
+        return {p['page']: p for p in pages}
+    except FileNotFoundError:
+        print(f"✗ Page index file not found: {page_index_file}")
+        return {}
+    except Exception as e:
+        print(f"✗ Error loading page index file: {e}")
+        return {}
+
+
+def add_text_from_page_index(sections: List[Dict], page_index: Dict) -> List[Dict]:
+    """Populate section text and page_contents from a page index dict."""
+    for section in sections:
+        section_text = ""
+        page_contents = []
+
+        for page_num in range(section['start_page'], section['end_page'] + 1):
+            page_data = page_index.get(page_num)
+            if page_data and page_data.get('text'):
+                page_text = page_data['text']
+                section_text += page_text + "\n"
+                page_contents.append({
+                    'page_number': page_num,
+                    'content': page_text,
+                    'sections': page_data.get('sections', []),
+                })
+
+        section['text'] = section_text.strip()
+        section['text_length'] = len(section_text)
+        section['word_count'] = len(section_text.split())
+        if page_contents:
+            section['page_contents'] = page_contents
+
+        if section.get('subsections'):
+            section['subsections'] = add_text_from_page_index(
+                section['subsections'], page_index
+            )
+
+    return sections
 
 
 def normalize_title(title):
-    """
-    Normalize section title by removing file prefixes and cleaning up.
-    """
-    # Remove common file prefixes like "UK01_0005821_01_"
-    title = re.sub(r'^[A-Z0-9_]+_\d+_', '', title)
-    # Remove version suffixes like "_v14"
-    title = re.sub(r'_v\d+$', '', title)
-    # Replace underscores with spaces
+    title = _PREFIX_PATTERN.sub('', title)
+    title = _VERSION_PATTERN.sub('', title)
     title = title.replace('_', ' ')
-    # Clean up multiple spaces
     title = ' '.join(title.split())
     return title
 
@@ -60,34 +115,30 @@ def generate_page_index(pdf_path, sections_data, output_path=None):
     Uses the already-parsed sections to annotate which sections cover each page.
     """
     try:
-        doc = fitz.open(pdf_path)
+        with fitz.open(pdf_path) as doc:
+            flat_sections = sections_data.get('flat_sections') or flatten_sections(
+                sections_data.get('sections', [])
+            )
 
-        # Flatten the hierarchy so we can match any section to a page
-        flat_sections = []
-        def _flatten(sections):
-            for s in sections:
-                flat_sections.append(s)
-                _flatten(s.get('subsections', []))
-        _flatten(sections_data.get('sections', []))
+            # Pre-build page → sections map: one pass over sections instead of
+            # re-scanning all sections for every page (O(sections*pages) → O(coverage))
+            page_to_sections: dict[int, list] = {}
+            for s in flat_sections:
+                entry = {"title": s["title"], "level": s["level"]}
+                for p in range(s["start_page"], s["end_page"] + 1):
+                    page_to_sections.setdefault(p, []).append(entry)
 
-        pages = []
-        for page_num in range(1, len(doc) + 1):
-            page = doc[page_num - 1]
-            text = page.get_text()
-            overlapping = [
-                {"title": s["title"], "level": s["level"]}
-                for s in flat_sections
-                if s["start_page"] <= page_num <= s["end_page"]
-            ]
-            pages.append({
-                "page": page_num,
-                "sections": overlapping,
-                "text": text,
-                "text_length": len(text),
-                "word_count": len(text.split()),
-            })
-
-        doc.close()
+            pages = []
+            for page_num in range(1, len(doc) + 1):
+                text = doc[page_num - 1].get_text()
+                pages.append({
+                    "page": page_num,
+                    "sections": page_to_sections.get(page_num, []),
+                    "text": text,
+                    "text_length": len(text),
+                    "word_count": len(text.split()),
+                })
+                del text  # release each page's string before reading the next
 
         result = {
             "source_pdf": pdf_path,
@@ -174,20 +225,20 @@ def sections_parser_pdf(pdf_path, output_path=None):
             "filename": pdf_path,
             "num_pages": len(doc),
             "num_sections": len(flat_sections),
-            "sections": hierarchical_sections
+            "sections": hierarchical_sections,
+            "flat_sections": flat_sections,
         }
         
         doc.close()
         
         # Save to file if output path provided
         if output_path:
-            # Create output directory if it doesn't exist
             output_dir = os.path.dirname(output_path)
             if output_dir and not os.path.exists(output_dir):
                 os.makedirs(output_dir)
-            
+            serializable = {k: v for k, v in result.items() if k != "flat_sections"}
             with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(result, f, indent=2, ensure_ascii=False)
+                json.dump(serializable, f, indent=2, ensure_ascii=False)
             print(f"\nOutput saved to: {output_path}")
         
         return result
