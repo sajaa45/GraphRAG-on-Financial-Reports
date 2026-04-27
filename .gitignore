@@ -2,3 +2,6 @@ GraphRAG
 .vscode
 qdrant_storage
 .env
+.env
+.Env
+*.env
