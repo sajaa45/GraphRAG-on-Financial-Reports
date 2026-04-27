@@ -1,3 +1,4 @@
 GraphRAG
 .vscode
 qdrant_storage
+.env
