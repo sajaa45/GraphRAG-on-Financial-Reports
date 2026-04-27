@@ -5,7 +5,7 @@ SemanticSplitterNodeParser Chunks
 Source PDF: input/NYSE_MTX_2024.pdf
 Total sections: 64
 Total chunks: 1083
-Created at: 2026-04-26 22:36:19
+Created at: 2026-04-27 09:40:27
 ================================================================================
 
 CHUNK 0001
