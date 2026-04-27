@@ -1,0 +1,66 @@
+Started : 2026-04-20 14:01:10
+Finished: 2026-04-20 14:01:13
+Elapsed : 2.8s (0.0 min)
+================================================================================
+
+============================================================
+Competitor KG  |  Saudi Arabian Oil Company  |  SIC 1311
+============================================================
+
+[TEXT CSV] data/text_filtered_data.csv
+  Rows after SIC=1311 filter : 27
+  Unique companies : 21
+  COMPETES_WITH → CNX RESOURCES CORP
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → TALOS ENERGY INC.
+    FACES_RISK nodes created/updated: 3
+  COMPETES_WITH → TXO PARTNERS, L.P.
+    FACES_RISK nodes created/updated: 2
+  COMPETES_WITH → PERMIAN RESOURCES CORP
+    FACES_RISK nodes created/updated: 2
+  COMPETES_WITH → CRESCENT ENERGY CO
+    FACES_RISK nodes created/updated: 2
+  COMPETES_WITH → COTERRA ENERGY INC.
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → SM ENERGY CO
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → NORTHERN OIL & GAS, INC.
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → ANTERO RESOURCES CORP
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → KIMBELL ROYALTY PARTNERS, LP
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → CONTINENTAL RESOURCES, INC
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → ATLAS ENERGY SOLUTIONS INC.
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → RANGE RESOURCES CORP
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → DORCHESTER MINERALS, L.P.
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → SPIRITS TIME INTERNATIONAL, INC.
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → CHORD ENERGY CORP
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → MATADOR RESOURCES CO
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → BLACK STONE MINERALS, L.P.
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → WOODSIDE ENERGY GROUP LTD
+    FACES_RISK nodes created/updated: 2
+  COMPETES_WITH → SABLE OFFSHORE CORP.
+    FACES_RISK nodes created/updated: 1
+  COMPETES_WITH → VIPER ENERGY, INC.
+    FACES_RISK nodes created/updated: 1
+
+[METRICS CSV] data/filtered_data.csv
+  Rows after SIC=1311 filter : 4
+  Unique companies : 3
+  COMPETES_WITH → OBSIDIAN ENERGY LTD.
+    HAS_METRIC nodes created/updated: 2
+  COMPETES_WITH → OVINTIV INC.
+    HAS_METRIC nodes created/updated: 1
+  COMPETES_WITH → TALOS ENERGY INC.
+    HAS_METRIC nodes created/updated: 1
+
+✓ Done.

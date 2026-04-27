@@ -1,0 +1,74 @@
+Credit Risk Analysis: Saudi Arabian Oil Company
+Generated: 2026-04-20T22:21:25.317332
+================================================================================
+
+Here are the answers to the user's question:
+
+**1. List every metric Saudi Arabian Oil Company has with its value and currency.**
+
+Here are the metrics for Saudi Arabian Oil Company:
+
+* Gearing Ratio (2024): 4.5% (no currency)
+* Net Debt (2024): 78,078 million SAR
+* Total Debt (2024): 319,290 million SAR
+* Cash and Equivalents (2024): 216,642 million SAR
+* Short-term Investments (2024): 13,186 million SAR
+* Total Equity (2024): 1,651,355 million SAR
+* Net Income (2024): 393,891 million SAR
+* Earnings per Share (2024): 1.63 SAR per share
+* Revenue (2024): 1,637,299 million SAR
+* EBIT (2024): 772,296 million SAR
+* Capital Expenditure (2024): 188,890 million SAR
+* Revenue (2023): 1,653,281 million SAR
+* EBIT (2023): 865,037 million SAR
+* Capital Expenditure (2023): 158,308 million SAR
+* Dividend Distributions (2024): 465.9 billion SAR
+* Base Dividends (2024): 304.3 billion SAR
+* Performance-Linked Dividends (2024): 161.6 billion SAR
+* Total Dividends Paid (2024): 1,656.4 billion SAR
+* Free Cash Flow (2024): 319,998 million SAR
+* Free Cash Flow (2023): 379,506 million SAR
+* Net Cash Provided by Operating Activities (2024): 508,888 million SAR
+* Net Cash Provided by Operating Activities (2023): 537,814 million SAR
+* Net Cash Used in Investing Activities (2024): 2,861 million SAR
+* Net Cash Used in Investing Activities (2023): 54,019 million SAR
+* Net Income: -15,025 million SAR
+* Net Cash Used in Financing Activities (2024): -488,358 million SAR
+* Interest income (2024): 206 million SAR
+* Operating income (2024): 774,625 million SAR
+
+**2. List every risk Saudi Arabian Oil Company faces.**
+
+Here are the risks faced by Saudi Arabian Oil Company:
+
+* Litigation and other legal matters
+* Trade actions
+* Terrorism and armed conflict
+* Projects are delayed
+* Cost more than expected
+* Do not generate the expected return
+* Compliance with commitments
+
+**3. Compare Saudi Arabian Oil Company's metrics to what the industry peers report — use ratios for direct comparison; for absolute figures state both currencies explicitly.**
+
+Unfortunately, the provided data does not contain sufficient metrics for direct comparison with industry peers. However, we can calculate some ratios for Saudi Arabian Oil Company and compare them to industry peers if the necessary data is available.
+
+**4. Note any risks that appear across multiple peers vs unique to Saudi Arabian Oil Company.**
+
+After reviewing the industry peer risks, the following risks appear across multiple peers:
+
+* Concentration of credit risk
+* Credit risk management
+* Liquidity risk management
+* Market risk
+* Terrorism and armed conflict (similar to Saudi Arabian Oil Company's risk)
+
+The following risks are unique to Saudi Arabian Oil Company:
+
+* Litigation and other legal matters
+* Trade actions
+* Compliance with commitments
+
+**5. Give an overall credit-risk conclusion.**
+
+Based on the available data, Saudi Arabian Oil Company's credit risk appears to be relatively low. The company has a low gearing ratio, a significant cash balance, and a strong operating income. However, the company faces some risks, including litigation and other legal matters, trade actions, and terrorism and armed conflict. Additionally, the company's credit risk management practices and liquidity risk management practices are not disclosed in the provided data. Overall, a more comprehensive analysis of the company's credit risk would require additional data and information.

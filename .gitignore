@@ -1,0 +1,36 @@
+chunking_optimizations.md
+FILTERED_CHUNKS_UPDATE.md
+PIPELINE_GUIDE.md
+RETRIEVAL_IMPROVEMENTS.md
+test_openai_embeddings.py
+
+# Vector database directories
+chroma_db/
+test_chroma_db/
+*.db
+*.sqlite
+*.sqlite3
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+COMPLETE_PIPELINE_SUMMARY.md
+COMPLETE_SYSTEM_SUMMARY.md
+EMBEDDING_OPTIMIZATION.md
+ENTITY_EXTRACTION_GUIDE.md
+IMPLEMENTATION_SUMMARY.md
+EMBEDDING_OPTIMIZATION.md
+.env
+md+additional files
+outputttt
+extra
+.vscode
+ex_output

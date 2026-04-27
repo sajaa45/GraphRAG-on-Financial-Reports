@@ -1,0 +1,2135 @@
+Started : 2026-04-21 10:38:13
+Finished: 2026-04-21 10:57:27
+Elapsed : 1153.9s (19.2 min)
+================================================================================
+
+
+================================================================================
+EXTRACTING RELATION: CEO
+Started: 2026-04-21 10:38:13
+================================================================================
+Source: Person
+Target: Organization
+Relationship: CEO_OF
+
+
+✓ Using 6/6 chunks (threshold: 0.3)
+
+================================================================================
+EXTRACTING ENTITIES WITH LLM
+================================================================================
+
+Chunk 1/6 (similarity: 0.515)
+  Section: Corp Governance
+  Section ID: 5
+  Chunk Index: 27
+  Page: 117
+  Text preview: RISK | <b>GOVERNANCE</b>    | INFORMATION | STATEMENTS |
+|                      |               |                   |         |                      |             |            |
+|                     ...
+  Full text:
+--------------------------------------------------------------------------------
+RISK | <b>GOVERNANCE</b>    | INFORMATION | STATEMENTS |
+|                      |               |                   |         |                      |             |            |
+|                      |               |                   |         |                      |             |            |
+
+5. ORGANIZATIONAL
+
+### **Senior Executives remuneration**
+
+Table 2 sets out the aggregated remuneration paid to the Company's five highest paid Senior Executives, inclusive of the CEO and CFO positions.
+
+#### Table 2: Total remuneration paid to the five highest paid executives including CEO and CFO
+
+|                          |              |                      | Fixed remuneration |            |                  |                          |            | Variable remuneration |                  |                                 |             |               |                |
+|--------------------------|--------------|----------------------|--------------------|------------|------------------|--------------------------|------------|-----------------------|------------------|---------------------------------|-------------|---------------|----------------|
+| All<br>amounts<br>in SAR | alarie<br>ιñ |                      | fits<br>₹          |            | tior<br>Periodic | ofits                    |            |                       | จ<br>ᇹ<br>ᅙ<br>Ğ |                                 | ᢦ<br>Ó<br>屲 | Total<br>Boar |                |
+| <b>Total</b>             |              | 17,006,550 9,774,343 | 3,116,801          | 29,897,694 | $\equiv$         | $\overline{\phantom{0}}$ | 24,893,526 |                       |                  | 3,351,366 22,479,590 50,724,482 | 35,277,516  |               | $-115,899,692$ |
+
+The Company's compensation framework for its Senior Executives is designed to provide a competitive compensation package that includes base pay, variable pay, and benefits as follows:
+
+- With respect to fixed remuneration, the Company considers the level and demands of the position, including duties and responsibilities, as well as the educational qualifications, practical experience, skills, performance, and seniority of the individual, all within the context of market conditions and pay practices of peers and other relevant companies;
+- With respect to variable remuneration, the Company offers variable compensation that is market-aligned and subject to the fulfillment of predefined performance goals. Two variable pay plans are used: a Short-Term Incentive Plan and a Long-Term Incentive Plan. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 2/6 (similarity: 0.511)
+  Section: Corp Governance
+  Section ID: 5
+  Chunk Index: 18
+  Page: 108
+  Text preview: | • Executive and/or other significant leadership experience.                                                                                                                        ...
+  Full text:
+--------------------------------------------------------------------------------
+| • Executive and/or other significant leadership experience.                                                                                                                        
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 3/6 (similarity: 0.485)
+  Section: Corp Governance
+  Section ID: 5
+  Chunk Index: 12
+  Page: 102
+  Text preview: Amin H. Nasser
+
+**President & Chief Executive Officer** 
+
+Mr. ...
+  Full text:
+--------------------------------------------------------------------------------
+Amin H. Nasser
+
+**President & Chief Executive Officer** 
+
+Mr. 
+--------------------------------------------------------------------------------
+    ~ CEO candidate: Amin H. Nasser (confidence: 0.485)
+
+Chunk 4/6 (similarity: 0.350)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 32
+  Page: 155
+  Text preview: ## Saudi Exchange (Tadawul)
+
+The Saudi Exchange, the sole entity authorized in the Kingdom to act as a securities exchange.
+
+#### Saudi Green Initiative
+
+A national initiative that unites environmenta...
+  Full text:
+--------------------------------------------------------------------------------
+## Saudi Exchange (Tadawul)
+
+The Saudi Exchange, the sole entity authorized in the Kingdom to act as a securities exchange.
+
+#### Saudi Green Initiative
+
+A national initiative that unites environmental protection, energy transition, and sustainability programs with the overarching aim of offsetting and reducing emissions, increasing the Kingdom's use of clean energy, and addressing climate change.
+
+#### Senior Executives/The Group Executive Committee
+
+The members of the Senior Management of Aramco holding the title of CEO, President, or Executive Vice President.
+
+## **Senior Management**
+
+The Senior Management and other officers of Aramco who, while subordinate to the Senior Executives, are still involved in the management of Aramco and participate in driving its strategies, decisions, or operations.
+
+## Shareek program
+
+A cooperative Government program that is designed to provide support via various pillars, including financial, monetary, operational and regulatory cooperation, and asset investment, aiming to enhance the development and resilience of the Saudi economy by increasing the GDP, providing job opportunities, diversifying the economy and strengthening cooperation between public and private sectors.
+
+#### Shareholder
+
+Any holder of shares.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 5/6 (similarity: 0.330)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 32
+  Page: 155
+  Text preview: **SME** 
+
+Small and medium enterprise.
+
+#### **SOCPA**
+
+Saudi Organization for Chartered and Professional Accountants.
+
+S-OIL S-Oil Corporation.
+
+King Salman Energy Park.
+
+## **SPE-PRMS**
+
+**SPARK** 
+...
+  Full text:
+--------------------------------------------------------------------------------
+**SME** 
+
+Small and medium enterprise.
+
+#### **SOCPA**
+
+Saudi Organization for Chartered and Professional Accountants.
+
+S-OIL S-Oil Corporation.
+
+King Salman Energy Park.
+
+## **SPE-PRMS**
+
+**SPARK** 
+
+Society of Petroleum Engineers - Petroleum Resources Management System.
+
+## SSC
+
+Sustainability Steering Committee.
+
+## **Stellar**
+
+Stellar Insurance Ltd.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 6/6 (similarity: 0.323)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 22
+  Page: 145
+  Text preview: ORGANIZATIONAL<br>STRUCTURE AND<br>CORPORATE<br>GOVERNANCE
+
+6. ...
+  Full text:
+--------------------------------------------------------------------------------
+ORGANIZATIONAL<br>STRUCTURE AND<br>CORPORATE<br>GOVERNANCE
+
+6. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+  Processing 1 CEO candidates...
+    ~ Amin H. Nasser: semantic_score=80, similarity=0.485
+  ✓ Selected CEO: Amin H. Nasser (semantic_score: 80, similarity: 0.485)
+
+================================================================================
+EXTRACTION COMPLETE: CEO
+================================================================================
+Entities     : 1
+Relationships: 1
+Duration     : 46.0s (0.8 min)
+
+
+================================================================================
+EXTRACTING RELATION: HAS_METRIC
+Started: 2026-04-21 10:38:59
+================================================================================
+Source: Company
+Target: Metric
+Relationship: HAS_METRIC
+
+
+✓ Using 52/52 chunks (threshold: 0.3)
+
+================================================================================
+EXTRACTING ENTITIES WITH LLM
+================================================================================
+
+Chunk 1/52 (similarity: 0.607)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 29
+  Page: 185
+  Text preview: Borrowings or dividends will result in an adjustment to Saudi Aramco's capital structure.
+
+Gearing is a measure of the degree to which Saudi Aramco's operations are financed by debt. Saudi Aramco defi...
+  Full text:
+--------------------------------------------------------------------------------
+Borrowings or dividends will result in an adjustment to Saudi Aramco's capital structure.
+
+Gearing is a measure of the degree to which Saudi Aramco's operations are financed by debt. Saudi Aramco defines gearing as the ratio of net debt / (cash) (total borrowings less cash and cash equivalents, short-term investments, investments in debt securities (current and non-current), and non-current cash investments) to total equity and net debt / (cash). Saudi Aramco's gearing ratios at December 31, 2024 and 2023, were as follows:
+
+|                                                          | 2024       | 2023       |
+|----------------------------------------------------------|------------|------------|
+| Total borrowings (current and non-current)               | 319,290    | 290,147    |
+| Cash and cash equivalents                                | (216, 642) | (198, 973) |
+| Short-term investments                                   | (13, 186)  | (184, 343) |
+| Investments in debt securities (current and non-current) | (11, 384)  | (9,584)    |
+| Non-current cash investments                             |            |            |
+| Net debt (cash)                                          | 78,078     | (102, 753) |
+| Total equity                                             | 1,651,355  | 1,737,092  |
+| Total equity and net debt (cash)                         | 1,729,433  | 1,634,339  |
+| Gearing                                                  | 4.5%       | (6.3)%     |
+
+### (c) Casualty loss risk retention
+
+Saudi Aramco's casualty loss risk strategy includes a risk retention and insurance program, including providing coverage to certain joint arrangements and associates limited to Saudi Aramco's percentage interest in the relevant entity. Current maximum risk retention is ± 3,301 per loss event (2023: ± 3,301) and various insurance limits apply, of which the risk retention forms a part. 
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Gearing Ratio (2024))
+      Properties: {
+        "value": "4.5",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Gearing Ratio"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Debt (2024))
+      Properties: {
+        "value": "78078",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "Net Debt"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Debt (2024))
+      Properties: {
+        "value": "319290",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "Total Debt"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Cash and Equivalents (2024))
+      Properties: {
+        "value": "216642",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "Cash and Equivalents"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Short-term Investments (2024))
+      Properties: {
+        "value": "13186",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "Short-term Investments"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Equity (2024))
+      Properties: {
+        "value": "1651355",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "Total Equity"
+}
+
+Chunk 2/52 (similarity: 0.451)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 34
+  Page: 190
+  Text preview: Acquisition of right-of-use assets during the year ended December 31, 2024, amounted to # 1,039 (2023: # 364). The following table presents depreciation expense and net carrying amounts of right-of-us...
+  Full text:
+--------------------------------------------------------------------------------
+Acquisition of right-of-use assets during the year ended December 31, 2024, amounted to # 1,039 (2023: # 364). The following table presents depreciation expense and net carrying amounts of right-of-use assets by class of assets. Information on lease liabilities and related finance costs is provided in Note 20.
+
+|                                     | Depreciation<br>expense for the<br>year ended<br>December 31.<br>2024 | <b>Net carrying</b><br>amount at<br>December 31.<br>2024 | Depreciation<br>expense for the<br>year ended<br>December 31.<br>2023 | Net carrying<br>amount at<br>December 31,<br>2023 |
+|-------------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------------------------|---------------------------------------------------|
+| Land and land improvements          | 274                                                                   | 6,581                                                    | 161                                                                   | 5,160                                             |
+| <b>Buildings</b>                    | 533                                                                   | 3,506                                                    | 510                                                                   | 3,210                                             |
+| Oil and gas properties              | 11                                                                    |                                                          | 11                                                                    |                                                   |
+| Plant, machinery and equipment      | 6,299                                                                 | 55,785                                                   | 12,116                                                                | 52,196                                            |
+| Depots, storage tanks and pipelines | 514                                                                   | 2,633                                                    | 338                                                                   | 2,250                                             |
+| Fixtures, IT and office equipment   | 135                                                                   | 330                                                      | 128                                                                   | 263                                               |
+|                                     | 7,766                                                                 | 68,835                                                   | 13,264                                                                | 63,079                                            |
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 3/52 (similarity: 0.450)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 21
+  Page: 177
+  Text preview: All equity investments and certain debt instruments are subsequently measured at fair value. ...
+  Full text:
+--------------------------------------------------------------------------------
+All equity investments and certain debt instruments are subsequently measured at fair value. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 4/52 (similarity: 0.495)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 20
+  Page: 176
+  Text preview: The key assumptions used to determine the different cash-generating units involves significant judgment by management.
+
+For the purposes of determining whether impairment of non-financial assets has o...
+  Full text:
+--------------------------------------------------------------------------------
+The key assumptions used to determine the different cash-generating units involves significant judgment by management.
+
+For the purposes of determining whether impairment of non-financial assets has occurred, and the extent of any impairment or its reversal, the key assumptions management uses in estimating future cash flows for its VIU calculations are forecasted future oil, gas, refined product and chemical prices, expected production volumes, future operating and development costs, refining and petrochemical margins and changes to the discount rate used for the discounted cash flow model. There is an inherent uncertainty over forecasted information and assumptions. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 5/52 (similarity: 0.481)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 29
+  Page: 185
+  Text preview: Management also monitors and forecasts Saudi Aramco's liquidity requirements based on current and non-current expected cash flows.
+
+Saudi Aramco invests surplus cash in current accounts, time deposits...
+  Full text:
+--------------------------------------------------------------------------------
+Management also monitors and forecasts Saudi Aramco's liquidity requirements based on current and non-current expected cash flows.
+
+Saudi Aramco invests surplus cash in current accounts, time deposits, money market instruments, government repurchase agreements, and marketable securities, choosing instruments with appropriate maturities or sufficient liquidity to meet forecasted cash flow requirements. Saudi Aramco prioritizes security and liquidity over yield.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 6/52 (similarity: 0.469)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 21
+  Page: 177
+  Text preview: Assets that are held for collection of contractual cash flows, where those cash flows represent solely payments of principal and interest, are subsequently measured at amortized cost using the effecti...
+  Full text:
+--------------------------------------------------------------------------------
+Assets that are held for collection of contractual cash flows, where those cash flows represent solely payments of principal and interest, are subsequently measured at amortized cost using the effective interest method. A gain or loss on a debt investment that is subsequently measured at amortized cost and is not part of a hedging relationship is recognized as a component of net income when the asset is derecognized or impaired. Interest income from these financial assets is included in finance income using the effective interest method.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 7/52 (similarity: 0.494)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 23
+  Page: 179
+  Text preview: To the extent assumptions regarding future profitability change, there can be an increase or decrease in the amounts recognized in respect of deferred income tax assets as well as in the amounts recog...
+  Full text:
+--------------------------------------------------------------------------------
+To the extent assumptions regarding future profitability change, there can be an increase or decrease in the amounts recognized in respect of deferred income tax assets as well as in the amounts recognized in net income in the period in which the change occurs. At December 31, 2024, the Company continued to apply 20% income tax rate to its Downstream activities. Refer to Note 8 for further details.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 8/52 (similarity: 0.472)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 43
+  Page: 199
+  Text preview: Such earnings would be taxed only upon distribution. There was no material cumulative taxable undistributed earnings or unrecognized deferred income tax liability for such subsidiaries at December 31,...
+  Full text:
+--------------------------------------------------------------------------------
+Such earnings would be taxed only upon distribution. There was no material cumulative taxable undistributed earnings or unrecognized deferred income tax liability for such subsidiaries at December 31, 2024 and 2023. Also, a deferred income tax asset has not been recognized largely related to cumulative unused tax losses of certain subsidiaries with carry-forward periods from 2025 to indefinite. Such losses are available for offsetting against future taxable profits of the subsidiaries in which the losses arose. The cumulative amount of the unused tax losses and other items is # 68,705 and # 52,622 at December 31, 2024 and 2023, respectively, and the unrecognized deferred income tax asset is  $\#$  17,113 and  $\#$  13,019 at December 31, 2024 and 2023, respectively.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 9/52 (similarity: 0.470)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 70
+  Page: 226
+  Text preview: #### 37. Earnings per share
+
+The following table reflects the net income and number of shares used in the earnings per share calculations:
+
+|                                                           ...
+  Full text:
+--------------------------------------------------------------------------------
+#### 37. Earnings per share
+
+The following table reflects the net income and number of shares used in the earnings per share calculations:
+
+|                                                                                                                           | 2024    | 2023    |
+|---------------------------------------------------------------------------------------------------------------------------|---------|---------|
+| Net income attributable to the ordinary shareholders of the Company                                                       | 393.891 | 452.753 |
+| Weighted average number of ordinary shares (in millions) (Note 2(cc)) <sup>1</sup>                                        | 241.894 | 241.933 |
+| Earnings per share for net income attributable to the ordinary shareholders of the Company (in Saudi Riyals) <sup>1</sup> | 1.63    | 1.87    |
+
+1. Earnings per share for the year ended December 31, 2023 was calculated by retrospectively adjusting the weighted average number of outstanding shares to reflect the effect of the issuance of bonus shares approved on May 8, 2023 (Note 36).
+
+
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Income (2024))
+      Properties: {
+        "value": "393891",
+        "unit": "SAR million",
+        "year": "2024",
+        "metric_type": "Net Income"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Earnings per Share (2024))
+      Properties: {
+        "value": "1.63",
+        "unit": "SAR per share",
+        "year": "2024",
+        "metric_type": "Earnings per Share"
+}
+
+Chunk 10/52 (similarity: 0.444)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 18
+  Page: 174
+  Text preview: Investments in associates are accounted for using the equity method of accounting and are initially recognized at cost. ...
+  Full text:
+--------------------------------------------------------------------------------
+Investments in associates are accounted for using the equity method of accounting and are initially recognized at cost. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 11/52 (similarity: 0.441)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 50
+  Page: 206
+  Text preview: AOPC and AGPC are expected to make quarterly distributions to their respective ordinary shareholders from available cash when the Company pays discretionary dividends to its ordinary shareholders. Giv...
+  Full text:
+--------------------------------------------------------------------------------
+AOPC and AGPC are expected to make quarterly distributions to their respective ordinary shareholders from available cash when the Company pays discretionary dividends to its ordinary shareholders. Given the discretionary nature of distributions to EIG and GreenSaif, the shareholdings of EIG and GreenSaif in AOPC and AGPC, respectively, represent non-controlling interests and, therefore, the upfront sale proceeds were recognized in the consolidated financial statements as non-controlling interest within equity.
+
+Net income of AOPC includes an unrealized loss of #947 (2023: #10,010), and net income of AGPC includes an unrealized loss of #3,387 (2023: gain of # 1,712) on their financial assets measured at FVPL at December 31, 2024.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 12/52 (similarity: 0.516)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 32
+  Page: 188
+  Text preview: Information by segments is as follows:
+
+|                                                           | Upstream  | Downstream | Corporate | <b>Eliminations</b> | Consolidated |
+|-----------------------...
+  Full text:
+--------------------------------------------------------------------------------
+Information by segments is as follows:
+
+|                                                           | Upstream  | Downstream | Corporate | <b>Eliminations</b> | Consolidated |
+|-----------------------------------------------------------|-----------|------------|-----------|---------------------|--------------|
+| 2024                                                      |           |            |           |                     |              |
+| External revenue                                          | 719,157   | 917,044    | 1,098     |                     | 1,637,299    |
+| Other income related to sales                             | 54,972    | 109,403    |           |                     | 164,375      |
+| Inter-segment revenue                                     | 367,027   | 36,811     | 433       | (404, 271)          |              |
+| Share of results of joint ventures and associates         | 19        | (4, 409)   | (576)     |                     | (4, 966)     |
+| Depreciation and amortization                             | (48, 750) | (49, 609)  | (4,850)   |                     | (103, 209)   |
+| Dividends and other income                                |           | 2,622      | 15        |                     | 2,637        |
+| Earnings (losses) before interest, income taxes and zakat | 801,047   | (10, 998)  | (21, 830) | 4,077               | 772,296      |
+| Finance income                                            |           |            |           |                     | 20,254       |
+| Finance costs                                             |           |            |           |                     | (10, 540)    |
+| Income before income taxes and zakat                      |           |            |           |                     | 782,010      |
+| Capital expenditures - cash basis                         | 147,135   | 38,989     | 2,766     |                     | 188,890      |
+| 2023                                                      |           |            |           |                     |              |
+| External revenue                                          | 784,642   | 866,688    | 1,951     |                     | 1,653,281    |
+| Other income related to sales                             | 71,361    | 131,731    |           |                     | 203,092      |
+| Inter-segment revenue                                     | 355,770   | 35,093     | 312       | (391, 175)          |              |
+| Share of results of joint ventures and associates         | (21)      | (3, 555)   | (425)     |                     | (4,001)      |
+| Depreciation and amortization                             | (48,997)  | (42, 352)  | (5,691)   |                     | (97,040)     |
+| Dividends and other income                                |           | 736        | 15        |                     | 751          |
+| Earnings (losses) before interest, income taxes and zakat | 863,549   | 21,184     | (18, 220) | (1, 476)            | 865,037      |
+| Finance income                                            |           |            |           |                     | 31,216       |
+| Finance costs                                             |           |            |           |                     | (8, 186)     |
+| Income before income taxes and zakat                      |           |            |           |                     | 888,067      |
+| Capital expenditures - cash basis                         | 123,543   | 32,735     | 2,030     |                     | 158,308      |
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Revenue (2024))
+      Properties: {
+        "value": "1637299",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "Revenue"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: EBIT (2024))
+      Properties: {
+        "value": "772296",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "EBIT"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Capital Expenditure (2024))
+      Properties: {
+        "value": "188890",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "Capital Expenditure"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Revenue (2023))
+      Properties: {
+        "value": "1653281",
+        "unit": "million",
+        "year": "2023",
+        "metric_type": "Revenue"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: EBIT (2023))
+      Properties: {
+        "value": "865037",
+        "unit": "million",
+        "year": "2023",
+        "metric_type": "EBIT"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Capital Expenditure (2023))
+      Properties: {
+        "value": "158308",
+        "unit": "million",
+        "year": "2023",
+        "metric_type": "Capital Expenditure"
+}
+
+Chunk 13/52 (similarity: 0.501)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 67
+  Page: 223
+  Text preview: Based on the purchase price allocation, as performed by an independent valuer, the total identifiable net assets and goodwill carrying amounts are #1,096 and #255, respectively.
+
+Post-acquisition, Esm...
+  Full text:
+--------------------------------------------------------------------------------
+Based on the purchase price allocation, as performed by an independent valuer, the total identifiable net assets and goodwill carrying amounts are #1,096 and #255, respectively.
+
+Post-acquisition, Esmax contributed revenues of  $\#7,796$  and net income of  $\#8$ , which are included in the consolidated statement of income. If the acquisition had occurred on January 1, 2024, management estimates that consolidated revenue and net income for the year ended December 31, 2024 would have been higher by  $\text{\#}$  1,564 and  $\text{\#}$  15, respectively.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 14/52 (similarity: 0.421)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 53
+  Page: 209
+  Text preview: Interest is payable on amounts drawn and is mainly calculated at a market rate plus a margin. As at December 31, 2024, an amount of # 5,471 (2023: # 1,759) was undrawn against these facilities....
+  Full text:
+--------------------------------------------------------------------------------
+Interest is payable on amounts drawn and is mainly calculated at a market rate plus a margin. As at December 31, 2024, an amount of # 5,471 (2023: # 1,759) was undrawn against these facilities.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 15/52 (similarity: 0.375)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 34
+  Page: 190
+  Text preview: Additions include borrowing costs capitalized during the year ended December 31, 2024, amounting to # 8,692 (2023: # 8,204), which were calculated using an average annualized capitalization rate of 5....
+  Full text:
+--------------------------------------------------------------------------------
+Additions include borrowing costs capitalized during the year ended December 31, 2024, amounting to # 8,692 (2023: # 8,204), which were calculated using an average annualized capitalization rate of 5.36% (2023: 5.36%).
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 16/52 (similarity: 0.373)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 17
+  Page: 173
+  Text preview: Where settlement of any part of the cash consideration is deferred, the amounts payable in the future are discounted to their present value as at the date of exchange. The discount rate used is the en...
+  Full text:
+--------------------------------------------------------------------------------
+Where settlement of any part of the cash consideration is deferred, the amounts payable in the future are discounted to their present value as at the date of exchange. The discount rate used is the entity's incremental borrowing rate, being the rate at which a similar borrowing could be obtained under comparable terms and conditions. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 17/52 (similarity: 0.410)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 28
+  Page: 184
+  Text preview: 3) Interest rate risk - The risk that the fair value or future cash flows of a financial instrument will fluctuate because of changes in market interest rates.
+
+Saudi Aramco is exposed to interest rat...
+  Full text:
+--------------------------------------------------------------------------------
+3) Interest rate risk - The risk that the fair value or future cash flows of a financial instrument will fluctuate because of changes in market interest rates.
+
+Saudi Aramco is exposed to interest rate risk from changes in interest rates that affect the fair value or future cash flows of financial instruments, principally borrowings, issued at variable and fixed rates. Borrowings issued at variable rates expose Saudi Aramco to cash flow interest rate risk, which is partially offset by short-term time deposits and debt securities held at variable rates. Borrowings issued at fixed rates expose Saudi Aramco to fair value interest rate risk. Saudi Aramco may enter into interest rate swap agreements as part of its overall strategy to manage the interest rate risk on its debt. The notional amounts of interest rate swap contracts are included in Note 30.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 18/52 (similarity: 0.392)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 52
+  Page: 208
+  Text preview: # Notes to the consolidated financial statements continued
+
+All amounts in millions of Saudi Riyals unless otherwise stated
+
+# **20. Borrowings**
+
+|                                   |      | 2024    ...
+  Full text:
+--------------------------------------------------------------------------------
+# Notes to the consolidated financial statements continued
+
+All amounts in millions of Saudi Riyals unless otherwise stated
+
+# **20. Borrowings**
+
+|                                   |      | 2024            |         |              | 2023        |         |         |
+|-----------------------------------|------|-----------------|---------|--------------|-------------|---------|---------|
+|                                   | Note | Non-current     | Current | <b>Total</b> | Non-current | Current | Total   |
+| <b>Conventional:</b>              |      |                 |         |              |             |         |         |
+| Debentures                        | a    | 99,815          | 6,468   | 106,283      | 81,092      | 9,683   | 90,775  |
+| Bank borrowings                   | b    | 24,741          | 1,821   | 26,562       | 22,853      | 3,630   | 26,483  |
+| Short-term borrowings             | C    | -               | 21,242  | 21,242       | -           | 18,378  | 18,378  |
+| Revolving credit facilities       | d    |                 | 703     | 703          |             | 1,237   | 1,237   |
+| Export credit agencies            | e    | $\qquad \qquad$ | 880     | 880          | 941         | 656     | 1,597   |
+| <b>Public Investment Fund</b>     | f    |                 | 416     | 416          | 455         | 365     | 820     |
+| Other financing arrangements      | g    | 35,527          | 455     | 35,982       | 36,070      | 200     | 36,270  |
+|                                   |      | 160,083         | 31,985  | 192,068      | 141,411     | 34,149  | 175,560 |
+| Non-conventional:                 |      |                 |         |              |             |         |         |
+| Sukuk                             | h    | 29,991          | 11,398  | 41,389       | 18,689      | 15,000  | 33,689  |
+| Murabaha                          |      | 12,593          | 1,843   | 14,436       | 13,830      | 2,089   | 15,919  |
+| Saudi Industrial Development Fund |      | 3,800           | 319     | 4,119        | 3,057       | 281     | 3,338   |
+| Ijarah/Procurement                | k    | 3,140           | 400     | 3,540        | 3,499       | 13      | 3,512   |
+| Wakala                            |      | 1,227           | 28      | 1,255        | 771         | 27      | 798     |
+|                                   |      | 50,751          | 13,988  | 64,739       | 39,846      | 17,410  | 57,256  |
+| Borrowings - other than leases    |      | 210,834         | 45,973  | 256,807      | 181,257     | 51,559  | 232,816 |
+|                                   |      |                 |         |              |             |         |         |
+| Lease liabilities                 |      | 50,899          | 11,584  | 62,483       | 45,224      | 12,107  | 57,331  |
+| <b>Total borrowings</b>           |      | 261,733         | 57,557  | 319,290      | 226,481     | 63,666  | 290,147 |
+
+The carrying amounts of borrowings above are net of unamortized transaction costs of #1,255 (2023: #1,274).
+
+The finance costs recognized in the consolidated statement of income are as follows:
+
+|                             | 2024   | 2023  |
+|-----------------------------|--------|-------|
+| <b>Finance costs:</b>       |        |       |
+| Conventional borrowings     | 3,956  | 2,781 |
+| Non-conventional borrowings | 2,942  | 2,665 |
+| Lease liabilities           | 2,964  | 2,229 |
+| Unwinding of discount       | 678    | 511   |
+|                             | 10,540 | 8,186 |
+
+In addition, finance costs amounting to #8,692 were capitalized in property, plant and equipment during the year ended December 31, 2024 (2023: #8,204) (Note 5).
+
+
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Debt (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Debt (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Capital Expenditure (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: EBIT (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Income (2024))
+
+Chunk 19/52 (similarity: 0.530)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 53
+  Page: 209
+  Text preview: Securities Act of 1933, as amended. Interest is payable semi-annually in arrears on January 17 and July 17. The notes are listed on the London Stock Exchange's Main Market and the proceeds are used fo...
+  Full text:
+--------------------------------------------------------------------------------
+Securities Act of 1933, as amended. Interest is payable semi-annually in arrears on January 17 and July 17. The notes are listed on the London Stock Exchange's Main Market and the proceeds are used for general corporate purposes. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 20/52 (similarity: 0.519)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 53
+  Page: 209
+  Text preview: Securities Act of 1933, as amended. Interest is payable semi-annually in arrears on April 16 and October 16. The notes are listed on the London Stock Exchange's Main Market and the proceeds were for g...
+  Full text:
+--------------------------------------------------------------------------------
+Securities Act of 1933, as amended. Interest is payable semi-annually in arrears on April 16 and October 16. The notes are listed on the London Stock Exchange's Main Market and the proceeds were for general corporate purposes. At initial recognition, the Company recorded an amount of #44,460 (\$11,856) for the issuance proceeds, net of discounts and estimated transaction costs. On April 16, 2022, notes with three-year maturities, aggregating to a principal amount of #3,750 (\$1,000) and carrying a coupon rate of 2.75%, were repaid. On April 16, 2024, notes with five-year maturities, aggregating to a principal amount of #7,500 (\$2,000) and carrying a coupon rate of 2.875%, were repaid.
+
+On November 24, 2020, the Company issued another series of USD denominated unsecured notes, aggregating to an equivalent of #30,000 (\$8,000), under its GMTN Programme. These tranches consist of maturity dates of three years to 50 years paid at the end of the maturity date with coupon rates ranging from 1.25% to 3.50%. At initial recognition, the Company recorded an amount of # 29,625 (\$7,900) for the issuance proceeds, net of discounts. On November 24, 2023, notes with three-year maturities, aggregating to a principal amount of  $\text{\#}$  1,875 (\$500) and carrying a coupon rate of 1.25%, were repaid.
+
+On July 17, 2024, the Company issued three additional tranches of USD denominated senior unsecured notes, aggregating to an equivalent of # 22,500 (\$6,000), under its GMTN Programme. These tranches consist of notes with 10-year maturities of #7,500 (\$2,000) with a coupon rate of 5.250%, 30-year maturities of #7,500 (\$2,000) with a coupon rate of 5.750%, and 40-year maturities of #7,500 (\$2,000) with a coupon rate of 5.875%. The notes were issued and sold in accordance with Rule 144A/Regulation S under the U.S. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 21/52 (similarity: 0.480)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 24
+  Page: 180
+  Text preview: In addition, trade payables related to contracts with provisional pricing arrangements are subsequently measured at FVPL; and
+- those to be measured subsequently at amortized cost using the effective ...
+  Full text:
+--------------------------------------------------------------------------------
+In addition, trade payables related to contracts with provisional pricing arrangements are subsequently measured at FVPL; and
+- those to be measured subsequently at amortized cost using the effective interest method, which mainly include borrowings, trade L. payables, excluding those with provisional pricing arrangements, and other liabilities.
+
+#### (s) Borrowing costs
+
+Any difference between borrowing proceeds and the redemption value is recognized as finance costs in the consolidated statement of income over the term of the borrowing using the effective interest method.
+
+Borrowing costs are expensed as incurred except for those costs directly attributable to the acquisition, construction or production of a qualifying asset which are capitalized as part of the cost of that asset until the asset is complete for its intended use or sale. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 22/52 (similarity: 0.640)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 15
+  Page: 45
+  Text preview: As at December 31, 2023, investments in debt securities (current and non-current) are comprised of 米 1,249 (\$333) and 米 8,335 (\$2,223), which form part of other assets and receivables under current ...
+  Full text:
+--------------------------------------------------------------------------------
+As at December 31, 2023, investments in debt securities (current and non-current) are comprised of 米 1,249 (\$333) and 米 8,335 (\$2,223), which form part of other assets and receivables under current assets, and investments in securities under non-current assets, respectively.
+
+Gearing is a measure of the degree to which Aramco's operations are financed by debt and reflects available liquidity held in current and non-current investments and cash management instruments. Aramco defines gearing as the ratio of net debt (cash) (total borrowings less cash and cash equivalents, short-term investments, total investments in debt securities (current and non-current), and non-current cash investments) to total equity and net debt (cash). Management believes that gearing is widely used by analysts and investors in the oil and gas industry to indicate a company's financial health and flexibility.
+
+Aramco's gearing ratio was 4.5% as at December 31, 2024, compared to (6.3)% as at December 31, 2023. The increase in gearing was principally driven by the change in net debt (cash) position mainly reflecting operating cash inflows, partially offset by dividend payments and capital expenditures during the year.
+
+2. Comparative ratios for the years 2021 and 2020 have been amended to reflect Aramco's revised gearing definition.
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Gearing Ratio (2024))
+
+Chunk 23/52 (similarity: 0.454)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 15
+  Page: 45
+  Text preview: As at December 31, 2024, investments in debt securities (current and non-current) are comprised of # 1,656 (\$442) and # 9,728 (\$2,595), which form part of other assets and receivables under current ...
+  Full text:
+--------------------------------------------------------------------------------
+As at December 31, 2024, investments in debt securities (current and non-current) are comprised of # 1,656 (\$442) and # 9,728 (\$2,595), which form part of other assets and receivables under current assets, and investments in securities under non-current assets, respectively. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 24/52 (similarity: 0.453)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 4
+  Page: 34
+  Text preview: Our gearing ratio also remained healthy at 4.5% at year end.
+
+#### **Providing value through cycles**
+
+Our strong results have once again enabled us to increase total dividend distributions to our sha...
+  Full text:
+--------------------------------------------------------------------------------
+Our gearing ratio also remained healthy at 4.5% at year end.
+
+#### **Providing value through cycles**
+
+Our strong results have once again enabled us to increase total dividend distributions to our shareholders. In 2024, our shareholders collectively received #465.9 billion (\$124.2 billion) in dividends, up 27.0% from the total dividends received in 2023. This included base dividends of #304.3 billion (\$81.15 billion), which were up 4.0% from the base dividends paid out in 2023, as well as a further # 161.6 billion (\$43.09 billion) in performancelinked dividends.
+
+We have consistently demonstrated our commitment to sharing our success with shareholders through dividend distributions. We have delivered on this promise by paying total dividends of #1,656.4 billion (\$441.7 billion) since our IPO. This significant payout underscores our dedication to providing value to our shareholders. 
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Gearing Ratio (2024))
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Dividend Distributions (2024))
+      Properties: {
+        "value": "465.9",
+        "unit": "billion",
+        "year": "2024",
+        "metric_type": "Dividend Distributions"
+}
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Dividend Distributions (2024))
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Base Dividends (2024))
+      Properties: {
+        "value": "304.3",
+        "unit": "billion",
+        "year": "2024",
+        "metric_type": "Base Dividends"
+}
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Base Dividends (2024))
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Performance-Linked Dividends (2024))
+      Properties: {
+        "value": "161.6",
+        "unit": "billion",
+        "year": "2024",
+        "metric_type": "Performance-Linked Dividends"
+}
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Performance-Linked Dividends (2024))
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Dividends (2024))
+      Properties: {
+        "value": "1656.4",
+        "unit": "billion",
+        "year": "2024",
+        "metric_type": "Total Dividends"
+}
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Dividends (2024))
+
+Chunk 25/52 (similarity: 0.672)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 14
+  Page: 44
+  Text preview: Aramco uses free cash flow to evaluate its cash available for financing activities, including dividend payments. Aramco defines free cash flow as net cash provided by operating activities less capital...
+  Full text:
+--------------------------------------------------------------------------------
+Aramco uses free cash flow to evaluate its cash available for financing activities, including dividend payments. Aramco defines free cash flow as net cash provided by operating activities less capital expenditures.
+
+Free cash flow in 2024 was # 319,998 (\$85,333) compared to # 379,506 (\$101,202), in 2023, a decrease of # 59,508 (\$15,869) or 15.7%. 
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Free Cash Flow (2024))
+      Properties: {
+        "value": "319998",
+        "unit": "SAR",
+        "year": "2024",
+        "metric_type": "Free Cash Flow"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Free Cash Flow (2023))
+      Properties: {
+        "value": "379506",
+        "unit": "SAR",
+        "year": "2023",
+        "metric_type": "Free Cash Flow"
+}
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Capital Expenditure (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Capital Expenditure (2023))
+
+Chunk 26/52 (similarity: 0.520)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 14
+  Page: 44
+  Text preview: ### Financial performance continued
+
+### Free cash flow
+
+|                                                 | <b>SAR</b><br><b>Year ended December 31</b> |           | USD*<br><b>Year ended December 31...
+  Full text:
+--------------------------------------------------------------------------------
+### Financial performance continued
+
+### Free cash flow
+
+|                                                 | <b>SAR</b><br><b>Year ended December 31</b> |           | USD*<br><b>Year ended December 31</b> |           |
+|-------------------------------------------------|---------------------------------------------|-----------|---------------------------------------|-----------|
+|                                                 |                                             |           |                                       |           |
+| All amounts in millions unless otherwise stated | 2024                                        | 2023      | 2024                                  | 2023      |
+| Net cash provided by operating activities       | 508.888                                     | 537.814   | 135.704                               | 143.417   |
+| Capital expenditures                            | (188.890)                                   | (158.308) | (50, 371)                             | (42, 215) |
+| Free cash flow                                  | 319.998                                     | 379.506   | 85.333                                | 101.202   |
+
+\* Supplementary information is converted at a fixed rate of U.S. dollar 1.00 = SAR 3.75 for convenience only.
+
+
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Cash Provided by Operating Activities (2024))
+      Properties: {
+        "value": "508888",
+        "unit": "SAR million",
+        "year": "2024",
+        "metric_type": "Net Cash Provided by Operating Activities"
+}
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Capital Expenditure (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Free Cash Flow (2024))
+
+Chunk 27/52 (similarity: 0.507)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 12
+  Page: 42
+  Text preview: \*\* Refer to "Non-IFRS measures reconciliations and definitions" for further details.
+
+#### **Cash flows**
+
+Net cash provided by operating activities was #508,888 (\$135,704) for the year ended Decem...
+  Full text:
+--------------------------------------------------------------------------------
+\*\* Refer to "Non-IFRS measures reconciliations and definitions" for further details.
+
+#### **Cash flows**
+
+Net cash provided by operating activities was #508,888 (\$135,704) for the year ended December 31, 2024, compared to # 537,814 (\$143,417) reported in 2023. The decrease of # 28,926 (\$7,713) mainly reflects lower earnings, partially offset by a reduction in cash paid for the settlement of income, zakat and other taxes.
+
+Net cash used in investing activities was # 2,861 (\$763) for the year ended December 31, 2024, compared to #54,019 (\$14,405) in 2023, resulting in a change of #51,158 (\$13,642). This was primarily due to higher maturities of short-term investments, and the absence of cash consideration paid for the acquisition of Valvoline Inc's. 
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Cash Provided by Operating Activities (2024))
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Cash Provided by Operating Activities (2023))
+      Properties: {
+        "value": "537814",
+        "unit": "SAR",
+        "year": "2023",
+        "metric_type": "Net Cash Provided by Operating Activities"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Cash Used in Investing Activities (2024))
+      Properties: {
+        "value": "2861",
+        "unit": "SAR",
+        "year": "2024",
+        "metric_type": "Net Cash Used in Investing Activities"
+}
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Cash Used in Investing Activities (2023))
+      Properties: {
+        "value": "54019",
+        "unit": "SAR",
+        "year": "2023",
+        "metric_type": "Net Cash Used in Investing Activities"
+}
+
+Chunk 28/52 (similarity: 0.595)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 24
+  Page: 54
+  Text preview: Earnings (losses) before interest, income taxes and zakat (EBIT) for the year ended December 31, 2024, was a loss of # 10,998 (\$2,933), compared to a profit of # 21,184 (\$5,649) in 2023. ...
+  Full text:
+--------------------------------------------------------------------------------
+Earnings (losses) before interest, income taxes and zakat (EBIT) for the year ended December 31, 2024, was a loss of # 10,998 (\$2,933), compared to a profit of # 21,184 (\$5,649) in 2023. 
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: EBIT (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: EBIT (2023))
+
+Chunk 29/52 (similarity: 0.575)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 30
+  Page: 60
+  Text preview: #### Earnings (losses) before interest, income taxes and zakat (EBIT)
+
+are principally driven by the cost of the corporate organization, the affiliates recognized under the corporate segment, and the ...
+  Full text:
+--------------------------------------------------------------------------------
+#### Earnings (losses) before interest, income taxes and zakat (EBIT)
+
+are principally driven by the cost of the corporate organization, the affiliates recognized under the corporate segment, and the corporate outreach and citizenship activities. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 30/52 (similarity: 0.505)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 14
+  Page: 44
+  Text preview: Aramco defines EBIT as net income plus finance costs and income taxes and zakat, less finance income. Aramco believes EBIT provides useful information regarding its financial performance to analysts a...
+  Full text:
+--------------------------------------------------------------------------------
+Aramco defines EBIT as net income plus finance costs and income taxes and zakat, less finance income. Aramco believes EBIT provides useful information regarding its financial performance to analysts and investors.
+
+EBIT for 2024 was # 772,296 (\$205,946) compared to # 865,037 (\$230,677), in 2023. This decrease of #92,741 (\$24,731) or 10.7% was primarily due to lower revenue and other income related to sales as well as higher operating costs compared to the previous year.
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: EBIT (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: EBIT (2023))
+
+Chunk 31/52 (similarity: 0.684)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 13
+  Page: 43
+  Text preview: ROACE measures the efficiency of Aramco's utilization of capital. Aramco defines ROACE as net income before finance costs, net of income taxes and zakat, as a percentage of average capital employed, c...
+  Full text:
+--------------------------------------------------------------------------------
+ROACE measures the efficiency of Aramco's utilization of capital. Aramco defines ROACE as net income before finance costs, net of income taxes and zakat, as a percentage of average capital employed, calculated on a 12-month rolling basis. Average capital employed is the average of total borrowings plus total equity at the beginning and end of the applicable period. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 32/52 (similarity: 0.533)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 13
+  Page: 43
+  Text preview: The decrease in ROACE, calculated on a 12-month rolling basis, was mainly attributable to lower earnings largely driven by a decrease in revenue and other income related to sales, higher operating cos...
+  Full text:
+--------------------------------------------------------------------------------
+The decrease in ROACE, calculated on a 12-month rolling basis, was mainly attributable to lower earnings largely driven by a decrease in revenue and other income related to sales, higher operating costs, as well as lower finance and other income, partially offset by lower income taxes and zakat.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 33/52 (similarity: 0.520)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 13
+  Page: 43
+  Text preview: Aramco utilizes ROACE to evaluate management's performance and demonstrate to its shareholders that capital has been used effectively.
+
+...
+  Full text:
+--------------------------------------------------------------------------------
+Aramco utilizes ROACE to evaluate management's performance and demonstrate to its shareholders that capital has been used effectively.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 34/52 (similarity: 0.444)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 9
+  Page: 39
+  Text preview: #### **Shareholder returns**
+
+During 2024, the Company paid base dividends totaling # 304.3 billion (\$81.15 billion). In addition to the base dividends, the Company paid performance-linked dividends ...
+  Full text:
+--------------------------------------------------------------------------------
+#### **Shareholder returns**
+
+During 2024, the Company paid base dividends totaling # 304.3 billion (\$81.15 billion). In addition to the base dividends, the Company paid performance-linked dividends consisting of the third, fourth, fifth, and sixth distribution of #40.4 billion (\$10.8 billion) each, which were paid in 2024 based on the combined full-year results of 2022 and 2023, resulting in a total payment of performance-linked dividends of # 161.6 billion (\$43.09 billion) in 2024. These dividends payments resulted in a decrease in cash and cash equivalents and a corresponding reduction in shareholders' equity in the consolidated balance sheet and statement of changes in equity.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 35/52 (similarity: 0.473)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 10
+  Page: 40
+  Text preview: #### **Financial results**
+
+Revenue and other income related to sales for the year ended December 31, 2024, was # 1,801,674 (\$480,446), compared to # 1,856,373 (\$495,033), for the year ended Decembe...
+  Full text:
+--------------------------------------------------------------------------------
+#### **Financial results**
+
+Revenue and other income related to sales for the year ended December 31, 2024, was # 1,801,674 (\$480,446), compared to # 1,856,373 (\$495,033), for the year ended December 31, 2023. The decrease of 2.9% was primarily attributable to lower prices and volumes sold of crude oil, as well as lower refined and chemical product prices. This was partially offset by higher volumes sold of refined and chemical products during the year.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 36/52 (similarity: 0.449)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 10
+  Page: 40
+  Text preview: The increase in selling, administrative, and general expenses was primarily driven by higher freight and service costs compared to the prior year.
+
+Higher impairment charges were mainly related to cer...
+  Full text:
+--------------------------------------------------------------------------------
+The increase in selling, administrative, and general expenses was primarily driven by higher freight and service costs compared to the prior year.
+
+Higher impairment charges were mainly related to certain domestic and international downstream facilities.
+
+The decrease in production royalties was largely attributable to lower prices and volumes sold of crude oil, as well as a lower average effective royalty rate compared to the previous year.
+
+Net Income decreased by #56,342 (\$15,025), or 12.4%. 
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Income)
+      Properties: {
+        "value": "-15025",
+        "unit": "SAR million",
+        "year": "",
+        "metric_type": "Net Income"
+}
+
+Chunk 37/52 (similarity: 0.331)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 9
+  Page: 39
+  Text preview: ORGANIZATIONAL STRUCTURE AND GOVERNANCE
+
+CONSOLIDATED FINANCIAL **STATEMENTS** 
+
+and cash equivalents and other assets and receivables, and a corresponding decrease in assets and liabilities classifie...
+  Full text:
+--------------------------------------------------------------------------------
+ORGANIZATIONAL STRUCTURE AND GOVERNANCE
+
+CONSOLIDATED FINANCIAL **STATEMENTS** 
+
+and cash equivalents and other assets and receivables, and a corresponding decrease in assets and liabilities classified as held for sale in the consolidated balance sheet.
+
+During 2024, SATORP finalized external long-term debt financing arrangements which comprise conventional bank borrowings, export credit agencies, Wakala facility, and SIDF facility for a petrochemical facility expansion. The aggregate amount of the arrangements totaled # 25.8 billion (\$6.9 billion), with Aramco's share representing # 16.1 billion (\$4.3 billion). As at December 31, 2024, the total outstanding amounts under these financing arrangements were #5.3 billion (\$1.4 billion), of which Aramco's share was # 3.3 (\$0.9 billion). This resulted in an increase in borrowings and a corresponding increase in cash and cash equivalents during the year.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 38/52 (similarity: 0.405)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 12
+  Page: 42
+  Text preview: ### Financial performance continued
+
+### Summarized consolidated statement of cash flows
+
+|                                                 | <b>SAR</b><br><b>Year ended December 31</b> |            |...
+  Full text:
+--------------------------------------------------------------------------------
+### Financial performance continued
+
+### Summarized consolidated statement of cash flows
+
+|                                                 | <b>SAR</b><br><b>Year ended December 31</b> |            | USD*<br><b>Year ended December 31</b> |           |            |  |
+|-------------------------------------------------|---------------------------------------------|------------|---------------------------------------|-----------|------------|--|
+|                                                 |                                             |            |                                       |           |            |  |
+| All amounts in millions unless otherwise stated | 2024                                        | 2023       | 2024                                  | 2023      | change     |  |
+| Net cash provided by operating activities       | 508.888                                     | 537,814    | 135.704                               | 143,417   | (5.4)%     |  |
+| Net cash used in investing activities           | (2,861)                                     | (54,019)   | (763)                                 | (14,405)  | $(94.7)\%$ |  |
+| Net cash used in financing activities           | (488, 358)                                  | (510, 869) | (130, 229)                            | (136,232) | (4.4)%     |  |
+| Cash and cash equivalents at end of the year    | 216,642                                     | 198.973    | 57,771                                | 53,059    | 8.9%       |  |
+|                                                 |                                             |            |                                       |           |            |  |
+| Capital expenditures                            | (188, 890)                                  | (158, 308) | (50, 371)                             | (42, 215) | 19.3%      |  |
+| Free cash flow**                                | 319.998                                     | 379.506    | 85,333                                | 101.202   | (15.7)%    |  |
+
+\* Supplementary information is converted at a fixed rate of U.S. dollar 1.00 = SAR 3.75 for convenience only.
+
+
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Cash Provided by Operating Activities (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Cash Used in Investing Activities (2024))
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Cash Used in Financing Activities (2024))
+      Properties: {
+        "value": "-488358",
+        "unit": "SAR million",
+        "year": "2024",
+        "metric_type": "Net Cash Used in Financing Activities"
+}
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Cash and Equivalents (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Capital Expenditure (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Free Cash Flow (2024))
+
+Chunk 39/52 (similarity: 0.400)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 15
+  Page: 45
+  Text preview: ADDITIONAL FINANCIAL AND LEGAL **INFORMATION** 
+
+7. CONSOLIDATED FINANCIAL STATEMENTS
+
+## Gearing
+
+|                                                                       |                   | SAR    ...
+  Full text:
+--------------------------------------------------------------------------------
+ADDITIONAL FINANCIAL AND LEGAL **INFORMATION** 
+
+7. CONSOLIDATED FINANCIAL STATEMENTS
+
+## Gearing
+
+|                                                                       |                   | SAR        |                   | USD*      |  |
+|-----------------------------------------------------------------------|-------------------|------------|-------------------|-----------|--|
+|                                                                       | As at December 31 |            | As at December 31 |           |  |
+| All amounts in millions unless otherwise stated                       | 2024              | 2023       | 2024              | 2023      |  |
+| Total borrowings (current and non-current)                            | 319,290           | 290.147    | 85.143            | 77,373    |  |
+| Cash and cash equivalents                                             | (216, 642)        | (198, 973) | (57, 771)         | (53,059)  |  |
+| Short-term investments                                                | (13, 186)         | (184, 343) | (3, 516)          | (49, 158) |  |
+| Investments in debt securities (current and non-current) <sup>1</sup> | (11, 384)         | (9,584)    | (3,037)           | (2, 556)  |  |
+| Non-current cash investments                                          |                   |            |                   |           |  |
+| Net debt (cash)                                                       | 78,078            | (102.753)  | 20.819            | (27, 400) |  |
+| Total equity                                                          | 1,651,355         | 1,737,092  | 440,361           | 463,225   |  |
+| Total equity and net debt (cash)                                      | 1,729,433         | 1,634,339  | 461.180           | 435,825   |  |
+| Gearing                                                               | 4.5%              | (6.3)%     | 4.5%              | (6.3)%    |  |
+
+\* Supplementary information is converted at a fixed rate of U.S. dollar 1.00 = SAR 3.75 for convenience only.
+
+
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Gearing Ratio (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Debt (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Debt (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Cash and Equivalents (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Short-term Investments (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Equity (2024))
+
+Chunk 40/52 (similarity: 0.493)
+  Section: Aramco Results&Performance
+  Section ID: 2
+  Chunk Index: 7
+  Page: 37
+  Text preview: The information presented is based on the principal amounts of the respective issued debt instruments in the capital markets....
+  Full text:
+--------------------------------------------------------------------------------
+The information presented is based on the principal amounts of the respective issued debt instruments in the capital markets.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 41/52 (similarity: 0.395)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 3
+  Page: 126
+  Text preview: Consequently, the Company continues to apply the 20% income tax rate to its Downstream activities.
+
+## Summarized consolidated balance sheet
+
+|                                                     | As...
+  Full text:
+--------------------------------------------------------------------------------
+Consequently, the Company continues to apply the 20% income tax rate to its Downstream activities.
+
+## Summarized consolidated balance sheet
+
+|                                                     | As at December 31 |           |           |           |           |  |
+|-----------------------------------------------------|-------------------|-----------|-----------|-----------|-----------|--|
+| All amounts in millions SAR unless otherwise stated | 2024              | 2023      | 2022      | 2021      | 2020      |  |
+| Total assets                                        | 2,423,630         | 2,477,940 | 2,492,924 | 2.162.690 | 1.914.261 |  |
+| Total liabilities                                   | 772.275           | 740.848   | 826.777   | 882.022   | 813.167   |  |
+| Net assets (total equity)                           | 1,651,355         | 1.737.092 | 1.666.147 | .280.668  | 1,101,094 |  |
+
+## Summarized consolidated statement of cash flows
+
+|                                                     | <b>Year ended December 31</b> |           |            |           |           |
+|-----------------------------------------------------|-------------------------------|-----------|------------|-----------|-----------|
+| All amounts in millions SAR unless otherwise stated | 2024                          | 2023      | 2022       | 2021      | 2020      |
+| Net cash provided by operating activities           | 508,888                       | 537.814   | 698.152    | 522.601   | 285.297   |
+| Net cash used in investing activities               | (2,861)                       | (54.019)  | (389.009)  | (135.741) | (20, 899) |
+| Net cash used in financing activities               | (488, 358)                    | (510.869) | (382, 675) | (294.513) | (234,872) |
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Debt (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Capital Expenditure (2024))
+
+Chunk 42/52 (similarity: 0.387)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 14
+  Page: 137
+  Text preview: Represents 100% of the balance as reported in the respective subsidiaries' balance sheet....
+  Full text:
+--------------------------------------------------------------------------------
+Represents 100% of the balance as reported in the respective subsidiaries' balance sheet.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 43/52 (similarity: 0.339)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 6
+  Page: 129
+  Text preview: ORGANIZATIONAL | <b>6. ADDITIONAL</b> |                   |
+|---------------------------------------------|-------------------|--------|-------------------|----------------------|-------------------|
+...
+  Full text:
+--------------------------------------------------------------------------------
+ORGANIZATIONAL | <b>6. ADDITIONAL</b> |                   |
+|---------------------------------------------|-------------------|--------|-------------------|----------------------|-------------------|
+|                                             |                   |        | STRUCTURE AND     | <b>FINANCIAL</b>     | CONSOLIDATED      |
+| ' ARAMCO OVERVIEW<br><b>12. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 44/52 (similarity: 0.380)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 31
+  Page: 154
+  Text preview: #### **Reserved Areas**
+
+The areas reserved for Aramco's operations within the Concession Area.
+
+## **ROACE**
+
+Return on average capital employed.
+
+...
+  Full text:
+--------------------------------------------------------------------------------
+#### **Reserved Areas**
+
+The areas reserved for Aramco's operations within the Concession Area.
+
+## **ROACE**
+
+Return on average capital employed.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 45/52 (similarity: 0.380)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 5
+  Page: 128
+  Text preview: For more information on Aramco's related party transactions, see Section 7: Consolidated financial statements - Note 29.
+
+|                                                                             ...
+  Full text:
+--------------------------------------------------------------------------------
+For more information on Aramco's related party transactions, see Section 7: Consolidated financial statements - Note 29.
+
+|                                                                                      | Year ended   |
+|--------------------------------------------------------------------------------------|--------------|
+|                                                                                      | December 31, |
+| All amounts in millions SAR unless otherwise stated                                  | 2024         |
+| Joint ventures:                                                                      |              |
+| Revenue from sales                                                                   | 25,894       |
+| Other revenue                                                                        | 83           |
+| Interest income                                                                      | 206          |
+| Purchases                                                                            | 27,773       |
+| Service expenses                                                                     | 34           |
+| Associates:                                                                          |              |
+| Revenue from sales                                                                   | 85,766       |
+| Other revenue                                                                        | 218          |
+| Interest income                                                                      | 353          |
+| Purchases                                                                            | 57,818       |
+| Service expenses                                                                     | 180          |
+| Government, semi-Government and other entities with Government ownership or control: |              |
+| Revenue from sales                                                                   | 37,376       |
+| Other income related to sales                                                        | 164,375      |
+| Other revenue                                                                        | 936          |
+| Purchases                                                                            | 10,215       |
+| Service expenses                                                                     | 514          |
+| Lease expenses                                                                       | 1,178        |
+
+The following table sets forth Aramco's material related party transaction balances as at December 31, 2024.
+
+|                                                                                      | As at           |
+|--------------------------------------------------------------------------------------|-----------------|
+|                                                                                      | <b>December</b> |
+| All amounts in millions SAR unless otherwise stated                                  | 31, 2024        |
+| Joint ventures:                                                                      |                 |
+| Other assets and receivables                                                         | 3,888           |
+| Trade receivables                                                                    | 5,378           |
+| Interest receivable                                                                  | 645             |
+| Trade payables and other liabilities                                                 | 6,365           |
+| <b>Associates:</b>                                                                   |                 |
+| Other assets and receivables                                                         | 3,831           |
+| Trade receivables                                                                    | 18,739          |
+| Trade payables and other liabilities                                                 | 4,576           |
+| Government, semi-Government and other entities with Government ownership or control: |                 |
+| Other assets and receivables                                                         | 5,634           |
+| Trade receivables                                                                    | 4,556           |
+| Due from the Government                                                              | 38,274          |
+| Short-term investments with banks                                                    | 5,749           |
+| Cash and cash equivalents held with banks                                            | 48,762          |
+| Trade payables and other liabilities                                                 | 2,799           |
+| <b>Borrowings</b>                                                                    | 26,393          |
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Revenue (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Revenue (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Revenue (2024))
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Interest income (2024))
+      Properties: {
+        "value": "206",
+        "unit": "SAR million",
+        "year": "2024",
+        "metric_type": "Interest income"
+}
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Interest income (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Cash and Equivalents (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Short-term Investments (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Debt (2024))
+
+Chunk 46/52 (similarity: 0.378)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 9
+  Page: 132
+  Text preview: # Additional financial information continued
+
+#### **Related party transactions continued**
+
+All amounts in millions SAR unless otherwise stated
+
+| Short-term investments with banks         |        |...
+  Full text:
+--------------------------------------------------------------------------------
+# Additional financial information continued
+
+#### **Related party transactions continued**
+
+All amounts in millions SAR unless otherwise stated
+
+| Short-term investments with banks         |        |
+|-------------------------------------------|--------|
+| Gulf International Bank ("GIB")           | 746    |
+| Riyad Bank                                | 986    |
+| Saudi Investment Bank ("SAIB")            | 1,328  |
+| The Saudi National Bank ("SNB")           | 1,819  |
+| <b>Others</b>                             | 870    |
+|                                           | 5,749  |
+| Cash and cash equivalents held with banks |        |
+| Riyad Bank                                | 5,411  |
+| Saudi Investment Bank ("SAIB")            | 146    |
+| The Saudi National Bank ("SNB")           | 7,451  |
+| <b>Others</b>                             | 35,754 |
+|                                           | 48,762 |
+|                                           |        |
+| Trade payables and other liabilities      |        |
+| Government and semi-Government            | 1,062  |
+| <b>Others</b>                             | 1,737  |
+|                                           | 2,799  |
+| <b>Borrowings</b>                         |        |
+| Government and semi-Government            | 6,364  |
+| <b>Others</b>                             | 20,029 |
+|                                           | 26,393 |
+
+# **Total indebtedness of Aramco**
+
+Information on Aramco's total indebtedness as at December 31, 2024, is as follows:
+
+|                                                        |                             |                |               | Balance as at |               |
+|--------------------------------------------------------|-----------------------------|----------------|---------------|---------------|---------------|
+|                                                        |                             | Original Loan  | Repaid during | December 31,  |               |
+| All amounts in millions SAR unless otherwise stated    | Total facility <sup>1</sup> | duration       | the year      | 2024          | Maturity date |
+| Bank borrowings                                        | 35,149                      | 1 to 24 years  | (5, 337)      | 26,562        | 2025-2045     |
+| Sukuk (Shari'a compliant)                              | 41,389                      | 3 to 14 years  | (3,842)       | 41,389        | 2025-2034     |
+| Export credit agencies                                 | 12,289                      | 15 to 17 years | (687)         | 880           | 2025-2039     |
+| Public Investment Fund ("PIF")                         | 3,049                       | 15 years       | (404)         | 416           | 2025          |
+| Saudi Industrial Development Fund (Shari'a compliant)  | 7,363                       | 7 to 17 years  | (461)         | 4,119         | 2025-2035     |
+| Ijarah/Procurement (Shari'a compliant)                 | 3,705                       | 7 to 23 years  |               | 3,540         | 2026-2039     |
+| Murabaha (Shari'a compliant)                           | 25,488                      | 5 to 24 years  | (4,878)       | 14,436        | 2028-2032     |
+| Wakala (Shari'a compliant) and other Islamic financing | 2,460                       | 7 to 16 years  | -             | 1,255         | 2028-2038     |
+| Revolving Credit Facilities                            | 36,880                      | 1 to 5 years   | (534)         | 703           | 2025-2029     |
+| Short-term borrowings                                  | 37,487                      | Under 1 year   | (5,787)       | 21,242        | 2025          |
+| <b>Debentures</b>                                      | 106,283                     | 10 to 50 years | (9, 552)      | 106,283       | 2025-2070     |
+| Lease liabilities                                      |                             |                | (15, 344)     | 62,483        | Not defined   |
+| Other financing arrangements                           | 35,982                      | 11 to 25 years |               | 35,982        | 2028 - 2046   |
+|                                                        | 347.524                     |                | (46, 826)     | 319,290       |               |
+
+1. Includes total facility amounts and carrying amounts for certain long-term loans being repaid in installments.
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Short-term Investments (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Cash and Equivalents (2024))
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Total Debt (2024))
+
+Chunk 47/52 (similarity: 0.396)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 3
+  Page: 126
+  Text preview: # **Additional financial information**
+
+## **Historical financial highlights**
+
+#### Summarized consolidated statement of income
+
+|                                                     | <b>Year ended ...
+  Full text:
+--------------------------------------------------------------------------------
+# **Additional financial information**
+
+## **Historical financial highlights**
+
+#### Summarized consolidated statement of income
+
+|                                                     | <b>Year ended December 31</b> |            |               |            |            |
+|-----------------------------------------------------|-------------------------------|------------|---------------|------------|------------|
+| All amounts in millions SAR unless otherwise stated | 2024                          | 2023       | 2022          | 2021       | 2020       |
+| Revenue                                             | 1,637,299                     | 1,653,281  | 2,006,955     | 1,346,930  | 768,109    |
+| Other income related to sales <sup>1</sup>          | 164,375                       | 203,092    | 259,418       | 154,828    | 93,982     |
+| Revenue and other income related to sales           | 1,801,674                     | 1,856,373  | 2,266,373     | 1,501,758  | 862,091    |
+| Operating costs                                     | (1,027,049)                   | (988,086)  | (1, 122, 296) | (729, 840) | (478, 731) |
+| <b>Operating income</b>                             | 774,625                       | 868.287    | 1,144,077     | 771,918    | 383,360    |
+| Income before income taxes and zakat                | 782,010                       | 888,067    | 1,152,962     | 769,521    | 372,424    |
+| Income taxes and zakat <sup>2</sup>                 | (383, 588)                    | (433, 303) | (548, 957)    | (357, 125) | (188,661)  |
+| Net income                                          | 398,422                       | 454.764    | 604.005       | 412.396    | 183,763    |
+
+1. Aramco sells certain hydrocarbons within the Kingdom at regulated prices mandated by the Government. 
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Revenue (2024))
+    - (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Operating income (2024))
+      Properties: {
+        "value": "774625",
+        "unit": "SAR million",
+        "year": "2024",
+        "metric_type": "Operating income"
+}
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[HAS_METRIC]--> (Metric: Net Income (2024))
+
+Chunk 48/52 (similarity: 0.364)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 30
+  Page: 153
+  Text preview: 3 SUSTAINARILITY 4 RISK
+
+CONSOLIDATED FINANCIAL **STATEMENTS** 
+
+#### **EBIT**
+
+Earnings (losses) before interest, income taxes and zakat
+
+#### **EGM**
+
+Extraordinary General Assembly meeting. **FRM**...
+  Full text:
+--------------------------------------------------------------------------------
+3 SUSTAINARILITY 4 RISK
+
+CONSOLIDATED FINANCIAL **STATEMENTS** 
+
+#### **EBIT**
+
+Earnings (losses) before interest, income taxes and zakat
+
+#### **EGM**
+
+Extraordinary General Assembly meeting. **FRM** 
+
+Enterprise risk management.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 49/52 (similarity: 0.433)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 20
+  Page: 143
+  Text preview: | <b>Netherlands</b>                                                    | 70%     | Financing                               | <b>USD</b>    | 0.1                  |
+| SABIC Capital II B.V.            ...
+  Full text:
+--------------------------------------------------------------------------------
+| <b>Netherlands</b>                                                    | 70%     | Financing                               | <b>USD</b>    | 0.1                  |
+| SABIC Capital II B.V.                                    
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 50/52 (similarity: 0.330)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 25
+  Page: 148
+  Text preview: Share capital amounts are presented in SAR. The currencies listed represent the functional currency of the entity.<br>4. Under liquidation.
+
+...
+  Full text:
+--------------------------------------------------------------------------------
+Share capital amounts are presented in SAR. The currencies listed represent the functional currency of the entity.<br>4. Under liquidation.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 51/52 (similarity: 0.340)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 4
+  Page: 127
+  Text preview: For more details, refer to Section 7: Consolidated financial statements - Note 4....
+  Full text:
+--------------------------------------------------------------------------------
+For more details, refer to Section 7: Consolidated financial statements - Note 4.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 52/52 (similarity: 0.330)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 11
+  Page: 134
+  Text preview: In connection with the offering, the Government sold an aggregate of approximately 1.7 billion shares, representing 0.7% of the Company's issued shares. This includes 137.6 million ordinary shares acq...
+  Full text:
+--------------------------------------------------------------------------------
+In connection with the offering, the Government sold an aggregate of approximately 1.7 billion shares, representing 0.7% of the Company's issued shares. This includes 137.6 million ordinary shares acquired by the Company from the Government for a cash payment of #3.75 billion (\$1.0 billion), which have been classified as treasury shares. These treasury shares will be used by the Company for its employee share plans. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+================================================================================
+EXTRACTION COMPLETE: HAS_METRIC
+================================================================================
+Entities     : 28
+Relationships: 28
+Duration     : 794.8s (13.2 min)
+
+
+================================================================================
+EXTRACTING RELATION: FACES_RISK
+Started: 2026-04-21 10:52:14
+================================================================================
+Source: Company
+Target: Risk
+Relationship: FACES_RISK
+
+
+✓ Using 15/15 chunks (threshold: 0.3)
+
+================================================================================
+EXTRACTING ENTITIES WITH LLM
+================================================================================
+
+Chunk 1/15 (similarity: 0.498)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 28
+  Page: 151
+  Text preview: Any delays caused by factors that are under the Company's control (e.g. terminal, pipeline, stabilization, or production) negatively affect the score, whereas delays caused by conditions that are beyo...
+  Full text:
+--------------------------------------------------------------------------------
+Any delays caused by factors that are under the Company's control (e.g. terminal, pipeline, stabilization, or production) negatively affect the score, whereas delays caused by conditions that are beyond the Company's control, such as adverse weather, are not considered. A score of less than 100% indicates there were issues that negatively impacted supply reliability.
+
+
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 2/15 (similarity: 0.462)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 14
+  Page: 137
+  Text preview: Aramco believes that it is not presently a party to any legal, regulatory, or other proceedings that, if determined adversely to it, could reasonably be expected, individually or taken together, to ha...
+  Full text:
+--------------------------------------------------------------------------------
+Aramco believes that it is not presently a party to any legal, regulatory, or other proceedings that, if determined adversely to it, could reasonably be expected, individually or taken together, to have a material adverse effect on Aramco's business, financial position or results of operations.
+
+#### **Debt instruments issued by subsidiaries**
+
+| All amounts in millions SAR unless otherwise stated | Debt instrument   | <b>Dalafice as al</b><br>December 31,<br>2024 |
+|-----------------------------------------------------|-------------------|-----------------------------------------------|
+| Esmax Distribución SpA ("Esmax")                    | <b>Debentures</b> | 259                                           |
+| Motiva Enterprises LLC                              | <b>Debentures</b> | 5,700                                         |
+| SA Global Sukuk Limited                             | Sukuk             | 30,124                                        |
+| Sadara Chemical Company                             | Sukuk             | 5.201                                         |
+| Saudi Aramco Sukuk Company                          | Sukuk             | 11.396                                        |
+| Saudi Basic Industries Corporation ("SABIC")        | <b>Debentures</b> | 8.066                                         |
+| S-Oil Corporation                                   | <b>Debentures</b> | 8,029                                         |
+
+1. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 3/15 (similarity: 0.435)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 3
+  Page: 126
+  Text preview: # **Additional financial information**
+
+## **Historical financial highlights**
+
+#### Summarized consolidated statement of income
+
+|                                                     | <b>Year ended ...
+  Full text:
+--------------------------------------------------------------------------------
+# **Additional financial information**
+
+## **Historical financial highlights**
+
+#### Summarized consolidated statement of income
+
+|                                                     | <b>Year ended December 31</b> |            |               |            |            |
+|-----------------------------------------------------|-------------------------------|------------|---------------|------------|------------|
+| All amounts in millions SAR unless otherwise stated | 2024                          | 2023       | 2022          | 2021       | 2020       |
+| Revenue                                             | 1,637,299                     | 1,653,281  | 2,006,955     | 1,346,930  | 768,109    |
+| Other income related to sales <sup>1</sup>          | 164,375                       | 203,092    | 259,418       | 154,828    | 93,982     |
+| Revenue and other income related to sales           | 1,801,674                     | 1,856,373  | 2,266,373     | 1,501,758  | 862,091    |
+| Operating costs                                     | (1,027,049)                   | (988,086)  | (1, 122, 296) | (729, 840) | (478, 731) |
+| <b>Operating income</b>                             | 774,625                       | 868.287    | 1,144,077     | 771,918    | 383,360    |
+| Income before income taxes and zakat                | 782,010                       | 888,067    | 1,152,962     | 769,521    | 372,424    |
+| Income taxes and zakat <sup>2</sup>                 | (383, 588)                    | (433, 303) | (548, 957)    | (357, 125) | (188,661)  |
+| Net income                                          | 398,422                       | 454.764    | 604.005       | 412.396    | 183,763    |
+
+1. Aramco sells certain hydrocarbons within the Kingdom at regulated prices mandated by the Government. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 4/15 (similarity: 0.420)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 4
+  Page: 127
+  Text preview: |                                     |                                                             |  |               | ---------------    |
+|-------------------------------------|-------------------...
+  Full text:
+--------------------------------------------------------------------------------
+|                                     |                                                             |  |               | ---------------    |
+|-------------------------------------|-------------------------------------------------------------|--|---------------|--------------------|
+|                                     |                                                             |  | STRUCTURE AND | FINANCIAL          |
+| 1. ARAMCO OVERVIEW   2. RESULTS AND |                                                             |  | CORPORATE     | <b>AND LEGAL</b>   |
+|                                     | AND STRATEGY THE PERFORMANCE THE BUSTAINABILITY THE 4. RISK |  | GOVERNANCE    | <b>INFORMATION</b> |
+|                                     |                                                             |  |               |                    |
+
+7. CONSOLIDATED FINANCIAL STATEMENTS
+
+Ac at
+
+#### All amounts in millions SAR unless otherwise stated
+
+**6. ADDITIONAL** 
+
+## **Statutory amounts paid and payable**
+
+## Statutory amounts paid<sup>1</sup>
+
+| All amounts in millions SAR unless otherwise stated | Reasons for amounts paid                                                                                                                  | Year ended<br><b>December</b><br>31, 2024 |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
+| Income taxes and zakat                              | Income taxes and zakat calculated in accordance with Saudi Income Tax Regulations.<br>See Note 8 of the consolidated financial statements | 176,523                                   |
+| Royalties                                           | Production royalties determined in accordance with Government agreements                                                                  | 187,982                                   |
+| <b>Total</b>                                        |                                                                                                                                           | 364.505                                   |
+
+5. ORGANIZATIONAL
+
+#### Statutory amounts payable<sup>1</sup>
+
+|                                                     |                                                   | As ut<br>December |
+|-----------------------------------------------------|---------------------------------------------------|-------------------|
+| All amounts in millions SAR unless otherwise stated | Reasons for amounts payable                       | 31.2024           |
+| Income taxes and zakat                              | Government obligation, payable on a monthly basis | 69.964            |
+| Rovalties                                           | Government obligation, payable on a monthly basis | 12.050            |
+| <b>Total</b>                                        |                                                   | 82.014            |
+
+1. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 5/15 (similarity: 0.414)
+  Section: Additional financial and legal information
+  Section ID: 6
+  Chunk Index: 14
+  Page: 137
+  Text preview: The outcome of litigation and other legal matters, including Government investigations or other trade actions, is inherently uncertain. Aramco believes it has valid defenses to the legal matters curre...
+  Full text:
+--------------------------------------------------------------------------------
+The outcome of litigation and other legal matters, including Government investigations or other trade actions, is inherently uncertain. Aramco believes it has valid defenses to the legal matters currently pending against it as a party. Certain trade actions that do not involve Aramco as a party may instead involve its products or industry, other products or industries impacting its operations, or the countries in which it operates. Trade actions may be taken without prior notice, or with retroactive effect. Actual outcomes of these legal, regulatory, and other proceedings may materially differ from current estimates. To date, none of these types of litigation or trade matters has had a material impact on Aramco's operations or financial position. 
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[FACES_RISK]--> (Risk: Litigation and other legal matters)
+      Properties: {
+        "description": "Uncertain outcomes of legal matters, including Government investigations or other trade actions"
+}
+    - (Company: Saudi Arabian Oil Company) --[FACES_RISK]--> (Risk: Trade actions)
+      Properties: {
+        "description": "Trade actions may be taken without prior notice, or with retroactive effect"
+}
+
+Chunk 6/15 (similarity: 0.503)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 3
+  Page: 159
+  Text preview: |
+
+As part of designing our audit, we determined materiality and assessed the risks of material misstatement in the consolidated financial statements. In particular, we considered where the Board of D...
+  Full text:
+--------------------------------------------------------------------------------
+|
+
+As part of designing our audit, we determined materiality and assessed the risks of material misstatement in the consolidated financial statements. In particular, we considered where the Board of Directors made subjective judgments; for example, in respect of significant accounting estimates that involved making assumptions and considering future events that are inherently uncertain. As in all of our audits, we also addressed the risk of management override of internal controls, including among other matters, consideration of whether there was evidence of bias that represented a risk of material misstatement due to fraud.
+
+#### **Materiality**
+
+The scope of our audit was influenced by our application of materiality. An audit is designed to obtain reasonable assurance whether the consolidated financial statements are free from material misstatement. Misstatements may arise due to fraud or error. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 7/15 (similarity: 0.485)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 7
+  Page: 163
+  Text preview: Misstatements can arise from fraud or error and are considered material if, individually or in the aggregate, they could reasonably be expected to influence the economic decisions of users taken on th...
+  Full text:
+--------------------------------------------------------------------------------
+Misstatements can arise from fraud or error and are considered material if, individually or in the aggregate, they could reasonably be expected to influence the economic decisions of users taken on the basis of these consolidated financial statements.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 8/15 (similarity: 0.480)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 5
+  Page: 161
+  Text preview: - We considered the appropriateness of the related accounting policies and disclosures in the consolidated financial statements....
+  Full text:
+--------------------------------------------------------------------------------
+- We considered the appropriateness of the related accounting policies and disclosures in the consolidated financial statements.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 9/15 (similarity: 0.472)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 3
+  Page: 159
+  Text preview: They are considered material if individually or in aggregate, they could reasonably be expected to influence the economic decisions of users taken on the basis of the consolidated financial statements...
+  Full text:
+--------------------------------------------------------------------------------
+They are considered material if individually or in aggregate, they could reasonably be expected to influence the economic decisions of users taken on the basis of the consolidated financial statements.
+
+Based on our professional judgment, we determined certain quantitative thresholds for materiality, including the overall Group materiality for the consolidated financial statements as a whole as set out in the following table. These, together with qualitative considerations, helped us to determine the scope of our audit and the nature, timing and extent of our audit procedures and to evaluate the effect of misstatements, both individually and in aggregate, on the consolidated financial statements as a whole.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 10/15 (similarity: 0.453)
+  Section: consolidated financial statements
+  Section ID: 7
+  Chunk Index: 20
+  Page: 176
+  Text preview: If, in a subsequent period, the amount of a non-goodwill impairment loss decreases, a reversal of the previously recognized impairment loss is recognized in net income.
+
+#### Significant accounting ju...
+  Full text:
+--------------------------------------------------------------------------------
+If, in a subsequent period, the amount of a non-goodwill impairment loss decreases, a reversal of the previously recognized impairment loss is recognized in net income.
+
+#### Significant accounting judgments and estimates
+
+Impairment tests are undertaken on the basis of the smallest identifiable group of assets (cash-generating unit), or individual assets, for which there are largely independent cash inflows. 
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 11/15 (similarity: 0.586)
+  Section: Aramco Risk
+  Section ID: 4
+  Chunk Index: 8
+  Page: 80
+  Text preview: Any such<br>losses could have a material adverse effect on<br>Aramco's business, financial position, and results<br>of operations.                                                                      ...
+  Full text:
+--------------------------------------------------------------------------------
+Any such<br>losses could have a material adverse effect on<br>Aramco's business, financial position, and results<br>of operations.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <b>Terrorism and</b><br>armed conflict<br><b>Terrorism and armed conflict</b><br>may materially and adversely<br>affect Aramco.                                                                                                                                                                                                           
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[FACES_RISK]--> (Risk: Terrorism and armed conflict)
+      Properties: {
+        "description": "may materially and adversely affect Aramco"
+}
+
+Chunk 12/15 (similarity: 0.564)
+  Section: Aramco Risk
+  Section ID: 4
+  Chunk Index: 9
+  Page: 81
+  Text preview: The occurrence of any of these risks may be burdensome and could have a material adverse effect on Aramco's business, financial position, and results of operations....
+  Full text:
+--------------------------------------------------------------------------------
+The occurrence of any of these risks may be burdensome and could have a material adverse effect on Aramco's business, financial position, and results of operations.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 13/15 (similarity: 0.557)
+  Section: Aramco Risk
+  Section ID: 4
+  Chunk Index: 7
+  Page: 79
+  Text preview: If projects are delayed, cost more than expected, or do not generate the expected return, Aramco's operations and expected levels
+
+of production could be impacted. These occurrences could result in Ar...
+  Full text:
+--------------------------------------------------------------------------------
+If projects are delayed, cost more than expected, or do not generate the expected return, Aramco's operations and expected levels
+
+of production could be impacted. These occurrences could result in Aramco recognizing impairments on its projects, assuming liabilities of joint ventures or partners and affiliates, or other consequences, any of which could have a material adverse effect on Aramco's business, financial position, and results of operations.
+
+6. 
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[FACES_RISK]--> (Risk: Projects are delayed)
+      Properties: {
+        "description": "Projects are delayed, cost more than expected, or do not generate the expected return"
+}
+    - (Company: Saudi Arabian Oil Company) --[FACES_RISK]--> (Risk: Cost more than expected)
+      Properties: {
+        "description": "Projects are delayed, cost more than expected, or do not generate the expected return"
+}
+    - (Company: Saudi Arabian Oil Company) --[FACES_RISK]--> (Risk: Do not generate the expected return)
+      Properties: {
+        "description": "Projects are delayed, cost more than expected, or do not generate the expected return"
+}
+
+Chunk 14/15 (similarity: 0.516)
+  Section: Aramco Risk
+  Section ID: 4
+  Chunk Index: 14
+  Page: 86
+  Text preview: Any such event could have a material adverse effect on Aramco's earnings, cash flow, financial position, and results of operations....
+  Full text:
+--------------------------------------------------------------------------------
+Any such event could have a material adverse effect on Aramco's earnings, cash flow, financial position, and results of operations.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 15/15 (similarity: 0.502)
+  Section: Aramco Risk
+  Section ID: 4
+  Chunk Index: 11
+  Page: 83
+  Text preview: Compliance by the Kingdom with any such commitments may directly or indirectly impact Aramco and could cause it to alter its operations in a manner that is costly or otherwise has a material adverse e...
+  Full text:
+--------------------------------------------------------------------------------
+Compliance by the Kingdom with any such commitments may directly or indirectly impact Aramco and could cause it to alter its operations in a manner that is costly or otherwise has a material adverse effect on its business, financial position, or results of operations. If the Kingdom is deemed to be non-compliant, Aramco's business operations could be exposed to scrutiny and Aramco or its affiliates' exports could be subject to potential remedial measures, such as duties, which could have a material adverse effect on Aramco's business, financial position, and results of operations.
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[FACES_RISK]--> (Risk: Compliance with commitments)
+      Properties: {
+        "description": "Non-compliance could expose business to scrutiny and remedial measures"
+}
+
+================================================================================
+EXTRACTION COMPLETE: FACES_RISK
+================================================================================
+Entities     : 7
+Relationships: 7
+Duration     : 212.0s (3.5 min)
+
+
+================================================================================
+EXTRACTING RELATION: OPERATES_IN
+Started: 2026-04-21 10:55:46
+================================================================================
+Source: Company
+Target: Industry
+Relationship: OPERATES_IN
+
+
+✓ Using 6/6 chunks (threshold: 0.3)
+
+================================================================================
+EXTRACTING ENTITIES WITH LLM
+================================================================================
+
+Chunk 1/6 (similarity: 0.610)
+  Section: Aramco Overview & Strat
+  Section ID: 1
+  Chunk Index: 13
+  Page: 16
+  Text preview: Low-cost, lower carbon intensity production
+
+Low-cost upstream production with a lower upstream carbon intensity associated with production of both oil and gas which is one of the lowest among major p...
+  Full text:
+--------------------------------------------------------------------------------
+Low-cost, lower carbon intensity production
+
+Low-cost upstream production with a lower upstream carbon intensity associated with production of both oil and gas which is one of the lowest among major producers, and operational flexibility to rapidly increase crude oil production.
+
+Upstream production is monetized through a high-quality external customer base and captive downstream system.
+
+#### **High-quality gas reserves**
+
+Exclusive access to extensive high-quality gas reserves and high success rates in locating new reserves in known hydrocarbon-bearing basins adjacent to existing fields and production infrastructure.
+
+**Total hydrocarbon** production<sup>5</sup> (mmboed)
+
+**Total liquids** production<sup>5</sup> (mmbpd)
+
+2. Integrated refining and chemical operations
+
+41
+
+Major integrated refiner and chemical producer with a global network of reliable assets in key regional markets and hubs.
+
+**Net refining Net chemicals** capacity production capacity<sup>6</sup> (million tons per year) (mmbpd)
+
+576
+
+#### 3. Kingdom-wide distribution network
+
+DURSTREAM & DOWNSTREAM ORRATIONS
+
+Kingdom-wide distribution network includes pipelines, bulk plants, air refueling sites, and terminals that deliver crude oil, NGL, natural gas, and refined products.
+
+MARKET
+
+**Maximum Sustainable** 
+
+Capacity
+
+(mmbpd)
+
+12.O
+
+Countries of operations
+
+50+
+--------------------------------------------------------------------------------
+    - (Company: Saudi Arabian Oil Company) --[OPERATES_IN]--> (Industry: Oil & Gas)
+      Properties: {
+        "sector": "Energy"
+}
+      SIC: (Industry: Oil & Gas) --[HAS_SIC_CODE]--> (SICCode: 1311)
+
+Chunk 2/6 (similarity: 0.569)
+  Section: Aramco Overview & Strat
+  Section ID: 1
+  Chunk Index: 7
+  Page: 10
+  Text preview: In 2024, we made investments in refining and petrochemical projects in key markets, while extending our retail presence in select geographies globally. For example, in recent years we have made a numb...
+  Full text:
+--------------------------------------------------------------------------------
+In 2024, we made investments in refining and petrochemical projects in key markets, while extending our retail presence in select geographies globally. For example, in recent years we have made a number of low-equity investments with high crude placement rights in China as part of our long-term intention of increasing our liquids-to-chemicals business. By strategically expanding our downstream portfolio, we are positioning ourselves to be able to place more of the crude oil and natural gas liquids we produce into refineries and petrochemical complexes that we either wholly own or in which we have an equity interest. This will serve to provide further resilience during inevitable fluctuations in the oil market.
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[OPERATES_IN]--> (Industry: Oil & Gas)
+
+Chunk 3/6 (similarity: 0.551)
+  Section: Aramco Overview & Strat
+  Section ID: 1
+  Chunk Index: 24
+  Page: 27
+  Text preview: ORGANIZATIONAL STRUCTURE AND CORPORATE GOVERNANCE
+
+6. ADDITIONAL INFORMATION
+
+CONSOLIDATED FINANCIAL STATEMENTS
+
+### Downstream integration
+
+Aramco intends to continue the strategic integration of its...
+  Full text:
+--------------------------------------------------------------------------------
+ORGANIZATIONAL STRUCTURE AND CORPORATE GOVERNANCE
+
+6. ADDITIONAL INFORMATION
+
+CONSOLIDATED FINANCIAL STATEMENTS
+
+### Downstream integration
+
+Aramco intends to continue the strategic integration of its Upstream and Downstream businesses to facilitate the placement of the Company's crude oil in larger offtake volumes through a dedicated system of domestic and international wholly-owned and affiliated refineries and petrochemical complexes, allowing it to capture additional value across the hydrocarbon value chain, expand its sources of earnings, and provide resilience to oil market volatility.
+
+Aramco's 70% equity interest in SABIC has supported the expansion of its downstream activities, including integration between refining and chemicals and improving the balance of its product portfolio between fuels and chemicals, and provides a consistent outlet for its crude oil and gas. Changing patterns of demand, including growth in chemicals demand and the long-term risk of decline in fuels demand, are driving the Company's strategy to favor investments in facilities with high liguids-to-chemicals conversion rates. Aramco intends to continue to grow its liguids-to-chemicals
+
+business, with a goal to increase its capacity in petrochemical producing complexes to up to four million barrels per day by 2030.
+
+FINANCIAL
+
+AND LEGAL
+
+Geographically, Aramco intends to enhance both its domestic and global Downstream businesses in key high-growth geographies such as China, India, and Southeast Asia, which are integral to its existing business and future expansion strategy, as well as in other attractive markets. Aramco also intends to maintain its presence in key large countries, such as the United States, and in countries that rely on imported crude oil, such as Japan and South Korea.
+
+Aramco continues to expand global recognition of its brands. One aspect of this strategy is to introduce its brands to existing domestic and international marketing businesses, including at retail service stations, and further develop its petrochemicals, base oil and lubricants brands. As new marketing activities are added to its business portfolio, Aramco intends to use its own brands to build recognition of its position in the global energy sector.
+
+### Strategy in action
+
+Aramco's dedicated system of domestic and international refineries provide secure demand for upstream crude production.
+
+
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[OPERATES_IN]--> (Industry: Oil & Gas)
+
+Chunk 4/6 (similarity: 0.490)
+  Section: Corp Governance
+  Section ID: 5
+  Chunk Index: 19
+  Page: 109
+  Text preview: |                |
+| <b>Energy and chemicals</b><br>industry expertise                      | Demonstrates a practical understanding of the energy and chemicals industry<br>and provides valuable persp...
+  Full text:
+--------------------------------------------------------------------------------
+|                |
+| <b>Energy and chemicals</b><br>industry expertise                      | Demonstrates a practical understanding of the energy and chemicals industry<br>and provides valuable perspective on issues specific to the Company's business.                                    |                |
+| <b>Global business leadership</b><br>experience                        | Provides perspective on diverse business environments, customers, and supply<br>chains associated with the Company's global business and strategy.                                                
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 5/6 (similarity: 0.432)
+  Section: Corp Governance
+  Section ID: 5
+  Chunk Index: 1
+  Page: 91
+  Text preview: ADDITIONAL FINANCIAL AND LEGAL INFORMATION
+
+7. CONSOLIDATED FINANCIAL **STATEMENTS** 
+
+## Organizational structure and corporate governance
+
+| Organizational structure                          |  |
+|-...
+  Full text:
+--------------------------------------------------------------------------------
+ADDITIONAL FINANCIAL AND LEGAL INFORMATION
+
+7. CONSOLIDATED FINANCIAL **STATEMENTS** 
+
+## Organizational structure and corporate governance
+
+| Organizational structure                          |  |
+|---------------------------------------------------|--|
+| Board of Directors                                |  |
+| Senior Executives                                 |  |
+| Board structure                                   |  |
+| Audit Committee report                            |  |
+| Sustainability, Risk and HSE Committee report 109 |  |
+| Nomination Committee statement                    |  |
+| Compensation Committee statement  111             |  |
+| Compensation and other interests                  |  |
+| Governance, risk and compliance                   |  |
+|                                                   |  |
+
+## **Strategic integration**
+
+5
+
+## Qatif Bulk Plant, Qatif, Saudi Arabia
+
+Aramco's Board of Directors provide strategic leadership and oversight to Company management, ensuring the CEO and Senior Executives pursue the Company's strategic goals while aligning with its vision, mission, and values.
+
+Through its dedicated system of domestic and international refineries and petrochemical complexes, the Company strategically integrates its Upstream and Downstream businesses, capturing additional value across the hydrocarbon value chain.
+--------------------------------------------------------------------------------
+    ✗ No entities extracted
+
+Chunk 6/6 (similarity: 0.381)
+  Section: Corp Governance
+  Section ID: 5
+  Chunk Index: 13
+  Page: 103
+  Text preview: Prior to his current appointment, he led various organizations within the Company, including; Petroleum Engineering & Development, Corporate Planning, Northern Area Oil Operations, and Pipelines, Dist...
+  Full text:
+--------------------------------------------------------------------------------
+Prior to his current appointment, he led various organizations within the Company, including; Petroleum Engineering & Development, Corporate Planning, Northern Area Oil Operations, and Pipelines, Distribution, & Terminals.
+
+
+--------------------------------------------------------------------------------
+    ⊘ Skipping duplicate: (Company: Saudi Arabian Oil Company) --[OPERATES_IN]--> (Industry: Oil & Gas)
+
+================================================================================
+EXTRACTION COMPLETE: OPERATES_IN
+================================================================================
+Entities     : 1
+Relationships: 1
+Duration     : 100.6s (1.7 min)

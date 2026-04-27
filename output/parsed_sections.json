@@ -1,0 +1,63 @@
+{
+  "filename": "/app/input/saudi-aramco-ara-2024-english.pdf",
+  "num_pages": 238,
+  "num_sections": 7,
+  "sections": [
+    {
+      "level": 1,
+      "title": "Aramco Overview & Strat",
+      "original_title": "UK01_0005821_01_Aramco_Overview & Strat_v14",
+      "start_page": 4,
+      "end_page": 29,
+      "subsections": []
+    },
+    {
+      "level": 1,
+      "title": "Aramco Results&Performance",
+      "original_title": "UK01_0005821_02_Aramco_Results&Performance_v14",
+      "start_page": 30,
+      "end_page": 61,
+      "subsections": []
+    },
+    {
+      "level": 1,
+      "title": "Aramco Sustainability",
+      "original_title": "UK01_0005821_03_Aramco_Sustainability_v14",
+      "start_page": 62,
+      "end_page": 71,
+      "subsections": []
+    },
+    {
+      "level": 1,
+      "title": "Aramco Risk",
+      "original_title": "UK01_0005821_04_Aramco_Risk_v14",
+      "start_page": 72,
+      "end_page": 89,
+      "subsections": []
+    },
+    {
+      "level": 1,
+      "title": "Corp Governance",
+      "original_title": "UK01_0005821_05_Corp_Governance_v14",
+      "start_page": 90,
+      "end_page": 123,
+      "subsections": []
+    },
+    {
+      "level": 1,
+      "title": "Additional financial and legal information",
+      "original_title": "UK01_0005821_06_Additional financial and legal information_v14",
+      "start_page": 124,
+      "end_page": 155,
+      "subsections": []
+    },
+    {
+      "level": 1,
+      "title": "consolidated financial statements",
+      "original_title": "UK01_0005821_07_consolidated financial statements_v2",
+      "start_page": 156,
+      "end_page": 238,
+      "subsections": []
+    }
+  ]
+}

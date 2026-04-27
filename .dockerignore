@@ -1,0 +1,30 @@
+# Ignore unnecessary files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.git/
+.gitignore
+README.md
+.env
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.DS_Store
+Thumbs.db
+output
+outputttt
+
+# Exclude benchmark comparison file (use chunking.py for production)
+chunking_comparison.py
