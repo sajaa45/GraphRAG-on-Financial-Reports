@@ -1,8 +1,14 @@
+import os
 import requests
 import json
 import time
 from datetime import datetime
 import urllib3
+from dotenv import load_dotenv
+from neo4j import GraphDatabase
+
+# Load environment variables
+load_dotenv()
 
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -70,13 +76,73 @@ credit_risk_tags = [
 ]
 
 # Configuration
-SIC_CODES = ['1311']  # Change as needed
 START_DATE = "2023-01-01"
 END_DATE = "2024-01-01"
 FORM_TYPE = "10-K"
 MAX_COMPANIES = 100
 
 headers = {"User-Agent": "User (your_email@example.com)"}
+
+
+def get_sic_from_neo4j():
+    """Query Neo4j for the SIC code of the target company (is_target=true)."""
+    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+    user = os.getenv("NEO4J_USERNAME", "neo4j")
+    password = os.getenv("NEO4J_PASSWORD", "")
+    
+    driver = GraphDatabase.driver(uri, auth=(user, password))
+    try:
+        with driver.session() as session:
+            result = session.run(
+                """
+                MATCH (c:Company {is_target: true})-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """
+            )
+            record = result.single()
+            if record and record["sic_code"]:
+                code = str(record["sic_code"]).strip()
+                print(f"✓ SIC code from Neo4j: {code}\n")
+                return code
+    finally:
+        driver.close()
+    
+    raise RuntimeError(
+        "No SIC code found in Neo4j for the target company. "
+        "Run the OPERATES_IN extraction first."
+    )
+
+
+def get_target_company_metrics():
+    """Query Neo4j for metrics found in the target company."""
+    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+    user = os.getenv("NEO4J_USERNAME", "neo4j")
+    password = os.getenv("NEO4J_PASSWORD", "")
+    
+    driver = GraphDatabase.driver(uri, auth=(user, password))
+    try:
+        with driver.session() as session:
+            result = session.run(
+                """
+                MATCH (c:Company {is_target: true})-[:HAS_METRIC]->(m:Metric)
+                RETURN m.name AS metric_name, m.type AS metric_type
+                """
+            )
+            metrics = [{"name": record["metric_name"], "type": record["metric_type"]} 
+                      for record in result]
+            
+            if metrics:
+                print(f"✓ Found {len(metrics)} metrics in target company:")
+                for m in metrics:
+                    print(f"  - {m['name']} ({m['type']})")
+                print()
+            else:
+                print("⚠ No metrics found in target company\n")
+            
+            return metrics
+    finally:
+        driver.close()
 
 # Combine all tag groups
 all_covenant_tags = {
@@ -133,8 +199,8 @@ def fetch_companies_by_sic(sic_codes, start_date, end_date, form_type, size=100)
         return []
 
 
-def analyze_company_covenants(cik, company_name):
-    """Analyze a single company for financial covenant tags."""
+def analyze_company_covenants(cik, company_name, target_metrics=None):
+    """Analyze a single company for financial covenant tags and target metrics."""
     url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
     
     try:
@@ -144,6 +210,7 @@ def analyze_company_covenants(cik, company_name):
         facts = data.get('facts', {})
         
         results = {}
+        target_metric_results = {}
         
         # Search through all taxonomies
         for taxonomy_name, taxonomy_data in facts.items():
@@ -179,8 +246,43 @@ def analyze_company_covenants(cik, company_name):
                                 })
                         
                         results[covenant_type][tag_name] = tag_data
+                
+                # Check if this tag matches any target company metrics
+                if target_metrics:
+                    for metric in target_metrics:
+                        metric_name = metric.get('name', '').lower()
+                        # Simple matching - can be improved with fuzzy matching
+                        if metric_name and metric_name in tag_name.lower():
+                            if metric['name'] not in target_metric_results:
+                                target_metric_results[metric['name']] = []
+                            
+                            units = tag_content.get('units', {})
+                            tag_data = {
+                                'taxonomy': taxonomy_name,
+                                'tag': tag_name,
+                                'label': tag_content.get('label', ''),
+                                'description': tag_content.get('description', ''),
+                                'metric_type': metric.get('type', 'Unknown'),
+                                'units': {}
+                            }
+                            
+                            # Get all unit data
+                            for unit_name, entries in units.items():
+                                tag_data['units'][unit_name] = []
+                                for entry in entries:
+                                    tag_data['units'][unit_name].append({
+                                        'end': entry.get('end'),
+                                        'val': entry.get('val'),
+                                        'accn': entry.get('accn'),
+                                        'fy': entry.get('fy'),
+                                        'fp': entry.get('fp'),
+                                        'form': entry.get('form'),
+                                        'filed': entry.get('filed')
+                                    })
+                            
+                            target_metric_results[metric['name']].append(tag_data)
         
-        return results
+        return results, target_metric_results
     
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
@@ -199,8 +301,24 @@ def main():
     print("=" * 80)
     print()
     
+    # Get SIC code from Neo4j
+    try:
+        sic_code = get_sic_from_neo4j()
+        sic_codes = [sic_code]
+    except Exception as e:
+        print(f"Error getting SIC from Neo4j: {e}")
+        print("Falling back to default SIC code: 1311\n")
+        sic_codes = ['1311']
+    
+    # Get target company metrics
+    try:
+        target_metrics = get_target_company_metrics()
+    except Exception as e:
+        print(f"Error getting target metrics: {e}\n")
+        target_metrics = []
+    
     # Fetch companies
-    companies = fetch_companies_by_sic(SIC_CODES, START_DATE, END_DATE, FORM_TYPE, MAX_COMPANIES)
+    companies = fetch_companies_by_sic(sic_codes, START_DATE, END_DATE, FORM_TYPE, MAX_COMPANIES)
     
     if not companies:
         print("No companies found. Exiting.")
@@ -210,6 +328,7 @@ def main():
     companies_with_covenants = []
     companies_without_covenants = []
     companies_with_errors = []
+    companies_with_target_metrics = []
     
     print("=" * 80)
     print("ANALYZING COMPANIES")
@@ -223,29 +342,47 @@ def main():
         
         print(f"[{idx}/{len(companies)}] {name} ({ticker}) - CIK: {cik}")
         
-        results = analyze_company_covenants(cik, name)
+        covenant_results, metric_results = analyze_company_covenants(cik, name, target_metrics)
         
-        if results is None:
+        if covenant_results is None and metric_results is None:
             companies_with_errors.append(company)
             print(f"  ⚠ Data not available or error occurred\n")
-        elif results:
-            # Count total tags found
-            total_tags = sum(len(tags) for tags in results.values())
-            companies_with_covenants.append({
-                'company': company,
-                'covenant_count': total_tags,
-                'covenants': results
-            })
-            print(f"  ✓ Found {total_tags} covenant tag(s)")
-            
-            # Show which covenant types were found
-            for covenant_type, tags in results.items():
-                if tags:
-                    print(f"    - {covenant_type}: {len(tags)} tag(s)")
-            print()
         else:
-            companies_without_covenants.append(company)
-            print(f"  ✗ No covenant tags found\n")
+            has_covenants = bool(covenant_results)
+            has_metrics = bool(metric_results)
+            
+            if has_covenants or has_metrics:
+                # Count total tags found
+                total_covenant_tags = sum(len(tags) for tags in covenant_results.values()) if covenant_results else 0
+                total_metric_matches = sum(len(matches) for matches in metric_results.values()) if metric_results else 0
+                
+                company_data = {
+                    'company': company,
+                    'covenant_count': total_covenant_tags,
+                    'covenants': covenant_results,
+                    'target_metric_count': total_metric_matches,
+                    'target_metrics': metric_results
+                }
+                
+                companies_with_covenants.append(company_data)
+                
+                if has_covenants:
+                    print(f"  ✓ Found {total_covenant_tags} covenant tag(s)")
+                    for covenant_type, tags in covenant_results.items():
+                        if tags:
+                            print(f"    - {covenant_type}: {len(tags)} tag(s)")
+                
+                if has_metrics:
+                    print(f"  ✓ Found {total_metric_matches} target metric match(es)")
+                    for metric_name, matches in metric_results.items():
+                        if matches:
+                            print(f"    - {metric_name}: {len(matches)} match(es)")
+                    companies_with_target_metrics.append(company_data)
+                
+                print()
+            else:
+                companies_without_covenants.append(company)
+                print(f"  ✗ No covenant tags or target metrics found\n")
         
         # Rate limiting - be respectful to SEC servers
         time.sleep(0.2)
@@ -254,8 +391,10 @@ def main():
     print("=" * 80)
     print("SUMMARY")
     print("=" * 80)
+    print(f"SIC Code used: {sic_codes[0]}")
     print(f"Total companies analyzed: {len(companies)}")
-    print(f"Companies with covenant tags: {len(companies_with_covenants)}")
+    print(f"Companies with covenant tags or metrics: {len(companies_with_covenants)}")
+    print(f"Companies with target metrics: {len(companies_with_target_metrics)}")
     print(f"Companies without covenant tags: {len(companies_without_covenants)}")
     print(f"Companies with errors: {len(companies_with_errors)}")
     print()
@@ -288,21 +427,24 @@ def main():
     # Save comprehensive results
     output_data = {
         'metadata': {
-            'sic_codes': SIC_CODES,
+            'sic_codes': sic_codes,
+            'target_metrics_searched': [m['name'] for m in target_metrics] if target_metrics else [],
             'date_range': {'start': START_DATE, 'end': END_DATE},
             'form_type': FORM_TYPE,
             'analysis_date': datetime.now().isoformat(),
             'total_companies': len(companies),
             'companies_with_covenants': len(companies_with_covenants),
+            'companies_with_target_metrics': len(companies_with_target_metrics),
             'companies_without_covenants': len(companies_without_covenants),
             'companies_with_errors': len(companies_with_errors)
         },
         'companies_with_covenants': companies_with_covenants,
+        'companies_with_target_metrics': companies_with_target_metrics,
         'companies_without_covenants': companies_without_covenants,
         'companies_with_errors': companies_with_errors
     }
     
-    output_file = f"financial_covenants_sic_{'_'.join(SIC_CODES)}_{START_DATE}_to_{END_DATE}.json"
+    output_file = f"financial_covenants_sic_{'_'.join(sic_codes)}_{START_DATE}_to_{END_DATE}.json"
     with open(output_file, 'w') as f:
         json.dump(output_data, f, indent=2)
     

@@ -1,20 +1,17 @@
-Started : 2026-04-27 13:27:18
-Finished: 2026-04-27 13:34:35
-Elapsed : 436.9s (7.3 min)
+Started : 2026-04-29 16:14:09
+Finished: 2026-04-29 16:21:24
+Elapsed : 435.4s (7.3 min)
 ================================================================================
 
 
 ================================================================================
 EXTRACTING RELATION: CEO
-Started: 2026-04-27 13:27:18
+Started: 2026-04-29 16:14:09
 ================================================================================
 Source: Person
 Target: Company
 Relationship: CEO_OF
 
-================================================================================
-EXTRACTING ENTITIES WITH LLM
-================================================================================
 
 ✓ Using 4/6 chunks (threshold: 0.3)
 
@@ -118,76 +115,25 @@ Annual Report Design by Curran & Connors, Inc.
 EXTRACTION COMPLETE: CEO
 ================================================================================
 Entities     : 0
-Relationships: 0
-Duration     : 17.4s (0.3 min)
+Duration     : 37.7s (0.6 min)
 
 
 ================================================================================
 EXTRACTING RELATION: HAS_METRIC
-Started: 2026-04-27 13:27:36
+Started: 2026-04-29 16:14:46
 ================================================================================
 Source: Company
 Target: Metric
 Relationship: HAS_METRIC
 
-================================================================================
-EXTRACTING ENTITIES WITH LLM
-================================================================================
 
   Per-keyword batch mode: 9 keywords × 5 chunks each
 
 Keyword 1/9: gearing ratio net debt total equity leverage debt ratio
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Net Income (2024))
-      Properties: {
-        "value": "1671",
-        "unit": "$ million",
-        "year": "2024",
-        "metric_type": "Net Income"
-}
-      Metadata: page=33 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Net Income (2023))
-      Properties: {
-        "value": "841",
-        "unit": "$ million",
-        "year": "2023",
-        "metric_type": "Net Income"
-}
-      Metadata: page=33 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Earnings per Share (2024))
-      Properties: {
-        "value": "6.15",
-        "unit": "$",
-        "year": "2024",
-        "metric_type": "Earnings per Share"
-}
-      Metadata: page=33 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Earnings per Share (2023))
-      Properties: {
-        "value": "5.21",
-        "unit": "$",
-        "year": "2023",
-        "metric_type": "Earnings per Share"
-}
-      Metadata: page=33 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: EBIT (2024))
-      Properties: {
-        "value": "2865",
-        "unit": "$ million",
-        "year": "2024",
-        "metric_type": "EBIT"
-}
-      Metadata: page=33 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: EBIT (2023))
-      Properties: {
-        "value": "1718",
-        "unit": "$ million",
-        "year": "2023",
-        "metric_type": "EBIT"
-}
-      Metadata: page=33 | section=Item 1A. Risk Factors
+    ✗ No entities extracted
 
 Keyword 2/9: free cash flow operating cash flow capital expenditure investment
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Cash and Equivalents (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Cash and Equivalents (2024))
       Properties: {
         "value": "337.1",
         "unit": "$ million",
@@ -195,28 +141,67 @@ Keyword 2/9: free cash flow operating cash flow capital expenditure investment
         "metric_type": "Cash and Equivalents"
 }
       Metadata: page=62 | section=Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Cash Flow from Operations (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Cash Flow from Operations (2024))
       Properties: {
         "value": "236.4",
         "unit": "$ million",
         "year": "2024",
         "metric_type": "Cash Flow from Operations"
 }
-      Metadata: page=56 | section=Item 6. [Reserved]
+      Metadata: page=56 | section=Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations
 
 Keyword 3/9: EBITDA earnings before interest tax depreciation amortization operating profit
-    ✗ No entities extracted
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: EBITDA (2024))
+      Properties: {
+        "value": "400",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "EBITDA"
+}
+      Metadata: page=5 | section=LETTER FROM THE CEO
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Earnings per Share (2024))
+      Properties: {
+        "value": "18",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Earnings per Share"
+}
+      Metadata: page=5 | section=LETTER FROM THE CEO
 
 Keyword 4/9: ROACE return on average capital employed return on equity
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Earnings per Share (2022))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Earnings per Share (2023))
+      Properties: {
+        "value": "2.59",
+        "unit": "$",
+        "year": "2023",
+        "metric_type": "Earnings per Share"
+}
+      Metadata: page=59 | section=Item 6. [Reserved]
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Earnings per Share (2022))
       Properties: {
         "value": "3.74",
         "unit": "$",
         "year": "2022",
         "metric_type": "Earnings per Share"
 }
-      Metadata: page=59 | section=Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Net Income (2022))
+      Metadata: page=59 | section=Item 6. [Reserved]
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Net Income (2024))
+      Properties: {
+        "value": "167.1",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "Net Income"
+}
+      Metadata: page=84 | section=NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Net Income (2023))
+      Properties: {
+        "value": "84.1",
+        "unit": "million",
+        "year": "2023",
+        "metric_type": "Net Income"
+}
+      Metadata: page=84 | section=NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Net Income (2022))
       Properties: {
         "value": "122.2",
         "unit": "million",
@@ -224,27 +209,27 @@ Keyword 4/9: ROACE return on average capital employed return on equity
         "metric_type": "Net Income"
 }
       Metadata: page=84 | section=NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Income from operations (2023))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Income from operations (2023))
       Properties: {
         "value": "171.8",
         "unit": "million",
         "year": "2023",
         "metric_type": "Income from operations"
 }
-      Metadata: page=59 | section=Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Income from operations (2022))
+      Metadata: page=59 | section=Item 6. [Reserved]
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Income from operations (2022))
       Properties: {
         "value": "214.8",
         "unit": "million",
         "year": "2022",
         "metric_type": "Income from operations"
 }
-      Metadata: page=59 | section=Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations
+      Metadata: page=59 | section=Item 6. [Reserved]
 
 Keyword 5/9: net income profit loss attributable earnings per share
 
 Keyword 6/9: revenue total sales income turnover
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Segment Operating Income (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Segment Operating Income (2024))
       Properties: {
         "value": "315.5",
         "unit": "$ million",
@@ -252,7 +237,7 @@ Keyword 6/9: revenue total sales income turnover
         "metric_type": "Segment Operating Income"
 }
       Metadata: page=126 | section=ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Cash flow from Operations (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Cash flow from Operations (2024))
       Properties: {
         "value": "236.4",
         "unit": "$ million",
@@ -260,7 +245,7 @@ Keyword 6/9: revenue total sales income turnover
         "metric_type": "Cash flow from Operations"
 }
       Metadata: page=126 | section=ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Capital Expenditures (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Capital Expenditures (2024))
       Properties: {
         "value": "89.5",
         "unit": "$ million",
@@ -268,7 +253,7 @@ Keyword 6/9: revenue total sales income turnover
         "metric_type": "Capital Expenditures"
 }
       Metadata: page=126 | section=ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Free Cash Flow (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Free Cash Flow (2024))
       Properties: {
         "value": "146.9",
         "unit": "$ million",
@@ -276,15 +261,7 @@ Keyword 6/9: revenue total sales income turnover
         "metric_type": "Free Cash Flow"
 }
       Metadata: page=126 | section=ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: EBITDA (2024))
-      Properties: {
-        "value": "374.9",
-        "unit": "$ million",
-        "year": "2024",
-        "metric_type": "EBITDA"
-}
-      Metadata: page=126 | section=ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Adjusted EBITDA (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Adjusted EBITDA (2024))
       Properties: {
         "value": "405.7",
         "unit": "$ million",
@@ -292,7 +269,7 @@ Keyword 6/9: revenue total sales income turnover
         "metric_type": "Adjusted EBITDA"
 }
       Metadata: page=126 | section=ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Revenue (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Revenue (2024))
       Properties: {
         "value": "2118.5",
         "unit": "$ million",
@@ -300,7 +277,7 @@ Keyword 6/9: revenue total sales income turnover
         "metric_type": "Revenue"
 }
       Metadata: page=126 | section=ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Segment production margin (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Segment production margin (2024))
       Properties: {
         "value": "547.7",
         "unit": "$ million",
@@ -308,7 +285,7 @@ Keyword 6/9: revenue total sales income turnover
         "metric_type": "Segment production margin"
 }
       Metadata: page=110 | section=NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Marketing and administrative expenses (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Marketing and administrative expenses (2024))
       Properties: {
         "value": "197.5",
         "unit": "$ million",
@@ -316,7 +293,7 @@ Keyword 6/9: revenue total sales income turnover
         "metric_type": "Marketing and administrative expenses"
 }
       Metadata: page=110 | section=NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Research and development expenses (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Research and development expenses (2024))
       Properties: {
         "value": "23.0",
         "unit": "$ million",
@@ -324,7 +301,7 @@ Keyword 6/9: revenue total sales income turnover
         "metric_type": "Research and development expenses"
 }
       Metadata: page=110 | section=NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Segment income from operations (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Segment income from operations (2024))
       Properties: {
         "value": "339.5",
         "unit": "$ million",
@@ -337,7 +314,7 @@ Keyword 7/9: interest coverage ratio EBIT debt service fixed charge
     ✗ No entities extracted
 
 Keyword 8/9: current ratio quick ratio liquidity cash equivalents short-term
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Short-term Investments (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Short-term Investments (2024))
       Properties: {
         "value": "4.0",
         "unit": "$ million",
@@ -345,7 +322,7 @@ Keyword 8/9: current ratio quick ratio liquidity cash equivalents short-term
         "metric_type": "Short-term Investments"
 }
       Metadata: page=56 | section=Item 6. [Reserved]
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Short-term Investments (2023))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Short-term Investments (2023))
       Properties: {
         "value": "4.3",
         "unit": "$ million",
@@ -353,7 +330,7 @@ Keyword 8/9: current ratio quick ratio liquidity cash equivalents short-term
         "metric_type": "Short-term Investments"
 }
       Metadata: page=56 | section=Item 6. [Reserved]
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Allowance for Doubtful Accounts (2024))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Allowance for Doubtful Accounts (2024))
       Properties: {
         "value": "17.1",
         "unit": "$ million",
@@ -361,7 +338,7 @@ Keyword 8/9: current ratio quick ratio liquidity cash equivalents short-term
         "metric_type": "Allowance for Doubtful Accounts"
 }
       Metadata: page=82 | section=NOTES TO CONSOLIDATED FINANCIAL STATEMENTS
-    - (Company: NewMarket Corporation) --[HAS_METRIC]--> (Metric: Allowance for Doubtful Accounts (2023))
+    - (Company: Newmarket Corporation) --[HAS_METRIC]--> (Metric: Allowance for Doubtful Accounts (2023))
       Properties: {
         "value": "20.3",
         "unit": "$ million",
@@ -376,22 +353,18 @@ Keyword 9/9: total debt borrowings long-term debt bonds notes payable
 ================================================================================
 EXTRACTION COMPLETE: HAS_METRIC
 ================================================================================
-Entities     : 27
-Relationships: 27
-Duration     : 132.9s (2.2 min)
+Entities     : 25
+Duration     : 131.2s (2.2 min)
 
 
 ================================================================================
 EXTRACTING RELATION: FACES_RISK
-Started: 2026-04-27 13:29:48
+Started: 2026-04-29 16:16:57
 ================================================================================
 Source: Company
 Target: Risk
 Relationship: FACES_RISK
 
-================================================================================
-EXTRACTING ENTITIES WITH LLM
-================================================================================
 
 ✓ Using 15/15 chunks (threshold: 0.3)
 
@@ -491,25 +464,25 @@ in step two by comparing the implied fair value of reporting unit goodwill with 
  
 
 --------------------------------------------------------------------------------
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Significant under-performance relative to historical or projected future operating results)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Significant under-performance relative to historical or projected future operating results)
       Properties: {
         "description": "Under-performance relative to historical or projected future operating results",
         "why": "Could trigger an impairment review"
 }
       Metadata: page=65 | section=Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Significant changes in the manner of use of the acquired assets or the strategy for the overall business)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Significant changes in the manner of use of the acquired assets or the strategy for the overall business)
       Properties: {
         "description": "Changes in asset use or business strategy",
         "why": "Could trigger an impairment review"
 }
       Metadata: page=65 | section=Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Significant negative industry or economic trends)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Significant negative industry or economic trends)
       Properties: {
         "description": "Negative industry or economic trends",
         "why": "Could trigger an impairment review"
 }
       Metadata: page=65 | section=Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Market capitalization below invested capital)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Market capitalization below invested capital)
       Properties: {
         "description": "Market capitalization below invested capital",
         "why": "Could trigger an impairment review"
@@ -554,7 +527,7 @@ and financial condition.
  
 
 --------------------------------------------------------------------------------
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Litigation)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Litigation)
       Properties: {
         "description": "Resolution or recognition of additional liabilities in connection with pending or future litigation",
         "why": "Could have a material adverse effect on the Company\u2019s results of operations, cash flows and financial condition"
@@ -594,16 +567,16 @@ regions that the Company serves, or in the worldwide economy, could cause actual
 historical and expected results. 
 
 --------------------------------------------------------------------------------
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Weakness in the industries we serve)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Weakness in the industries we serve)
       Properties: {
-        "description": "Adverse effect on sales and results of operations",
-        "why": "Continued weakness in industries served has had an adverse effect on sales and results of operations"
+        "description": "Adverse effect on sales of products and results of operations",
+        "why": "Continued weakness in the industries we serve has had, and may in the future have, an adverse effect"
 }
       Metadata: page=31 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Economic downturn)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Economic downturn)
       Properties: {
-        "description": "Differing actual results from historical and expected results",
-        "why": "Continued or renewed economic downturn in industries or geographic regions served, or in the worldwide economy"
+        "description": "Actual results of operations differing materially from historical and expected results",
+        "why": "A continued or renewed economic downturn in one or more of the industries or geographic regions that the Company serves, or in the worldwide economy"
 }
       Metadata: page=31 | section=Item 1A. Risk Factors
 
@@ -623,7 +596,7 @@ an adverse effect on the Company’s results of operations in the future.
  
 
 --------------------------------------------------------------------------------
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Increased pressure on results of operations)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Increased pressure on results of operations)
       Properties: {
         "description": "Adverse effect on the Company's results of operations in the future",
         "why": "Increased pressure could have an adverse effect on the Company's results of operations in the future"
@@ -662,34 +635,34 @@ their obligations to the Company. We may also experience pricing pressure on pro
 along to our customers an increase in our raw materials costs or energy prices, which could decrease our revenues and have an adverse 
 effect on our financial condition and cash flows. 
 --------------------------------------------------------------------------------
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Worldwide general economic, business, and industry conditions)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Worldwide general economic, business, and industry conditions)
       Properties: {
         "description": "Adverse effect on the Company\u2019s results",
         "why": "Declining consumer and business confidence, volatile raw material prices, instability in credit markets, high unemployment, fluctuating interest and exchange rates"
 }
       Metadata: page=31 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Uncertainty or a deterioration in the economic conditions)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Uncertainty or deterioration in economic conditions)
       Properties: {
         "description": "Reduced demand for products and increased costs",
-        "why": "Inflationary pressures may increase our costs"
+        "why": "Inflationary pressures may increase costs and customers may experience deterioration of their businesses, cash flow shortages, and difficulty obtaining financing"
 }
       Metadata: page=31 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Deterioration of customers’ businesses)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Cyclical nature of industries)
       Properties: {
-        "description": "Cash flow shortages, difficulty obtaining financing",
-        "why": "Customers may reduce or delay their growth and investments, pursue inventory reduction measures, and may not be able to fulfill their obligations in a timely fashion"
+        "description": "Adverse effect on industries served",
+        "why": "Existing or potential customers may reduce or delay their growth and investments, pursue inventory reduction measures, and may not be able to fulfill their obligations in a timely fashion"
 }
       Metadata: page=31 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Suppliers’ difficulties)
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Pricing pressure on products and services)
+      Properties: {
+        "description": "Decreased revenues and adverse effect on financial condition and cash flows",
+        "why": "Unsuccessful in passing along to customers an increase in raw materials costs or energy prices"
+}
+      Metadata: page=31 | section=Item 1A. Risk Factors
+    - (Company: Newmarket Corporation) --[FACES_RISK]--> (Risk: Supplier difficulties)
       Properties: {
         "description": "Suppliers may not fulfill their obligations",
         "why": "Suppliers could experience similar economic conditions, affecting their ability to fulfill their obligations to the Company"
-}
-      Metadata: page=31 | section=Item 1A. Risk Factors
-    - (Company: NewMarket Corporation) --[FACES_RISK]--> (Risk: Pricing pressure)
-      Properties: {
-        "description": "Decreased revenues",
-        "why": "Unsuccessful in passing along to customers an increase in raw materials costs or energy prices"
 }
       Metadata: page=31 | section=Item 1A. Risk Factors
 
@@ -807,21 +780,17 @@ February 21, 2025
 EXTRACTION COMPLETE: FACES_RISK
 ================================================================================
 Entities     : 13
-Relationships: 13
-Duration     : 232.9s (3.9 min)
+Duration     : 214.0s (3.6 min)
 
 
 ================================================================================
 EXTRACTING RELATION: OPERATES_IN
-Started: 2026-04-27 13:33:41
+Started: 2026-04-29 16:20:31
 ================================================================================
 Source: Company
 Target: Industry
 Relationship: OPERATES_IN
 
-================================================================================
-EXTRACTING ENTITIES WITH LLM
-================================================================================
 
 ✓ Using 4/5 chunks (threshold: 0.3)
 
@@ -896,12 +865,11 @@ years ended December 31, 2024, 2023 and 2022, respectively.
  
 
 --------------------------------------------------------------------------------
-    - (Company: NewMarket Corporation) --[OPERATES_IN]--> (Industry: Oil & Gas)
+    - (Company: Newmarket Corporation) --[OPERATES_IN]--> (Industry: Oil & Gas)
       Properties: {
         "sector": "Energy"
 }
       Metadata: page=24 | section=Item 1. Business
-      SIC: (Industry: Oil & Gas) --[HAS_SIC_CODE]--> (SICCode: 1311)
 
 Chunk 4/4 (similarity: 0.373)
   Section: Item 1. Business
@@ -919,5 +887,4 @@ There are numerous major producers of competing products and various regional su
 EXTRACTION COMPLETE: OPERATES_IN
 ================================================================================
 Entities     : 1
-Relationships: 1
-Duration     : 53.7s (0.9 min)
+Duration     : 52.5s (0.9 min)

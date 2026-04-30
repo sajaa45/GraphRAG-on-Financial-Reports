@@ -1,6 +1,12 @@
 import json
 import re
+import os
 import boto3
+from dotenv import load_dotenv
+
+# Load environment variables from .env file in parent directory
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env')
+load_dotenv(env_path)
 
 MODEL_ID = "meta.llama3-70b-instruct-v1:0"
 MAX_CONTEXT = 8042       # 8192 - 150 prompt overhead
@@ -8,7 +14,13 @@ MAX_BATCH_RISKS = 10     # cap for reliable JSON output from Llama
 TOKENS_PER_WORD = 1.33
 OUTPUT_PER_RISK = 80     # estimated output tokens per extracted risk
 
-client = boto3.client("bedrock-runtime", region_name="us-east-1")
+# Configure AWS client with credentials from .env
+client = boto3.client(
+    "bedrock-runtime",
+    region_name=os.getenv('AWS_REGION', 'us-east-1'),
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')
+)
 
 SYSTEM_PROMPT = "You are a financial analyst expert at extracting structured risk information from SEC filings."
 
