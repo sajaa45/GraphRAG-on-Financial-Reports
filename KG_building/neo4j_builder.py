@@ -46,15 +46,18 @@ class Neo4jBuilder:
                 if len(t) > 3 and t not in _STOP_WORDS]
 
     def stamp_target_company(self, main_company: str):
-        """Set is_target=true and add TargetCompany label on the main company node and remove stale duplicates."""
+        """Convert Company node to TargetCompany node type for the main company."""
         if main_company.lower() in ('the company', 'this company', ''):
             print("⚠ Skipping stamp — company name not yet resolved")
             return
         try:
             with self.driver.session() as session:
+                # Remove generic placeholder companies
                 session.run(
                     "MATCH (c:Company) WHERE toLower(c.name) IN ['the company', 'this company'] DETACH DELETE c"
                 )
+                
+                # Remove case-variant duplicates
                 canonical_tokens = set(self._significant_tokens(main_company))
                 if canonical_tokens:
                     result = session.run(
@@ -69,14 +72,53 @@ class Neo4jBuilder:
                                 {"variant": variant}
                             )
                             print(f"  ✓ Removed case-variant duplicate: '{variant}'")
-                session.run(
-                    """
-                    MERGE (c:Company {name: $name})
-                    SET c:TargetCompany, c.is_target = true, c.is_main = true, c.target_since = datetime()
-                    """,
-                    {"name": main_company},
+                
+                # Check if Company node exists and convert it to TargetCompany
+                result = session.run(
+                    "MATCH (c:Company {name: $name}) RETURN c",
+                    {"name": main_company}
                 )
-            print(f"✓ Stamped is_target=true and added TargetCompany label on: {main_company}")
+                
+                if result.single():
+                    # Convert existing Company node to TargetCompany by recreating with relationships
+                    session.run(
+                        """
+                        MATCH (old:Company {name: $name})
+                        OPTIONAL MATCH (old)-[r_out]->(target)
+                        OPTIONAL MATCH (source)-[r_in]->(old)
+                        WITH old, 
+                             collect(DISTINCT {type: type(r_out), props: properties(r_out), target: target}) as outRels,
+                             collect(DISTINCT {type: type(r_in), props: properties(r_in), source: source}) as inRels,
+                             properties(old) as oldProps
+                        CREATE (new:TargetCompany {name: $name})
+                        SET new = oldProps, new.is_target = true
+                        WITH new, old, outRels, inRels
+                        UNWIND outRels as outRel
+                        FOREACH (dummy in CASE WHEN outRel.target IS NOT NULL THEN [1] ELSE [] END |
+                            MERGE (new)-[r:DUMMY]->(outRel.target)
+                        )
+                        WITH new, old, inRels
+                        UNWIND inRels as inRel
+                        FOREACH (dummy in CASE WHEN inRel.source IS NOT NULL THEN [1] ELSE [] END |
+                            MERGE (inRel.source)-[r:DUMMY]->(new)
+                        )
+                        WITH old
+                        DETACH DELETE old
+                        """,
+                        {"name": main_company}
+                    )
+                    print(f"✓ Converted Company → TargetCompany: {main_company}")
+                else:
+                    # Create new TargetCompany node
+                    session.run(
+                        """
+                        MERGE (c:TargetCompany {name: $name})
+                        SET c.is_target = true
+                        """,
+                        {"name": main_company}
+                    )
+                    print(f"✓ Created TargetCompany node: {main_company}")
+                    
         except Exception as e:
             print(f"⚠ Could not stamp target company: {e}")
 
@@ -106,6 +148,12 @@ class Neo4jBuilder:
         print("✓ Cleared existing graph")
 
     def create_node(self, session, node_type: str, name: str, properties: Dict = None):
+        # If this is the main company and node_type is Company, use TargetCompany instead
+        if node_type == "Company" and name == self.main_company:
+            node_type = "TargetCompany"
+            properties = properties or {}
+            properties['is_target'] = True
+        
         props = properties or {}
         props_str = ", ".join([f"n.{k} = ${k}" for k in props.keys()])
         query = f"""
@@ -119,6 +167,12 @@ class Neo4jBuilder:
     def create_relationship(self, session, source_type, source_name, target_type,
                             target_name, rel_type, properties=None, source_chunk=None,
                             similarity=None, section_title=None, source_page=None):
+        # If source or target is the main company and type is Company, use TargetCompany instead
+        if source_type == "Company" and source_name == self.main_company:
+            source_type = "TargetCompany"
+        if target_type == "Company" and target_name == self.main_company:
+            target_type = "TargetCompany"
+            
         props = dict(properties or {})
         if source_chunk:
             props['source_chunk'] = source_chunk[:200]

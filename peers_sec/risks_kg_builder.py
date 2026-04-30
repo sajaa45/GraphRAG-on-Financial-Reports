@@ -36,25 +36,35 @@ class RisksKGBuilder:
     # ------------------------------------------------------------------
     def _resolve_target(self, session) -> bool:
         """
-        If self.target is empty, auto-detect it from the node flagged
-        is_target=true by neo4j_builder.py.  Returns True when a target
-        is available (either pre-set or auto-detected).
+        If self.target is empty, auto-detect it from the TargetCompany node
+        created by neo4j_builder.py.  Returns True when a target is available.
         """
         if not self.target or self.target.lower() in ('', 'the company', 'this company'):
+            # First try TargetCompany node
             result = session.run(
-                "MATCH (c:Company {is_target: true}) RETURN c.name AS name LIMIT 1"
+                "MATCH (c:TargetCompany) RETURN c.name AS name LIMIT 1"
             )
             record = result.single()
             if record:
                 self.target = record["name"]
                 print(f"✓ Auto-detected target company: '{self.target}'")
             else:
-                print("⚠ No target company found in Neo4j (is_target=true). "
-                      "Run neo4j_builder.py first or pass --target-company.")
-                return False
+                # Fallback to Company with is_target flag
+                result = session.run(
+                    "MATCH (c:Company {is_target: true}) RETURN c.name AS name LIMIT 1"
+                )
+                record = result.single()
+                if record:
+                    self.target = record["name"]
+                    print(f"✓ Auto-detected target company: '{self.target}'")
+                else:
+                    print("⚠ No target company found in Neo4j. "
+                          "Run neo4j_builder.py first or pass --target-company.")
+                    return False
 
+        # Check if target exists as TargetCompany or Company
         result = session.run(
-            "MATCH (c:Company {name: $name}) RETURN c LIMIT 1",
+            "MATCH (c) WHERE (c:TargetCompany OR c:Company) AND c.name = $name RETURN c LIMIT 1",
             {"name": self.target},
         )
         found = result.single() is not None
@@ -75,7 +85,7 @@ class RisksKGBuilder:
         session.run(
             """
             MATCH (peer:Company {name: $peer})
-            MATCH (tgt:Company  {name: $target})
+            MATCH (tgt) WHERE (tgt:TargetCompany OR tgt:Company) AND tgt.name = $target
             MERGE (peer)-[:COMPETES_WITH]->(tgt)
             """,
             {"peer": peer_name, "target": self.target},
@@ -116,13 +126,13 @@ class RisksKGBuilder:
                     continue
 
                 is_target = bool(self.target) and company_name == self.target
+                node_type = "TargetCompany" if is_target else "Company"
                 role_flag = "is_target" if is_target else "is_peer"
 
-                # Merge on name (same key neo4j_builder.py uses) to land on the
-                # existing node and avoid split nodes.
+                # Merge on name - use TargetCompany for target, Company for peers
                 session.run(
                     f"""
-                    MERGE (c:Company {{name: $name}})
+                    MERGE (c:{node_type} {{name: $name}})
                     ON CREATE SET c.cik = $cik, c.filing_date = $filing_date,
                                   c.document_url = $document_url, c.{role_flag} = true,
                                   c.created_at = datetime()
@@ -166,11 +176,11 @@ class RisksKGBuilder:
                          "source_text": source_text[:2000], "filing_date": filing_date},
                     )
 
-                    # Company -[FACES_RISK]-> Risk  (always look up by name)
+                    # Company/TargetCompany -[FACES_RISK]-> Risk  (always look up by name)
                     session.run(
                         """
-                        MATCH (c:Company {name: $name})
-                        MATCH (r:Risk    {risk_id: $risk_id})
+                        MATCH (c) WHERE (c:Company OR c:TargetCompany) AND c.name = $name
+                        MATCH (r:Risk {risk_id: $risk_id})
                         MERGE (c)-[:FACES_RISK]->(r)
                         """,
                         {"name": company_name, "risk_id": risk_id},
@@ -231,11 +241,12 @@ class RisksKGBuilder:
                     continue
 
                 is_target = target_found and name == self.target
+                node_type = "TargetCompany" if is_target else "Company"
                 role_flag = "is_target" if is_target else "is_peer"
 
                 session.run(
                     f"""
-                    MERGE (c:Company {{name: $name}})
+                    MERGE (c:{node_type} {{name: $name}})
                     ON CREATE SET c.cik = $cik, c.ticker = $ticker,
                                   c.filing_date = $filing_date, c.{role_flag} = true,
                                   c.created_at = datetime()
