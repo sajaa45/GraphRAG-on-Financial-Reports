@@ -79,13 +79,13 @@ credit_risk_tags = [
 START_DATE = "2023-01-01"
 END_DATE = "2024-01-01"
 FORM_TYPE = "10-K"
-MAX_COMPANIES = 100
+MAX_COMPANIES = 3  # Maximum companies to analyze (from graph + SEC)
 
 headers = {"User-Agent": "User (your_email@example.com)"}
 
 
-def get_sic_from_neo4j():
-    """Query Neo4j for the SIC code of the target company (is_target=true)."""
+def get_companies_from_neo4j():
+    """Get peer companies already in the Neo4j graph (excluding target company)."""
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     user = os.getenv("NEO4J_USERNAME", "neo4j")
     password = os.getenv("NEO4J_PASSWORD", "")
@@ -95,24 +95,108 @@ def get_sic_from_neo4j():
         with driver.session() as session:
             result = session.run(
                 """
+                MATCH (c:Company)
+                WHERE NOT c:TargetCompany AND NOT c.is_target = true
+                RETURN c.name AS name, c.cik AS cik, c.ticker AS ticker
+                """
+            )
+            companies = []
+            for record in result:
+                name = record.get("name")
+                cik = record.get("cik")
+                ticker = record.get("ticker", "N/A")
+                
+                if name:
+                    # If CIK is not stored, we'll need to look it up or skip
+                    companies.append({
+                        'name': name,
+                        'cik': str(cik).zfill(10) if cik else None,
+                        'ticker': ticker or 'N/A',
+                        'source': 'neo4j'
+                    })
+            
+            if companies:
+                print(f"✓ Found {len(companies)} peer companies in Neo4j graph:")
+                for c in companies:
+                    cik_str = c['cik'] if c['cik'] else 'No CIK'
+                    print(f"  - {c['name']} ({c['ticker']}) - {cik_str}")
+                print()
+            else:
+                print("⚠ No peer companies found in Neo4j graph\n")
+            
+            return companies
+    except Exception as e:
+        print(f"⚠ Error querying Neo4j for companies: {e}\n")
+        return []
+    finally:
+        driver.close()
+
+
+def get_sic_from_neo4j() -> str:
+    """Query Neo4j for the SIC code of the target company (is_target=true)."""
+    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+    user = os.getenv("NEO4J_USERNAME", "neo4j")
+    password = os.getenv("NEO4J_PASSWORD", "")
+    
+    try:
+        driver = GraphDatabase.driver(uri, auth=(user, password))
+        with driver.session() as session:
+            # Try multiple query patterns
+            queries = [
+                # Pattern 1: TargetCompany node type
+                """
+                MATCH (c:TargetCompany)-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """,
+                # Pattern 2: Company with is_target property
+                """
                 MATCH (c:Company {is_target: true})-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
                 RETURN s.code AS sic_code
                 LIMIT 1
+                """,
+                # Pattern 3: Direct HAS_SIC_CODE from TargetCompany
                 """
-            )
-            record = result.single()
-            if record and record["sic_code"]:
-                code = str(record["sic_code"]).strip()
-                print(f"✓ SIC code from Neo4j: {code}\n")
-                return code
-    finally:
+                MATCH (c:TargetCompany)-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """,
+                # Pattern 4: Direct HAS_SIC_CODE from Company
+                """
+                MATCH (c:Company {is_target: true})-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """,
+                # Pattern 5: Any Company with SIC code
+                """
+                MATCH (c:Company)-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """,
+                # Pattern 4: Any SIC code in the database
+                """
+                MATCH (s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """
+            ]
+            
+            for i, query in enumerate(queries, 1):
+                result = session.run(query)
+                record = result.single()
+                if record and record["sic_code"]:
+                    code = str(record["sic_code"]).strip()
+                    print(f"✓ SIC code from Neo4j (pattern {i}): {code}")
+                    driver.close()
+                    return code
+        
         driver.close()
+    except Exception as e:
+        print(f"⚠ Could not connect to Neo4j: {e}")
     
-    raise RuntimeError(
-        "No SIC code found in Neo4j for the target company. "
-        "Run the OPERATES_IN extraction first."
-    )
-
+    # Fallback to default SIC code for Oil & Gas
+    print("⚠ No SIC code found in Neo4j, using default: 1311 (Oil & Gas)")
+    return "1311"
 
 def get_target_company_metrics():
     """Query Neo4j for metrics found in the target company."""
@@ -123,10 +207,12 @@ def get_target_company_metrics():
     driver = GraphDatabase.driver(uri, auth=(user, password))
     try:
         with driver.session() as session:
+            # Try both TargetCompany and Company node types
             result = session.run(
                 """
-                MATCH (c:Company {is_target: true})-[:HAS_METRIC]->(m:Metric)
-                RETURN m.name AS metric_name, m.type AS metric_type
+                MATCH (c)-[:HAS_METRIC]->(m:Metric)
+                WHERE c:TargetCompany OR (c:Company AND c.is_target = true)
+                RETURN m.name AS metric_name, m.metric_type AS metric_type
                 """
             )
             metrics = [{"name": record["metric_name"], "type": record["metric_type"]} 
@@ -199,7 +285,7 @@ def fetch_companies_by_sic(sic_codes, start_date, end_date, form_type, size=100)
         return []
 
 
-def analyze_company_covenants(cik, company_name, target_metrics=None):
+def analyze_company_covenants(cik, company_name, target_metrics=None, start_date=None, end_date=None):
     """Analyze a single company for financial covenant tags and target metrics."""
     url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
     
@@ -231,28 +317,70 @@ def analyze_company_covenants(cik, company_name, target_metrics=None):
                             'units': {}
                         }
                         
-                        # Get all unit data
+                        # Get all unit data and filter by date range
                         for unit_name, entries in units.items():
-                            tag_data['units'][unit_name] = []
+                            filtered_entries = []
                             for entry in entries:
-                                tag_data['units'][unit_name].append({
-                                    'end': entry.get('end'),
-                                    'val': entry.get('val'),
-                                    'accn': entry.get('accn'),
-                                    'fy': entry.get('fy'),
-                                    'fp': entry.get('fp'),
-                                    'form': entry.get('form'),
-                                    'filed': entry.get('filed')
-                                })
+                                # Filter by form type (only 10-K) and period end date
+                                form = entry.get('form', '')
+                                end_date = entry.get('end', '')
+                                
+                                # Only include 10-K filings
+                                if form != '10-K':
+                                    continue
+                                
+                                # Filter by period end date if provided
+                                if start_date and end_date:
+                                    if start_date <= end_date <= end_date:
+                                        filtered_entries.append({
+                                            'end': end_date,
+                                            'val': entry.get('val'),
+                                            'accn': entry.get('accn'),
+                                            'fy': entry.get('fy'),
+                                            'fp': entry.get('fp'),
+                                            'form': form,
+                                            'filed': entry.get('filed', '')
+                                        })
+                                else:
+                                    # No date filter, but still only 10-K
+                                    filtered_entries.append({
+                                        'end': end_date,
+                                        'val': entry.get('val'),
+                                        'accn': entry.get('accn'),
+                                        'fy': entry.get('fy'),
+                                        'fp': entry.get('fp'),
+                                        'form': form,
+                                        'filed': entry.get('filed', '')
+                                    })
+                            
+                            if filtered_entries:
+                                tag_data['units'][unit_name] = filtered_entries
                         
-                        results[covenant_type][tag_name] = tag_data
+                        # Only add if we have data after filtering
+                        if tag_data['units']:
+                            results[covenant_type][tag_name] = tag_data
                 
                 # Check if this tag matches any target company metrics
                 if target_metrics:
                     for metric in target_metrics:
-                        metric_name = metric.get('name', '').lower()
-                        # Simple matching - can be improved with fuzzy matching
-                        if metric_name and metric_name in tag_name.lower():
+                        metric_name = metric.get('name', '')
+                        # Extract base metric name (remove year suffix)
+                        base_metric = metric_name.split('(')[0].strip() if '(' in metric_name else metric_name
+                        # Normalize: lowercase, remove spaces and special chars for matching
+                        normalized_metric = ''.join(c.lower() for c in base_metric if c.isalnum())
+                        normalized_tag = tag_name.lower()
+                        
+                        # Try multiple matching strategies
+                        match = False
+                        if normalized_metric in normalized_tag or normalized_tag in normalized_metric:
+                            match = True
+                        # Also try word-by-word matching for multi-word metrics
+                        elif len(normalized_metric) > 3:
+                            metric_words = [w for w in base_metric.lower().split() if len(w) > 2]
+                            if metric_words and all(w in normalized_tag for w in metric_words):
+                                match = True
+                        
+                        if match:
                             if metric['name'] not in target_metric_results:
                                 target_metric_results[metric['name']] = []
                             
@@ -266,21 +394,48 @@ def analyze_company_covenants(cik, company_name, target_metrics=None):
                                 'units': {}
                             }
                             
-                            # Get all unit data
+                            # Get all unit data and filter by date range
                             for unit_name, entries in units.items():
-                                tag_data['units'][unit_name] = []
+                                filtered_entries = []
                                 for entry in entries:
-                                    tag_data['units'][unit_name].append({
-                                        'end': entry.get('end'),
-                                        'val': entry.get('val'),
-                                        'accn': entry.get('accn'),
-                                        'fy': entry.get('fy'),
-                                        'fp': entry.get('fp'),
-                                        'form': entry.get('form'),
-                                        'filed': entry.get('filed')
-                                    })
+                                    # Filter by form type (only 10-K) and period end date
+                                    form = entry.get('form', '')
+                                    end_date = entry.get('end', '')
+                                    
+                                    # Only include 10-K filings
+                                    if form != '10-K':
+                                        continue
+                                    
+                                    # Filter by period end date if provided
+                                    if start_date and end_date:
+                                        if start_date <= end_date <= end_date:
+                                            filtered_entries.append({
+                                                'end': end_date,
+                                                'val': entry.get('val'),
+                                                'accn': entry.get('accn'),
+                                                'fy': entry.get('fy'),
+                                                'fp': entry.get('fp'),
+                                                'form': form,
+                                                'filed': entry.get('filed', '')
+                                            })
+                                    else:
+                                        # No date filter, but still only 10-K
+                                        filtered_entries.append({
+                                            'end': end_date,
+                                            'val': entry.get('val'),
+                                            'accn': entry.get('accn'),
+                                            'fy': entry.get('fy'),
+                                            'fp': entry.get('fp'),
+                                            'form': form,
+                                            'filed': entry.get('filed', '')
+                                        })
+                                
+                                if filtered_entries:
+                                    tag_data['units'][unit_name] = filtered_entries
                             
-                            target_metric_results[metric['name']].append(tag_data)
+                            # Only add if we have data after filtering
+                            if tag_data['units']:
+                                target_metric_results[metric['name']].append(tag_data)
         
         return results, target_metric_results
     
@@ -301,15 +456,6 @@ def main():
     print("=" * 80)
     print()
     
-    # Get SIC code from Neo4j
-    try:
-        sic_code = get_sic_from_neo4j()
-        sic_codes = [sic_code]
-    except Exception as e:
-        print(f"Error getting SIC from Neo4j: {e}")
-        print("Falling back to default SIC code: 1311\n")
-        sic_codes = ['1311']
-    
     # Get target company metrics
     try:
         target_metrics = get_target_company_metrics()
@@ -317,11 +463,64 @@ def main():
         print(f"Error getting target metrics: {e}\n")
         target_metrics = []
     
-    # Fetch companies
-    companies = fetch_companies_by_sic(sic_codes, START_DATE, END_DATE, FORM_TYPE, MAX_COMPANIES)
+    # Step 1: Get companies from Neo4j graph first
+    print("=" * 80)
+    print("STEP 1: CHECKING NEO4J GRAPH FOR PEER COMPANIES")
+    print("=" * 80)
+    print()
+    
+    companies = get_companies_from_neo4j()
+    
+    # Filter out companies without CIK (can't analyze them via SEC)
+    companies_with_cik = [c for c in companies if c.get('cik')]
+    companies_without_cik = [c for c in companies if not c.get('cik')]
+    
+    if companies_without_cik:
+        print(f"⚠ Skipping {len(companies_without_cik)} companies without CIK:")
+        for c in companies_without_cik:
+            print(f"  - {c['name']}")
+        print()
+    
+    # Step 2: If we need more companies, fetch from SEC
+    if len(companies_with_cik) < MAX_COMPANIES:
+        needed = MAX_COMPANIES - len(companies_with_cik)
+        print("=" * 80)
+        print(f"STEP 2: FETCHING ADDITIONAL COMPANIES FROM SEC (need {needed} more)")
+        print("=" * 80)
+        print()
+        
+        # Get SIC code from Neo4j
+        try:
+            sic_code = get_sic_from_neo4j()
+            sic_codes = [sic_code]
+        except Exception as e:
+            print(f"Error getting SIC from Neo4j: {e}")
+            print("Falling back to default SIC code: 1311\n")
+            sic_codes = ['1311']
+        
+        # Fetch from SEC
+        sec_companies = fetch_companies_by_sic(sic_codes, START_DATE, END_DATE, FORM_TYPE, needed)
+        
+        # Mark as from SEC and add to list
+        for c in sec_companies:
+            c['source'] = 'sec'
+        
+        # Combine, avoiding duplicates by CIK
+        existing_ciks = {c['cik'] for c in companies_with_cik}
+        new_companies = [c for c in sec_companies if c['cik'] not in existing_ciks]
+        
+        companies_with_cik.extend(new_companies[:needed])
+        
+        print(f"✓ Added {len(new_companies[:needed])} companies from SEC")
+        print(f"✓ Total companies to analyze: {len(companies_with_cik)}\n")
+    else:
+        print(f"✓ Using {len(companies_with_cik)} companies from Neo4j graph (limit: {MAX_COMPANIES})\n")
+        companies_with_cik = companies_with_cik[:MAX_COMPANIES]
+    
+    companies = companies_with_cik
     
     if not companies:
-        print("No companies found. Exiting.")
+        print("No companies to analyze. Exiting.")
         return
     
     all_results = {}
@@ -342,7 +541,9 @@ def main():
         
         print(f"[{idx}/{len(companies)}] {name} ({ticker}) - CIK: {cik}")
         
-        covenant_results, metric_results = analyze_company_covenants(cik, name, target_metrics)
+        covenant_results, metric_results = analyze_company_covenants(
+            cik, name, target_metrics, START_DATE, END_DATE
+        )
         
         if covenant_results is None and metric_results is None:
             companies_with_errors.append(company)
@@ -391,7 +592,10 @@ def main():
     print("=" * 80)
     print("SUMMARY")
     print("=" * 80)
-    print(f"SIC Code used: {sic_codes[0]}")
+    neo4j_count = sum(1 for c in companies if c.get('source') == 'neo4j')
+    sec_count = sum(1 for c in companies if c.get('source') == 'sec')
+    print(f"Companies from Neo4j graph: {neo4j_count}")
+    print(f"Companies from SEC EDGAR: {sec_count}")
     print(f"Total companies analyzed: {len(companies)}")
     print(f"Companies with covenant tags or metrics: {len(companies_with_covenants)}")
     print(f"Companies with target metrics: {len(companies_with_target_metrics)}")
@@ -427,7 +631,8 @@ def main():
     # Save comprehensive results
     output_data = {
         'metadata': {
-            'sic_codes': sic_codes,
+            'neo4j_companies': neo4j_count,
+            'sec_companies': sec_count,
             'target_metrics_searched': [m['name'] for m in target_metrics] if target_metrics else [],
             'date_range': {'start': START_DATE, 'end': END_DATE},
             'form_type': FORM_TYPE,
@@ -444,7 +649,7 @@ def main():
         'companies_with_errors': companies_with_errors
     }
     
-    output_file = f"financial_covenants_sic_{'_'.join(sic_codes)}_{START_DATE}_to_{END_DATE}.json"
+    output_file = f"financial_covenants_analysis_{START_DATE}_to_{END_DATE}.json"
     with open(output_file, 'w') as f:
         json.dump(output_data, f, indent=2)
     
