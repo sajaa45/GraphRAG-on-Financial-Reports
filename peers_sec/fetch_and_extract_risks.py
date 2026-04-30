@@ -1,14 +1,74 @@
+import os
 import requests
 import re
 import json
 import time
 from bs4 import BeautifulSoup
 import urllib3
+from dotenv import load_dotenv
+from neo4j import GraphDatabase
+
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
 
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 HEADERS = {"User-Agent": "YourName your_email@example.com"}
+
+
+def get_sic_from_neo4j() -> str:
+    """Query Neo4j for the SIC code of the target company (is_target=true)."""
+    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+    user = os.getenv("NEO4J_USERNAME", "neo4j")
+    password = os.getenv("NEO4J_PASSWORD", "")
+    
+    try:
+        driver = GraphDatabase.driver(uri, auth=(user, password))
+        with driver.session() as session:
+            # Try multiple query patterns
+            queries = [
+                # Pattern 1: Direct path through Industry
+                """
+                MATCH (c:Company {is_target: true})-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """,
+                # Pattern 2: Direct HAS_SIC_CODE from Company
+                """
+                MATCH (c:Company {is_target: true})-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """,
+                # Pattern 3: Any Company with SIC code
+                """
+                MATCH (c:Company)-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """,
+                # Pattern 4: Any SIC code in the database
+                """
+                MATCH (s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """
+            ]
+            
+            for i, query in enumerate(queries, 1):
+                result = session.run(query)
+                record = result.single()
+                if record and record["sic_code"]:
+                    code = str(record["sic_code"]).strip()
+                    print(f"✓ SIC code from Neo4j (pattern {i}): {code}")
+                    driver.close()
+                    return code
+        
+        driver.close()
+    except Exception as e:
+        print(f"⚠ Could not connect to Neo4j: {e}")
+    
+    # Fallback to default SIC code for Oil & Gas
+    print("⚠ No SIC code found in Neo4j, using default: 1311 (Oil & Gas)")
+    return "1311"
 
 
 def get_companies_from_api(sic_code='1311', start_date='2023-01-01', end_date='2024-01-01', size=100):
@@ -130,4 +190,5 @@ def process_companies_from_api(sic_code='1311', start_date='2023-01-01', end_dat
 
 
 if __name__ == "__main__":
-    process_companies_from_api(sic_code='1311', start_date='2023-01-01', end_date='2024-01-01', size=100, delay=0.5)
+    sic_code = get_sic_from_neo4j()
+    process_companies_from_api(sic_code=sic_code, start_date='2023-01-01', end_date='2024-01-01', size=100, delay=0.5)

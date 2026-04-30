@@ -1,0 +1,880 @@
+{
+  "main_company": "Newmarket Corporation",
+  "relations": {
+    "CEO": [],
+    "HAS_METRIC": [
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Cash and Equivalents (2024)",
+          "properties": {
+            "value": "337.1",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Cash and Equivalents"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "The Company’s intention is to use cash flow for investments in growth, returns to \nshareholders, and continued debt reduction.  \n \n",
+        "similarity": 0.64337087,
+        "section_title": "Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 62,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Cash Flow from Operations (2024)",
+          "properties": {
+            "value": "236.4",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Cash Flow from Operations"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Our balance sheet continues to be strong.  Cash, cash equivalents and short-term investments were $337.1 million as of \nDecember 31, 2024.  Cash flow from operations for 2024 was $236.4 million.  The Company currently has more than $700 million of \navailable liquidity, including cash on hand, as well as availability under its revolving credit facility. We believe these factors will \nallow us to meet our anticipated funding requirements. Our intention is to maintain a balanced approach to capital deployment, by \nusing cash flow for investments in growth, returns to shareholders, and continued debt reduction. \n \n \n",
+        "similarity": 0.61839586,
+        "section_title": "Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 56,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "EBITDA (2024)",
+          "properties": {
+            "value": "400",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "EBITDA"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "2024 was also the second consecutive year of \nrecord EBITDA (excluding special items), reaching \nover $400 million. \nFull year earnings per share, excluding special \nitems, were also a record, increasing 18%.  \n",
+        "similarity": 0.5991195,
+        "section_title": "LETTER FROM THE CEO",
+        "source_page": 5,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Earnings per Share (2024)",
+          "properties": {
+            "value": "18",
+            "unit": "%",
+            "year": "2024",
+            "metric_type": "Earnings per Share"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "2024 was also the second consecutive year of \nrecord EBITDA (excluding special items), reaching \nover $400 million. \nFull year earnings per share, excluding special \nitems, were also a record, increasing 18%.  \n",
+        "similarity": 0.5991195,
+        "section_title": "LETTER FROM THE CEO",
+        "source_page": 5,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Earnings per Share (2023)",
+          "properties": {
+            "value": "2.59",
+            "unit": "$",
+            "year": "2023",
+            "metric_type": "Earnings per Share"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Income from operations represented 13.5% of sales compared with 7.9% of sales in the prior year.  Income from operations in \n2024 reflected a $30.0 million charge for a provision of credit losses in connection with the DIP Credit Agreement and $11.3 million \nof litigation expenses.  In addition, the Company recorded a $12.3 million net gain on sale of refractories manufacturing assets in \nChina. \n \nDuring 2023, the Company recorded income from operations of $171.8 million, as compared with $214.8 million in the prior \nyear.  ",
+        "similarity": 0.43524164,
+        "section_title": "Item 6. [Reserved]",
+        "source_page": 59,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Earnings per Share (2022)",
+          "properties": {
+            "value": "3.74",
+            "unit": "$",
+            "year": "2022",
+            "metric_type": "Earnings per Share"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Income from operations represented 13.5% of sales compared with 7.9% of sales in the prior year.  Income from operations in \n2024 reflected a $30.0 million charge for a provision of credit losses in connection with the DIP Credit Agreement and $11.3 million \nof litigation expenses.  In addition, the Company recorded a $12.3 million net gain on sale of refractories manufacturing assets in \nChina. \n \nDuring 2023, the Company recorded income from operations of $171.8 million, as compared with $214.8 million in the prior \nyear.  ",
+        "similarity": 0.43524164,
+        "section_title": "Item 6. [Reserved]",
+        "source_page": 59,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Net Income (2024)",
+          "properties": {
+            "value": "167.1",
+            "unit": "million",
+            "year": "2024",
+            "metric_type": "Net Income"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "At December 31, 2024 and 2023, \nthe book value of the Company’s equity method investments was $23.4 million and $20.0 million.  \n \nAccounting for Asset Retirement Obligations \n \nThe Company provides for obligations associated with the retirement of long-lived assets and the associated asset retirement \ncosts. ",
+        "similarity": 0.4624262,
+        "section_title": "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+        "source_page": 84,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Net Income (2023)",
+          "properties": {
+            "value": "84.1",
+            "unit": "million",
+            "year": "2023",
+            "metric_type": "Net Income"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "At December 31, 2024 and 2023, \nthe book value of the Company’s equity method investments was $23.4 million and $20.0 million.  \n \nAccounting for Asset Retirement Obligations \n \nThe Company provides for obligations associated with the retirement of long-lived assets and the associated asset retirement \ncosts. ",
+        "similarity": 0.4624262,
+        "section_title": "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+        "source_page": 84,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Net Income (2022)",
+          "properties": {
+            "value": "122.2",
+            "unit": "million",
+            "year": "2022",
+            "metric_type": "Net Income"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "At December 31, 2024 and 2023, \nthe book value of the Company’s equity method investments was $23.4 million and $20.0 million.  \n \nAccounting for Asset Retirement Obligations \n \nThe Company provides for obligations associated with the retirement of long-lived assets and the associated asset retirement \ncosts. ",
+        "similarity": 0.4624262,
+        "section_title": "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+        "source_page": 84,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Income from operations (2023)",
+          "properties": {
+            "value": "171.8",
+            "unit": "million",
+            "year": "2023",
+            "metric_type": "Income from operations"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Income from operations represented 13.5% of sales compared with 7.9% of sales in the prior year.  Income from operations in \n2024 reflected a $30.0 million charge for a provision of credit losses in connection with the DIP Credit Agreement and $11.3 million \nof litigation expenses.  In addition, the Company recorded a $12.3 million net gain on sale of refractories manufacturing assets in \nChina. \n \nDuring 2023, the Company recorded income from operations of $171.8 million, as compared with $214.8 million in the prior \nyear.  ",
+        "similarity": 0.43524164,
+        "section_title": "Item 6. [Reserved]",
+        "source_page": 59,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Income from operations (2022)",
+          "properties": {
+            "value": "214.8",
+            "unit": "million",
+            "year": "2022",
+            "metric_type": "Income from operations"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Income from operations represented 13.5% of sales compared with 7.9% of sales in the prior year.  Income from operations in \n2024 reflected a $30.0 million charge for a provision of credit losses in connection with the DIP Credit Agreement and $11.3 million \nof litigation expenses.  In addition, the Company recorded a $12.3 million net gain on sale of refractories manufacturing assets in \nChina. \n \nDuring 2023, the Company recorded income from operations of $171.8 million, as compared with $214.8 million in the prior \nyear.  ",
+        "similarity": 0.43524164,
+        "section_title": "Item 6. [Reserved]",
+        "source_page": 59,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Segment Operating Income (2024)",
+          "properties": {
+            "value": "315.5",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Segment Operating Income"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "31, 2024\nDec. 31, 2023\nSegment Operating Income, Excluding Special Items\n      Consumer & Specialties Segment\n$\n165.5\n$\n141.0\n      Engineered Solutions Segment\n161.7\n151.0\n      Unallocated Corporate Expenses\n(11.7)\n(12.1)\n      Consolidated\n315.5\n279.9\n      % of Sales\n14.9%\n12.9%\nOperating income growth excluding special items\n13%\n–\nOperating income impact of exited business\n3%\n–\nOperating income growth on underlying basis\n16%\n–\nCash flow from Operations\n$\n236.4\n$\n233.6\nCapital Expenditures\n89.5\n93.5\nFree Cash Flow\n$\n146.9\n$\n140.1\nNet Income attributable to MTI\n$\n167.1\n$\n84.1\nAdd back:\n      Depreciation, depletion, and amortization\n94.9\n95.0\n      Interest expense, net\n56.4\n59.2\n      Equity in earnings of affiliates, net of tax\n(6.7)\n(4.3)\n      Net income attributable to non-controlling interests\n3.8\n4.2\n      Provision for taxes on income\n59.4\n23.7\n                          EBITDA\n374.9\n261.9\nAdd special items:\n      Acquisition-related expenses\n–\n0.3\n      Restructuring and other items, net\n–\n6.9\n      Impairment of assets\n–\n71.7\n      Litigation expenses\n11.3\n29.2\n      Provision for credit losses\n30.0\n–\n      Gain on sale of assets, net\n(12.3)\n–\n      Debt extinguishment expenses\n1.8\n–\n                          Adjusted EBITDA\n$\n405.7\n$\n370.0\n",
+        "similarity": 0.5236909,
+        "section_title": "ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)",
+        "source_page": 126,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Cash flow from Operations (2024)",
+          "properties": {
+            "value": "236.4",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Cash flow from Operations"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "31, 2024\nDec. 31, 2023\nSegment Operating Income, Excluding Special Items\n      Consumer & Specialties Segment\n$\n165.5\n$\n141.0\n      Engineered Solutions Segment\n161.7\n151.0\n      Unallocated Corporate Expenses\n(11.7)\n(12.1)\n      Consolidated\n315.5\n279.9\n      % of Sales\n14.9%\n12.9%\nOperating income growth excluding special items\n13%\n–\nOperating income impact of exited business\n3%\n–\nOperating income growth on underlying basis\n16%\n–\nCash flow from Operations\n$\n236.4\n$\n233.6\nCapital Expenditures\n89.5\n93.5\nFree Cash Flow\n$\n146.9\n$\n140.1\nNet Income attributable to MTI\n$\n167.1\n$\n84.1\nAdd back:\n      Depreciation, depletion, and amortization\n94.9\n95.0\n      Interest expense, net\n56.4\n59.2\n      Equity in earnings of affiliates, net of tax\n(6.7)\n(4.3)\n      Net income attributable to non-controlling interests\n3.8\n4.2\n      Provision for taxes on income\n59.4\n23.7\n                          EBITDA\n374.9\n261.9\nAdd special items:\n      Acquisition-related expenses\n–\n0.3\n      Restructuring and other items, net\n–\n6.9\n      Impairment of assets\n–\n71.7\n      Litigation expenses\n11.3\n29.2\n      Provision for credit losses\n30.0\n–\n      Gain on sale of assets, net\n(12.3)\n–\n      Debt extinguishment expenses\n1.8\n–\n                          Adjusted EBITDA\n$\n405.7\n$\n370.0\n",
+        "similarity": 0.5236909,
+        "section_title": "ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)",
+        "source_page": 126,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Capital Expenditures (2024)",
+          "properties": {
+            "value": "89.5",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Capital Expenditures"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "31, 2024\nDec. 31, 2023\nSegment Operating Income, Excluding Special Items\n      Consumer & Specialties Segment\n$\n165.5\n$\n141.0\n      Engineered Solutions Segment\n161.7\n151.0\n      Unallocated Corporate Expenses\n(11.7)\n(12.1)\n      Consolidated\n315.5\n279.9\n      % of Sales\n14.9%\n12.9%\nOperating income growth excluding special items\n13%\n–\nOperating income impact of exited business\n3%\n–\nOperating income growth on underlying basis\n16%\n–\nCash flow from Operations\n$\n236.4\n$\n233.6\nCapital Expenditures\n89.5\n93.5\nFree Cash Flow\n$\n146.9\n$\n140.1\nNet Income attributable to MTI\n$\n167.1\n$\n84.1\nAdd back:\n      Depreciation, depletion, and amortization\n94.9\n95.0\n      Interest expense, net\n56.4\n59.2\n      Equity in earnings of affiliates, net of tax\n(6.7)\n(4.3)\n      Net income attributable to non-controlling interests\n3.8\n4.2\n      Provision for taxes on income\n59.4\n23.7\n                          EBITDA\n374.9\n261.9\nAdd special items:\n      Acquisition-related expenses\n–\n0.3\n      Restructuring and other items, net\n–\n6.9\n      Impairment of assets\n–\n71.7\n      Litigation expenses\n11.3\n29.2\n      Provision for credit losses\n30.0\n–\n      Gain on sale of assets, net\n(12.3)\n–\n      Debt extinguishment expenses\n1.8\n–\n                          Adjusted EBITDA\n$\n405.7\n$\n370.0\n",
+        "similarity": 0.5236909,
+        "section_title": "ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)",
+        "source_page": 126,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Free Cash Flow (2024)",
+          "properties": {
+            "value": "146.9",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Free Cash Flow"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "31, 2024\nDec. 31, 2023\nSegment Operating Income, Excluding Special Items\n      Consumer & Specialties Segment\n$\n165.5\n$\n141.0\n      Engineered Solutions Segment\n161.7\n151.0\n      Unallocated Corporate Expenses\n(11.7)\n(12.1)\n      Consolidated\n315.5\n279.9\n      % of Sales\n14.9%\n12.9%\nOperating income growth excluding special items\n13%\n–\nOperating income impact of exited business\n3%\n–\nOperating income growth on underlying basis\n16%\n–\nCash flow from Operations\n$\n236.4\n$\n233.6\nCapital Expenditures\n89.5\n93.5\nFree Cash Flow\n$\n146.9\n$\n140.1\nNet Income attributable to MTI\n$\n167.1\n$\n84.1\nAdd back:\n      Depreciation, depletion, and amortization\n94.9\n95.0\n      Interest expense, net\n56.4\n59.2\n      Equity in earnings of affiliates, net of tax\n(6.7)\n(4.3)\n      Net income attributable to non-controlling interests\n3.8\n4.2\n      Provision for taxes on income\n59.4\n23.7\n                          EBITDA\n374.9\n261.9\nAdd special items:\n      Acquisition-related expenses\n–\n0.3\n      Restructuring and other items, net\n–\n6.9\n      Impairment of assets\n–\n71.7\n      Litigation expenses\n11.3\n29.2\n      Provision for credit losses\n30.0\n–\n      Gain on sale of assets, net\n(12.3)\n–\n      Debt extinguishment expenses\n1.8\n–\n                          Adjusted EBITDA\n$\n405.7\n$\n370.0\n",
+        "similarity": 0.5236909,
+        "section_title": "ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)",
+        "source_page": 126,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Adjusted EBITDA (2024)",
+          "properties": {
+            "value": "405.7",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Adjusted EBITDA"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "31, 2024\nDec. 31, 2023\nSegment Operating Income, Excluding Special Items\n      Consumer & Specialties Segment\n$\n165.5\n$\n141.0\n      Engineered Solutions Segment\n161.7\n151.0\n      Unallocated Corporate Expenses\n(11.7)\n(12.1)\n      Consolidated\n315.5\n279.9\n      % of Sales\n14.9%\n12.9%\nOperating income growth excluding special items\n13%\n–\nOperating income impact of exited business\n3%\n–\nOperating income growth on underlying basis\n16%\n–\nCash flow from Operations\n$\n236.4\n$\n233.6\nCapital Expenditures\n89.5\n93.5\nFree Cash Flow\n$\n146.9\n$\n140.1\nNet Income attributable to MTI\n$\n167.1\n$\n84.1\nAdd back:\n      Depreciation, depletion, and amortization\n94.9\n95.0\n      Interest expense, net\n56.4\n59.2\n      Equity in earnings of affiliates, net of tax\n(6.7)\n(4.3)\n      Net income attributable to non-controlling interests\n3.8\n4.2\n      Provision for taxes on income\n59.4\n23.7\n                          EBITDA\n374.9\n261.9\nAdd special items:\n      Acquisition-related expenses\n–\n0.3\n      Restructuring and other items, net\n–\n6.9\n      Impairment of assets\n–\n71.7\n      Litigation expenses\n11.3\n29.2\n      Provision for credit losses\n30.0\n–\n      Gain on sale of assets, net\n(12.3)\n–\n      Debt extinguishment expenses\n1.8\n–\n                          Adjusted EBITDA\n$\n405.7\n$\n370.0\n",
+        "similarity": 0.5236909,
+        "section_title": "ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)",
+        "source_page": 126,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Revenue (2024)",
+          "properties": {
+            "value": "2118.5",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Revenue"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "31, 2024\nDec. 31, 2023\nSegment Operating Income, Excluding Special Items\n      Consumer & Specialties Segment\n$\n165.5\n$\n141.0\n      Engineered Solutions Segment\n161.7\n151.0\n      Unallocated Corporate Expenses\n(11.7)\n(12.1)\n      Consolidated\n315.5\n279.9\n      % of Sales\n14.9%\n12.9%\nOperating income growth excluding special items\n13%\n–\nOperating income impact of exited business\n3%\n–\nOperating income growth on underlying basis\n16%\n–\nCash flow from Operations\n$\n236.4\n$\n233.6\nCapital Expenditures\n89.5\n93.5\nFree Cash Flow\n$\n146.9\n$\n140.1\nNet Income attributable to MTI\n$\n167.1\n$\n84.1\nAdd back:\n      Depreciation, depletion, and amortization\n94.9\n95.0\n      Interest expense, net\n56.4\n59.2\n      Equity in earnings of affiliates, net of tax\n(6.7)\n(4.3)\n      Net income attributable to non-controlling interests\n3.8\n4.2\n      Provision for taxes on income\n59.4\n23.7\n                          EBITDA\n374.9\n261.9\nAdd special items:\n      Acquisition-related expenses\n–\n0.3\n      Restructuring and other items, net\n–\n6.9\n      Impairment of assets\n–\n71.7\n      Litigation expenses\n11.3\n29.2\n      Provision for credit losses\n30.0\n–\n      Gain on sale of assets, net\n(12.3)\n–\n      Debt extinguishment expenses\n1.8\n–\n                          Adjusted EBITDA\n$\n405.7\n$\n370.0\n",
+        "similarity": 0.5236909,
+        "section_title": "ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)",
+        "source_page": 126,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Segment production margin (2024)",
+          "properties": {
+            "value": "547.7",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Segment production margin"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Intersegment sales and transfers are not significant. \n \nSegment revenues, expenses, operating income and a reconciliation of the operating segment totals to the applicable line \nitems on the consolidated financial statements is as follows: \n \nYear Ended December 31, \n \n2024 \n \n2023 \n(millions of dollars)  \nConsumer & \nSpecialties  \nEngineered \nSolutions  \nTotal \n \nConsumer & \nSpecialties \n \nEngineered \nSolutions \n \nTotal \nNet Sales \n$ \n1,140.2  $ \n978.3  $ \n2,118.5  $ \n1,160.2  $ \n1,009.7  $ \n2,169.9\nCost of goods sold \n890.4\n680.4\n1,570.8\n938.6\n724.4\n1,663.0\nSegment production margin \n \n249.8\n297.9  \n547.7\n \n221.6   \n285.3  \n506.9\nMarketing and administrative expenses \n \n71.7   \n125.8   \n197.5   \n69.1   \n124.6   \n193.7\nResearch and development expenses \n \n12.6   \n10.4   \n23.0   \n11.5   \n9.7   \n21.2\nGain on sale of assets, net \n—\n(12.3)\n(12.3)\n—\n—\n—\nImpairment of assets \n—\n—\n—\n71.7\n—\n71.7\nRestructuring and other items, net \n—\n—\n—\n0.9\n3.2\n4.1\nLitigation expenses \n—\n—\n—\n26.8\n—\n26.8\nSegment income from operations \n$ \n165.5 $ \n174.0 $ \n339.5\n$ \n41.6 $ \n147.8 $ \n189.4\n \n \n",
+        "similarity": 0.5175279,
+        "section_title": "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+        "source_page": 110,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Marketing and administrative expenses (2024)",
+          "properties": {
+            "value": "197.5",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Marketing and administrative expenses"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Intersegment sales and transfers are not significant. \n \nSegment revenues, expenses, operating income and a reconciliation of the operating segment totals to the applicable line \nitems on the consolidated financial statements is as follows: \n \nYear Ended December 31, \n \n2024 \n \n2023 \n(millions of dollars)  \nConsumer & \nSpecialties  \nEngineered \nSolutions  \nTotal \n \nConsumer & \nSpecialties \n \nEngineered \nSolutions \n \nTotal \nNet Sales \n$ \n1,140.2  $ \n978.3  $ \n2,118.5  $ \n1,160.2  $ \n1,009.7  $ \n2,169.9\nCost of goods sold \n890.4\n680.4\n1,570.8\n938.6\n724.4\n1,663.0\nSegment production margin \n \n249.8\n297.9  \n547.7\n \n221.6   \n285.3  \n506.9\nMarketing and administrative expenses \n \n71.7   \n125.8   \n197.5   \n69.1   \n124.6   \n193.7\nResearch and development expenses \n \n12.6   \n10.4   \n23.0   \n11.5   \n9.7   \n21.2\nGain on sale of assets, net \n—\n(12.3)\n(12.3)\n—\n—\n—\nImpairment of assets \n—\n—\n—\n71.7\n—\n71.7\nRestructuring and other items, net \n—\n—\n—\n0.9\n3.2\n4.1\nLitigation expenses \n—\n—\n—\n26.8\n—\n26.8\nSegment income from operations \n$ \n165.5 $ \n174.0 $ \n339.5\n$ \n41.6 $ \n147.8 $ \n189.4\n \n \n",
+        "similarity": 0.5175279,
+        "section_title": "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+        "source_page": 110,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Research and development expenses (2024)",
+          "properties": {
+            "value": "23.0",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Research and development expenses"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Intersegment sales and transfers are not significant. \n \nSegment revenues, expenses, operating income and a reconciliation of the operating segment totals to the applicable line \nitems on the consolidated financial statements is as follows: \n \nYear Ended December 31, \n \n2024 \n \n2023 \n(millions of dollars)  \nConsumer & \nSpecialties  \nEngineered \nSolutions  \nTotal \n \nConsumer & \nSpecialties \n \nEngineered \nSolutions \n \nTotal \nNet Sales \n$ \n1,140.2  $ \n978.3  $ \n2,118.5  $ \n1,160.2  $ \n1,009.7  $ \n2,169.9\nCost of goods sold \n890.4\n680.4\n1,570.8\n938.6\n724.4\n1,663.0\nSegment production margin \n \n249.8\n297.9  \n547.7\n \n221.6   \n285.3  \n506.9\nMarketing and administrative expenses \n \n71.7   \n125.8   \n197.5   \n69.1   \n124.6   \n193.7\nResearch and development expenses \n \n12.6   \n10.4   \n23.0   \n11.5   \n9.7   \n21.2\nGain on sale of assets, net \n—\n(12.3)\n(12.3)\n—\n—\n—\nImpairment of assets \n—\n—\n—\n71.7\n—\n71.7\nRestructuring and other items, net \n—\n—\n—\n0.9\n3.2\n4.1\nLitigation expenses \n—\n—\n—\n26.8\n—\n26.8\nSegment income from operations \n$ \n165.5 $ \n174.0 $ \n339.5\n$ \n41.6 $ \n147.8 $ \n189.4\n \n \n",
+        "similarity": 0.5175279,
+        "section_title": "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+        "source_page": 110,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Segment income from operations (2024)",
+          "properties": {
+            "value": "339.5",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Segment income from operations"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "31, 2024\nDec. 31, 2023\nSegment Operating Income, Excluding Special Items\n      Consumer & Specialties Segment\n$\n165.5\n$\n141.0\n      Engineered Solutions Segment\n161.7\n151.0\n      Unallocated Corporate Expenses\n(11.7)\n(12.1)\n      Consolidated\n315.5\n279.9\n      % of Sales\n14.9%\n12.9%\nOperating income growth excluding special items\n13%\n–\nOperating income impact of exited business\n3%\n–\nOperating income growth on underlying basis\n16%\n–\nCash flow from Operations\n$\n236.4\n$\n233.6\nCapital Expenditures\n89.5\n93.5\nFree Cash Flow\n$\n146.9\n$\n140.1\nNet Income attributable to MTI\n$\n167.1\n$\n84.1\nAdd back:\n      Depreciation, depletion, and amortization\n94.9\n95.0\n      Interest expense, net\n56.4\n59.2\n      Equity in earnings of affiliates, net of tax\n(6.7)\n(4.3)\n      Net income attributable to non-controlling interests\n3.8\n4.2\n      Provision for taxes on income\n59.4\n23.7\n                          EBITDA\n374.9\n261.9\nAdd special items:\n      Acquisition-related expenses\n–\n0.3\n      Restructuring and other items, net\n–\n6.9\n      Impairment of assets\n–\n71.7\n      Litigation expenses\n11.3\n29.2\n      Provision for credit losses\n30.0\n–\n      Gain on sale of assets, net\n(12.3)\n–\n      Debt extinguishment expenses\n1.8\n–\n                          Adjusted EBITDA\n$\n405.7\n$\n370.0\n",
+        "similarity": 0.5236909,
+        "section_title": "ADDITIONAL INFORMATION REGARDING NON-GAAP FINANCIAL MEASURES (UNAUDITED)",
+        "source_page": 126,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Short-term Investments (2024)",
+          "properties": {
+            "value": "4.0",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Short-term Investments"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Our balance sheet continues to be strong.  Cash, cash equivalents and short-term investments were $337.1 million as of \nDecember 31, 2024.  Cash flow from operations for 2024 was $236.4 million.  The Company currently has more than $700 million of \navailable liquidity, including cash on hand, as well as availability under its revolving credit facility. We believe these factors will \nallow us to meet our anticipated funding requirements. Our intention is to maintain a balanced approach to capital deployment, by \nusing cash flow for investments in growth, returns to shareholders, and continued debt reduction. \n \n \n",
+        "similarity": 0.47030663,
+        "section_title": "Item 6. [Reserved]",
+        "source_page": 56,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Short-term Investments (2023)",
+          "properties": {
+            "value": "4.3",
+            "unit": "$ million",
+            "year": "2023",
+            "metric_type": "Short-term Investments"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Our balance sheet continues to be strong.  Cash, cash equivalents and short-term investments were $337.1 million as of \nDecember 31, 2024.  Cash flow from operations for 2024 was $236.4 million.  The Company currently has more than $700 million of \navailable liquidity, including cash on hand, as well as availability under its revolving credit facility. We believe these factors will \nallow us to meet our anticipated funding requirements. Our intention is to maintain a balanced approach to capital deployment, by \nusing cash flow for investments in growth, returns to shareholders, and continued debt reduction. \n \n \n",
+        "similarity": 0.47030663,
+        "section_title": "Item 6. [Reserved]",
+        "source_page": 56,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Allowance for Doubtful Accounts (2024)",
+          "properties": {
+            "value": "17.1",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Allowance for Doubtful Accounts"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Cash Equivalents and Short-term Investments \n \nThe Company considers all highly liquid investments with original maturities of three months or less to be cash equivalents. \nShort-term investments consist of financial instruments, mainly bank deposits, with original maturities beyond three months, but less \nthan twelve months.  Short-term investments amounted to $4.0 million and $4.3 million at December 31, 2024 and 2023, respectively. \nThere were no unrealized holding gains or losses on the short-term bank investments held at December 31, 2024. \n \nTrade Accounts Receivable \n \nTrade accounts receivables are recorded at the invoiced amount and do not bear interest. The allowance for doubtful accounts \nis the Company’s best estimate of the amount of probable credit losses in the Company’s existing accounts receivable.  The Company \ndetermines the allowance based on historical write-off experience and specific allowances for bankrupt customers.  The Company also \nanalyzes the collection history and financial condition of its other customers, considering current industry conditions and determines \nwhether an allowance needs to be established. The Company reviews its allowance for doubtful accounts monthly.  Past due balances \nover 90 days based on payment terms are reviewed individually for collectability.  Allowance for doubtful accounts was $17.1 million  \nand $20.3 million at December 31, 2024 and 2023, respectively. Account balances are charged off against the allowance after all \nmeans of collection have been exhausted and the potential for recovery is considered remote.  ",
+        "similarity": 0.43296438,
+        "section_title": "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+        "source_page": 82,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Allowance for Doubtful Accounts (2023)",
+          "properties": {
+            "value": "20.3",
+            "unit": "$ million",
+            "year": "2023",
+            "metric_type": "Allowance for Doubtful Accounts"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Cash Equivalents and Short-term Investments \n \nThe Company considers all highly liquid investments with original maturities of three months or less to be cash equivalents. \nShort-term investments consist of financial instruments, mainly bank deposits, with original maturities beyond three months, but less \nthan twelve months.  Short-term investments amounted to $4.0 million and $4.3 million at December 31, 2024 and 2023, respectively. \nThere were no unrealized holding gains or losses on the short-term bank investments held at December 31, 2024. \n \nTrade Accounts Receivable \n \nTrade accounts receivables are recorded at the invoiced amount and do not bear interest. The allowance for doubtful accounts \nis the Company’s best estimate of the amount of probable credit losses in the Company’s existing accounts receivable.  The Company \ndetermines the allowance based on historical write-off experience and specific allowances for bankrupt customers.  The Company also \nanalyzes the collection history and financial condition of its other customers, considering current industry conditions and determines \nwhether an allowance needs to be established. The Company reviews its allowance for doubtful accounts monthly.  Past due balances \nover 90 days based on payment terms are reviewed individually for collectability.  Allowance for doubtful accounts was $17.1 million  \nand $20.3 million at December 31, 2024 and 2023, respectively. Account balances are charged off against the allowance after all \nmeans of collection have been exhausted and the potential for recovery is considered remote.  ",
+        "similarity": 0.43296438,
+        "section_title": "NOTES TO CONSOLIDATED FINANCIAL STATEMENTS",
+        "source_page": 82,
+        "sic": null
+      }
+    ],
+    "FACES_RISK": [
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Significant under-performance relative to historical or projected future operating results",
+          "properties": {
+            "description": "Under-performance relative to historical or projected future operating results",
+            "why": "Could trigger an impairment review"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Factors we consider important that could trigger an impairment \nreview include the following: \n \n●  Significant under-performance relative to historical or projected future operating results; \n●  Significant changes in the manner of use of the acquired assets or the strategy for the overall business; \n●  Significant negative industry or economic trends; \n●  Market capitalization below invested capital. \n \nAnnually, the Company performs a qualitative assessment for each of its reporting units to determine if the two-step process \nfor impairment testing is required.  If the Company determines that it is more likely than not that the fair value of a reporting unit is \nless than its carrying amount, the Company then evaluates the recoverability of goodwill using a two-step impairment test approach at \nthe reporting unit level.  Step one involves a) developing the fair value of total invested capital of each reporting unit in which \ngoodwill is assigned; and b) comparing the fair value of total invested capital for each reporting unit to its carrying amount, to \ndetermine if there is goodwill impairment.  Should the carrying amount for a reporting unit exceed its fair value, then the step one test \nis failed, and the magnitude of any goodwill impairment is determined under step two.  The amount of impairment loss is determined \nin step two by comparing the implied fair value of reporting unit goodwill with the carrying amount of goodwill. \n \n",
+        "similarity": 0.43575314,
+        "section_title": "Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 65,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Significant changes in the manner of use of the acquired assets or the strategy for the overall business",
+          "properties": {
+            "description": "Changes in asset use or business strategy",
+            "why": "Could trigger an impairment review"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Factors we consider important that could trigger an impairment \nreview include the following: \n \n●  Significant under-performance relative to historical or projected future operating results; \n●  Significant changes in the manner of use of the acquired assets or the strategy for the overall business; \n●  Significant negative industry or economic trends; \n●  Market capitalization below invested capital. \n \nAnnually, the Company performs a qualitative assessment for each of its reporting units to determine if the two-step process \nfor impairment testing is required.  If the Company determines that it is more likely than not that the fair value of a reporting unit is \nless than its carrying amount, the Company then evaluates the recoverability of goodwill using a two-step impairment test approach at \nthe reporting unit level.  Step one involves a) developing the fair value of total invested capital of each reporting unit in which \ngoodwill is assigned; and b) comparing the fair value of total invested capital for each reporting unit to its carrying amount, to \ndetermine if there is goodwill impairment.  Should the carrying amount for a reporting unit exceed its fair value, then the step one test \nis failed, and the magnitude of any goodwill impairment is determined under step two.  The amount of impairment loss is determined \nin step two by comparing the implied fair value of reporting unit goodwill with the carrying amount of goodwill. \n \n",
+        "similarity": 0.43575314,
+        "section_title": "Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 65,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Significant negative industry or economic trends",
+          "properties": {
+            "description": "Negative industry or economic trends",
+            "why": "Could trigger an impairment review"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Factors we consider important that could trigger an impairment \nreview include the following: \n \n●  Significant under-performance relative to historical or projected future operating results; \n●  Significant changes in the manner of use of the acquired assets or the strategy for the overall business; \n●  Significant negative industry or economic trends; \n●  Market capitalization below invested capital. \n \nAnnually, the Company performs a qualitative assessment for each of its reporting units to determine if the two-step process \nfor impairment testing is required.  If the Company determines that it is more likely than not that the fair value of a reporting unit is \nless than its carrying amount, the Company then evaluates the recoverability of goodwill using a two-step impairment test approach at \nthe reporting unit level.  Step one involves a) developing the fair value of total invested capital of each reporting unit in which \ngoodwill is assigned; and b) comparing the fair value of total invested capital for each reporting unit to its carrying amount, to \ndetermine if there is goodwill impairment.  Should the carrying amount for a reporting unit exceed its fair value, then the step one test \nis failed, and the magnitude of any goodwill impairment is determined under step two.  The amount of impairment loss is determined \nin step two by comparing the implied fair value of reporting unit goodwill with the carrying amount of goodwill. \n \n",
+        "similarity": 0.43575314,
+        "section_title": "Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 65,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Market capitalization below invested capital",
+          "properties": {
+            "description": "Market capitalization below invested capital",
+            "why": "Could trigger an impairment review"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Factors we consider important that could trigger an impairment \nreview include the following: \n \n●  Significant under-performance relative to historical or projected future operating results; \n●  Significant changes in the manner of use of the acquired assets or the strategy for the overall business; \n●  Significant negative industry or economic trends; \n●  Market capitalization below invested capital. \n \nAnnually, the Company performs a qualitative assessment for each of its reporting units to determine if the two-step process \nfor impairment testing is required.  If the Company determines that it is more likely than not that the fair value of a reporting unit is \nless than its carrying amount, the Company then evaluates the recoverability of goodwill using a two-step impairment test approach at \nthe reporting unit level.  Step one involves a) developing the fair value of total invested capital of each reporting unit in which \ngoodwill is assigned; and b) comparing the fair value of total invested capital for each reporting unit to its carrying amount, to \ndetermine if there is goodwill impairment.  Should the carrying amount for a reporting unit exceed its fair value, then the step one test \nis failed, and the magnitude of any goodwill impairment is determined under step two.  The amount of impairment loss is determined \nin step two by comparing the implied fair value of reporting unit goodwill with the carrying amount of goodwill. \n \n",
+        "similarity": 0.43575314,
+        "section_title": "Item 7. Management’s Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 65,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Litigation",
+          "properties": {
+            "description": "Resolution or recognition of additional liabilities in connection with pending or future litigation",
+            "why": "Could have a material adverse effect on the Company’s results of operations, cash flows and financial condition"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "The resolution of, or recognition of additional liabilities in \nconnection with, pending or future litigation could have a material adverse effect on the Company’s results of operations, cash flows \nand financial condition. \n \n",
+        "similarity": 0.65720683,
+        "section_title": "Item 1A. Risk Factors",
+        "source_page": 35,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Weakness in the industries we serve",
+          "properties": {
+            "description": "Adverse effect on sales of products and results of operations",
+            "why": "Continued weakness in the industries we serve has had, and may in the future have, an adverse effect"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Continued weakness in the industries we serve has had, and may in the future have, an adverse effect on sales of our \nproducts and our results of operations. A continued or renewed economic downturn in one or more of the industries or geographic \nregions that the Company serves, or in the worldwide economy, could cause actual results of operations to differ materially from \nhistorical and expected results. \n",
+        "similarity": 0.6002057,
+        "section_title": "Item 1A. Risk Factors",
+        "source_page": 31,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Economic downturn",
+          "properties": {
+            "description": "Actual results of operations differing materially from historical and expected results",
+            "why": "A continued or renewed economic downturn in one or more of the industries or geographic regions that the Company serves, or in the worldwide economy"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Continued weakness in the industries we serve has had, and may in the future have, an adverse effect on sales of our \nproducts and our results of operations. A continued or renewed economic downturn in one or more of the industries or geographic \nregions that the Company serves, or in the worldwide economy, could cause actual results of operations to differ materially from \nhistorical and expected results. \n",
+        "similarity": 0.6002057,
+        "section_title": "Item 1A. Risk Factors",
+        "source_page": 31,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Increased pressure on results of operations",
+          "properties": {
+            "description": "Adverse effect on the Company's results of operations in the future",
+            "why": "Increased pressure could have an adverse effect on the Company's results of operations in the future"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "This increased pressure could have \nan adverse effect on the Company’s results of operations in the future. \n \n",
+        "similarity": 0.52818334,
+        "section_title": "Item 1A. Risk Factors",
+        "source_page": 32,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Worldwide general economic, business, and industry conditions",
+          "properties": {
+            "description": "Adverse effect on the Company’s results",
+            "why": "Declining consumer and business confidence, volatile raw material prices, instability in credit markets, high unemployment, fluctuating interest and exchange rates"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Our business, \nfinancial condition and results of operations could be materially adversely affected by any of these risks.  These risks should be read in \nconjunction with the other information in this Annual Report on Form 10-K. \n \nIndustry and Market Risks \n \nWorldwide general economic, business, and industry conditions may have an adverse effect on the Company’s results. \n \nThe Company’s business and operating results are affected by worldwide and regional economic, business, and industry \nconditions. In recent years, we have experienced, among other things, declining consumer and business confidence, volatile raw \nmaterial prices, instability in credit markets, high unemployment, fluctuating interest and exchange rates, and other challenges in the \ncountries in which we operate. Uncertainty or a deterioration in the economic conditions affecting the businesses to which, or \ngeographic areas in which, we sell products could reduce demand for our products and inflationary pressures may increase our costs. \nThe Company’s customers and potential customers may experience deterioration of their businesses, cash flow shortages, and \ndifficulty obtaining financing. As discussed below, the industries we serve have in the past been adversely affected by the uncertain \nglobal economic climate due to the cyclical nature of their businesses. As a result, existing or potential customers may reduce or delay \ntheir growth and investments and their plans to purchase products, pursue inventory reduction measures, and may not be able to fulfill \ntheir obligations in a timely fashion. Further, suppliers could experience similar conditions, which could affect their ability to fulfill \ntheir obligations to the Company. We may also experience pricing pressure on products and services, or be unsuccessful in passing \nalong to our customers an increase in our raw materials costs or energy prices, which could decrease our revenues and have an adverse \neffect on our financial condition and cash flows. ",
+        "similarity": 0.5080899,
+        "section_title": "Item 1A. Risk Factors",
+        "source_page": 31,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Uncertainty or deterioration in economic conditions",
+          "properties": {
+            "description": "Reduced demand for products and increased costs",
+            "why": "Inflationary pressures may increase costs and customers may experience deterioration of their businesses, cash flow shortages, and difficulty obtaining financing"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Our business, \nfinancial condition and results of operations could be materially adversely affected by any of these risks.  These risks should be read in \nconjunction with the other information in this Annual Report on Form 10-K. \n \nIndustry and Market Risks \n \nWorldwide general economic, business, and industry conditions may have an adverse effect on the Company’s results. \n \nThe Company’s business and operating results are affected by worldwide and regional economic, business, and industry \nconditions. In recent years, we have experienced, among other things, declining consumer and business confidence, volatile raw \nmaterial prices, instability in credit markets, high unemployment, fluctuating interest and exchange rates, and other challenges in the \ncountries in which we operate. Uncertainty or a deterioration in the economic conditions affecting the businesses to which, or \ngeographic areas in which, we sell products could reduce demand for our products and inflationary pressures may increase our costs. \nThe Company’s customers and potential customers may experience deterioration of their businesses, cash flow shortages, and \ndifficulty obtaining financing. As discussed below, the industries we serve have in the past been adversely affected by the uncertain \nglobal economic climate due to the cyclical nature of their businesses. As a result, existing or potential customers may reduce or delay \ntheir growth and investments and their plans to purchase products, pursue inventory reduction measures, and may not be able to fulfill \ntheir obligations in a timely fashion. Further, suppliers could experience similar conditions, which could affect their ability to fulfill \ntheir obligations to the Company. We may also experience pricing pressure on products and services, or be unsuccessful in passing \nalong to our customers an increase in our raw materials costs or energy prices, which could decrease our revenues and have an adverse \neffect on our financial condition and cash flows. ",
+        "similarity": 0.5080899,
+        "section_title": "Item 1A. Risk Factors",
+        "source_page": 31,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Cyclical nature of industries",
+          "properties": {
+            "description": "Adverse effect on industries served",
+            "why": "Existing or potential customers may reduce or delay their growth and investments, pursue inventory reduction measures, and may not be able to fulfill their obligations in a timely fashion"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Our business, \nfinancial condition and results of operations could be materially adversely affected by any of these risks.  These risks should be read in \nconjunction with the other information in this Annual Report on Form 10-K. \n \nIndustry and Market Risks \n \nWorldwide general economic, business, and industry conditions may have an adverse effect on the Company’s results. \n \nThe Company’s business and operating results are affected by worldwide and regional economic, business, and industry \nconditions. In recent years, we have experienced, among other things, declining consumer and business confidence, volatile raw \nmaterial prices, instability in credit markets, high unemployment, fluctuating interest and exchange rates, and other challenges in the \ncountries in which we operate. Uncertainty or a deterioration in the economic conditions affecting the businesses to which, or \ngeographic areas in which, we sell products could reduce demand for our products and inflationary pressures may increase our costs. \nThe Company’s customers and potential customers may experience deterioration of their businesses, cash flow shortages, and \ndifficulty obtaining financing. As discussed below, the industries we serve have in the past been adversely affected by the uncertain \nglobal economic climate due to the cyclical nature of their businesses. As a result, existing or potential customers may reduce or delay \ntheir growth and investments and their plans to purchase products, pursue inventory reduction measures, and may not be able to fulfill \ntheir obligations in a timely fashion. Further, suppliers could experience similar conditions, which could affect their ability to fulfill \ntheir obligations to the Company. We may also experience pricing pressure on products and services, or be unsuccessful in passing \nalong to our customers an increase in our raw materials costs or energy prices, which could decrease our revenues and have an adverse \neffect on our financial condition and cash flows. ",
+        "similarity": 0.5080899,
+        "section_title": "Item 1A. Risk Factors",
+        "source_page": 31,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Pricing pressure on products and services",
+          "properties": {
+            "description": "Decreased revenues and adverse effect on financial condition and cash flows",
+            "why": "Unsuccessful in passing along to customers an increase in raw materials costs or energy prices"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Our business, \nfinancial condition and results of operations could be materially adversely affected by any of these risks.  These risks should be read in \nconjunction with the other information in this Annual Report on Form 10-K. \n \nIndustry and Market Risks \n \nWorldwide general economic, business, and industry conditions may have an adverse effect on the Company’s results. \n \nThe Company’s business and operating results are affected by worldwide and regional economic, business, and industry \nconditions. In recent years, we have experienced, among other things, declining consumer and business confidence, volatile raw \nmaterial prices, instability in credit markets, high unemployment, fluctuating interest and exchange rates, and other challenges in the \ncountries in which we operate. Uncertainty or a deterioration in the economic conditions affecting the businesses to which, or \ngeographic areas in which, we sell products could reduce demand for our products and inflationary pressures may increase our costs. \nThe Company’s customers and potential customers may experience deterioration of their businesses, cash flow shortages, and \ndifficulty obtaining financing. As discussed below, the industries we serve have in the past been adversely affected by the uncertain \nglobal economic climate due to the cyclical nature of their businesses. As a result, existing or potential customers may reduce or delay \ntheir growth and investments and their plans to purchase products, pursue inventory reduction measures, and may not be able to fulfill \ntheir obligations in a timely fashion. Further, suppliers could experience similar conditions, which could affect their ability to fulfill \ntheir obligations to the Company. We may also experience pricing pressure on products and services, or be unsuccessful in passing \nalong to our customers an increase in our raw materials costs or energy prices, which could decrease our revenues and have an adverse \neffect on our financial condition and cash flows. ",
+        "similarity": 0.5080899,
+        "section_title": "Item 1A. Risk Factors",
+        "source_page": 31,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Risk",
+          "name": "Supplier difficulties",
+          "properties": {
+            "description": "Suppliers may not fulfill their obligations",
+            "why": "Suppliers could experience similar economic conditions, affecting their ability to fulfill their obligations to the Company"
+          }
+        },
+        "rel": "FACES_RISK",
+        "props": {},
+        "chunk_text": "Our business, \nfinancial condition and results of operations could be materially adversely affected by any of these risks.  These risks should be read in \nconjunction with the other information in this Annual Report on Form 10-K. \n \nIndustry and Market Risks \n \nWorldwide general economic, business, and industry conditions may have an adverse effect on the Company’s results. \n \nThe Company’s business and operating results are affected by worldwide and regional economic, business, and industry \nconditions. In recent years, we have experienced, among other things, declining consumer and business confidence, volatile raw \nmaterial prices, instability in credit markets, high unemployment, fluctuating interest and exchange rates, and other challenges in the \ncountries in which we operate. Uncertainty or a deterioration in the economic conditions affecting the businesses to which, or \ngeographic areas in which, we sell products could reduce demand for our products and inflationary pressures may increase our costs. \nThe Company’s customers and potential customers may experience deterioration of their businesses, cash flow shortages, and \ndifficulty obtaining financing. As discussed below, the industries we serve have in the past been adversely affected by the uncertain \nglobal economic climate due to the cyclical nature of their businesses. As a result, existing or potential customers may reduce or delay \ntheir growth and investments and their plans to purchase products, pursue inventory reduction measures, and may not be able to fulfill \ntheir obligations in a timely fashion. Further, suppliers could experience similar conditions, which could affect their ability to fulfill \ntheir obligations to the Company. We may also experience pricing pressure on products and services, or be unsuccessful in passing \nalong to our customers an increase in our raw materials costs or energy prices, which could decrease our revenues and have an adverse \neffect on our financial condition and cash flows. ",
+        "similarity": 0.5080899,
+        "section_title": "Item 1A. Risk Factors",
+        "source_page": 31,
+        "sic": null
+      }
+    ],
+    "OPERATES_IN": [
+      {
+        "src": {
+          "type": "Company",
+          "name": "Newmarket Corporation"
+        },
+        "tgt": {
+          "type": "Industry",
+          "name": "Oil & Gas",
+          "properties": {
+            "sector": "Energy"
+          }
+        },
+        "rel": "OPERATES_IN",
+        "props": {},
+        "chunk_text": "Additionally, within this product line, the Company provides offshore filtration and well testing services to improve the \nproduction, cost, compliance, and environmental impact of activities performed globally in the oil and gas industry.  \n \nThe Company’s Environmental & Infrastructure net sales were $265.1 million, $288.8 million and $298.4 million for the \nyears ended December 31, 2024, 2023 and 2022, respectively. \n \n \n \n",
+        "similarity": 0.38030443,
+        "section_title": "Item 1. Business",
+        "source_page": 24,
+        "sic": null
+      }
+    ]
+  }
+}
