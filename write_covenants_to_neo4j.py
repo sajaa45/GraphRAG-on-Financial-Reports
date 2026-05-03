@@ -101,7 +101,7 @@ def write_metrics_to_neo4j(json_file: str):
                                 company_metrics += 1
                 
                 # Process target metric matches
-                for metric_name, matches in item.get('target_metrics', {}).items():
+                for metric_type, matches in item.get('target_metrics', {}).items():
                     for match in matches:
                         # Get the most recent value for each unit
                         for unit_name, entries in match.get('units', {}).items():
@@ -110,10 +110,10 @@ def write_metrics_to_neo4j(json_file: str):
                                 latest = sorted_entries[0]
                                 
                                 end_date = latest.get('end', '')
-                                year = end_date.split('-')[0] if end_date else 'Unknown'
+                                year = latest.get('fy', end_date.split('-')[0] if end_date else 'Unknown')
                                 
-                                # Use the target metric name with year
-                                full_metric_name = f"{metric_name} ({year})"
+                                # Use the metric_type with year
+                                full_metric_name = f"{metric_type} ({year})"
                                 
                                 session.run(
                                     """
@@ -140,8 +140,8 @@ def write_metrics_to_neo4j(json_file: str):
                                         "metric_name": full_metric_name,
                                         "value": str(latest.get('val', '')),
                                         "unit": unit_name,
-                                        "year": year,
-                                        "metric_type": match.get('metric_type', 'Unknown'),
+                                        "year": str(year),
+                                        "metric_type": metric_type,
                                         "xbrl_tag": match.get('tag', ''),
                                         "taxonomy": match.get('taxonomy', ''),
                                         "label": match.get('label', ''),

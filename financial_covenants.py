@@ -79,7 +79,8 @@ credit_risk_tags = [
 START_DATE = "2023-01-01"
 END_DATE = "2024-01-01"
 FORM_TYPE = "10-K"
-MAX_COMPANIES = 3  # Maximum companies to analyze (from graph + SEC)
+TARGET_FISCAL_YEAR = 2024 
+MAX_COMPANIES = 3  
 
 headers = {"User-Agent": "User (your_email@example.com)"}
 
@@ -212,16 +213,46 @@ def get_target_company_metrics():
                 """
                 MATCH (c)-[:HAS_METRIC]->(m:Metric)
                 WHERE c:TargetCompany OR (c:Company AND c.is_target = true)
-                RETURN m.name AS metric_name, m.metric_type AS metric_type
+                RETURN m.name AS metric_name, m.metric_type AS metric_type, m.year AS year
                 """
             )
-            metrics = [{"name": record["metric_name"], "type": record["metric_type"]} 
-                      for record in result]
+            metrics = []
+            seen_types = set()
+            
+            for record in result:
+                metric_name = record["metric_name"]
+                metric_type = record["metric_type"]
+                year = record.get("year")
+                
+                # If metric_type is not set, try to extract it from the name
+                if not metric_type and metric_name:
+                    # Parse "EBITDA (2024)" -> type: "EBITDA", year: "2024"
+                    if '(' in metric_name:
+                        metric_type = metric_name.split('(')[0].strip()
+                        year_part = metric_name.split('(')[1].split(')')[0].strip()
+                        if year_part.isdigit():
+                            year = int(year_part)
+                    else:
+                        metric_type = metric_name
+                
+                # Convert year to int if it's a string
+                if year and isinstance(year, str) and year.isdigit():
+                    year = int(year)
+                
+                # Only add unique metric types (not each year)
+                if metric_type and metric_type not in seen_types:
+                    metrics.append({
+                        "name": metric_name,
+                        "type": metric_type,
+                        "year": year  # Will be None if not found, then use default
+                    })
+                    seen_types.add(metric_type)
             
             if metrics:
-                print(f"✓ Found {len(metrics)} metrics in target company:")
+                print(f"✓ Found {len(metrics)} unique metric types in target company:")
                 for m in metrics:
-                    print(f"  - {m['name']} ({m['type']})")
+                    year_str = f" (year: {m['year']})" if m['year'] else " (using default year)"
+                    print(f"  - {m['type']}{year_str}")
                 print()
             else:
                 print("⚠ No metrics found in target company\n")
@@ -285,8 +316,15 @@ def fetch_companies_by_sic(sic_codes, start_date, end_date, form_type, size=100)
         return []
 
 
-def analyze_company_covenants(cik, company_name, target_metrics=None, start_date=None, end_date=None):
-    """Analyze a single company for financial covenant tags and target metrics."""
+def analyze_company_covenants(cik, company_name, target_metrics=None, default_fiscal_year=2024):
+    """Analyze a single company for financial covenant tags and target metrics.
+    
+    Args:
+        cik: Company CIK number
+        company_name: Company name
+        target_metrics: List of target metrics to match (with optional year per metric)
+        default_fiscal_year: Default fiscal year to use if metric doesn't specify one
+    """
     url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
     
     try:
@@ -317,38 +355,23 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, start_date
                             'units': {}
                         }
                         
-                        # Get all unit data and filter by date range
+                        # Get all unit data and filter by fiscal year and period
                         for unit_name, entries in units.items():
                             filtered_entries = []
                             for entry in entries:
-                                # Filter by form type (only 10-K) and period end date
+                                # Filter: only FY (full year) and matching fiscal year
+                                fp = entry.get('fp', '')
+                                fy = entry.get('fy')
                                 form = entry.get('form', '')
-                                end_date = entry.get('end', '')
                                 
-                                # Only include 10-K filings
-                                if form != '10-K':
-                                    continue
-                                
-                                # Filter by period end date if provided
-                                if start_date and end_date:
-                                    if start_date <= end_date <= end_date:
-                                        filtered_entries.append({
-                                            'end': end_date,
-                                            'val': entry.get('val'),
-                                            'accn': entry.get('accn'),
-                                            'fy': entry.get('fy'),
-                                            'fp': entry.get('fp'),
-                                            'form': form,
-                                            'filed': entry.get('filed', '')
-                                        })
-                                else:
-                                    # No date filter, but still only 10-K
+                                # Only include full year (FY) data from 10-K
+                                if fp == 'FY' and form == '10-K' and fy == default_fiscal_year:
                                     filtered_entries.append({
-                                        'end': end_date,
+                                        'end': entry.get('end'),
                                         'val': entry.get('val'),
                                         'accn': entry.get('accn'),
-                                        'fy': entry.get('fy'),
-                                        'fp': entry.get('fp'),
+                                        'fy': fy,
+                                        'fp': fp,
                                         'form': form,
                                         'filed': entry.get('filed', '')
                                     })
@@ -363,11 +386,16 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, start_date
                 # Check if this tag matches any target company metrics
                 if target_metrics:
                     for metric in target_metrics:
-                        metric_name = metric.get('name', '')
-                        # Extract base metric name (remove year suffix)
-                        base_metric = metric_name.split('(')[0].strip() if '(' in metric_name else metric_name
+                        # Use metric_type for matching (e.g., "EBITDA", "Net Income")
+                        metric_type = metric.get('type', '')
+                        if not metric_type:
+                            continue
+                        
+                        # Use metric's specific year if provided, otherwise use default
+                        target_year = metric.get('year') or default_fiscal_year
+                        
                         # Normalize: lowercase, remove spaces and special chars for matching
-                        normalized_metric = ''.join(c.lower() for c in base_metric if c.isalnum())
+                        normalized_metric = ''.join(c.lower() for c in metric_type if c.isalnum())
                         normalized_tag = tag_name.lower()
                         
                         # Try multiple matching strategies
@@ -376,13 +404,14 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, start_date
                             match = True
                         # Also try word-by-word matching for multi-word metrics
                         elif len(normalized_metric) > 3:
-                            metric_words = [w for w in base_metric.lower().split() if len(w) > 2]
+                            metric_words = [w for w in metric_type.lower().split() if len(w) > 2]
                             if metric_words and all(w in normalized_tag for w in metric_words):
                                 match = True
                         
                         if match:
-                            if metric['name'] not in target_metric_results:
-                                target_metric_results[metric['name']] = []
+                            # Use metric_type as the key (not the full name with year)
+                            if metric_type not in target_metric_results:
+                                target_metric_results[metric_type] = []
                             
                             units = tag_content.get('units', {})
                             tag_data = {
@@ -390,42 +419,28 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, start_date
                                 'tag': tag_name,
                                 'label': tag_content.get('label', ''),
                                 'description': tag_content.get('description', ''),
-                                'metric_type': metric.get('type', 'Unknown'),
+                                'metric_type': metric_type,
+                                'target_year': target_year,
                                 'units': {}
                             }
                             
-                            # Get all unit data and filter by date range
+                            # Get all unit data and filter by fiscal year and period
                             for unit_name, entries in units.items():
                                 filtered_entries = []
                                 for entry in entries:
-                                    # Filter by form type (only 10-K) and period end date
+                                    # Filter: only FY (full year) and matching fiscal year
+                                    fp = entry.get('fp', '')
+                                    fy = entry.get('fy')
                                     form = entry.get('form', '')
-                                    end_date = entry.get('end', '')
                                     
-                                    # Only include 10-K filings
-                                    if form != '10-K':
-                                        continue
-                                    
-                                    # Filter by period end date if provided
-                                    if start_date and end_date:
-                                        if start_date <= end_date <= end_date:
-                                            filtered_entries.append({
-                                                'end': end_date,
-                                                'val': entry.get('val'),
-                                                'accn': entry.get('accn'),
-                                                'fy': entry.get('fy'),
-                                                'fp': entry.get('fp'),
-                                                'form': form,
-                                                'filed': entry.get('filed', '')
-                                            })
-                                    else:
-                                        # No date filter, but still only 10-K
+                                    # Only include full year (FY) data from 10-K for the target year
+                                    if fp == 'FY' and form == '10-K' and fy == target_year:
                                         filtered_entries.append({
-                                            'end': end_date,
+                                            'end': entry.get('end'),
                                             'val': entry.get('val'),
                                             'accn': entry.get('accn'),
-                                            'fy': entry.get('fy'),
-                                            'fp': entry.get('fp'),
+                                            'fy': fy,
+                                            'fp': fp,
                                             'form': form,
                                             'filed': entry.get('filed', '')
                                         })
@@ -435,7 +450,7 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, start_date
                             
                             # Only add if we have data after filtering
                             if tag_data['units']:
-                                target_metric_results[metric['name']].append(tag_data)
+                                target_metric_results[metric_type].append(tag_data)
         
         return results, target_metric_results
     
@@ -542,7 +557,7 @@ def main():
         print(f"[{idx}/{len(companies)}] {name} ({ticker}) - CIK: {cik}")
         
         covenant_results, metric_results = analyze_company_covenants(
-            cik, name, target_metrics, START_DATE, END_DATE
+            cik, name, target_metrics, TARGET_FISCAL_YEAR
         )
         
         if covenant_results is None and metric_results is None:
