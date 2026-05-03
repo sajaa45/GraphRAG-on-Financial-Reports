@@ -65,14 +65,14 @@ def extract_text_with_markers(html_path: str) -> Dict:
     pages = []
     
     # Get all elements and assign page numbers
-    current_page = 1
+    current_page = 0  # Start at 0, will increment when we hit first marker
     page_content = []
     
     for element in main_div.descendants:
         # Check if this is a page marker
         if hasattr(element, 'get') and element.get('class') == ['BRPFPageHeader']:
             # Save previous page if we have content
-            if page_content:
+            if page_content and current_page > 0:
                 page_text = ' '.join(page_content)
                 if page_text.strip():
                     pages.append({
@@ -91,7 +91,7 @@ def extract_text_with_markers(html_path: str) -> Dict:
                 page_content.append(text)
     
     # Add last page
-    if page_content:
+    if page_content and current_page > 0:
         page_text = ' '.join(page_content)
         if page_text.strip():
             pages.append({
@@ -149,7 +149,14 @@ def detect_sections_from_html(html_path: str, pages_data: Dict) -> List[Dict]:
             tag_words = len(text.split())
             cumulative_words += tag_words
             current_page = (cumulative_words // WORDS_PER_PAGE) + 1
-            
+
+            # Skip TOC entries and parent/child duplicates
+            if tag.find('a', href=True):
+                continue
+            child_texts = {child.get_text(strip=True) for child in tag.find_all(['div', 'p'])}
+            if text in child_texts:
+                continue
+
             # Check for section headers
             if part_pattern.match(text):
                 sections.append({
@@ -173,18 +180,38 @@ def detect_sections_from_html(html_path: str, pages_data: Dict) -> List[Dict]:
         # Use actual page markers
         # Build a map of elements to page numbers
         element_to_page = {}
-        current_page = 1
-        
+        current_page = 0  # Start at 0, will increment when we hit first marker
+
         for element in main_div.descendants:
             if hasattr(element, 'get') and element.get('class') == ['BRPFPageHeader']:
                 current_page += 1
-            element_to_page[id(element)] = current_page
-        
+            if current_page > 0:  # Only assign page numbers after first marker
+                element_to_page[id(element)] = current_page
+
+        # Find the Table of Contents page to exclude its entries
+        toc_page = None
+        toc_pattern = re.compile(r'table\s+of\s+contents', re.IGNORECASE)
+        for tag in main_div.find_all(['div', 'p']):
+            if toc_pattern.search(tag.get_text(strip=True)):
+                toc_page = element_to_page.get(id(tag))
+                if toc_page:
+                    break
+
         # Now find section headers and assign page numbers
         for tag in main_div.find_all(['div', 'p']):
             text = tag.get_text(strip=True)
             page_num = element_to_page.get(id(tag), 1)
-            
+
+            # Skip entries on the Table of Contents page
+            if toc_page and page_num == toc_page:
+                continue
+
+            # Skip parent elements whose text is produced entirely by a child
+            # that would also match (avoids double-matching parent div + child p)
+            child_texts = {child.get_text(strip=True) for child in tag.find_all(['div', 'p'])}
+            if text in child_texts:
+                continue
+
             # Check for PART headers
             if part_pattern.match(text):
                 sections.append({
@@ -195,7 +222,7 @@ def detect_sections_from_html(html_path: str, pages_data: Dict) -> List[Dict]:
                     'end_page': page_num,
                 })
                 continue
-            
+
             # Check for Item headers
             if item_pattern.match(text):
                 style = tag.get('style', '')
@@ -256,6 +283,31 @@ def build_hierarchy(sections: List[Dict]) -> List[Dict]:
     return root
 
 
+def fix_parent_page_ranges(sections: List[Dict]) -> List[Dict]:
+    """
+    Fix parent section page ranges to match their subsections.
+    Parent sections should span from the first subsection's start_page
+    to the last subsection's end_page.
+    """
+    for section in sections:
+        if section.get('subsections'):
+            # Recursively fix subsections first
+            section['subsections'] = fix_parent_page_ranges(section['subsections'])
+            
+            # Get page range from subsections
+            subsection_pages = []
+            for subsection in section['subsections']:
+                subsection_pages.append(subsection['start_page'])
+                subsection_pages.append(subsection['end_page'])
+            
+            if subsection_pages:
+                # Update parent to span all subsections
+                section['start_page'] = min(subsection_pages)
+                section['end_page'] = max(subsection_pages)
+    
+    return sections
+
+
 def add_text_to_sections(sections: List[Dict], pages_data: Dict) -> List[Dict]:
     """
     Populate section text from page data.
@@ -307,7 +359,7 @@ def sections_parser_html(html_path: str, output_path: str = None) -> Dict:
         
         # First extract pages
         pages_data = extract_text_with_markers(html_path)
-        
+        sh
         # Detect sections from HTML structure
         flat_sections = detect_sections_from_html(html_path, pages_data)
         
@@ -319,6 +371,9 @@ def sections_parser_html(html_path: str, output_path: str = None) -> Dict:
         
         # Build hierarchical structure
         hierarchical_sections = build_hierarchy(flat_sections)
+        
+        # Fix parent section page ranges based on subsections
+        hierarchical_sections = fix_parent_page_ranges(hierarchical_sections)
         
         # Add text content to sections
         hierarchical_sections = add_text_to_sections(hierarchical_sections, pages_data)
