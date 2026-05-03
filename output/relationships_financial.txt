@@ -1,0 +1,756 @@
+Started : 2026-05-03 00:31:10
+Finished: 2026-05-03 00:32:53
+Elapsed : 103.5s (1.7 min)
+================================================================================
+
+
+================================================================================
+EXTRACTING RELATION: HAS_METRIC
+Started: 2026-05-03 00:31:10
+================================================================================
+Source: Company
+Target: Metric
+Relationship: HAS_METRIC
+
+
+  Per-keyword batch mode: 9 keywords × 7 chunks each (threshold: 0.15)
+  ✓ Applying section priority filter with 15 tiers
+  ✓ Filtered to 3 priority sections: ['Item 7.\xa0 Management’s Discussion and Analysis of Financial\n    Condition and Results of Operations', 'Item 15.\xa0 Exhibits and Financial Statement Schedules', 'Item 7A.\xa0 Quantitative and Qualitative Disclosures about Market\n    Risk']
+
+Keyword 1/9: gearing ratio net debt total equity leverage debt ratio
+
+  ======================================================================
+  CHUNKS FOR KEYWORD 1/9
+  ======================================================================
+
+  Chunk 1/7 (similarity: 0.496)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 60
+    --------------------------------------------------------------------
+MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES CONSOLIDATED Anchor BALANCE SHEETS December 31, (millions of dollars, except share and per share amounts) 2024 2023 ASSETS Current assets: Cash and cash equivalents $ 333.1 $ 317.2 Short-term investments, at cost which approximates market 4.0 4.3 Accounts receivable 385.2 399.1 Inventories 342.1 325.4 Prepaid expenses 61.1 45.0 Other current assets 5.5 8.0 Total current assets 1,131.0 1,099.0 Property, plant and equipment, less accumulated depreciation and depletion 989.7 986.8 Goodwill 913.8 913.6 Intangible assets 218.1 231.0 Deferred income taxes 14.8 16.0 Other assets and deferred charges 126.5 100.2 Total assets $ 3,393.9 $ 3,346.6 LIABILITIES AND SHAREHOLDERS’ EQUITY Current liabilities: Short-term debt $ 5.1 $ 85.4 Current maturities of long-term debt 6.5 18.0 Accounts payable 185.5 188.7 Income tax payable 27.4 14.0 Accrued compensation and related items 67.5 59.2 Other current liabilities 105.7 92.0 Total current liabilities 397.7 457.3 Long-term debt, net of unamortized discount and deferred financing costs 959.6 911.1 Deferred income taxes 130.5 139.3 Accrued pension and postretirement benefits 20.5 51.7 Other non-current liabilities 102.4 100.5 Total liabilities 1,610.7 1,659.9 Shareholders’ equity: Preferred stock, without par value; 1,000,000 shares authorized; none issued — — Common stock, par value at $ 0.10 per share; 100,000,000 shares authorized; Issued 49,993,737 shares in 2024 and 49,657,464 shares in 2023 5.0 4.9 Additional paid-in capital 523.9 501.2 Retained earnings 2,514.5 2,360.6 Accumulated other comprehensive loss ( 387.1 ) ( 369.4 ) Less common stock held in treasury, at cost; 18,098,082 shares in 2024 and 17,252,743 shares in 2023 ( 909.3 ) ( 845.3 ) Total Minerals Technologies Inc. shareholders’ equity 1,747.0 1,652.0 Non-controlling interests 36.2 34.7 Total shareholders’ equity 1,783.2 1,686.7 Total liabilities and shareholders’ equity $ 3,393.9 $ 3,346.6 See Notes to Consolidated Financial Statements, which are an integral part of these statements. 
+    --------------------------------------------------------------------
+
+  Chunk 2/7 (similarity: 0.614)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 82
+    --------------------------------------------------------------------
+AND SUBSIDIARY COMPANIES NOTES TO CONSOLIDATED FINANCIAL STATEMENTS Loans under the Revolving Facility will bear interest at a
+      rate equal to (a) for loans denominated in U.S. dollars, at the election of the Company, Term SOFR plus an applicable margin equal to 1.375 % per annum or a base rate plus an applicable margin equal to 0.375 % per annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to 1.375 % per annum and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to 1.375 % per annum, subject in each case to (i) an increase of 37.5 basis points in the event that, and for so long as, the Net Leverage Ratio
+      (as defined in the Amended Credit Agreement) is greater than or equal to 3.00 to 1.00 as of the last day of the preceding fiscal quarter, (ii) an increase of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 3.00 to 1.00 and greater than or equal to 2.00 to 1.00 as of the last day of the preceding fiscal quarter and (iii) a decrease of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 1.00 to 1.00 as of the last day of the preceding fiscal quarter.  Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to 2.00 % per annum or a base rate plus an applicable margin equal to 1.00 % per annum.  
+    --------------------------------------------------------------------
+
+  Chunk 3/7 (similarity: 0.577)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 45
+    --------------------------------------------------------------------
+Loans under the Revolving Facility will bear interest at a rate equal to (a) for loans denominated in U.S. dollars, at the election
+      of the Company, Term SOFR plus an applicable margin equal to 1.375% per annum or a base rate plus an applicable margin equal to 0.375% per annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to 1.375% per annum
+      and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to 1.375% per annum, subject in each case to (i) an increase of 37.5 basis points in the event that, and for so long as, the Net Leverage Ratio (as defined in the
+      Amended Credit Agreement) is greater than or equal to 3.00 to 1.00 as of the last day of the preceding fiscal quarter, (ii) an increase of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 3.00 to 1.00 and
+      greater than or equal to 2.00 to 1.00 as of the last day of the preceding fiscal quarter and (iii) a decrease of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 1.00 to 1.00 as of the last day of the
+      preceding fiscal quarter.  Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to 2.00% per annum or a base rate plus an applicable margin equal to 1.00%
+      per annum.  
+    --------------------------------------------------------------------
+
+  Chunk 4/7 (similarity: 0.531)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 83
+    --------------------------------------------------------------------
+The weighted average interest rates on short-term borrowings outstanding was 6.9 % for the years ended December 31, 2024 and 2023, respectively. The aggregate maturities of long-term debt are as follows: $ 6.5 million in 2025; $ 6.4 million in 2026; $ 6.0 million in 2027, $ 405.8 million in 2028; $ 5.7 million in 2029 and $ 546.3 million thereafter. During 2024, 2023 and 2022, respectively, the Company
+    incurred interest costs of $ 63.2 million, $ 64.1 million and $ 48.6 million, including $ 1.0 million, $ 1.0 million and $ 1.3 million, respectively, which were capitalized.  Interest paid approximated the incurred interest cost. 
+    --------------------------------------------------------------------
+
+  Chunk 5/7 (similarity: 0.503)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 39
+    --------------------------------------------------------------------
+Our balance sheet continues to be strong.  Cash, cash equivalents and short-term investments were $337.1 million as of December 31, 2024.  Cash flow from operations
+    for 2024 was $236.4 million.  The
+    Company currently has more than $700 million of available liquidity, including cash on hand, as well as availability under its revolving credit facility. We believe these factors will allow us to meet our anticipated funding requirements. Our intention
+    is to maintain a balanced approach to capital deployment, by using cash flow for investments in growth, returns to shareholders, and continued debt reduction. 38
+    --------------------------------------------------------------------
+
+  Chunk 6/7 (similarity: 0.459)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 81
+    --------------------------------------------------------------------
+The Company’s extension of credit is based on an evaluation of the
+    customer’s financial condition and collateral is generally not required. The Company’s bad debt expense for the years ended December 31, 2024, 2023 and 2022 was $ 1.4 million, $ 2.8 million and $ 4.1 million, respectively. 
+    --------------------------------------------------------------------
+
+  Chunk 7/7 (similarity: 0.474)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 69
+    --------------------------------------------------------------------
+Leases The Company determines if an arrangement is a lease at inception.  The Company has operating leases for premises, equipment, rail cars and
+    automobiles.  Our leases have remaining lease terms of 1 year to 50 years, some of which may include options to extend the leases further. The Company considers these options in determining the lease term used to establish the right-of-use assets and lease
+    liabilities. As most of our leases do not provide an implicit rate, we use our incremental borrowing rate based upon the information available at commencement date, or as of implementation of ASC 842, in determining the present value of lease payments. Leases with an initial term of 12 months or less are not recorded on the balance sheet. 
+    --------------------------------------------------------------------
+  ======================================================================
+
+    ✗ No entities extracted
+
+Keyword 2/9: free cash flow operating cash flow capital expenditure investment
+
+  ======================================================================
+  CHUNKS FOR KEYWORD 2/9
+  ======================================================================
+
+  Chunk 1/7 (similarity: 0.550)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 39
+    --------------------------------------------------------------------
+Our balance sheet continues to be strong.  Cash, cash equivalents and short-term investments were $337.1 million as of December 31, 2024.  Cash flow from operations
+    for 2024 was $236.4 million.  The
+    Company currently has more than $700 million of available liquidity, including cash on hand, as well as availability under its revolving credit facility. We believe these factors will allow us to meet our anticipated funding requirements. Our intention
+    is to maintain a balanced approach to capital deployment, by using cash flow for investments in growth, returns to shareholders, and continued debt reduction. 38
+    --------------------------------------------------------------------
+
+  Chunk 2/7 (similarity: 0.448)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 45
+    --------------------------------------------------------------------
+We cannot predict the economic outlook in the countries in which we do business, nor in the key industries we serve. Liquidity and Capital Resources Cash provided from continuing operations in 2024 was $236.4 million, compared with $233.6 million in prior year. Cash flows provided from operations in 2024
+    were principally used to fund capital expenditures, repay debt, repurchase shares and to pay the Company’s dividend to common shareholders. 
+    --------------------------------------------------------------------
+
+  Chunk 3/7 (similarity: 0.484)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 65
+    --------------------------------------------------------------------
+Cash Equivalents and Short-term Investments The Company considers all highly liquid investments with original maturities of three months or less to be cash equivalents. Short-term
+    investments consist of financial instruments, mainly bank deposits, with original maturities beyond three months, but less than twelve months.  Short-term investments amounted to $ 4.0 million and $ 4.3 million at December 31, 2024 and 2023, respectively. There were no unrealized holding gains or losses on the short-term bank investments held at December 31, 2024. Trade Accounts Receivable Trade accounts receivables are recorded at the invoiced amount and do not bear interest. The allowance for doubtful accounts is the
+    Company’s best estimate of the amount of probable credit losses in the Company’s existing accounts receivable.  The Company determines the allowance based on historical write-off experience and specific allowances for bankrupt customers.  The Company
+    also analyzes the collection history and financial condition of its other customers, considering current industry conditions and determines whether an allowance needs to be established. The Company reviews its allowance for doubtful accounts monthly. 
+    
+    --------------------------------------------------------------------
+
+  Chunk 4/7 (similarity: 0.560)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 45
+    --------------------------------------------------------------------
+The Company’s intention is to use cash flow for investments in growth, returns to shareholders, and continued
+    debt reduction. 
+    --------------------------------------------------------------------
+
+  Chunk 5/7 (similarity: 0.445)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 79
+    --------------------------------------------------------------------
+In the second quarter of 2023,
+    the Company entered into a floating to fixed interest rate swap for a notional amount of $ 150 million.  The fair value of this swap is an asset
+    of $ 0.3 million at December 31, 2024
+    and is recorded in other assets and deferred charges on the Consolidated Balance Sheet.  This interest rate swap is designated as a cash flow hedge.  
+    --------------------------------------------------------------------
+
+  Chunk 6/7 (similarity: 0.444)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 67
+    --------------------------------------------------------------------
+Fair Value of Financial Instruments The recorded amounts of cash and cash equivalents, receivables, short-term borrowings, accounts payable, accrued interest, and
+    variable-rate long-term debt approximate fair value because of the short maturity of those instruments or the variable nature of underlying interest rates.  Short-term investments are recorded at cost, which approximates fair market value. Derivative Financial Instruments The Company records derivative financial instruments which are used to hedge certain foreign exchange risk at fair value on the balance
+    sheet.  See Note 12 for a full description of the Company’s hedging activities and related accounting policies. 
+    --------------------------------------------------------------------
+
+  Chunk 7/7 (similarity: 0.448)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 66
+    --------------------------------------------------------------------
+If events or changes in circumstances indicate that the carrying amount of an asset may not be recoverable, the Company estimates the undiscounted future cash flows (excluding interest), resulting from the use of the asset and
+    its ultimate disposition.  
+    --------------------------------------------------------------------
+  ======================================================================
+
+    ✗ No entities extracted
+
+Keyword 3/9: EBITDA earnings before interest tax depreciation amortization operating profit
+
+  ======================================================================
+  CHUNKS FOR KEYWORD 3/9
+  ======================================================================
+
+  Chunk 1/7 (similarity: 0.481)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 42
+    --------------------------------------------------------------------
+Income from operations represented 7.9% of sales
+    compared with 10.1% of sales in the prior year.  Income from operations in 2023 reflected $78.6 million in impairment and restructuring charges and $ 29.2 million of net litigation expenses. Non-Operating Income (Deductions) The Company recorded non-operating deductions, net of $62.9 million in 2024 as compared with $64.1 million in the previous year. Included in non-operating deductions was net interest expense of $56.4 million in 2024 as compared to $59.2 million in the prior year.  In addition, the Company recorded debt extinguishment expenses of $1.8 million related to the refinancing of its credit facilities in the fourth quarter of 2024. Included in non-operating deductions was net interest expense
+      of $ 59.2 million in 2023 as compared to $ 43.9 million in the prior year, primarily due to higher interest rates . In 2022, the Company recorded debt extinguishment expenses of $6.9 million
+    related to the refinancing of its credit facilities. 
+    --------------------------------------------------------------------
+
+  Chunk 2/7 (similarity: 0.560)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 93
+    --------------------------------------------------------------------
+The Company
+    evaluates performance based on the operating income of the respective business units.  The costs deducted to arrive at operating profit do not include several items, such as net interest or income tax expense.  Depreciation expense related to corporate
+    assets is allocated to the business segments and is included in their income from operations.  However, such corporate depreciable assets are not included in the segment assets.  
+    --------------------------------------------------------------------
+
+  Chunk 3/7 (similarity: 0.531)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 69
+    --------------------------------------------------------------------
+The adoption of this standard is not expected to have a material impact on the
+    Company’s consolidated financial statements, but will result in disaggregation of the Company's tax footnote. Income Statement-Reporting Comprehensive Income-Expense Disaggregation Disclosures (Subtopic 220-40):  Disaggregation
+    of Income Statement Expenses In November 2024, the FASB issued ASU 2024-03, “Income Statement - Reporting Comprehensive Income - Expense Disaggregation Disclosures
+    (Subtopic 220-40):  Disaggregation of Income Statement Expenses”, that requires entities to disclose additional information in the notes to the financial statements about prescribed categories underlying any relevant income statement expense caption. 
+    The new standard is effective for annual periods beginning after December 15, 2026 and interim periods within fiscal years beginning after December 15, 2027.  
+    --------------------------------------------------------------------
+
+  Chunk 4/7 (similarity: 0.529)
+    Section: Item 7A.  Quantitative and Qualitative Disclosures about Market
+    Risk
+    Page: 50
+    --------------------------------------------------------------------
+The adoption of this standard is not expected to have a material impact on the
+    Company’s consolidated financial statements but will result in disaggregation of the Company's tax footnote. Income Statement-Reporting Comprehensive Income-Expense Disaggregation Disclosures (Subtopic 220-40):  Disaggregation
+    of Income Statement Expenses In November 2024, the FASB issued ASU 2024-03, “Income Statement - Reporting Comprehensive Income - Expense Disaggregation Disclosures
+    (Subtopic 220-40):  Disaggregation of Income Statement Expenses”, that requires entities to disclose additional information in the notes to the financial statements about prescribed categories underlying any relevant income statement expense caption. 
+    The new standard is effective for annual periods beginning after December 15, 2026 and interim periods within fiscal years beginning after December 15, 2027.  
+    --------------------------------------------------------------------
+
+  Chunk 5/7 (similarity: 0.571)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 49
+    --------------------------------------------------------------------
+Such assets arise because of temporary
+    differences between the financial reporting and tax bases of assets and liabilities, as well as from net operating losses.  We evaluate the recoverability of these future tax deductions by assessing the adequacy of future expected taxable income from
+    all sources, including reversal of taxable temporary differences and forecasted operating earnings.  These sources of income inherently rely heavily on estimates. 
+    --------------------------------------------------------------------
+
+  Chunk 6/7 (similarity: 0.516)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 68
+    --------------------------------------------------------------------
+Laws and regulations in this area are voluminous and are often ambiguous.  As
+    such, we are required to make many subjective assumptions and judgments regarding our income tax exposures. Interpretations of and guidance surrounding income tax laws and regulations change over time.  As such, changes in our subjective assumptions
+    and judgments can materially affect amounts recognized in the consolidated balance sheets and statements of operations. The Company’s accounting policy is to recognize interest and penalties as part of its provision for income taxes. 
+    --------------------------------------------------------------------
+
+  Chunk 7/7 (similarity: 0.484)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 49
+    --------------------------------------------------------------------
+This process involves estimating current tax expense together with assessing temporary differences resulting from differing treatments of items for tax and accounting purposes.  These differences result in deferred
+    tax assets and liabilities, which are included in the consolidated balance sheet.  We must then assess the likelihood that our deferred tax assets will be recovered from future taxable income, and to the extent we believe that recovery is not likely,
+    we must establish a valuation allowance.  To the extent we establish a valuation allowance or change this allowance in a period, we must include an expense within the tax provision in the Consolidated Statements of Income. Deferred tax liabilities represent the amount of income taxes payable in future periods.  Such liabilities arise because of temporary
+    differences between the financial reporting and tax bases of assets and liabilities.  Deferred income tax assets represent amounts available to reduce income taxes payable on taxable income in future years.  
+    --------------------------------------------------------------------
+  ======================================================================
+
+    ✗ No entities extracted
+
+Keyword 4/9: ROACE return on average capital employed return on equity
+
+  ======================================================================
+  CHUNKS FOR KEYWORD 4/9
+  ======================================================================
+
+  Chunk 1/7 (similarity: 0.366)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 59
+    --------------------------------------------------------------------
+PROfilePageNumberReset%Num%1%%% MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES INDEX TO CONSOLIDATED FINANCIAL STATEMENTS Audited Financial Statements: Page Consolidated Balance Sheets as of December 31, 2024 and 2023 F-2 Consolidated Statements of Income for the years
+            ended December 31, 2024, 2023
+            and 2022 F-3 Consolidated Statements of Comprehensive Income for the years ended December 31, 2024, 2023
+            and 2022 F-4 Consolidated Statements of Cash Flows for the years
+            ended December 31, 2024, 2023
+            and 2022 F-5 Consolidated Statements of Changes in Shareholders’ Equity for
+            the years ended December 31, 2024, 2023
+            and 2022 F-6 Notes to Consolidated Financial Statements F-7 Reports of Independent Registered Public Accounting Firm ( KPMG LLP , New York, NY , Audit Firm ID 185 ) F-38 Management’s Report on Internal Control Over Financial
+              Reporting F-41 Valuation and Qualifying Accounts S-1 F-1
+    --------------------------------------------------------------------
+
+  Chunk 2/7 (similarity: 0.358)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 87
+    --------------------------------------------------------------------
+Our Level 3 assets are estimated at
+    fair value based on the most recent financial information available for the underlying securities, which are not traded on active market, and represents significant unobservable input. The following is a reconciliation of changes in fair value
+    measurement of plan assets using significant unobservable inputs (Level 3): (millions of dollars) Beginning balance at December 31, 2022 $ 7.6 Purchases, sales, settlements — Actual (loss) return on plan assets still held at reporting date ( 0.6 ) Foreign exchange impact 0.1 Ending balance at December 31, 2023 $ 7.1 Purchases, sales, settlements — Actual (loss) return on plan assets still held at reporting date ( 1.6 ) Foreign exchange impact — Ending balance at December 31, 2024 $ 5.5 There were no transfers in
+    or out of Level 3 during the year ended December 31, 2024 and 2023. Contributions The Company expects to contribute $ 11.0 million to its pension plans and $ 0.1 million to its other post-retirement benefit plan in 2025. 
+    --------------------------------------------------------------------
+
+  Chunk 3/7 (similarity: 0.367)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 82
+    --------------------------------------------------------------------
+AND SUBSIDIARY COMPANIES NOTES TO CONSOLIDATED FINANCIAL STATEMENTS Loans under the Revolving Facility will bear interest at a
+      rate equal to (a) for loans denominated in U.S. dollars, at the election of the Company, Term SOFR plus an applicable margin equal to 1.375 % per annum or a base rate plus an applicable margin equal to 0.375 % per annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to 1.375 % per annum and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to 1.375 % per annum, subject in each case to (i) an increase of 37.5 basis points in the event that, and for so long as, the Net Leverage Ratio
+      (as defined in the Amended Credit Agreement) is greater than or equal to 3.00 to 1.00 as of the last day of the preceding fiscal quarter, (ii) an increase of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 3.00 to 1.00 and greater than or equal to 2.00 to 1.00 as of the last day of the preceding fiscal quarter and (iii) a decrease of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 1.00 to 1.00 as of the last day of the preceding fiscal quarter.  Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to 2.00 % per annum or a base rate plus an applicable margin equal to 1.00 % per annum.  
+    --------------------------------------------------------------------
+
+  Chunk 4/7 (similarity: 0.379)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 42
+    --------------------------------------------------------------------
+Income from operations represented 13.5% of sales
+    compared with 7.9% of sales in the prior year.  Income from operations in 2024 reflected a $30.0 million charge for a provision of credit losses in connection
+    with the DIP Credit Agreement and $11.3 million of litigation expenses.  In addition, the Company recorded a $12.3 million net gain on sale of refractories manufacturing assets in China. During 2023, the Company
+    recorded income from operations of $171.8 million, as compared with $214.8 million in the prior year.  
+    --------------------------------------------------------------------
+
+  Chunk 5/7 (similarity: 0.372)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 45
+    --------------------------------------------------------------------
+We cannot predict the economic outlook in the countries in which we do business, nor in the key industries we serve. Liquidity and Capital Resources Cash provided from continuing operations in 2024 was $236.4 million, compared with $233.6 million in prior year. Cash flows provided from operations in 2024
+    were principally used to fund capital expenditures, repay debt, repurchase shares and to pay the Company’s dividend to common shareholders. 
+    --------------------------------------------------------------------
+
+  Chunk 6/7 (similarity: 0.367)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 49
+    --------------------------------------------------------------------
+Such assets arise because of temporary
+    differences between the financial reporting and tax bases of assets and liabilities, as well as from net operating losses.  We evaluate the recoverability of these future tax deductions by assessing the adequacy of future expected taxable income from
+    all sources, including reversal of taxable temporary differences and forecasted operating earnings.  These sources of income inherently rely heavily on estimates. 
+    --------------------------------------------------------------------
+
+  Chunk 7/7 (similarity: 0.365)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 68
+    --------------------------------------------------------------------
+Accounting for Stock-Based Compensation The Company recognizes compensation expense for share-based awards based upon the grant date fair value over the vesting period. Pension and Post-retirement Benefits The Company has defined benefit pension plans covering the majority of its eligible employees.  
+    --------------------------------------------------------------------
+  ======================================================================
+
+    ✗ No entities extracted
+
+Keyword 5/9: net income profit loss attributable earnings per share
+
+  ======================================================================
+  CHUNKS FOR KEYWORD 5/9
+  ======================================================================
+
+  Chunk 1/7 (similarity: 0.525)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 61
+    --------------------------------------------------------------------
+MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES CONSOLIDATED STATEMENTS OF Anchor INCOME Year Ended December 31, (millions of dollars, except per share data) 2024 2023 2022 Net sales $ 2,118.5 $ 2,169.9 $ 2,125.5 Cost of goods sold 1,570.8 1,662.8 1,660.5 Production margin 547.7 507.1 465.0 Marketing and administrative expenses 209.2 206.0 192.1 Research and development expenses 23.0 21.2 20.4 Provision for credit losses 30.0 — — Restructuring and other items, net — 6.9 — Impairment of assets — 71.7 — Acquisition-related expenses — 0.3 5.1 Gain on sale of assets, net ( 12.3 ) — — Litigation expenses 11.3 29.2 32.6 Income from operations 286.5 171.8 214.8 Interest expense, net ( 56.4 ) ( 59.2 ) ( 43.9 ) Debt extinguishment expenses ( 1.8 ) — ( 6.9 ) Non-cash pension settlement charge — — ( 3.5 ) Other non-operating deductions, net ( 4.7 ) ( 4.9 ) ( 3.8 ) Total non-operating deductions, net ( 62.9 ) ( 64.1 ) ( 58.1 ) Income before tax and equity in earnings 223.6 107.7 156.7 Provision for taxes on income 59.4 23.7 32.1 Equity in earnings of affiliates, net of tax 6.7 4.3 1.7 Net income 170.9 88.3 126.3 Less: Net income attributable to non-controlling interests 3.8 4.2 4.1 Net income attributable to Minerals Technologies Inc. (MTI) $ 167.1 $ 84.1 $ 122.2 Earnings per share: Basic: Income from operations attributable to MTI $ 5.21 $ 2.59 $ 3.74 Diluted: Income from operations attributable to MTI $ 5.17 $ 2.58 $ 3.73 Cash dividends declared per common share $ 0.41 $ 0.25 $ 0.20 Shares used in computation of earnings per share: Basic 32.1 32.5 32.7 Diluted 32.3 32.6 32.8 See Notes to Consolidated Financial Statements, which are an integral part of these statements. 
+    --------------------------------------------------------------------
+
+  Chunk 2/7 (similarity: 0.516)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 94
+    --------------------------------------------------------------------
+MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES NOTES TO CONSOLIDATED FINANCIAL STATEMENTS Year Ended December 31, 2022 (millions of dollars) Consumer & Specialties Engineered Solutions Total Net Sales $ 1,124.6 $ 1,000.9 $ 2,125.5 Cost of goods sold 937.0 723.5 1,660.5 Segment production margin 187.6 277.4 465.0 Marketing and administrative expenses 63.1 120.7 183.8 Research and development expenses 10.8 9.6 20.4 Acquisition-related expenses 2.1 — 2.1 Litigation expenses 32.6 — 32.6 Segment income from operations $ 79.0 $ 147.1 $ 226.1 Year Ended December 31, (millions of dollars) 2024 2023 2022 Segment income from operations $ 339.5 $ 189.4 $ 226.1 Interest expense, net ( 56.4 ) ( 59.2 ) ( 43.9 ) Other non-operating deductions, net ( 4.7 ) ( 4.9 ) ( 3.8 ) Unallocated expenses: Provision for credit losses 30.0 — — Restructuring and other items, net — 2.8 — Acquisition-related expenses — 0.3 3.0 Litigation expenses 11.3 2.4 — Unallocated corporate expenses 11.7 12.1 8.3 Debt extinguishment expenses ( 1.8 ) — ( 6.9 ) Non-cash pension settlement charge — — ( 3.5 ) Income before tax and equity in earnings $ 223.6 $ 107.7 $ 156.7 Segment information for the years ended December 31, 2024, 2023 and 2022 was as follows: Year Ended December 31, (millions of dollars) 2024 2023 2022 Depreciation, Depletion and Amortization Consumer & Specialties $ 47.2 $ 47.2 $ 48.0 Engineered Solutions 47.7 47.7 46.2 Total $ 94.9 $ 94.9 $ 94.2 Segment Assets Consumer & Specialties $ 1,289.4 $ 1,244.8 $ 1,107.5 Engineered Solutions 2,028.0 2,028.5 2,187.5 Corporate 76.5 73.3 106.6 Total $ 3,393.9 $ 3,346.6 $ 3,401.6 Capital Expenditures Consumer & Specialties $ 45.2 $ 56.8 $ 44.3 Engineered Solutions 39.3 31.2 34.0 Corporate 5.0 5.5 4.0 Total $ 89.5 $ 93.5 $ 82.3 F-36
+    --------------------------------------------------------------------
+
+  Chunk 3/7 (similarity: 0.544)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 79
+    --------------------------------------------------------------------
+The Company does not designate these contracts for
+    hedge accounting treatment and the changes in fair value of these contracts are recorded in earnings.  The Company recorded losses of $ 0.1 million, $ 0.1 million and $ 0.8 million
+    in other non-operating income (deductions), net within the Consolidated Statements of Income for the years ended 2024, 2023 and 2022 respectively. There were no open contracts at December 31, 2024 and
+    December 31, 2023. 
+    --------------------------------------------------------------------
+
+  Chunk 4/7 (similarity: 0.602)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 68
+    --------------------------------------------------------------------
+Expenditures that relate to an existing
+    condition caused by past operations and which do not contribute to current or future revenue generation are expensed. Liabilities are recorded when it is probable the Company will be obligated to pay amounts for environmental site evaluation,
+    remediation or related costs, and such amounts can be reasonably estimated. Earnings Per Share Basic earnings per share have been computed based upon the weighted average number of common shares outstanding during the period. 
+    --------------------------------------------------------------------
+
+  Chunk 5/7 (similarity: 0.518)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 93
+    --------------------------------------------------------------------
+The Company
+    evaluates performance based on the operating income of the respective business units.  The costs deducted to arrive at operating profit do not include several items, such as net interest or income tax expense.  Depreciation expense related to corporate
+    assets is allocated to the business segments and is included in their income from operations.  However, such corporate depreciable assets are not included in the segment assets.  
+    --------------------------------------------------------------------
+
+  Chunk 6/7 (similarity: 0.536)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 42
+    --------------------------------------------------------------------
+Research and development expenses as a percentage of net sales were 1.1% in 2024, 1.0% in 2023 and 1.0% in 2022. 
+    --------------------------------------------------------------------
+
+  Chunk 7/7 (similarity: 0.508)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 42
+    --------------------------------------------------------------------
+Income from Operations During 2024, the Company
+    recorded income from operations of $286.5 million, as compared with $171.8 million in the prior year.  
+    --------------------------------------------------------------------
+  ======================================================================
+
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net Income (2024))
+      Properties: {
+        "value": "170.9",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Net Income"
+}
+      Metadata: page=61 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Interest Expense (2024))
+      Properties: {
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Interest Expense"
+}
+      Metadata: page=61 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Capital Expenditure (2024))
+      Properties: {
+        "value": "89.5",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Capital Expenditure"
+}
+      Metadata: page=94 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Earnings per Share (2024))
+      Properties: {
+        "value": "5.21",
+        "unit": "$",
+        "year": "2024",
+        "metric_type": "Earnings per Share"
+}
+      Metadata: page=61 | section=Item 15.  Exhibits and Financial Statement Schedules
+
+Keyword 6/9: revenue net revenues net sales total revenues total net revenues
+
+  ======================================================================
+  CHUNKS FOR KEYWORD 6/9
+  ======================================================================
+
+  Chunk 1/7 (similarity: 0.440)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 93
+    --------------------------------------------------------------------
+Intersegment sales and transfers are not significant. Segment revenues, expenses, operating income and a reconciliation of the operating
+    segment totals to the applicable line items on the consolidated financial statements is as follows: Year Ended December 31, 2024 2023 (millions of dollars) Consumer & Specialties Engineered Solutions Total Consumer & Specialties Engineered Solutions Total Net Sales $ 1,140.2 $ 978.3 $ 2,118.5 $ 1,160.2 $ 1,009.7 $ 2,169.9 Cost of goods sold 890.4 680.4 1,570.8 938.6 724.4 1,663.0 Segment production margin 249.8 297.9 547.7 221.6 285.3 506.9 Marketing and administrative expenses 71.7 125.8 197.5 69.1 124.6 193.7 Research and development expenses 12.6 10.4 23.0 11.5 9.7 21.2 Gain on sale of assets, net — ( 12.3 ) ( 12.3 ) — — — Impairment of assets — — — 71.7 — 71.7 Restructuring and other items, net — — — 0.9 3.2 4.1 Litigation expenses — — — 26.8 — 26.8 Segment income from operations $ 165.5 $ 174.0 $ 339.5 $ 41.6 $ 147.8 $ 189.4 F-35
+    --------------------------------------------------------------------
+
+  Chunk 2/7 (similarity: 0.423)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 71
+    --------------------------------------------------------------------
+Revenue from Contracts with Customers The Company's revenues are primarily derived from the sale of products in product lines within our Consumer & Specialties and
+    Engineered Solutions businesses. Our primary performance obligation (the sale of products) is satisfied upon shipment or delivery to our customers based on written sales
+    terms, which is also when control is transferred.  In most of our contracts in our Specialty Additives product line, which is in our Consumer & Specialties segment, the price per ton is based upon the total number of tons sold to the customer
+    during the year.  Under these contracts, the price billed to the customer for shipments during the year is based on periodic estimates of the total annual volume that will be sold to such customer.  Revenues are adjusted at the end of each year to
+    reflect the actual volume sold. Revenue from sales of equipment, primarily in our High-Temperature Technologies product line within our Engineered Solutions segment, is
+    recorded upon completion of installation and control is transferred to the customer.  Revenue from services is recorded when the services have been performed.  Included within our High-Temperature Technologies product line are certain consignment
+    arrangements with certain customers in our Engineered Solutions segment.  Revenues for these transactions are recorded when the consigned products are consumed by the customer and control is transferred. 
+    --------------------------------------------------------------------
+
+  Chunk 3/7 (similarity: 0.435)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 42
+    --------------------------------------------------------------------
+Worldwide net sales in 2023
+    increased 2.1% from the previous year to $2,169.9
+    million.  Net sales in the United States increased 0.7% to $1,144.0 million in 2023 and represented 53.0% of consolidated net sales. International sales increased 3.6%
+    to $1,025.9 million in 2023 and
+    represented 47.0% of consolidated net sales. Operating Costs and Expenses Consolidated cost of sales was $1,570.8
+    million, $1,662.8 million and $1,660.5
+    million in 2024, 2023 and 2022, respectively.  Production margin as a percentage of net sales was 25.9% in 2024, 23.4% in 2023 and 21.9% in 2022.  Production margin increased in 2024 primarily due to improved pricing, lower input costs and higher productivity. Marketing and administrative costs were $209.2
+    million, $206.0 million and $192.1
+    million in 2024, 2023 and 2022, respectively.  Marketing and administrative costs as a percentage of net sales were 9.9% in 2024, 9.5% in 2023 and 9.0% in 2022. Research and development expenses were $23.0
+    million, $21.2 million and $20.4
+    million in 2024, 2023 and 2022, respectively.  
+    --------------------------------------------------------------------
+
+  Chunk 4/7 (similarity: 0.461)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 47
+    --------------------------------------------------------------------
+The Company’s revenues are primarily derived from the sale of products.  Our primary performance obligation is satisfied upon shipment or delivery to our customer based on
+    written sales terms, which is also when control is transferred.   Revenue, where our performance obligations are satisfied in phases, is recognized over time using certain input measures based on the measurement of the value transferred to the
+    customer, including milestones achieved.  Revenues from sales of equipment are recorded upon completion of installation and transfer of control to the customer.   
+    --------------------------------------------------------------------
+
+  Chunk 5/7 (similarity: 0.460)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 47
+    --------------------------------------------------------------------
+Revenues from services are recorded when the services are performed. 46
+    --------------------------------------------------------------------
+
+  Chunk 6/7 (similarity: 0.437)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 42
+    --------------------------------------------------------------------
+Research and development expenses as a percentage of net sales were 1.1% in 2024, 1.0% in 2023 and 1.0% in 2022. 
+    --------------------------------------------------------------------
+
+  Chunk 7/7 (similarity: 0.444)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 43
+    --------------------------------------------------------------------
+Consolidated net income was $88.3
+    million in 2023 and included a $85.8 million charge, net of tax.  This charge consisted of impairment of assets, litigation expenses,
+    restructuring and acquisition-related expenses. 
+    --------------------------------------------------------------------
+  ======================================================================
+
+    ✗ No entities extracted
+
+Keyword 7/9: interest coverage ratio EBIT debt service fixed charge interest expense
+
+  ======================================================================
+  CHUNKS FOR KEYWORD 7/9
+  ======================================================================
+
+  Chunk 1/7 (similarity: 0.482)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 83
+    --------------------------------------------------------------------
+The weighted average interest rates on short-term borrowings outstanding was 6.9 % for the years ended December 31, 2024 and 2023, respectively. The aggregate maturities of long-term debt are as follows: $ 6.5 million in 2025; $ 6.4 million in 2026; $ 6.0 million in 2027, $ 405.8 million in 2028; $ 5.7 million in 2029 and $ 546.3 million thereafter. During 2024, 2023 and 2022, respectively, the Company
+    incurred interest costs of $ 63.2 million, $ 64.1 million and $ 48.6 million, including $ 1.0 million, $ 1.0 million and $ 1.3 million, respectively, which were capitalized.  Interest paid approximated the incurred interest cost. 
+    --------------------------------------------------------------------
+
+  Chunk 2/7 (similarity: 0.444)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 82
+    --------------------------------------------------------------------
+AND SUBSIDIARY COMPANIES NOTES TO CONSOLIDATED FINANCIAL STATEMENTS Loans under the Revolving Facility will bear interest at a
+      rate equal to (a) for loans denominated in U.S. dollars, at the election of the Company, Term SOFR plus an applicable margin equal to 1.375 % per annum or a base rate plus an applicable margin equal to 0.375 % per annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to 1.375 % per annum and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to 1.375 % per annum, subject in each case to (i) an increase of 37.5 basis points in the event that, and for so long as, the Net Leverage Ratio
+      (as defined in the Amended Credit Agreement) is greater than or equal to 3.00 to 1.00 as of the last day of the preceding fiscal quarter, (ii) an increase of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 3.00 to 1.00 and greater than or equal to 2.00 to 1.00 as of the last day of the preceding fiscal quarter and (iii) a decrease of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 1.00 to 1.00 as of the last day of the preceding fiscal quarter.  Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to 2.00 % per annum or a base rate plus an applicable margin equal to 1.00 % per annum.  
+    --------------------------------------------------------------------
+
+  Chunk 3/7 (similarity: 0.434)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 45
+    --------------------------------------------------------------------
+Loans under the Revolving Facility will bear interest at a rate equal to (a) for loans denominated in U.S. dollars, at the election
+      of the Company, Term SOFR plus an applicable margin equal to 1.375% per annum or a base rate plus an applicable margin equal to 0.375% per annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to 1.375% per annum
+      and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to 1.375% per annum, subject in each case to (i) an increase of 37.5 basis points in the event that, and for so long as, the Net Leverage Ratio (as defined in the
+      Amended Credit Agreement) is greater than or equal to 3.00 to 1.00 as of the last day of the preceding fiscal quarter, (ii) an increase of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 3.00 to 1.00 and
+      greater than or equal to 2.00 to 1.00 as of the last day of the preceding fiscal quarter and (iii) a decrease of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 1.00 to 1.00 as of the last day of the
+      preceding fiscal quarter.  Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to 2.00% per annum or a base rate plus an applicable margin equal to 1.00%
+      per annum.  
+    --------------------------------------------------------------------
+
+  Chunk 4/7 (similarity: 0.444)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 79
+    --------------------------------------------------------------------
+In the second quarter of 2023,
+    the Company entered into a floating to fixed interest rate swap for a notional amount of $ 150 million.  The fair value of this swap is an asset
+    of $ 0.3 million at December 31, 2024
+    and is recorded in other assets and deferred charges on the Consolidated Balance Sheet.  This interest rate swap is designated as a cash flow hedge.  
+    --------------------------------------------------------------------
+
+  Chunk 5/7 (similarity: 0.447)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 46
+    --------------------------------------------------------------------
+In the second quarter of 2023, the Company entered into a floating to fixed interest rate swap for a notional amount of $150 million.  The fair value of this instrument as of December 31, 2024 is an asset of $0.3 million. 
+    --------------------------------------------------------------------
+
+  Chunk 6/7 (similarity: 0.422)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 49
+    --------------------------------------------------------------------
+The Company recognized pension expense of $1.9
+    million in 2024 as compared to $5.7
+    million in 2023.  Accounting guidance on retirement benefits requires companies to discount future benefit obligations back to today’s dollars
+    using a discount rate that is based on high-quality fixed-income investments.  A decrease in the discount rate increases the pension benefit obligation, while an increase in the discount rate decreases the pension benefit obligation.  This increase or
+    decrease in the pension benefit obligation is recognized in Accumulated other comprehensive income (loss) and subsequently amortized into earnings as an actuarial gain or loss.  
+    --------------------------------------------------------------------
+
+  Chunk 7/7 (similarity: 0.430)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 79
+    --------------------------------------------------------------------
+The Company utilizes interest rate swaps to limit exposure to market fluctuations on floating-rate debt.  
+    --------------------------------------------------------------------
+  ======================================================================
+
+    ✗ No entities extracted
+
+Keyword 8/9: current ratio quick ratio liquidity cash equivalents short-term current assets current liabilities
+
+  ======================================================================
+  CHUNKS FOR KEYWORD 8/9
+  ======================================================================
+
+  Chunk 1/7 (similarity: 0.546)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 60
+    --------------------------------------------------------------------
+MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES CONSOLIDATED Anchor BALANCE SHEETS December 31, (millions of dollars, except share and per share amounts) 2024 2023 ASSETS Current assets: Cash and cash equivalents $ 333.1 $ 317.2 Short-term investments, at cost which approximates market 4.0 4.3 Accounts receivable 385.2 399.1 Inventories 342.1 325.4 Prepaid expenses 61.1 45.0 Other current assets 5.5 8.0 Total current assets 1,131.0 1,099.0 Property, plant and equipment, less accumulated depreciation and depletion 989.7 986.8 Goodwill 913.8 913.6 Intangible assets 218.1 231.0 Deferred income taxes 14.8 16.0 Other assets and deferred charges 126.5 100.2 Total assets $ 3,393.9 $ 3,346.6 LIABILITIES AND SHAREHOLDERS’ EQUITY Current liabilities: Short-term debt $ 5.1 $ 85.4 Current maturities of long-term debt 6.5 18.0 Accounts payable 185.5 188.7 Income tax payable 27.4 14.0 Accrued compensation and related items 67.5 59.2 Other current liabilities 105.7 92.0 Total current liabilities 397.7 457.3 Long-term debt, net of unamortized discount and deferred financing costs 959.6 911.1 Deferred income taxes 130.5 139.3 Accrued pension and postretirement benefits 20.5 51.7 Other non-current liabilities 102.4 100.5 Total liabilities 1,610.7 1,659.9 Shareholders’ equity: Preferred stock, without par value; 1,000,000 shares authorized; none issued — — Common stock, par value at $ 0.10 per share; 100,000,000 shares authorized; Issued 49,993,737 shares in 2024 and 49,657,464 shares in 2023 5.0 4.9 Additional paid-in capital 523.9 501.2 Retained earnings 2,514.5 2,360.6 Accumulated other comprehensive loss ( 387.1 ) ( 369.4 ) Less common stock held in treasury, at cost; 18,098,082 shares in 2024 and 17,252,743 shares in 2023 ( 909.3 ) ( 845.3 ) Total Minerals Technologies Inc. shareholders’ equity 1,747.0 1,652.0 Non-controlling interests 36.2 34.7 Total shareholders’ equity 1,783.2 1,686.7 Total liabilities and shareholders’ equity $ 3,393.9 $ 3,346.6 See Notes to Consolidated Financial Statements, which are an integral part of these statements. 
+    --------------------------------------------------------------------
+
+  Chunk 2/7 (similarity: 0.523)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 39
+    --------------------------------------------------------------------
+Our balance sheet continues to be strong.  Cash, cash equivalents and short-term investments were $337.1 million as of December 31, 2024.  Cash flow from operations
+    for 2024 was $236.4 million.  The
+    Company currently has more than $700 million of available liquidity, including cash on hand, as well as availability under its revolving credit facility. We believe these factors will allow us to meet our anticipated funding requirements. Our intention
+    is to maintain a balanced approach to capital deployment, by using cash flow for investments in growth, returns to shareholders, and continued debt reduction. 38
+    --------------------------------------------------------------------
+
+  Chunk 3/7 (similarity: 0.543)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 80
+    --------------------------------------------------------------------
+Note 14.  Financial Instruments and Concentrations of Credit Risk The following methods and assumptions were used to estimate the fair value of each class of financial instrument: Cash and cash equivalents, short-term
+      investments, accounts receivable and payable :  The carrying amounts approximate fair value because of the short maturities of these instruments. Short-term debt and other liabilities : 
+    The carrying amounts of short-term debt and other liabilities approximate fair value because of the short maturities of these instruments. 
+    --------------------------------------------------------------------
+
+  Chunk 4/7 (similarity: 0.489)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 93
+    --------------------------------------------------------------------
+MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES NOTES TO CONSOLIDATED FINANCIAL STATEMENTS In the third quarter of 2024, the Company recorded an additional $ 7.0 million of asset retirement obligations in relation to our mining business. The current portion of the liability of approximately $ 0.6 million is included in other current liabilities and the long-term portion of the liability of approximately $ 27.0 million is included in other non-current liabilities in the Consolidated Balance Sheet as of December 31, 2024. Accretion expense is included in cost of goods sold in the Company’s Consolidated Statements of Income. 
+    --------------------------------------------------------------------
+
+  Chunk 5/7 (similarity: 0.502)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 47
+    --------------------------------------------------------------------
+The preparation of these financial statements requires us to make estimates and judgments that affect the reported amounts of assets, liabilities, revenues and
+    expenses, and related disclosure of contingent assets and liabilities. On an ongoing basis, we evaluate our estimates and assumptions, including those related to revenue recognition, valuation of long-lived
+    assets, goodwill and other intangible assets, income taxes, including valuation allowances and pension plan assumptions. We base our estimates on historical experience and on other assumptions that we believe to be reasonable under the circumstances,
+    the results of which form the basis for making judgments about the carrying values of assets and liabilities that cannot readily be determined from other sources.  
+    --------------------------------------------------------------------
+
+  Chunk 6/7 (similarity: 0.484)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 48
+    --------------------------------------------------------------------
+For this exposure, we recognized an ACL associated with the unfunded amount, which is reported as a liability in accrued expenses and other current liabilities on our consolidated balance sheet. Valuation of Long-lived Assets, Goodwill and Other Intangible Assets We assess the possible impairment of long-lived assets and identifiable amortizable intangibles whenever events or changes in
+    circumstances indicate that the carrying value may not be recoverable. Goodwill is evaluated for impairment at least annually.  
+    --------------------------------------------------------------------
+
+  Chunk 7/7 (similarity: 0.513)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 80
+    --------------------------------------------------------------------
+MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES NOTES TO CONSOLIDATED FINANCIAL STATEMENTS The following table sets forth by level within the fair value hierarchy the
+    Company’s financial assets and liabilities accounted for at fair value on a recurring basis at the end of each of the past two years.  Assets and liabilities are classified in their entirety based on the lowest level of input that is significant to the
+    fair value measurement.  
+    --------------------------------------------------------------------
+  ======================================================================
+
+    ✗ No entities extracted
+
+Keyword 9/9: total debt borrowings long-term debt bonds notes payable senior notes
+
+  ======================================================================
+  CHUNKS FOR KEYWORD 9/9
+  ======================================================================
+
+  Chunk 1/7 (similarity: 0.588)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 82
+    --------------------------------------------------------------------
+As of December 31, 2024,
+    there were $ 4.5 million in loans and $ 9.1 million
+    in letters of credit outstanding under the Revolving Facility. On June 30, 2020, the Company issued $ 400 million aggregate principal amount of “Notes”. The Notes were issued pursuant to an indenture, dated as of June 30, 2020, between the Company and The Bank of New York Mellon
+      Trust Company, N.A., as trustee (the “Indenture”).  The Notes bear an interest rate of 5.0 % per annum payable semi-annually on January 1 and July 1 of each year, beginning on January 1, 2021.  The Notes are unconditionally guaranteed on a senior unsecured basis by each of the Company’s existing and future
+      wholly owned domestic restricted subsidiaries that is a borrower under or that guarantees the Company’s obligations under its Senior Secured Credit Facilities or that guarantees the Company’s or any of the Company’s wholly owned domestic
+      subsidiaries’ long-term indebtedness in an aggregate amount in excess of $ 50 million. The Company may redeem some or all of the Notes at any time and from time to time at the applicable redemption prices listed in
+        the Indenture, plus accrued and unpaid interest, if any, to, but excluding, the applicable redemption date. If the Company experiences a change of control (as defined
+        in the indenture), the Company is required to offer to repurchase the Notes at 101 % of the principal amount of such Notes, plus accrued and unpaid interest, if any, to, but excluding, the date of repurchase. The Amended Credit Agreement and the Indenture both contain certain customary affirmative and negative covenants that limit or restrict
+      the ability of the Company and its restricted subsidiaries to enter into certain transactions or take certain actions, as well as customary events of default.  In addition, the Amended Credit Agreement contains a financial covenant that requires the
+      Company to maintain a maximum Net Leverage Ratio of 4.00 to 1.00 for each four fiscal quarter period (subject to an increase to 5.00 to 1.00 for four quarters
+      in connection with certain significant acquisitions). The Company has a committed loan facility in Japan.  
+    --------------------------------------------------------------------
+
+  Chunk 2/7 (similarity: 0.565)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 46
+    --------------------------------------------------------------------
+On June 30, 2020, the Company issued $400 million aggregate principal amount of Notes. The Notes were issued pursuant to an indenture,
+    dated as of June 30, 2020, between the Company and The Bank of New York Mellon Trust Company, N.A., as trustee (the “Indenture”).  The Notes bear an interest rate of 5.0% per annum payable semi-annually on January 1 and July 1 of each year, beginning
+    on January 1, 2021.  The Notes are unconditionally guaranteed on a senior unsecured basis by each of the Company’s existing and future wholly owned domestic restricted subsidiaries that is a borrower under or that guarantees the Company’s obligations
+    under its Senior Secured Credit Facilities or that guarantees the Company’s or any of the Company’s wholly owned domestic subsidiaries’ long-term indebtedness in an aggregate amount in excess of $50 million. The Company may redeem some or all of the Notes at any time and from time to time at the applicable redemption prices listed in
+        the Indenture, plus accrued and unpaid interest, if any, to, but excluding, the applicable redemption date. If the Company experiences a change of control (as defined in the indenture), the Company is required to offer to repurchase the Notes at
+    101% of the principal amount of such Notes, plus accrued and unpaid interest, if any, to, but excluding, the date of repurchase. The Amended Credit Agreement and the Indenture both contain certain customary affirmative and negative covenants that limit or restrict
+    the ability of the Company and its restricted subsidiaries to enter into certain transactions or take certain actions, as well as customary events of default. In addition, the Amended Credit Agreement contains a financial covenant that requires the
+    Company to maintain a maximum Net Leverage Ratio of 4.00 to 1.00 for each four fiscal quarter period (subject to an increase to 5.00 to 1.00 for four quarters in connection with certain significant acquisitions). The Company has a committed loan facility in Japan. 
+    --------------------------------------------------------------------
+
+  Chunk 3/7 (similarity: 0.686)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 83
+    --------------------------------------------------------------------
+The weighted average interest rates on short-term borrowings outstanding was 6.9 % for the years ended December 31, 2024 and 2023, respectively. The aggregate maturities of long-term debt are as follows: $ 6.5 million in 2025; $ 6.4 million in 2026; $ 6.0 million in 2027, $ 405.8 million in 2028; $ 5.7 million in 2029 and $ 546.3 million thereafter. During 2024, 2023 and 2022, respectively, the Company
+    incurred interest costs of $ 63.2 million, $ 64.1 million and $ 48.6 million, including $ 1.0 million, $ 1.0 million and $ 1.3 million, respectively, which were capitalized.  Interest paid approximated the incurred interest cost. 
+    --------------------------------------------------------------------
+
+  Chunk 4/7 (similarity: 0.618)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 82
+    --------------------------------------------------------------------
+AND SUBSIDIARY COMPANIES NOTES TO CONSOLIDATED FINANCIAL STATEMENTS Loans under the Revolving Facility will bear interest at a
+      rate equal to (a) for loans denominated in U.S. dollars, at the election of the Company, Term SOFR plus an applicable margin equal to 1.375 % per annum or a base rate plus an applicable margin equal to 0.375 % per annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to 1.375 % per annum and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to 1.375 % per annum, subject in each case to (i) an increase of 37.5 basis points in the event that, and for so long as, the Net Leverage Ratio
+      (as defined in the Amended Credit Agreement) is greater than or equal to 3.00 to 1.00 as of the last day of the preceding fiscal quarter, (ii) an increase of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 3.00 to 1.00 and greater than or equal to 2.00 to 1.00 as of the last day of the preceding fiscal quarter and (iii) a decrease of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 1.00 to 1.00 as of the last day of the preceding fiscal quarter.  Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to 2.00 % per annum or a base rate plus an applicable margin equal to 1.00 % per annum.  
+    --------------------------------------------------------------------
+
+  Chunk 5/7 (similarity: 0.585)
+    Section: Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    Page: 45
+    --------------------------------------------------------------------
+Loans under the Revolving Facility will bear interest at a rate equal to (a) for loans denominated in U.S. dollars, at the election
+      of the Company, Term SOFR plus an applicable margin equal to 1.375% per annum or a base rate plus an applicable margin equal to 0.375% per annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to 1.375% per annum
+      and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to 1.375% per annum, subject in each case to (i) an increase of 37.5 basis points in the event that, and for so long as, the Net Leverage Ratio (as defined in the
+      Amended Credit Agreement) is greater than or equal to 3.00 to 1.00 as of the last day of the preceding fiscal quarter, (ii) an increase of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 3.00 to 1.00 and
+      greater than or equal to 2.00 to 1.00 as of the last day of the preceding fiscal quarter and (iii) a decrease of 12.5 basis points in the event that, and for so long as, the Net Leverage Ratio is less than 1.00 to 1.00 as of the last day of the
+      preceding fiscal quarter.  Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to 2.00% per annum or a base rate plus an applicable margin equal to 1.00%
+      per annum.  
+    --------------------------------------------------------------------
+
+  Chunk 6/7 (similarity: 0.606)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 81
+    --------------------------------------------------------------------
+The Company’s extension of credit is based on an evaluation of the
+    customer’s financial condition and collateral is generally not required. The Company’s bad debt expense for the years ended December 31, 2024, 2023 and 2022 was $ 1.4 million, $ 2.8 million and $ 4.1 million, respectively. 
+    --------------------------------------------------------------------
+
+  Chunk 7/7 (similarity: 0.565)
+    Section: Item 15.  Exhibits and Financial Statement Schedules
+    Page: 73
+    --------------------------------------------------------------------
+Treasury bills with an equivalent remaining term. 
+    --------------------------------------------------------------------
+  ======================================================================
+
+    ✗ No entities extracted
+
+================================================================================
+EXTRACTION COMPLETE: HAS_METRIC
+================================================================================
+Entities     : 4
+Duration     : 103.4s (1.7 min)
