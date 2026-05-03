@@ -13,8 +13,8 @@ The pipeline consists of three main steps:
 ## Features
 
 - ✅ Extracts sections from HTML (PART I, PART II, Item 1, Item 2, etc.)
-- ✅ Uses actual page breaks from HTML (BRPFPageHeader divs)
-- ✅ Preserves real page number sources for each chunk
+- ✅ Creates logical "pages" based on word count (~3000 words per page)
+- ✅ Preserves page number sources for each chunk
 - ✅ Semantic chunking using LlamaIndex SemanticSplitterNodeParser
 - ✅ Parallel processing for faster chunking
 - ✅ Stores embeddings in Qdrant for semantic search
