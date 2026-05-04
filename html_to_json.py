@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup, NavigableString
 def table_to_text(table):
     """
     Convert an HTML table to formatted text preserving layout.
-    Uses a clean markdown-style format that's LLM-friendly.
     """
     rows = []
     
@@ -40,11 +39,9 @@ def table_to_text(table):
     formatted_rows = []
     
     for i, row in enumerate(rows):
-        # Pad row to have all columns
         while len(row) < num_cols:
             row.append('')
         
-        # Format cells with padding
         formatted_cells = []
         for j, cell in enumerate(row):
             if j < num_cols:
@@ -57,12 +54,12 @@ def table_to_text(table):
         formatted_row = ' | '.join(formatted_cells)
         formatted_rows.append('| ' + formatted_row + ' |')
         
-        # Add separator after header row (first row)
+        # Add separator after header row 
         if i == 0:
             separator = '|' + '|'.join(['-' * (w + 2) for w in col_widths]) + '|'
             formatted_rows.append(separator)
     
-    # Add table markers for LLM context
+    # for LLM context
     table_text = '[TABLE START]\n' + '\n'.join(formatted_rows) + '\n[TABLE END]'
     return table_text
 
@@ -74,7 +71,6 @@ def element_to_text(element):
     if element.name == 'table':
         return table_to_text(element)
     elif element.name:
-        # Get text and clean up whitespace
         text = element.get_text(separator=' ', strip=True)
         return re.sub(r'\s+', ' ', text)
     else:
@@ -106,12 +102,6 @@ def html_to_paged_json(input_path, output_path):
         print("No main div found, using page-break method")
         pages = extract_pages_by_breaks(body)
 
-    # If only one page found, try alternative splitting method
-    if len(pages) == 1:
-        print(f"Only 1 page found. Trying chunk-based splitting...")
-        text = list(pages.values())[0]
-        pages = split_by_chunks(text)
-
     result = {
         "source": input_path,
         "total_pages": len(pages),
@@ -127,10 +117,9 @@ def html_to_paged_json(input_path, output_path):
 def extract_pages_with_markers(main_div, page_markers):
     """
     Extract pages using BRPFPageHeader markers, preserving table layouts.
-    Avoids duplication by tracking which elements have been processed.
     """
     pages = {}
-    current_page = 0  # Start at 0, will increment when we hit first marker
+    current_page = 0  
     current_chunks = []
     processed_tables = set()
     
@@ -148,7 +137,6 @@ def extract_pages_with_markers(main_div, page_markers):
             current_chunks = []
             processed_tables = set()
         elif element.name == 'table':
-            # Only process table once (at the top level, not nested)
             table_id = id(element)
             if table_id not in processed_tables and element.parent.name != 'table':
                 table_text = table_to_text(element)
@@ -167,12 +155,10 @@ def extract_pages_with_markers(main_div, page_markers):
             
             text = str(element).strip()
             if text and text != '\xa0':
-                # Clean up whitespace
                 text = re.sub(r'\s+', ' ', text)
                 if text:
                     current_chunks.append(text)
     
-    # Add last page
     if current_chunks and current_page > 0:
         text = '\n\n'.join(current_chunks).strip()
         text = re.sub(r'\n{3,}', '\n\n', text)
@@ -185,7 +171,6 @@ def extract_pages_with_markers(main_div, page_markers):
 def extract_pages_by_breaks(body):
     """
     Extract pages using page-break hr tags, preserving table layouts.
-    Avoids duplication by tracking which elements have been processed.
     """
     pages = {}
     current_page = 1
@@ -205,7 +190,6 @@ def extract_pages_by_breaks(body):
             current_chunks = []
             processed_elements = set()
         elif tag == 'table':
-            # Process table specially
             table_id = id(element)
             if table_id not in processed_elements:
                 table_text = table_to_text(element)
@@ -213,10 +197,9 @@ def extract_pages_by_breaks(body):
                     current_chunks.append('\n' + table_text + '\n')
                     processed_elements.add(table_id)
         elif tag:
-            # Regular element - check if it contains tables
             tables = element.find_all('table') if hasattr(element, 'find_all') else []
             if tables:
-                # Process element with tables carefully
+                # Process element with tables 
                 for table in tables:
                     table_id = id(table)
                     if table_id not in processed_elements:
@@ -242,44 +225,11 @@ def extract_pages_by_breaks(body):
             if chunk:
                 current_chunks.append(chunk)
 
-    # Last page (no trailing <hr>)
+    # Last page (no <hr>)
     text = '\n\n'.join(current_chunks).strip()
     text = re.sub(r'\n{3,}', '\n\n', text)
     if text:
         pages[f"{current_page}"] = text
-    
-    return pages
-
-
-def split_by_chunks(text, chunk_size=5000):
-    """
-    Split text into chunks of approximately chunk_size characters.
-    Tries to break at sentence boundaries.
-    """
-    pages = {}
-    words = text.split()
-    current_chunk = []
-    current_length = 0
-    page_num = 1
-    
-    for word in words:
-        word_length = len(word) + 1  # +1 for space
-        
-        if current_length + word_length > chunk_size and current_chunk:
-            # Save current chunk
-            chunk_text = " ".join(current_chunk)
-            pages[f"{page_num}"] = chunk_text
-            page_num += 1
-            current_chunk = [word]
-            current_length = word_length
-        else:
-            current_chunk.append(word)
-            current_length += word_length
-    
-    # Add remaining chunk
-    if current_chunk:
-        chunk_text = " ".join(current_chunk)
-        pages[f"{page_num}"] = chunk_text
     
     return pages
 
