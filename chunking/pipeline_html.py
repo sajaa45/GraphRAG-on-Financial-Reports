@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 """
-Unified pipeline for processing HTML files:
-1. Parse HTML and extract sections with page numbers
+HTML Chunking Pipeline - processes pre-parsed HTML sections:
+1. Load sections from parsed_sections_html.json
 2. Chunk sections using semantic splitter
 3. Store in Qdrant vector database
 
 Usage:
-    python pipeline_html.py input/NYSE_MTX_2024.htm
+    # First parse the HTML:
+    python parsing/parsing_sections_html.py input/NYSE_MTX_2024.htm
+    
+    # Then chunk and store:
+    python chunking/pipeline_html.py output/parsed_sections_html.json
 """
 
 import argparse
@@ -17,17 +21,12 @@ import json
 import time
 import uuid
 from pathlib import Path
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
 
-# Add parsing and chunking directories to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'parsing'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'chunking'))
-
-from parsing_sections_html import sections_parser_html, generate_page_index_from_html
 from chunker import get_embedding_model, llamaindex_chunker
 
 _CHUNK_NS = uuid.NAMESPACE_URL
@@ -111,30 +110,31 @@ class HTMLPipeline:
 
         print(f"[{section_idx}/{total_sections}] Processing: {section_title}")
 
-        if not has_page_contents and not section_text.strip():
-            print(f"  [{section_idx}] ⚠ Empty section, skipping")
-            return [], []
-
+        # Always create a section point for metadata/navigation
         points: List[PointStruct] = []
+        points.append(PointStruct(
+            id=_point_id(f"section_{section_idx}"),
+            vector=title_embedding,
+            payload={
+                "type": "section",
+                "section_id": section_idx,
+                "title": section_title,
+                "original_title": section.get('original_title', section_title),
+                "text": section_text[:1000] if section_text else "",
+                "level": section.get('level', 0),
+                "start_page": section.get('start_page', 0),
+                "end_page": section.get('end_page', 0),
+                "char_count": len(section_text),
+                "word_count": section.get('word_count', len(section_text.split())),
+                "source_html": source_html,
+                "has_content": has_page_contents or bool(section_text.strip()),
+            },
+        ))
 
-        if section_text and len(section_text) > 50:
-            points.append(PointStruct(
-                id=_point_id(f"section_{section_idx}"),
-                vector=title_embedding,
-                payload={
-                    "type": "section",
-                    "section_id": section_idx,
-                    "title": section_title,
-                    "original_title": section.get('original_title', section_title),
-                    "text": section_text[:1000],
-                    "level": section.get('level', 0),
-                    "start_page": section.get('start_page', 0),
-                    "end_page": section.get('end_page', 0),
-                    "char_count": len(section_text),
-                    "word_count": section.get('word_count', len(section_text.split())),
-                    "source_html": source_html,
-                },
-            ))
+        # If no content to chunk, return just the section point
+        if not has_page_contents and not section_text.strip():
+            print(f"  [{section_idx}] ℹ Parent section (metadata only)")
+            return points, []
 
         chunk_texts, chunk_ids, chunk_metadatas, chunk_embeddings = [], [], [], []
 
@@ -142,8 +142,8 @@ class HTMLPipeline:
             print(f"  [{section_idx}] Processing {len(section['page_contents'])} pages...")
             for chunk_counter, page_content in enumerate(section['page_contents'], 1):
                 page_num = page_content['page_number']
-                page_text = page_content.get('content', '')
-                if not page_text.strip():
+                page_text = page_content['content']  # Direct access to content field
+                if not page_text or not page_text.strip():
                     continue
 
                 chunks, _ = llamaindex_chunker(
@@ -272,10 +272,13 @@ class HTMLPipeline:
         print(f"✓ Source HTML: {source_html}")
         print(f"✓ Total pages: {total_pages}")
 
-        # Check if sections have text
-        has_text = any(len(s.get('text', '')) > 100 for s in sections)
-        if not has_text:
-            print("✗ Sections have no text - cannot proceed")
+        # Check if sections have text or page_contents
+        has_content = any(
+            len(s.get('text', '')) > 100 or s.get('page_contents')
+            for s in sections
+        )
+        if not has_content:
+            print("✗ Sections have no text or page_contents - cannot proceed")
             return
 
         # Batch-encode all section titles
@@ -384,18 +387,13 @@ class HTMLPipeline:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Process HTML file: parse sections, chunk, and store in vector DB"
+        description="Chunk HTML sections and store in vector DB (uses pre-parsed sections JSON)"
     )
     parser.add_argument(
-        "html_path",
+        "sections_file",
         nargs='?',
-        default="input/NYSE_MTX_2024.htm",
-        help="Path to HTML file (default: input/NYSE_MTX_2024.htm)"
-    )
-    parser.add_argument(
-        "--output-dir", "-d",
-        default="output",
-        help="Output directory for intermediate files (default: output)"
+        default="output/parsed_sections_html.json",
+        help="Path to parsed sections JSON (default: output/parsed_sections_html.json)"
     )
     parser.add_argument(
         "--collection", "-c",
@@ -444,44 +442,13 @@ def main():
     
     args = parser.parse_args()
     
-    # Create output directory if it doesn't exist
-    os.makedirs(args.output_dir, exist_ok=True)
-    
-    # Define output paths
-    sections_file = os.path.join(args.output_dir, "parsed_sections_html.json")
-    page_index_file = os.path.join(args.output_dir, "page_index_html.json")
-    
     print("=" * 70)
-    print("HTML PROCESSING PIPELINE")
+    print("HTML CHUNKING PIPELINE")
     print("=" * 70)
-    print(f"Input HTML: {args.html_path}")
-    print(f"Output directory: {args.output_dir}")
+    print(f"Sections file: {args.sections_file}")
     print(f"Qdrant collection: {args.collection}")
     print("=" * 70)
     print()
-    
-    # Step 1: Parse HTML and extract sections
-    print("STEP 1: Parsing HTML and extracting sections...")
-    print("-" * 70)
-    
-    # Generate page index
-    page_index = generate_page_index_from_html(args.html_path, page_index_file)
-    if not page_index:
-        print("✗ Failed to generate page index")
-        return 1
-    
-    # Parse sections
-    result = sections_parser_html(args.html_path, sections_file)
-    if not result:
-        print("✗ Failed to parse sections")
-        return 1
-    
-    print(f"\n✓ Parsed {result['num_sections']} sections from {result['num_pages']} pages")
-    print()
-    
-    # Step 2: Chunk and store in vector database
-    print("STEP 2: Chunking sections and storing in Qdrant...")
-    print("-" * 70)
     
     async def run_pipeline():
         pipeline = HTMLPipeline(
@@ -494,7 +461,7 @@ def main():
             workers=args.workers,
         )
         await pipeline.process_sections_file(
-            sections_file,
+            args.sections_file,
             save_chunks=not args.no_chunk_files,
         )
     
@@ -504,8 +471,7 @@ def main():
     print("=" * 70)
     print("✓ PIPELINE COMPLETED SUCCESSFULLY")
     print("=" * 70)
-    print(f"Sections file: {sections_file}")
-    print(f"Page index file: {page_index_file}")
+    print(f"Sections file: {args.sections_file}")
     print(f"Qdrant collection: {args.collection}")
     print()
     
