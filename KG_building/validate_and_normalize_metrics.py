@@ -123,14 +123,30 @@ class MetricValidator:
                     raise
 
     def _post_validate_metric(self, metric: Dict) -> bool:
-        """Rule-based checks applied after LLM standardization, using source chunk_text."""
-        standard_name = metric.get("standard_name", "")
-        original_name = metric.get("original_name", "").lower()
+        """Rule-based checks applied after LLM standardization, using source chunk_text.
+
+        core metrics get full validation; all other types only need value grounding.
+        """
+        metric_type = metric.get("type", "core")
         chunk_text = metric.get("chunk_text", "").lower()
         value = str(metric.get("value", "")).strip()
 
         if not chunk_text or not value:
             return False
+
+        # All types: value must be grounded in source chunk
+        value_digits = re.sub(r'[^\d]', '', value)
+        if value_digits and value_digits not in re.sub(r'[^\d]', '', chunk_text):
+            print(f"    [UNGROUNDED] Value '{value}' not found in source text")
+            return False
+
+        # Non-core types stop here — grounding is enough
+        if metric_type != "core":
+            return True
+
+        # Core only: full semantic checks below
+        standard_name = metric.get("standard_name", "")
+        original_name = metric.get("original_name", "").lower()
 
         # 1. Ontology: per-metric required/forbidden terms checked against original name
         if standard_name in METRIC_ONTOLOGY:
@@ -145,8 +161,7 @@ class MetricValidator:
                 print(f"    [ONTOLOGY] {standard_name}: forbidden term in '{original_name}'")
                 return False
 
-        # 2. Composite metric (e.g. "Cash + Short-Term Investments"):
-        #    each component of the standard name must appear in the original name.
+        # 2. Composite metric: each component of the standard name must appear in original name
         if re.search(r'[+&]| and ', standard_name, re.IGNORECASE):
             for part in re.split(r'[+&]| and ', standard_name.lower()):
                 key_words = [w for w in part.split() if len(w) > 3]
@@ -160,18 +175,12 @@ class MetricValidator:
                 print(f"    [SEMANTIC ERROR] Availability metric mapped from utilization: '{original_name}'")
                 return False
 
-        # 4. Value grounding: numeric value must appear in source chunk
-        value_digits = re.sub(r'[^\d]', '', value)
-        if value_digits and value_digits not in re.sub(r'[^\d]', '', chunk_text):
-            print(f"    [UNGROUNDED] Value '{value}' not found in source text")
-            return False
-
-        # 5. Maturity schedule: debt chunks listing multiple future years are schedules, not balances
+        # 4. Debt metrics from maturity schedule chunks are schedules, not current balances
         if standard_name in ("Total Debt", "Long-term Debt", "Short-term Debt"):
             schedule_triggers = ["thereafter", "maturity", "maturities", "due in", "maturing in", "payable in"]
             if any(t in chunk_text for t in schedule_triggers):
                 if len(re.findall(r'\b(202[5-9]|203\d)\b', chunk_text)) >= 2:
-                    print(f"    [MATURITY SCHEDULE] Multiple future years in debt chunk")
+                    print(f"    [MATURITY SCHEDULE] Multiple future years in debt chunk — reclassify as schedule")
                     return False
 
         return True
@@ -181,35 +190,44 @@ class MetricValidator:
 
     def _create_validation_prompt(self, metrics: List[Dict], company: str) -> str:
         standard_list = ", ".join(STANDARD_METRICS.keys())
-        return f"""Validate and normalize financial metrics for credit risk analysis.
+        return f"""Classify and normalize financial metrics extracted from a financial report.
 
 STANDARD NAMES: {standard_list}
 
-ACCEPT (flexible matching):
-- Net sales / net revenues → Revenue
-- Interest cost / finance costs → Interest Expense  (NOT "interest rate %")
-- Cash and cash equivalents → Cash & Equivalents
-- Short-term borrowings → Short-term Debt
+CLASSIFY each metric into exactly one type:
 
-REJECT:
-1. Non-debt liabilities: pension, deferred compensation, lease obligations, provisions
-2. Rates not expenses: "interest rate", "weighted average rate", "applicable margin"
-3. Availability / unused credit (not debt)
-4. Maturity schedules: "debt due in 2025", "maturities 2026–2030"
-5. Per-share metrics
-6. Sub-totals without "total" for balance sheet line items
+1. core       — a standalone financial amount useful for credit analysis.
+                Map to a STANDARD NAME above. Set is_valid: true.
+                Be flexible: "income from operations" → EBIT, "interest cost" → Interest Expense.
+
+2. component  — a sub-item or breakdown of a larger figure
+                (e.g. segment revenue, capitalized interest, regional breakdown).
+
+3. ratio      — a pre-calculated financial ratio or percentage expressed as a ratio
+                (e.g. Net Leverage Ratio = 2.5x, Current Ratio = 1.8, Debt/Equity = 0.6).
+
+4. schedule   — a time-based breakdown, not a balance
+                (e.g. "debt due in 2025", "aggregate maturities 2026", "thereafter").
+
+5. non_core   — not useful for credit analysis
+                (e.g. pension liabilities, deferred compensation, actuarial gains,
+                lease obligations, provisions, per-share metrics).
+
+6. invalid    — truly unusable: pricing terms, rates %, basis points
+                (e.g. "interest rate 6.9%", "applicable margin 1.375%", "SOFR + 200bps").
+
+Only type=core entries need a standard_name. All other types set standard_name: null.
 
 METRICS:
 {json.dumps(metrics, indent=2)}
 
-Return a JSON array:
+Return a JSON array — one object per input metric in the same order:
 [
-  {{"standard_name": "Revenue", "value": "2118.5", "unit": "$ million", "year": "2024", "original_name": "Net sales", "is_valid": true, "reason": "Valid"}}
+  {{"type": "core", "standard_name": "Revenue", "value": "2118.5", "unit": "$ million", "year": "2024", "original_name": "Net sales"}},
+  {{"type": "ratio", "standard_name": null, "value": "2.5", "unit": "x", "year": "2024", "original_name": "Net leverage ratio"}},
+  {{"type": "schedule", "standard_name": null, "value": "6.5", "unit": "$ million", "year": "2025", "original_name": "aggregate maturities of long-term debt"}},
+  {{"type": "invalid", "standard_name": null, "original_name": "Interest rate 6.9%"}}
 ]
-
-Reject examples:
-{{"standard_name": null, "original_name": "Interest rate 6.9%", "is_valid": false, "reason": "Rate not expense"}}
-{{"standard_name": null, "original_name": "Debt due 2028", "is_valid": false, "reason": "Maturity schedule"}}
 """
 
     def _parse_llm_response(self, llm_output: str) -> List[Dict]:
@@ -227,11 +245,23 @@ Reject examples:
                 print(f"⚠ JSON parse failed: {e}")
                 return []
 
-        valid = [x for x in data if x.get("is_valid") and x.get("standard_name") and x.get("value") not in ("0", "—", None, "")]
-        rejected = [x for x in data if not x.get("is_valid")]
-        if rejected:
-            print(f"  LLM rejected {len(rejected)}: {[r.get('original_name') for r in rejected]}")
-        return valid
+        # Drop truly invalid entries and bare empties; keep everything else
+        useful = [
+            x for x in data
+            if x.get("type") != "invalid"
+            and x.get("original_name")
+            and x.get("value") not in ("0", "—", None, "")
+        ]
+        invalid = [x for x in data if x.get("type") == "invalid"]
+        if invalid:
+            print(f"  [invalid] {[x.get('original_name') for x in invalid]}")
+
+        by_type: Dict[str, list] = {}
+        for x in useful:
+            by_type.setdefault(x.get("type", "unknown"), []).append(x.get("original_name", "?"))
+        for t, names in by_type.items():
+            print(f"  [{t}] {len(names)} metrics")
+        return useful
 
     def _to_int_year(self, y) -> int:
         try:
@@ -250,6 +280,14 @@ Reject examples:
 
     def _metric_entry(self, metric: Dict) -> Dict:
         return {k: metric.get(k) for k in ("value", "unit", "year", "original_name", "chunk_text", "section_title", "source_page", "similarity")}
+
+    def _organize_classified(self, metrics: List[Dict]) -> Dict[str, List[Dict]]:
+        """Group non-core metrics by type. Each entry keeps its original name, value, and provenance."""
+        by_type: Dict[str, List[Dict]] = {}
+        for m in metrics:
+            entry = {k: m.get(k) for k in ("original_name", "value", "unit", "year", "section_title", "source_page")}
+            by_type.setdefault(m.get("type", "unknown"), []).append(entry)
+        return by_type
 
     def _organize_by_standard_names(self, metrics: List[Dict]) -> Dict[str, Any]:
         """Keep most recent year; break same-year ties by priority (prefer totals over sub-components)."""
@@ -317,10 +355,14 @@ Reject examples:
                     else:
                         print(f"  ⚠ Post-validation rejected: {v.get('standard_name')} = {v.get('value')}")
 
-        print(f"\n✓ Validated metrics: {len(all_validated)}")
+        core = [v for v in all_validated if v.get("type") == "core"]
+        other = [v for v in all_validated if v.get("type") != "core"]
+        print(f"\n✓ Validated: {len(core)} core, {len(other)} supplementary")
+
         result = {
             "main_company": main_company,
-            "standardized_metrics": self._organize_by_standard_names(all_validated),
+            "standardized_metrics": self._organize_by_standard_names(core),
+            "classified_metrics": self._organize_classified(other),
         }
 
         with open(self.output_file, 'w', encoding='utf-8') as f:
@@ -344,9 +386,14 @@ def main():
 
     print(f"\n{'='*80}\nSUMMARY\n{'='*80}")
     print(f"Company: {result['main_company']}")
-    print(f"Standardized metrics: {len(result['standardized_metrics'])}")
+    print(f"\nCore (standardized) — {len(result['standardized_metrics'])} metrics:")
     for name, data in result['standardized_metrics'].items():
         print(f"  • {name}: {data['value']} {data['unit']} ({data['year']})")
+    classified = result.get("classified_metrics", {})
+    if classified:
+        print(f"\nClassified (supplementary) — {sum(len(v) for v in classified.values())} metrics:")
+        for t, items in classified.items():
+            print(f"  [{t}] {len(items)}: {[i['original_name'] for i in items[:3]]}{'...' if len(items) > 3 else ''}")
 
 
 if __name__ == "__main__":
