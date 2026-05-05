@@ -1,12 +1,12 @@
-Started : 2026-05-05 14:18:01
-Finished: 2026-05-05 14:18:44
-Elapsed : 42.9s (0.7 min)
+Started : 2026-05-05 15:00:47
+Finished: 2026-05-05 15:02:39
+Elapsed : 112.4s (1.9 min)
 ================================================================================
 
 
 ================================================================================
 EXTRACTING RELATION: HAS_METRIC
-Started: 2026-05-05 14:18:01
+Started: 2026-05-05 15:00:47
 ================================================================================
 Source: Company
 Target: Metric
@@ -294,80 +294,131 @@ F-22
     --------------------------------------------------------------------
   ======================================================================
 
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Interest Expense (2024))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net Leverage Ratio (2024))
+      Properties: {
+        "value": "3.00",
+        "unit": "to 1.00",
+        "year": "2024",
+        "metric_type": "Net Leverage Ratio"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: weighted average interest rates on short-term borrowings outstanding (2024))
+      Properties: {
+        "value": "6.9",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "weighted average interest rates on short-term borrowings outstanding"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: aggregate maturities of long-term debt (2025))
+      Properties: {
+        "value": "6.5",
+        "unit": "$ million",
+        "year": "2025",
+        "metric_type": "aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: aggregate maturities of long-term debt (2026))
+      Properties: {
+        "value": "6.4",
+        "unit": "$ million",
+        "year": "2026",
+        "metric_type": "aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: aggregate maturities of long-term debt (2027))
+      Properties: {
+        "value": "6.0",
+        "unit": "$ million",
+        "year": "2027",
+        "metric_type": "aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: aggregate maturities of long-term debt (2028))
+      Properties: {
+        "value": "405.8",
+        "unit": "$ million",
+        "year": "2028",
+        "metric_type": "aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: aggregate maturities of long-term debt (2029))
+      Properties: {
+        "value": "5.7",
+        "unit": "$ million",
+        "year": "2029",
+        "metric_type": "aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: interest costs incurred (2024))
       Properties: {
         "value": "63.2",
         "unit": "$ million",
         "year": "2024",
-        "metric_type": "Interest Expense"
+        "metric_type": "interest costs incurred"
 }
       Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Earnings per Share (2024))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: capitalized interest (2024))
       Properties: {
-        "value": "5.17",
-        "unit": "$",
+        "value": "1.0",
+        "unit": "$ million",
         "year": "2024",
-        "metric_type": "Earnings per Share"
+        "metric_type": "capitalized interest"
 }
-      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
-    Condition and Results of Operations
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Cash and Equivalents (2024))
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Cash, cash equivalents and short-term investments (2024))
       Properties: {
         "value": "337.1",
         "unit": "$ million",
         "year": "2024",
-        "metric_type": "Cash and Equivalents"
+        "metric_type": "Cash, cash equivalents and short-term investments"
 }
       Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
     Condition and Results of Operations
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Capital Expenditure (2024))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Cash flow from operations (2024))
       Properties: {
-        "value": "1.0",
+        "value": "236.4",
         "unit": "$ million",
         "year": "2024",
-        "metric_type": "Capital Expenditure"
+        "metric_type": "Cash flow from operations"
 }
-      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Interest Expense (2023))
+      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: diluted earnings per share (2024))
       Properties: {
-        "value": "64.1",
-        "unit": "$ million",
-        "year": "2023",
-        "metric_type": "Interest Expense"
-}
-      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Interest Expense (2022))
-      Properties: {
-        "value": "48.6",
-        "unit": "$ million",
-        "year": "2022",
-        "metric_type": "Interest Expense"
-}
-      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Capital Expenditure (2023))
-      Properties: {
-        "value": "1.0",
-        "unit": "$ million",
-        "year": "2023",
-        "metric_type": "Capital Expenditure"
-}
-      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Capital Expenditure (2022))
-      Properties: {
-        "value": "1.3",
-        "unit": "$ million",
-        "year": "2022",
-        "metric_type": "Capital Expenditure"
-}
-      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net Debt (2024))
-      Properties: {
-        "value": "3.00",
-        "unit": "ratio",
+        "value": "5.17",
+        "unit": "$",
         "year": "2024",
-        "metric_type": "Net Debt"
+        "metric_type": "diluted earnings per share"
 }
-      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: aggregate commitments under the revolving credit facility (2024))
+      Properties: {
+        "value": "400",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "aggregate commitments under the revolving credit facility"
+}
+      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: bad debt expense (2024))
+      Properties: {
+        "value": "1.4",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "bad debt expense"
+}
+      Metadata: page=80 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: debt extinguishment expenses (2024))
+      Properties: {
+        "value": "1.8",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "debt extinguishment expenses"
+}
+      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
 
 Keyword 2/9: free cash flow operating cash flow capital expenditure investment
 
@@ -594,31 +645,71 @@ The Company primarily applies the income approach for foreign exchange derivativ
     --------------------------------------------------------------------
   ======================================================================
 
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net Income (2024))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net income attributable to MTI (2024))
       Properties: {
         "value": "167.1",
         "unit": "$ million",
         "year": "2024",
-        "metric_type": "Net Income"
+        "metric_type": "Net income attributable to MTI"
 }
       Metadata: page=73 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Short-term Investments (2024))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Weighted average shares outstanding (2024))
       Properties: {
-        "value": "4.0",
-        "unit": "$ million",
+        "value": "32.1",
+        "unit": "million",
         "year": "2024",
-        "metric_type": "Short-term Investments"
+        "metric_type": "Weighted average shares outstanding"
 }
-      Metadata: page=64 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Free Cash Flow (2024))
+      Metadata: page=73 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Weighted average shares outstanding, adjusted (2024))
+      Properties: {
+        "value": "32.3",
+        "unit": "million",
+        "year": "2024",
+        "metric_type": "Weighted average shares outstanding, adjusted"
+}
+      Metadata: page=73 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Basic earnings per share attributable to MTI (2024))
+      Properties: {
+        "value": "5.21",
+        "unit": "$",
+        "year": "2024",
+        "metric_type": "Basic earnings per share attributable to MTI"
+}
+      Metadata: page=73 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Diluted earnings per share attributable to MTI (2024))
+      Properties: {
+        "value": "5.17",
+        "unit": "$",
+        "year": "2024",
+        "metric_type": "Diluted earnings per share attributable to MTI"
+}
+      Metadata: page=73 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Cash provided from continuing operations (2024))
       Properties: {
         "value": "236.4",
         "unit": "$ million",
         "year": "2024",
-        "metric_type": "Free Cash Flow"
+        "metric_type": "Cash provided from continuing operations"
 }
       Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
     Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Short-term investments (2024))
+      Properties: {
+        "value": "4.0",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Short-term investments"
+}
+      Metadata: page=64 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Other current liabilities for cash expenditures (2024))
+      Properties: {
+        "value": "2.4",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Other current liabilities for cash expenditures"
+}
+      Metadata: page=71 | section=Item 15.  Exhibits and Financial Statement Schedules
 
 Keyword 3/9: EBITDA earnings before interest tax depreciation amortization operating profit
 
@@ -772,7 +863,167 @@ On an ongoing basis, we evaluate our estimates and assumptions, including those 
     --------------------------------------------------------------------
   ======================================================================
 
-    ✗ No entities extracted
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Income from operations (2024))
+      Properties: {
+        "value": "7.9",
+        "unit": "% of sales",
+        "year": "2024",
+        "metric_type": "Income from operations"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Income from operations (2023))
+      Properties: {
+        "value": "10.1",
+        "unit": "% of sales",
+        "year": "2023",
+        "metric_type": "Income from operations"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: impairment and restructuring charges (2023))
+      Properties: {
+        "value": "78.6",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "impairment and restructuring charges"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: net litigation expenses (2023))
+      Properties: {
+        "value": "29.2",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "net litigation expenses"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: non-operating deductions, net (2024))
+      Properties: {
+        "value": "62.9",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "non-operating deductions, net"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: non-operating deductions, net (2023))
+      Properties: {
+        "value": "64.1",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "non-operating deductions, net"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: net interest expense (2024))
+      Properties: {
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "net interest expense"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: net interest expense (2023))
+      Properties: {
+        "value": "59.2",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "net interest expense"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: debt extinguishment expenses (2022))
+      Properties: {
+        "value": "6.9",
+        "unit": "$ million",
+        "year": "2022",
+        "metric_type": "debt extinguishment expenses"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: tax benefits from percentage depletion (2024))
+      Properties: {
+        "value": "10.0",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "tax benefits from percentage depletion"
+}
+      Metadata: page=42 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: tax benefits from percentage depletion (2023))
+      Properties: {
+        "value": "11.1",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "tax benefits from percentage depletion"
+}
+      Metadata: page=42 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: tax benefits from percentage depletion (2022))
+      Properties: {
+        "value": "9.6",
+        "unit": "$ million",
+        "year": "2022",
+        "metric_type": "tax benefits from percentage depletion"
+}
+      Metadata: page=42 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: net charge to the Company for GILTI (2024))
+      Properties: {
+        "value": "1.5",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "net charge to the Company for GILTI"
+}
+      Metadata: page=42 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: net charge to the Company for GILTI (2023))
+      Properties: {
+        "value": "1.1",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "net charge to the Company for GILTI"
+}
+      Metadata: page=42 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: net charge to the Company for GILTI (2022))
+      Properties: {
+        "value": "3.5",
+        "unit": "$ million",
+        "year": "2022",
+        "metric_type": "net charge to the Company for GILTI"
+}
+      Metadata: page=42 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: losses in other non-operating income (deductions), net (2024))
+      Properties: {
+        "value": "0.1",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "losses in other non-operating income (deductions), net"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: losses in other non-operating income (deductions), net (2023))
+      Properties: {
+        "value": "0.1",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "losses in other non-operating income (deductions), net"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: losses in other non-operating income (deductions), net (2022))
+      Properties: {
+        "value": "0.8",
+        "unit": "$ million",
+        "year": "2022",
+        "metric_type": "losses in other non-operating income (deductions), net"
+}
+      Metadata: page=78 | section=Item 15.  Exhibits and Financial Statement Schedules
 
 Keyword 4/9: ROACE return on average capital employed return on equity
 
@@ -1112,12 +1363,76 @@ The Company has defined benefit pension plans covering the majority of its eligi
     --------------------------------------------------------------------
   ======================================================================
 
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: EBIT (2023))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Ending balance at December 31, 2024 (2024))
       Properties: {
-        "value": "171.8",
+        "value": "5.5",
         "unit": "$ million",
-        "year": "2023",
-        "metric_type": "EBIT"
+        "year": "2024",
+        "metric_type": "Ending balance at December 31, 2024"
+}
+      Metadata: page=86 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Allowance for doubtful accounts (2024))
+      Properties: {
+        "value": "17.1",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Allowance for doubtful accounts"
+}
+      Metadata: page=99 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin for Term SOFR (Revolving Facility) (2024))
+      Properties: {
+        "value": "1375",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin for Term SOFR (Revolving Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin for base rate (Revolving Facility) (2024))
+      Properties: {
+        "value": "0375",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin for base rate (Revolving Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin for adjusted EURIBOR (Revolving Facility) (2024))
+      Properties: {
+        "value": "1375",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin for adjusted EURIBOR (Revolving Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin for SONIA (Revolving Facility) (2024))
+      Properties: {
+        "value": "1375",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin for SONIA (Revolving Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin for Term SOFR (Term Loan Facility) (2024))
+      Properties: {
+        "value": "2.00",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin for Term SOFR (Term Loan Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin for base rate (Term Loan Facility) (2024))
+      Properties: {
+        "value": "1.00",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin for base rate (Term Loan Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net gain on sale of refractories manufacturing assets (2024))
+      Properties: {
+        "value": "12.3",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Net gain on sale of refractories manufacturing assets"
 }
       Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
     Condition and Results of Operations
@@ -1286,23 +1601,31 @@ Net income was $167.1 million in 2024, as compared to $84.1 million in the prior
     --------------------------------------------------------------------
   ======================================================================
 
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Revenue (2024))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net sales (2024))
       Properties: {
         "value": "2118.5",
         "unit": "$ million",
         "year": "2024",
-        "metric_type": "Revenue"
+        "metric_type": "Net sales"
 }
       Metadata: page=70 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: EBIT (2024))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net income (2024))
       Properties: {
-        "value": "286.5",
+        "value": "167.1",
         "unit": "$ million",
         "year": "2024",
-        "metric_type": "EBIT"
+        "metric_type": "Net income"
 }
-      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
     Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Research and development expenses as a percentage of net sales (2024))
+      Properties: {
+        "value": "1.1",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Research and development expenses as a percentage of net sales"
+}
+      Metadata: page=91 | section=Item 15.  Exhibits and Financial Statement Schedules
 
 Keyword 6/9: revenue net revenues net sales total revenues total net revenues
 
@@ -1495,14 +1818,56 @@ Consolidated net income was $88.3 million in 2023 and included a $85.8 million c
     --------------------------------------------------------------------
   ======================================================================
 
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net Income (2023))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net Sales (2024))
       Properties: {
-        "value": "88.3",
+        "value": "2118.5",
         "unit": "$ million",
-        "year": "2023",
-        "metric_type": "Net Income"
+        "year": "2024",
+        "metric_type": "Net Sales"
 }
-      Metadata: page=42 | section=Item 7.  Management’s Discussion and Analysis of Financial
+      Metadata: page=92 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Consolidated cost of sales (2024))
+      Properties: {
+        "value": "1570.8",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Consolidated cost of sales"
+}
+      Metadata: page=92 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Marketing and administrative costs (2024))
+      Properties: {
+        "value": "209.2",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Marketing and administrative costs"
+}
+      Metadata: page=41 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Research and development expenses (2024))
+      Properties: {
+        "value": "23.0",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Research and development expenses"
+}
+      Metadata: page=92 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net sales in the United States (2024))
+      Properties: {
+        "value": "1089.4",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Net sales in the United States"
+}
+      Metadata: page=40 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: International sales (2024))
+      Properties: {
+        "value": "1029.1",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "International sales"
+}
+      Metadata: page=40 | section=Item 7.  Management’s Discussion and Analysis of Financial
     Condition and Results of Operations
 
 Keyword 7/9: interest coverage ratio EBIT debt service fixed charge interest expense
@@ -1827,14 +2192,241 @@ Leases with an initial term of 12 months or less are not recorded on the balance
     --------------------------------------------------------------------
   ======================================================================
 
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Cash and Equivalents (2023))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Asset Write-Downs (2023))
+      Properties: {
+        "value": "71.7",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "Asset Write-Downs"
+}
+      Metadata: page=71 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Severance and other employee costs (2023))
+      Properties: {
+        "value": "6.9",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "Severance and other employee costs"
+}
+      Metadata: page=71 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Total restructuring and other items, net (2023))
+      Properties: {
+        "value": "78.6",
+        "unit": "$ million",
+        "year": "2023",
+        "metric_type": "Total restructuring and other items, net"
+}
+      Metadata: page=71 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Other current liabilities (2024))
+      Properties: {
+        "value": "2.4",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Other current liabilities"
+}
+      Metadata: page=71 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Other current liabilities (2023))
       Properties: {
         "value": "3.8",
         "unit": "$ million",
         "year": "2023",
-        "metric_type": "Cash and Equivalents"
+        "metric_type": "Other current liabilities"
 }
       Metadata: page=71 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Discount rate (2024))
+      Properties: {
+        "value": "5.16",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Discount rate"
+}
+      Metadata: page=84 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Expected return on plan assets (2024))
+      Properties: {
+        "value": "6.59",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Expected return on plan assets"
+}
+      Metadata: page=84 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Rate of compensation increase (2024))
+      Properties: {
+        "value": "2.75",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Rate of compensation increase"
+}
+      Metadata: page=84 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Interest crediting rate (2024))
+      Properties: {
+        "value": "3.75",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Interest crediting rate"
+}
+      Metadata: page=84 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Weighted average interest rates on short-term borrowings (2024))
+      Properties: {
+        "value": "6.9",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Weighted average interest rates on short-term borrowings"
+}
+      Metadata: page=71 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Aggregate maturities of long-term debt (2025))
+      Properties: {
+        "value": "6.5",
+        "unit": "$ million",
+        "year": "2025",
+        "metric_type": "Aggregate maturities of long-term debt"
+}
+      Metadata: page=84 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Aggregate maturities of long-term debt (2026))
+      Properties: {
+        "value": "6.4",
+        "unit": "$ million",
+        "year": "2026",
+        "metric_type": "Aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Aggregate maturities of long-term debt (2027))
+      Properties: {
+        "value": "6.0",
+        "unit": "$ million",
+        "year": "2027",
+        "metric_type": "Aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Aggregate maturities of long-term debt (2028))
+      Properties: {
+        "value": "405.8",
+        "unit": "$ million",
+        "year": "2028",
+        "metric_type": "Aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Aggregate maturities of long-term debt (2029))
+      Properties: {
+        "value": "5.7",
+        "unit": "$ million",
+        "year": "2029",
+        "metric_type": "Aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Aggregate maturities of long-term debt (thereafter))
+      Properties: {
+        "value": "546.3",
+        "unit": "$ million",
+        "year": "thereafter",
+        "metric_type": "Aggregate maturities of long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Interest costs (2024))
+      Properties: {
+        "value": "63.2",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Interest costs"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Capitalized interest (2024))
+      Properties: {
+        "value": "1.0",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Capitalized interest"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin (Term SOFR for Revolving Facility) (2024))
+      Properties: {
+        "value": "1375",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin (Term SOFR for Revolving Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin (Base rate for Revolving Facility) (2024))
+      Properties: {
+        "value": "0375",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin (Base rate for Revolving Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin (Adjusted EURIBOR for Revolving Facility) (2024))
+      Properties: {
+        "value": "1375",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin (Adjusted EURIBOR for Revolving Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin (SONIA for Revolving Facility) (2024))
+      Properties: {
+        "value": "1375",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin (SONIA for Revolving Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin (Term SOFR for Term Loan Facility) (2024))
+      Properties: {
+        "value": "2.00",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin (Term SOFR for Term Loan Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Applicable margin (Base rate for Term Loan Facility) (2024))
+      Properties: {
+        "value": "1.00",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "Applicable margin (Base rate for Term Loan Facility)"
+}
+      Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Notional amount of interest rate swap (2024))
+      Properties: {
+        "value": "150",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Notional amount of interest rate swap"
+}
+      Metadata: page=78 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Fair value of interest rate swap (2024))
+      Properties: {
+        "value": "0.3",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Fair value of interest rate swap"
+}
+      Metadata: page=71 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Diluted earnings per share (2024))
+      Properties: {
+        "value": "5.17",
+        "unit": "$",
+        "year": "2024",
+        "metric_type": "Diluted earnings per share"
+}
+      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Debt extinguishment expenses (2024))
+      Properties: {
+        "value": "1.8",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Debt extinguishment expenses"
+}
+      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Pension expense (2024))
+      Properties: {
+        "value": "1.9",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Pension expense"
+}
+      Metadata: page=48 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
 
 Keyword 8/9: current ratio quick ratio liquidity cash equivalents short-term current assets current liabilities
 
@@ -2070,23 +2662,158 @@ We assess the possible impairment of long-lived assets and identifiable amortiza
     --------------------------------------------------------------------
   ======================================================================
 
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Current Assets (2024))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Deferred compensation plan assets (2024))
       Properties: {
-        "value": "337.1",
+        "value": "13.6",
         "unit": "$ million",
         "year": "2024",
-        "metric_type": "Current Assets"
+        "metric_type": "Deferred compensation plan assets"
 }
-      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
-    Condition and Results of Operations
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Current Liabilities (2024))
+      Metadata: page=79 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Supplementary pension plan assets (2024))
+      Properties: {
+        "value": "19.4",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Supplementary pension plan assets"
+}
+      Metadata: page=79 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Interest rate swap (2024))
+      Properties: {
+        "value": "0.3",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Interest rate swap"
+}
+      Metadata: page=79 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Non-current asset (2024))
+      Properties: {
+        "value": "19.5",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Non-current asset"
+}
+      Metadata: page=83 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Current liability (2024))
+      Properties: {
+        "value": "1.6",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Current liability"
+}
+      Metadata: page=83 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Non-current liability (2024))
+      Properties: {
+        "value": "18.9",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Non-current liability"
+}
+      Metadata: page=83 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net liability recognized (2024))
+      Properties: {
+        "value": "1.0",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Net liability recognized"
+}
+      Metadata: page=83 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Post-Retirement Benefits Current liability (2024))
+      Properties: {
+        "value": "0.1",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Post-Retirement Benefits Current liability"
+}
+      Metadata: page=79 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Post-Retirement Benefits Non-current liability (2024))
       Properties: {
         "value": "1.7",
         "unit": "$ million",
         "year": "2024",
-        "metric_type": "Current Liabilities"
+        "metric_type": "Post-Retirement Benefits Non-current liability"
 }
       Metadata: page=83 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Post-Retirement Benefits Net liability recognized (2024))
+      Properties: {
+        "value": "1.8",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Post-Retirement Benefits Net liability recognized"
+}
+      Metadata: page=83 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Net actuarial (gain) loss (2024))
+      Properties: {
+        "value": "1.2",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Net actuarial (gain) loss"
+}
+      Metadata: page=83 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Prior service cost (2024))
+      Properties: {
+        "value": "0.1",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Prior service cost"
+}
+      Metadata: page=79 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Amount recognized end of year (2024))
+      Properties: {
+        "value": "1.3",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Amount recognized end of year"
+}
+      Metadata: page=83 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Accumulated benefit obligation (2024))
+      Properties: {
+        "value": "327.5",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Accumulated benefit obligation"
+}
+      Metadata: page=83 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Additional asset retirement obligations (2024))
+      Properties: {
+        "value": "7.0",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Additional asset retirement obligations"
+}
+      Metadata: page=92 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Current portion of the liability (2024))
+      Properties: {
+        "value": "0.6",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Current portion of the liability"
+}
+      Metadata: page=92 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Long-term portion of the liability (2024))
+      Properties: {
+        "value": "27.0",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Long-term portion of the liability"
+}
+      Metadata: page=92 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Notional amount (2024))
+      Properties: {
+        "value": "150",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Notional amount"
+}
+      Metadata: page=78 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Fair value of this swap (2024))
+      Properties: {
+        "value": "0.3",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "Fair value of this swap"
+}
+      Metadata: page=79 | section=Item 15.  Exhibits and Financial Statement Schedules
 
 Keyword 9/9: total debt borrowings long-term debt bonds notes payable senior notes
 
@@ -2405,34 +3132,99 @@ Treasury bills with an equivalent remaining term.
     --------------------------------------------------------------------
   ======================================================================
 
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Gearing Ratio (2024))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: weighted average interest rates on short-term borrowings (2024))
       Properties: {
-        "value": "4.00",
+        "value": "6.9",
         "unit": "%",
         "year": "2024",
-        "metric_type": "Gearing Ratio"
+        "metric_type": "weighted average interest rates on short-term borrowings"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: long-term debt (2025))
+      Properties: {
+        "value": "6.5",
+        "unit": "$ million",
+        "year": "2025",
+        "metric_type": "long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: long-term debt (2026))
+      Properties: {
+        "value": "6.4",
+        "unit": "$ million",
+        "year": "2026",
+        "metric_type": "long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: long-term debt (2027))
+      Properties: {
+        "value": "6.0",
+        "unit": "$ million",
+        "year": "2027",
+        "metric_type": "long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: long-term debt (2028))
+      Properties: {
+        "value": "405.8",
+        "unit": "$ million",
+        "year": "2028",
+        "metric_type": "long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: long-term debt (2029))
+      Properties: {
+        "value": "5.7",
+        "unit": "$ million",
+        "year": "2029",
+        "metric_type": "long-term debt"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: interest costs (2024))
+      Properties: {
+        "value": "63.2",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "interest costs"
+}
+      Metadata: page=82 | section=Item 15.  Exhibits and Financial Statement Schedules
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: applicable margin (2024))
+      Properties: {
+        "value": "1375",
+        "unit": "%",
+        "year": "2024",
+        "metric_type": "applicable margin"
 }
       Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Interest Expense (2020))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: short-term borrowings (2024))
       Properties: {
-        "value": "5.0",
-        "unit": "%",
-        "year": "2020",
-        "metric_type": "Interest Expense"
+        "value": "5.1",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "short-term borrowings"
+}
+      Metadata: page=38 | section=Item 7.  Management’s Discussion and Analysis of Financial
+    Condition and Results of Operations
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: loans outstanding under the Revolving Facility (2024))
+      Properties: {
+        "value": "4.5",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "loans outstanding under the Revolving Facility"
 }
       Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
-    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: Gearing Ratio (2020))
+    - (Company: Minerals Technologies Inc.) --[HAS_METRIC]--> (Metric: letters of credit outstanding under the Revolving Facility (2024))
       Properties: {
-        "value": "101",
-        "unit": "%",
-        "year": "2020",
-        "metric_type": "Gearing Ratio"
+        "value": "9.1",
+        "unit": "$ million",
+        "year": "2024",
+        "metric_type": "letters of credit outstanding under the Revolving Facility"
 }
       Metadata: page=81 | section=Item 15.  Exhibits and Financial Statement Schedules
 
 ================================================================================
 EXTRACTION COMPLETE: HAS_METRIC
 ================================================================================
-Entities     : 22
-Duration     : 42.9s (0.7 min)
+Entities     : 118
+Duration     : 112.4s (1.9 min)
 
