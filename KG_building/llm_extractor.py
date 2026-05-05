@@ -27,6 +27,15 @@ from relation_extraction_config import (
 from industry_node_to_sic import get_sic_code
 
 _JSON_BLOCK_RE = re.compile(r'\[.*\]', re.DOTALL)
+# Strip Qwen3 chain-of-thought blocks emitted in thinking mode before we parse JSON.
+_THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
+
+ALLOWED_METRICS = frozenset({
+    "Gearing Ratio", "Net Debt", "Free Cash Flow", "EBITDA", "ROACE",
+    "Capital Expenditure", "Net Income", "Earnings per Share", "Revenue",
+    "EBIT", "Total Debt", "Interest Expense", "Current Assets",
+    "Current Liabilities", "Cash and Equivalents", "Short-term Investments",
+})
 
 _STOP_WORDS = frozenset({
     'the', 'and', 'for', 'of', 'in', 'a', 'an',
@@ -104,6 +113,8 @@ class LLMExtractor:
         self.json_file = os.path.join(self.output_dir, f"extracted_{base}.json")
         self.log_buffer = []
         self.start_time = time.time()
+        # Truncate log file at the start of each run so headers don't accumulate
+        open(self.log_file, 'w', encoding='utf-8').close()
 
         print(f"✓ Logging to  : {self.log_file}")
         print(f"✓ JSON output : {self.json_file}")
@@ -147,7 +158,8 @@ class LLMExtractor:
             kw_hit = sum(1 for w in kw_words if w in text) / max(len(kw_words), 1) if kw_words else 0.0
             num_count = len(re.findall(r'\b\d[\d,\.]*\b', text))
             num_score = min(num_count / 15.0, 1.0)
-            return chunk["similarity"] * 0.4 + kw_hit * 0.3 + num_score * 0.2
+            table_bonus = 0.1 if '[table start]' in text else 0.0
+            return chunk["similarity"] * 0.4 + kw_hit * 0.3 + num_score * 0.2 + table_bonus
 
         return sorted(chunks, key=_score, reverse=True)
 
@@ -178,19 +190,17 @@ class LLMExtractor:
             f.write(message + '\n')
 
     def _save_log(self):
-        if self.log_buffer:
-            elapsed = time.time() - self.start_time
-            header = (
-                f"Started : {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.start_time))}\n"
-                f"Finished: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-                f"Elapsed : {elapsed:.1f}s ({elapsed/60:.1f} min)\n"
-                f"{'='*80}\n\n"
-            )
-            with open(self.log_file, 'w', encoding='utf-8') as f:
-                f.write(header)
-                f.write('\n'.join(self.log_buffer))
-            print(f"\n✓ Relationships log saved to: {self.log_file}")
-
+        elapsed = time.time() - self.start_time
+        header = (
+            f"Started : {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.start_time))}\n"
+            f"Finished: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
+            f"Elapsed : {elapsed:.1f}s ({elapsed/60:.1f} min)\n"
+            f"{'='*80}\n\n"
+        )
+        with open(self.log_file, 'r', encoding='utf-8') as f:
+            existing = f.read()
+        with open(self.log_file, 'w', encoding='utf-8') as f:
+            f.write(header + existing)
     # ========================================================================
     # COMPANY DETECTION / NORMALISATION
     # ========================================================================
@@ -306,7 +316,7 @@ class LLMExtractor:
         n_chunks_per_section = relation_config.n_chunks_per_section
 
         kw_list = relation_config.chunk_keywords_list or [relation_config.chunk_keywords]
-        chunk_embeddings = [self._embed(kw) for kw in kw_list]
+        chunk_embeddings = [self._embed_expanded(kw) for kw in kw_list]
         print(f"  Using {len(chunk_embeddings)} chunk query vector(s)")
 
         section_embedding = self._embed(relation_config.section_keywords)
@@ -397,9 +407,12 @@ class LLMExtractor:
                 response = self.bedrock.converse(
                     modelId=self.bedrock_model,
                     messages=[{"role": "user", "content": [{"text": prompt}]}],
-                    inferenceConfig={"maxTokens": 2048, "temperature": 0.1},
+                    inferenceConfig={"maxTokens": 4096, "temperature": 0.1},
                 )
-                return response["output"]["message"]["content"][0]["text"].strip()
+                text = response["output"]["message"]["content"][0]["text"]
+                # Remove Qwen3 reasoning blocks before returning so callers see only the answer.
+                text = _THINK_RE.sub('', text).strip()
+                return text
             except Exception as e:
                 err = str(e)
                 is_throttle = "ThrottlingException" in err or "429" in err
@@ -429,17 +442,71 @@ class LLMExtractor:
                 print(f"[DEBUG] LLM returned no JSON block for llm! Output was: {llm_output[:500]}")
 
                 return []
-            entities_data = json.loads(m.group())
+            raw_json = m.group()
+            try:
+                entities_data = json.loads(raw_json)
+            except json.JSONDecodeError as je:
+                # Attempt 1: strip markdown fences
+                cleaned = re.sub(r'```(?:json)?', '', raw_json).strip()
+                try:
+                    entities_data = json.loads(cleaned)
+                except json.JSONDecodeError:
+                    # Attempt 2: repair truncated JSON by keeping only complete objects.
+                    # Find the last closing brace of a complete object and close the array.
+                    last_brace = cleaned.rfind('}')
+                    if last_brace > 0:
+                        repaired = cleaned[:last_brace + 1] + '\n]'
+                        try:
+                            entities_data = json.loads(repaired)
+                            print(f"[REPAIR] Recovered {len(entities_data)} objects from truncated JSON")
+                        except json.JSONDecodeError:
+                            print(f"[DEBUG] JSON parse failed ({je}). Raw LLM output (first 1000 chars):\n{llm_output[:1000]}")
+                            return []
+                    else:
+                        print(f"[DEBUG] JSON parse failed ({je}). Raw LLM output (first 1000 chars):\n{llm_output[:1000]}")
+                        return []
             results = []
             for e in entities_data:
+                # Coerce non-string values (e.g. "value": [] or null) to strings so that
+                # downstream str() calls don't crash and the empty-value guard works correctly.
+                for _f in ('metric', 'value', 'unit', 'year', 'organization'):
+                    raw = e.get(_f)
+                    if not isinstance(raw, str):
+                        e[_f] = '' if raw is None or isinstance(raw, (list, dict)) else str(raw)
+
+                # Issue 3 + Bug 5: for HAS_METRIC, reject non-allowlist metrics AND
+                # empty-value entities before doing any chunk anchoring work.
+                if relation_config.name == 'HAS_METRIC':
+                    metric_type = e.get('metric', '').strip()
+                    if metric_type not in ALLOWED_METRICS:
+                        print(f"[FILTER] Rejected non-standard metric: '{metric_type}'")
+                        continue
+                    if not e.get('value', '').strip():
+                        print(f"[FILTER] Rejected empty-value entity for metric: '{metric_type}'")
+                        continue
+
                 # For metrics, anchor to the chunk that actually contains the value
                 # string — word-overlap is unreliable for dense numeric tables.
                 value_str = str(e.get('value', '')).strip()
                 if value_str:
+                    # Normalize whitespace to handle PDF-extracted text with newline-split numbers
+                    _ws = re.compile(r'\s+')
+                    value_norm = _ws.sub(' ', value_str)
                     best_chunk = next(
-                        (c for c in chunks if value_str in c['text']),
-                        max(chunks, key=lambda c: c['similarity'])
+                        (c for c in chunks if value_norm in _ws.sub(' ', c['text'])),
+                        None,
                     )
+                    # Secondary fallback: strip all non-digit/non-period chars from both
+                    # value and chunk text so commas in "2,118.5" don't block a match.
+                    if best_chunk is None:
+                        value_digits = re.sub(r'[^\d.]', '', value_str)
+                        if value_digits:
+                            best_chunk = next(
+                                (c for c in chunks if value_digits in re.sub(r'[^\d.]', '', c['text'])),
+                                None,
+                            )
+                    if best_chunk is None:
+                        best_chunk = max(chunks, key=lambda c: c['similarity'])
                 else:
                     best_chunk = max(chunks, key=lambda c: sum(
                         1 for w in str(e).lower().split() if w in c['text'].lower()
@@ -447,9 +514,11 @@ class LLMExtractor:
                 
                 # Validate against the specific chunk (not combined text)
                 if not self._validate_entity_in_text(e, best_chunk['text'], relation_config.name, best_chunk):
+                    print(f"[VALIDATION] Entity rejected by validation: metric='{e.get('metric', '')}', value='{e.get('value', '')}'")
                     continue
                     
-                p = relation_config.entity_parser(e, **relation_config.entity_parser_kwargs)
+                kwargs = {**relation_config.entity_parser_kwargs, 'main_company': self.main_company}
+                p = relation_config.entity_parser(e, **kwargs)
                 if p:
                     for node_key in ('source', 'target'):
                         node = p[node_key]
@@ -478,7 +547,8 @@ class LLMExtractor:
                 # No chunk info available in this method
                 if not self._validate_entity_in_text(e, text, relation_config.name, chunk_info=None):
                     continue
-                p = relation_config.entity_parser(e, **relation_config.entity_parser_kwargs)
+                kwargs = {**relation_config.entity_parser_kwargs, 'main_company': self.main_company}
+                p = relation_config.entity_parser(e, **kwargs)
                 if p:
                     for node_key in ('source', 'target'):
                         node = p[node_key]
@@ -524,40 +594,94 @@ class LLMExtractor:
                     print(f"[VALIDATION] Chunk {chunk_id}: FAILED - Missing metric/value")
                 return False
                 
-            # Check 1: Direct Substring (Case insensitive)
-            if value.lower() in text.lower():
+            def _pass(reason: str) -> bool:
                 if chunk_info:
-                    chunk_id = chunk_info.get('_id', chunk_info.get('chunk_index', 'Unknown'))
-                    print(f"[VALIDATION] Chunk {chunk_id}: PASSED - '{value}' found in text")
+                    cid = chunk_info.get('_id', chunk_info.get('chunk_index', 'Unknown'))
+                    print(f"[VALIDATION] Chunk {cid}: PASSED - {reason}")
                 return True
 
-            # Check 2: Digit extraction
-            core_digits = re.sub(r'[^\d]', '', value)[:5]
-            if len(core_digits) >= 3:
-                if core_digits in re.sub(r'[^\d]', '', text):
-                    if chunk_info:
-                        chunk_id = chunk_info.get('_id', chunk_info.get('chunk_index', 'Unknown'))
-                        print(f"[VALIDATION] Chunk {chunk_id}: PASSED - Digits '{core_digits}' found in text")
-                    return True
+            def _fail(reason: str) -> bool:
+                if chunk_info:
+                    cid = chunk_info.get('_id', chunk_info.get('chunk_index', 'Unknown'))
+                    print(f"[VALIDATION] Chunk {cid}: FAILED - {reason}")
+                return False
 
-            # Check 3: Patterns
+            # ANTI-PATTERN: Maturity bucket detection for Total Debt
+            if metric == 'Total Debt':
+                # Check for maturity schedule indicators
+                maturity_indicators = [
+                    r'\bdue in\b', r'\bmaturing in\b', r'\bafter\b', r'\bthereafter\b',
+                    r'\b20\d{2}\b.*\b20\d{2}\b.*\b20\d{2}\b',  # Multiple future years
+                    r'\bpayments?\s+due\b', r'\bdebt\s+maturit(y|ies)\b',
+                    r'\brepayment\s+schedule\b', r'\bfuture\s+maturit(y|ies)\b'
+                ]
+                if any(re.search(pattern, text_lower) for pattern in maturity_indicators):
+                    return _fail("Maturity schedule detected - not a current balance")
+                
+                # Check if the year in the entity is in the future (relative to typical reporting)
+                year_str = str(entity.get('year', '')).strip()
+                if year_str and year_str.isdigit():
+                    year_int = int(year_str)
+                    # If year is more than 2 years in the future from 2024, it's likely a maturity date
+                    if year_int > 2026:
+                        return _fail(f"Year {year_int} appears to be a future maturity date, not a reporting period")
+
+            # ANTI-PATTERN: Short-term Investments must be from Balance Sheet line item
+            if metric == 'Short-term Investments':
+                # Check for combined cash+investments language
+                combined_patterns = [
+                    r'cash\s+and\s+investments',
+                    r'cash,?\s+cash\s+equivalents\s+and\s+short-term\s+investments',
+                    r'combined',
+                ]
+                if any(re.search(pattern, text_lower) for pattern in combined_patterns):
+                    return _fail("Combined cash+investments figure - not a standalone line item")
+                
+                # Check for borrowings/debt mislabeled as investments
+                borrowing_patterns = [
+                    r'\bborrowings?\b', r'\bshort-term\s+debt\b', r'\bcurrent\s+portion\s+of\b',
+                    r'\bnotes\s+payable\b', r'\bliabilit(y|ies)\b'
+                ]
+                if any(re.search(pattern, text_lower) for pattern in borrowing_patterns):
+                    return _fail("Borrowing/liability detected - not an investment asset")
+
+            # Check 1: direct substring (case-insensitive)
+            if value.lower() in text.lower():
+                return _pass(f"'{value}' found verbatim")
+
+            # Check 2: comma-stripped match — handles "2118.5" vs "2,118.5" in text
+            text_no_comma = text.replace(',', '')
+            if value in text_no_comma:
+                return _pass(f"'{value}' found after stripping commas from text")
+
+            # Check 3: whitespace-collapsed match — handles PDF-split numbers
+            _ws = re.compile(r'\s+')
+            value_norm = _ws.sub(' ', value)
+            if value_norm in _ws.sub(' ', text):
+                return _pass(f"'{value_norm}' found after whitespace collapse")
+
+            # Check 4: digit-and-period strip — "2118.5" → "2118.5" vs text "2,118.5" → "2118.5"
+            value_dp = re.sub(r'[^\d.]', '', value)
+            if value_dp and value_dp in re.sub(r'[^\d.]', '', text):
+                return _pass(f"digit+period form '{value_dp}' found in text")
+
+            # Check 5: digit-only strip (last resort for large integers without decimal)
+            core_digits = re.sub(r'[^\d]', '', value)[:6]
+            if len(core_digits) >= 4:
+                if core_digits in re.sub(r'[^\d]', '', text):
+                    return _pass(f"digit-only form '{core_digits}' found in text")
+
+            # Check 6: regex patterns (currency prefix/suffix, parentheses)
             patterns = [
                 rf'\b{re.escape(value)}\b',
                 rf'[₹#$€£¥]\s*{re.escape(value)}',
                 rf'{re.escape(value)}\s*[₹#$€£¥]',
                 rf'\({re.escape(value)}\)',
             ]
-            if any(re.search(pattern, text, re.IGNORECASE) for pattern in patterns):
-                if chunk_info:
-                    chunk_id = chunk_info.get('_id', chunk_info.get('chunk_index', 'Unknown'))
-                    print(f"[VALIDATION] Chunk {chunk_id}: PASSED - Pattern match found")
-                return True
+            if any(re.search(p, text, re.IGNORECASE) for p in patterns):
+                return _pass("pattern match (currency/parens)")
 
-            # --- VALIDATION FAILED ---
-            if chunk_info:
-                chunk_id = chunk_info.get('_id', chunk_info.get('chunk_index', 'Unknown'))
-                print(f"[VALIDATION] Chunk {chunk_id}: FAILED - Could not find '{value}' in chunk text")
-            return False
+            return _fail(f"could not find '{value}' in chunk text")
         elif relation_type == 'FACES_RISK':
             risk_name = str(entity.get('risk_name', '')).strip()
             if not risk_name:
@@ -723,8 +847,17 @@ class LLMExtractor:
                     print("    ✗ No chunks above threshold")
                     continue
 
-                kw_chunks = self._rerank_chunks(kw_chunks, kw)  # Fix C
-                
+                kw_chunks = self._rerank_chunks(kw_chunks, kw)
+
+                # Guard: deduplicate within this keyword batch by vector ID to
+                # prevent the same chunk being logged and sent to the LLM twice
+                # (can happen when a point is indexed more than once in Qdrant).
+                _seen_in_kw: set = set()
+                kw_chunks = [
+                    c for c in kw_chunks
+                    if c['_id'] not in _seen_in_kw and not _seen_in_kw.add(c['_id'])
+                ]
+
                 # Display and log chunk texts for this batch
                 separator = f"\n  {'='*70}"
                 header = f"  CHUNKS FOR KEYWORD {kw_idx}/{total_kw}"
