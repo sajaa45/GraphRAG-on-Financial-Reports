@@ -9,32 +9,9 @@
         },
         "tgt": {
           "type": "Metric",
-          "name": "Net Income (2024)",
-          "properties": {
-            "value": "170.9",
-            "unit": "$ million",
-            "year": "2024",
-            "metric_type": "Net Income"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES CONSOLIDATED STATEMENTS OF Anchor INCOME Year Ended December 31, (millions of dollars, except per share data) 2024 2023 2022 Net sales $ 2,118.5 $ 2,169.9 $ 2,125.5 Cost of goods sold 1,570.8 1,662.8 1,660.5 Production margin 547.7 507.1 465.0 Marketing and administrative expenses 209.2 206.0 192.1 Research and development expenses 23.0 21.2 20.4 Provision for credit losses 30.0 — — Restructuring and other items, net — 6.9 — Impairment of assets — 71.7 — Acquisition-related expenses — 0.3 5.1 Gain on sale of assets, net ( 12.3 ) — — Litigation expenses 11.3 29.2 32.6 Income from operations 286.5 171.8 214.8 Interest expense, net ( 56.4 ) ( 59.2 ) ( 43.9 ) Debt extinguishment expenses ( 1.8 ) — ( 6.9 ) Non-cash pension settlement charge — — ( 3.5 ) Other non-operating deductions, net ( 4.7 ) ( 4.9 ) ( 3.8 ) Total non-operating deductions, net ( 62.9 ) ( 64.1 ) ( 58.1 ) Income before tax and equity in earnings 223.6 107.7 156.7 Provision for taxes on income 59.4 23.7 32.1 Equity in earnings of affiliates, net of tax 6.7 4.3 1.7 Net income 170.9 88.3 126.3 Less: Net income attributable to non-controlling interests 3.8 4.2 4.1 Net income attributable to Minerals Technologies Inc. (MTI) $ 167.1 $ 84.1 $ 122.2 Earnings per share: Basic: Income from operations attributable to MTI $ 5.21 $ 2.59 $ 3.74 Diluted: Income from operations attributable to MTI $ 5.17 $ 2.58 $ 3.73 Cash dividends declared per common share $ 0.41 $ 0.25 $ 0.20 Shares used in computation of earnings per share: Basic 32.1 32.5 32.7 Diluted 32.3 32.6 32.8 See Notes to Consolidated Financial Statements, which are an integral part of these statements. ",
-        "similarity": 0.52501124,
-        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
-        "source_page": 61,
-        "sic": null
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Minerals Technologies Inc."
-        },
-        "tgt": {
-          "type": "Metric",
           "name": "Interest Expense (2024)",
           "properties": {
-            "value": "56.4",
+            "value": "63.2",
             "unit": "$ million",
             "year": "2024",
             "metric_type": "Interest Expense"
@@ -42,33 +19,10 @@
         },
         "rel": "HAS_METRIC",
         "props": {},
-        "chunk_text": "MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES CONSOLIDATED STATEMENTS OF Anchor INCOME Year Ended December 31, (millions of dollars, except per share data) 2024 2023 2022 Net sales $ 2,118.5 $ 2,169.9 $ 2,125.5 Cost of goods sold 1,570.8 1,662.8 1,660.5 Production margin 547.7 507.1 465.0 Marketing and administrative expenses 209.2 206.0 192.1 Research and development expenses 23.0 21.2 20.4 Provision for credit losses 30.0 — — Restructuring and other items, net — 6.9 — Impairment of assets — 71.7 — Acquisition-related expenses — 0.3 5.1 Gain on sale of assets, net ( 12.3 ) — — Litigation expenses 11.3 29.2 32.6 Income from operations 286.5 171.8 214.8 Interest expense, net ( 56.4 ) ( 59.2 ) ( 43.9 ) Debt extinguishment expenses ( 1.8 ) — ( 6.9 ) Non-cash pension settlement charge — — ( 3.5 ) Other non-operating deductions, net ( 4.7 ) ( 4.9 ) ( 3.8 ) Total non-operating deductions, net ( 62.9 ) ( 64.1 ) ( 58.1 ) Income before tax and equity in earnings 223.6 107.7 156.7 Provision for taxes on income 59.4 23.7 32.1 Equity in earnings of affiliates, net of tax 6.7 4.3 1.7 Net income 170.9 88.3 126.3 Less: Net income attributable to non-controlling interests 3.8 4.2 4.1 Net income attributable to Minerals Technologies Inc. (MTI) $ 167.1 $ 84.1 $ 122.2 Earnings per share: Basic: Income from operations attributable to MTI $ 5.21 $ 2.59 $ 3.74 Diluted: Income from operations attributable to MTI $ 5.17 $ 2.58 $ 3.73 Cash dividends declared per common share $ 0.41 $ 0.25 $ 0.20 Shares used in computation of earnings per share: Basic 32.1 32.5 32.7 Diluted 32.3 32.6 32.8 See Notes to Consolidated Financial Statements, which are an integral part of these statements. ",
-        "similarity": 0.52501124,
+        "chunk_text": "The weighted average interest rates on short-term borrowings outstanding was\n\n6.9\n\n% for the years ended December 31, 2024 and 2023, respectively.\n\nThe aggregate maturities of long-term debt are as follows: $\n\n6.5\n\nmillion in 2025; $\n\n6.4\n\nmillion in 2026; $\n\n6.0\n\nmillion in 2027, $\n\n405.8\n\nmillion in 2028; $\n\n5.7\n\nmillion in 2029 and $\n\n546.3\n\nmillion thereafter.\n\nDuring 2024, 2023 and 2022, respectively, the Company incurred interest costs of $\n\n63.2\n\nmillion, $\n\n64.1\n\nmillion and $\n\n48.6\n\nmillion, including $\n\n1.0\n\nmillion, $\n\n1.0\n\nmillion and $\n\n1.3\n\nmillion, respectively, which were capitalized. Interest paid approximated the incurred interest cost.\n\n",
+        "similarity": 0.531013,
         "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
-        "source_page": 61,
-        "sic": null
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Minerals Technologies Inc."
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "Capital Expenditure (2024)",
-          "properties": {
-            "value": "89.5",
-            "unit": "$ million",
-            "year": "2024",
-            "metric_type": "Capital Expenditure"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES NOTES TO CONSOLIDATED FINANCIAL STATEMENTS Year Ended December 31, 2022 (millions of dollars) Consumer & Specialties Engineered Solutions Total Net Sales $ 1,124.6 $ 1,000.9 $ 2,125.5 Cost of goods sold 937.0 723.5 1,660.5 Segment production margin 187.6 277.4 465.0 Marketing and administrative expenses 63.1 120.7 183.8 Research and development expenses 10.8 9.6 20.4 Acquisition-related expenses 2.1 — 2.1 Litigation expenses 32.6 — 32.6 Segment income from operations $ 79.0 $ 147.1 $ 226.1 Year Ended December 31, (millions of dollars) 2024 2023 2022 Segment income from operations $ 339.5 $ 189.4 $ 226.1 Interest expense, net ( 56.4 ) ( 59.2 ) ( 43.9 ) Other non-operating deductions, net ( 4.7 ) ( 4.9 ) ( 3.8 ) Unallocated expenses: Provision for credit losses 30.0 — — Restructuring and other items, net — 2.8 — Acquisition-related expenses — 0.3 3.0 Litigation expenses 11.3 2.4 — Unallocated corporate expenses 11.7 12.1 8.3 Debt extinguishment expenses ( 1.8 ) — ( 6.9 ) Non-cash pension settlement charge — — ( 3.5 ) Income before tax and equity in earnings $ 223.6 $ 107.7 $ 156.7 Segment information for the years ended December 31, 2024, 2023 and 2022 was as follows: Year Ended December 31, (millions of dollars) 2024 2023 2022 Depreciation, Depletion and Amortization Consumer & Specialties $ 47.2 $ 47.2 $ 48.0 Engineered Solutions 47.7 47.7 46.2 Total $ 94.9 $ 94.9 $ 94.2 Segment Assets Consumer & Specialties $ 1,289.4 $ 1,244.8 $ 1,107.5 Engineered Solutions 2,028.0 2,028.5 2,187.5 Corporate 76.5 73.3 106.6 Total $ 3,393.9 $ 3,346.6 $ 3,401.6 Capital Expenditures Consumer & Specialties $ 45.2 $ 56.8 $ 44.3 Engineered Solutions 39.3 31.2 34.0 Corporate 5.0 5.5 4.0 Total $ 89.5 $ 93.5 $ 82.3 F-36",
-        "similarity": 0.5157492,
-        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
-        "source_page": 94,
+        "source_page": 82,
         "sic": null
       },
       {
@@ -80,7 +34,7 @@
           "type": "Metric",
           "name": "Earnings per Share (2024)",
           "properties": {
-            "value": "5.21",
+            "value": "5.17",
             "unit": "$",
             "year": "2024",
             "metric_type": "Earnings per Share"
@@ -88,10 +42,470 @@
         },
         "rel": "HAS_METRIC",
         "props": {},
-        "chunk_text": "MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES CONSOLIDATED STATEMENTS OF Anchor INCOME Year Ended December 31, (millions of dollars, except per share data) 2024 2023 2022 Net sales $ 2,118.5 $ 2,169.9 $ 2,125.5 Cost of goods sold 1,570.8 1,662.8 1,660.5 Production margin 547.7 507.1 465.0 Marketing and administrative expenses 209.2 206.0 192.1 Research and development expenses 23.0 21.2 20.4 Provision for credit losses 30.0 — — Restructuring and other items, net — 6.9 — Impairment of assets — 71.7 — Acquisition-related expenses — 0.3 5.1 Gain on sale of assets, net ( 12.3 ) — — Litigation expenses 11.3 29.2 32.6 Income from operations 286.5 171.8 214.8 Interest expense, net ( 56.4 ) ( 59.2 ) ( 43.9 ) Debt extinguishment expenses ( 1.8 ) — ( 6.9 ) Non-cash pension settlement charge — — ( 3.5 ) Other non-operating deductions, net ( 4.7 ) ( 4.9 ) ( 3.8 ) Total non-operating deductions, net ( 62.9 ) ( 64.1 ) ( 58.1 ) Income before tax and equity in earnings 223.6 107.7 156.7 Provision for taxes on income 59.4 23.7 32.1 Equity in earnings of affiliates, net of tax 6.7 4.3 1.7 Net income 170.9 88.3 126.3 Less: Net income attributable to non-controlling interests 3.8 4.2 4.1 Net income attributable to Minerals Technologies Inc. (MTI) $ 167.1 $ 84.1 $ 122.2 Earnings per share: Basic: Income from operations attributable to MTI $ 5.21 $ 2.59 $ 3.74 Diluted: Income from operations attributable to MTI $ 5.17 $ 2.58 $ 3.73 Cash dividends declared per common share $ 0.41 $ 0.25 $ 0.20 Shares used in computation of earnings per share: Basic 32.1 32.5 32.7 Diluted 32.3 32.6 32.8 See Notes to Consolidated Financial Statements, which are an integral part of these statements. ",
-        "similarity": 0.52501124,
+        "chunk_text": "The Company reported diluted earnings of $5.17 per share in 2024 as compared with $2.58 per share in the prior year.\n\nThe Company refinanced its senior secured revolving credit facility and term loan in the fourth quarter of 2024, increasing the aggregate commitments under the revolving credit facility to $400 million and extending out maturities to 2029 for the revolving credit facility and 2031 for the term loan. In connection with the refinancing, the Company incurred $1.8 million of debt extinguishment expenses.\n\n",
+        "similarity": 0.44594395,
+        "section_title": "Item 7.  Management’s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+        "source_page": 38,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Cash and Equivalents (2024)",
+          "properties": {
+            "value": "337.1",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Cash and Equivalents"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Our balance sheet continues to be strong. Cash, cash equivalents and short-term investments were $337.1 million as of December 31, 2024. Cash flow from operations for 2024 was $236.4 million. The Company currently has more than $700 million of available liquidity, including cash on hand, as well as availability under its revolving credit facility. We believe these factors will allow us to meet our anticipated funding requirements. Our intention is to maintain a balanced approach to capital deployment, by using cash flow for investments in growth, returns to shareholders, and continued debt reduction.\n\n38",
+        "similarity": 0.502851,
+        "section_title": "Item 7.  Management’s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+        "source_page": 38,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Capital Expenditure (2024)",
+          "properties": {
+            "value": "1.0",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Capital Expenditure"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "AND SUBSIDIARY COMPANIES\n\nNOTES TO CONSOLIDATED FINANCIAL STATEMENTS\n\nLoans under the Revolving Facility will bear interest at a rate equal to (a) for loans denominated in U.S. dollars, at the election of the Company, Term SOFR plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum or a base rate plus an applicable margin equal to\n\n0.375\n\n%\n\nper annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum, subject in each case to (i) an increase of\n\n37.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio (as defined in the Amended Credit Agreement) is greater than or equal to\n\n3.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter, (ii) an increase of\n\n12.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio is less than\n\n3.00\n\nto\n\n1.00\n\nand greater than or equal to\n\n2.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter and (iii) a decrease of\n\n12.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio is less than\n\n1.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter. Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to\n\n2.00\n\n%\n\nper annum or a base rate plus an applicable margin equal to\n\n1.00\n\n%\n\nper annum. ",
+        "similarity": 0.61385214,
         "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
-        "source_page": 61,
+        "source_page": 81,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Interest Expense (2023)",
+          "properties": {
+            "value": "64.1",
+            "unit": "$ million",
+            "year": "2023",
+            "metric_type": "Interest Expense"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "The weighted average interest rates on short-term borrowings outstanding was\n\n6.9\n\n% for the years ended December 31, 2024 and 2023, respectively.\n\nThe aggregate maturities of long-term debt are as follows: $\n\n6.5\n\nmillion in 2025; $\n\n6.4\n\nmillion in 2026; $\n\n6.0\n\nmillion in 2027, $\n\n405.8\n\nmillion in 2028; $\n\n5.7\n\nmillion in 2029 and $\n\n546.3\n\nmillion thereafter.\n\nDuring 2024, 2023 and 2022, respectively, the Company incurred interest costs of $\n\n63.2\n\nmillion, $\n\n64.1\n\nmillion and $\n\n48.6\n\nmillion, including $\n\n1.0\n\nmillion, $\n\n1.0\n\nmillion and $\n\n1.3\n\nmillion, respectively, which were capitalized. Interest paid approximated the incurred interest cost.\n\n",
+        "similarity": 0.531013,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 82,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Interest Expense (2022)",
+          "properties": {
+            "value": "48.6",
+            "unit": "$ million",
+            "year": "2022",
+            "metric_type": "Interest Expense"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "The weighted average interest rates on short-term borrowings outstanding was\n\n6.9\n\n% for the years ended December 31, 2024 and 2023, respectively.\n\nThe aggregate maturities of long-term debt are as follows: $\n\n6.5\n\nmillion in 2025; $\n\n6.4\n\nmillion in 2026; $\n\n6.0\n\nmillion in 2027, $\n\n405.8\n\nmillion in 2028; $\n\n5.7\n\nmillion in 2029 and $\n\n546.3\n\nmillion thereafter.\n\nDuring 2024, 2023 and 2022, respectively, the Company incurred interest costs of $\n\n63.2\n\nmillion, $\n\n64.1\n\nmillion and $\n\n48.6\n\nmillion, including $\n\n1.0\n\nmillion, $\n\n1.0\n\nmillion and $\n\n1.3\n\nmillion, respectively, which were capitalized. Interest paid approximated the incurred interest cost.\n\n",
+        "similarity": 0.531013,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 82,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Capital Expenditure (2023)",
+          "properties": {
+            "value": "1.0",
+            "unit": "$ million",
+            "year": "2023",
+            "metric_type": "Capital Expenditure"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "AND SUBSIDIARY COMPANIES\n\nNOTES TO CONSOLIDATED FINANCIAL STATEMENTS\n\nLoans under the Revolving Facility will bear interest at a rate equal to (a) for loans denominated in U.S. dollars, at the election of the Company, Term SOFR plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum or a base rate plus an applicable margin equal to\n\n0.375\n\n%\n\nper annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum, subject in each case to (i) an increase of\n\n37.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio (as defined in the Amended Credit Agreement) is greater than or equal to\n\n3.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter, (ii) an increase of\n\n12.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio is less than\n\n3.00\n\nto\n\n1.00\n\nand greater than or equal to\n\n2.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter and (iii) a decrease of\n\n12.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio is less than\n\n1.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter. Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to\n\n2.00\n\n%\n\nper annum or a base rate plus an applicable margin equal to\n\n1.00\n\n%\n\nper annum. ",
+        "similarity": 0.61385214,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 81,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Capital Expenditure (2022)",
+          "properties": {
+            "value": "1.3",
+            "unit": "$ million",
+            "year": "2022",
+            "metric_type": "Capital Expenditure"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "AND SUBSIDIARY COMPANIES\n\nNOTES TO CONSOLIDATED FINANCIAL STATEMENTS\n\nLoans under the Revolving Facility will bear interest at a rate equal to (a) for loans denominated in U.S. dollars, at the election of the Company, Term SOFR plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum or a base rate plus an applicable margin equal to\n\n0.375\n\n%\n\nper annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum, subject in each case to (i) an increase of\n\n37.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio (as defined in the Amended Credit Agreement) is greater than or equal to\n\n3.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter, (ii) an increase of\n\n12.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio is less than\n\n3.00\n\nto\n\n1.00\n\nand greater than or equal to\n\n2.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter and (iii) a decrease of\n\n12.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio is less than\n\n1.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter. Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to\n\n2.00\n\n%\n\nper annum or a base rate plus an applicable margin equal to\n\n1.00\n\n%\n\nper annum. ",
+        "similarity": 0.61385214,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 81,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Net Debt (2024)",
+          "properties": {
+            "value": "3.00",
+            "unit": "ratio",
+            "year": "2024",
+            "metric_type": "Net Debt"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "AND SUBSIDIARY COMPANIES\n\nNOTES TO CONSOLIDATED FINANCIAL STATEMENTS\n\nLoans under the Revolving Facility will bear interest at a rate equal to (a) for loans denominated in U.S. dollars, at the election of the Company, Term SOFR plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum or a base rate plus an applicable margin equal to\n\n0.375\n\n%\n\nper annum, (b) for loans denominated in Euros, adjusted EURIBOR plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum and (c) for loans denominated in Pounds Sterling, SONIA plus an applicable margin equal to\n\n1.375\n\n%\n\nper annum, subject in each case to (i) an increase of\n\n37.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio (as defined in the Amended Credit Agreement) is greater than or equal to\n\n3.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter, (ii) an increase of\n\n12.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio is less than\n\n3.00\n\nto\n\n1.00\n\nand greater than or equal to\n\n2.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter and (iii) a decrease of\n\n12.5\n\nbasis points in the event that, and for so long as, the Net Leverage Ratio is less than\n\n1.00\n\nto\n\n1.00\n\nas of the last day of the preceding fiscal quarter. Loans under the Term Loan Facility will bear interest at a rate equal to, at the election of the Company, Term SOFR plus an applicable margin equal to\n\n2.00\n\n%\n\nper annum or a base rate plus an applicable margin equal to\n\n1.00\n\n%\n\nper annum. ",
+        "similarity": 0.61385214,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 81,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Net Income (2024)",
+          "properties": {
+            "value": "167.1",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Net Income"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Such costs and reversals are included in marketing and administrative expenses.\n\nThe following table summarizes the deferred restricted stock unit activity for the Plan:\n\n[TABLE START]\n|                                       |  | Awards |          |   |  | Weighted Average Grant Date Fair Value per Share |       |  |\n|---------------------------------------|--|--------|----------|---|--|--------------------------------------------------|-------|--|\n| Unvested balance at December 31, 2023 |  |        |  187,350 |   |  |                                                $ | 67.15 |  |\n| Granted                               |  |        |  103,169 |   |  |                                                  | 66.79 |  |\n| Vested                                |  |        | ( 47,876 | ) |  |                                                  | 67.19 |  |\n| Canceled                              |  |        | ( 43,849 | ) |  |                                                  | 67.21 |  |\n| Unvested balance at December 31, 2024 |  |        |  198,794 |   |  |                                                $ | 66.94 |  |\n[TABLE END]\n\nNote 7. Earnings Per Share (EPS)\n\n[TABLE START]\n|                                                                      |  | Year Ended December 31, |       |  |  |      |      |  |  |      |       |  |\n|----------------------------------------------------------------------|--|-------------------------|-------|--|--|------|------|--|--|------|-------|--|\n| (in millions, except per share data)                                 |  |                    2024 |       |  |  | 2023 |      |  |  | 2022 |       |  |\n| Net income attributable to MTI                                       |  |                       $ | 167.1 |  |  |    $ | 84.1 |  |  |    $ | 122.2 |  |\n|                                                                      |  |                         |       |  |  |      |      |  |  |      |       |  |\n|                                                                      |  |                         |       |  |  |      |      |  |  |      |       |  |\n| Weighted average shares outstanding                                  |  |                         |  32.1 |  |  |      | 32.5 |  |  |      |  32.7 |  |\n| Dilutive effect of stock options and deferred restricted stock units |  |                         |   0.2 |  |  |      |  0.1 |  |  |      |   0.1 |  |\n| Weighted average shares outstanding, adjusted                        |  |                         |  32.3 |  |  |      | 32.6 |  |  |      |  32.8 |  |\n|                                                                      |  |                         |       |  |  |      |      |  |  |      |       |  |\n| Basic earnings per share attributable to MTI                         |  |                       $ |  5.21 |  |  |    $ | 2.59 |  |  |    $ |  3.74 |  |\n|                                                                      |  |                         |       |  |  |      |      |  |  |      |       |  |\n| Diluted earnings per share attributable to MTI                       |  |                       $ |  5.17 |  |  |    $ | 2.58 |  |  |    $ |  3.73 |  |\n[TABLE END]\n\nOf the options outstanding of\n\n1,425,636\n\n,\n\n1,514,462\n\nand\n\n1,363,418\n\nfor the years ended December 31, 2024, 2023 and 2022, respectively, options to purchase\n\n194,412\n\nshares,\n\n917,177\n\nshares and\n\n754,867\n\nshares of common stock for the years ended December 31, 2024, 2023 and 2022, respectively, were not included in the computation of diluted earnings per share because they were anti-dilutive, as the exercise prices of the options were greater than the average market price of the common shares.\n\n",
+        "similarity": 0.47011083,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 73,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Short-term Investments (2024)",
+          "properties": {
+            "value": "4.0",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Short-term Investments"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Cash Equivalents and Short-term Investments\n\nThe Company considers all highly liquid investments with original maturities of three months or less to be cash equivalents. Short-term investments consist of financial instruments, mainly bank deposits, with original maturities beyond three months, but less than twelve months. Short-term investments amounted to $\n\n4.0\n\nmillion and $\n\n4.3\n\nmillion at December 31, 2024 and 2023, respectively. There were\n\nno\n\nunrealized holding gains or losses on the short-term bank investments held at December 31, 2024.\n\nTrade Accounts Receivable\n\nTrade accounts receivables are recorded at the invoiced amount and do not bear interest. The allowance for doubtful accounts is the Company’s best estimate of the amount of probable credit losses in the Company’s existing accounts receivable. The Company determines the allowance based on historical write-off experience and specific allowances for bankrupt customers. The Company also analyzes the collection history and financial condition of its other customers, considering current industry conditions and determines whether an allowance needs to be established. The Company reviews its allowance for doubtful accounts monthly. ",
+        "similarity": 0.4836527,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 64,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Free Cash Flow (2024)",
+          "properties": {
+            "value": "236.4",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Free Cash Flow"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Our balance sheet continues to be strong. Cash, cash equivalents and short-term investments were $337.1 million as of December 31, 2024. Cash flow from operations for 2024 was $236.4 million. The Company currently has more than $700 million of available liquidity, including cash on hand, as well as availability under its revolving credit facility. We believe these factors will allow us to meet our anticipated funding requirements. Our intention is to maintain a balanced approach to capital deployment, by using cash flow for investments in growth, returns to shareholders, and continued debt reduction.\n\n38",
+        "similarity": 0.5501672,
+        "section_title": "Item 7.  Management’s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+        "source_page": 38,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "EBIT (2023)",
+          "properties": {
+            "value": "171.8",
+            "unit": "$ million",
+            "year": "2023",
+            "metric_type": "EBIT"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Income from operations represented 13.5% of sales compared with 7.9% of sales in the prior year. Income from operations in 2024 reflected a $30.0 million charge for a provision of credit losses in connection with the DIP Credit Agreement and $11.3 million of litigation expenses. In addition, the Company recorded a $12.3 million net gain on sale of refractories manufacturing assets in China.\n\nDuring 2023, the Company recorded income from operations of $171.8 million, as compared with $214.8 million in the prior year. ",
+        "similarity": 0.37851715,
+        "section_title": "Item 7.  Management’s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+        "source_page": 41,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Revenue (2024)",
+          "properties": {
+            "value": "2118.5",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Revenue"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Revenue where our performance obligations are satisfied in phases is recognized over time using certain input measures based on the measurement of the value transferred to the customer, including milestones achieved.\n\nThe following table disaggregates our revenue by major source (product line) for the years ended December 31, 2024, 2023 and 2022:\n\n[TABLE START]\n|                                |  | Year Ended December 31, |         |  |  |      |         |  |  |      |         |  |\n|--------------------------------|--|-------------------------|---------|--|--|------|---------|--|--|------|---------|--|\n| (millions of dollars)          |  |                    2024 |         |  |  | 2023 |         |  |  | 2022 |         |  |\n| Net Sales                      |  |                         |         |  |  |      |         |  |  |      |         |  |\n| Household & Personal Care      |  |                       $ |   530.0 |  |  |    $ |   517.6 |  |  |    $ |   476.2 |  |\n| Specialty Additives            |  |                         |   610.2 |  |  |      |   642.6 |  |  |      |   648.4 |  |\n| Consumer & Specialties Segment |  |                         | 1,140.2 |  |  |      | 1,160.2 |  |  |      | 1,124.6 |  |\n|                                |  |                         |         |  |  |      |         |  |  |      |         |  |\n| High-Temperature Technologies  |  |                         |   713.2 |  |  |      |   720.9 |  |  |      |   702.5 |  |\n| Environmental & Infrastructure |  |                         |   265.1 |  |  |      |   288.8 |  |  |      |   298.4 |  |\n| Engineered Solutions Segment   |  |                         |   978.3 |  |  |      | 1,009.7 |  |  |      | 1,000.9 |  |\n|                                |  |                         |         |  |  |      |         |  |  |      |         |  |\n| Total                          |  |                       $ | 2,118.5 |  |  |    $ | 2,169.9 |  |  |    $ | 2,125.5 |  |\n[TABLE END]\n\nNote 4. Acquisitions\n\nConcept Pet Heimtierprodukte GmbH\n\nOn April 29, 2022, the Company completed the acquisition of Concept Pet Heimtierprodukte GmbH (“Concept Pet”), a European supplier of pet litter products. ",
+        "similarity": 0.5295732,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 70,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "EBIT (2024)",
+          "properties": {
+            "value": "286.5",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "EBIT"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Income from Operations\n\nDuring 2024, the Company recorded income from operations of $286.5 million, as compared with $171.8 million in the prior year. ",
+        "similarity": 0.5075308,
+        "section_title": "Item 7.  Management’s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+        "source_page": 41,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Net Income (2023)",
+          "properties": {
+            "value": "88.3",
+            "unit": "$ million",
+            "year": "2023",
+            "metric_type": "Net Income"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "This charge consisted of a provision for credit loss and litigation expenses, offset by a gain on a sale of assets.\n\nConsolidated net income was $88.3 million in 2023 and included a $85.8 million charge, net of tax. This charge consisted of impairment of assets, litigation expenses, restructuring and acquisition-related expenses.\n\n",
+        "similarity": 0.44299397,
+        "section_title": "Item 7.  Management’s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+        "source_page": 42,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Cash and Equivalents (2023)",
+          "properties": {
+            "value": "3.8",
+            "unit": "$ million",
+            "year": "2023",
+            "metric_type": "Cash and Equivalents"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "In the third quarter of 2023, an incremental charge of $\n\n0.3\n\nmillion was recorded relating to this program.\n\nThe following table outlines the amount of restructuring charges recorded within the Consolidated Statements of Income and the segments they relate to:\n\n[TABLE START]\n| Restructuring and Other Items, net       |  | Year Ended December 31, |   |  |  |      |      |  |  |      |   |  |\n|------------------------------------------|--|-------------------------|---|--|--|------|------|--|--|------|---|--|\n| (millions of dollars)                    |  |                    2024 |   |  |  | 2023 |      |  |  | 2022 |   |  |\n| Asset Write-Downs                        |  |                         |   |  |  |      |      |  |  |      |   |  |\n| Consumer & Specialties                   |  |                       $ | — |  |  |    $ | 71.7 |  |  |    $ | — |  |\n| Total asset write-down charges           |  |                       $ | — |  |  |    $ | 71.7 |  |  |    $ | — |  |\n|                                          |  |                         |   |  |  |      |      |  |  |      |   |  |\n| Severance and other employee costs       |  |                         |   |  |  |      |      |  |  |      |   |  |\n| Consumer & Specialties                   |  |                       $ | — |  |  |    $ |  0.9 |  |  |    $ | — |  |\n| Engineered Solutions                     |  |                         | — |  |  |      |  3.2 |  |  |      | — |  |\n| Corporate                                |  |                         | — |  |  |      |  2.8 |  |  |      | — |  |\n| Total severance and other employee costs |  |                       $ | — |  |  |    $ |  6.9 |  |  |    $ | — |  |\n|                                          |  |                         |   |  |  |      |      |  |  |      |   |  |\n| Total restructuring and other items, net |  |                       $ | — |  |  |    $ | 78.6 |  |  |    $ | — |  |\n[TABLE END]\n\nAt December 31, 2024 and 2023, the Company had $\n\n2.4\n\nmillion and $\n\n3.8\n\nmillion, respectively, included within other current liabilities within our Consolidated Balance Sheets for cash expenditures needed to satisfy remaining obligations under these reorganization initiatives. The Company expects to pay these remaining restructuring obligations by the end of the second quarter of 2025.\n\n",
+        "similarity": 0.44074458,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 71,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Current Assets (2024)",
+          "properties": {
+            "value": "337.1",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Current Assets"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Our balance sheet continues to be strong. Cash, cash equivalents and short-term investments were $337.1 million as of December 31, 2024. Cash flow from operations for 2024 was $236.4 million. The Company currently has more than $700 million of available liquidity, including cash on hand, as well as availability under its revolving credit facility. We believe these factors will allow us to meet our anticipated funding requirements. Our intention is to maintain a balanced approach to capital deployment, by using cash flow for investments in growth, returns to shareholders, and continued debt reduction.\n\n38",
+        "similarity": 0.5229018,
+        "section_title": "Item 7.  Management’s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+        "source_page": 38,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Current Liabilities (2024)",
+          "properties": {
+            "value": "1.7",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Current Liabilities"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "MINERALS TECHNOLOGIES INC. AND SUBSIDIARY COMPANIES\n\nNOTES TO CONSOLIDATED FINANCIAL STATEMENTS\n\nAmounts recognized in the consolidated balance sheet consist of:\n\n[TABLE START]\n|                          |  | Pension Benefits |        |   |  |      |        |   |  | Post-Retirement Benefits |       |   |  |      |       |   |\n|--------------------------|--|------------------|--------|---|--|------|--------|---|--|--------------------------|-------|---|--|------|-------|---|\n| (millions of dollars)    |  |             2024 |        |   |  | 2023 |        |   |  |                     2024 |       |   |  | 2023 |       |   |\n| Non-current asset        |  |                $ |   19.5 |   |  |    $ | —      |   |  |                        $ | —     |   |  |    $ | —     |   |\n| Current liability        |  |                  |  ( 1.6 | ) |  |      |  ( 1.8 | ) |  |                          | ( 0.1 | ) |  |      | ( 0.1 | ) |\n| Non-current liability    |  |                  | ( 18.9 | ) |  |      | ( 49.7 | ) |  |                          | ( 1.7 | ) |  |      | ( 1.9 | ) |\n| Net liability recognized |  |                $ |  ( 1.0 | ) |  |    $ | ( 51.5 | ) |  |                        $ | ( 1.8 | ) |  |    $ | ( 2.0 | ) |\n[TABLE END]\n\nThe current portion of pension liabilities is included in accrued compensation and related items.\n\nAmounts recognized in accumulated other comprehensive loss, net of related tax effects, consist of:\n\n[TABLE START]\n|                               | Pension Benefits |   |     |  |      |   |      |  | Post-Retirement Benefits |   |       |   |      |   |       |   |\n|-------------------------------|------------------|---|-----|--|------|---|------|--|--------------------------|---|-------|---|------|---|-------|---|\n| (millions of dollars)         |             2024 |   |     |  | 2023 |   |      |  |                     2024 |   |       |   | 2023 |   |       |   |\n| Net actuarial (gain) loss     |                  | $ | 1.2 |  |      | $ | 32.0 |  |                          | $ | ( 3.2 | ) |      | $ | ( 3.3 | ) |\n| Prior service cost            |                  |   | 0.1 |  |      |   |  0.1 |  |                          |   | —     |   |      |   | —     |   |\n| Amount recognized end of year |                  | $ | 1.3 |  |      | $ | 32.1 |  |                          | $ | ( 3.2 | ) |      | $ | ( 3.3 | ) |\n[TABLE END]\n\nThe accumulated benefit obligation for all defined benefit pension plans was $\n\n327.5\n\nmillion and $\n\n350.3\n\nmillion at December 31, 2024 and 2023, respectively. ",
+        "similarity": 0.48379385,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 83,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Gearing Ratio (2024)",
+          "properties": {
+            "value": "4.00",
+            "unit": "%",
+            "year": "2024",
+            "metric_type": "Gearing Ratio"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "As of December 31, 2024, there were $\n\n4.5\n\nmillion in loans and $\n\n9.1\n\nmillion in letters of credit outstanding under the Revolving Facility.\n\nOn June 30, 2020, the Company issued $\n\n400\n\nmillion aggregate principal amount of “Notes”.\n\nThe Notes were issued pursuant to an indenture, dated as of June 30, 2020, between the Company and The Bank of New York Mellon Trust Company, N.A., as trustee (the “Indenture”). The Notes bear an interest rate of\n\n5.0\n\n%\n\nper annum payable semi-annually on January 1 and July 1 of each year, beginning on January 1, 2021. The Notes are unconditionally guaranteed on a senior unsecured basis by each of the Company’s existing and future wholly owned domestic restricted subsidiaries that is a borrower under or that guarantees the Company’s obligations under its Senior Secured Credit Facilities or that guarantees the Company’s or any of the Company’s wholly owned domestic subsidiaries’ long-term indebtedness in an aggregate amount in excess of $\n\n50\n\nmillion.\n\nThe Company may redeem some or all of the Notes at any time and from time to time at the applicable redemption prices listed in the Indenture, plus accrued and unpaid interest, if any, to, but excluding, the applicable redemption date.\n\nIf the Company experiences a change of control (as defined in the indenture), the Company is required to offer to repurchase the Notes at\n\n101\n\n%\n\nof the principal amount of such Notes, plus accrued and unpaid interest, if any, to, but excluding, the date of repurchase.\n\nThe Amended Credit Agreement and the Indenture both contain certain customary affirmative and negative covenants that limit or restrict the ability of the Company and its restricted subsidiaries to enter into certain transactions or take certain actions, as well as customary events of default. In addition, the Amended Credit Agreement contains a financial covenant that requires the Company to maintain a maximum Net Leverage Ratio of\n\n4.00\n\nto 1.00 for each\n\nfour\n\nfiscal quarter period (subject to an increase to\n\n5.00\n\nto 1.00 for four quarters in connection with certain significant acquisitions).\n\nThe Company has a committed loan facility in Japan. ",
+        "similarity": 0.5883893,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 81,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Interest Expense (2020)",
+          "properties": {
+            "value": "5.0",
+            "unit": "%",
+            "year": "2020",
+            "metric_type": "Interest Expense"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "As of December 31, 2024, there were $\n\n4.5\n\nmillion in loans and $\n\n9.1\n\nmillion in letters of credit outstanding under the Revolving Facility.\n\nOn June 30, 2020, the Company issued $\n\n400\n\nmillion aggregate principal amount of “Notes”.\n\nThe Notes were issued pursuant to an indenture, dated as of June 30, 2020, between the Company and The Bank of New York Mellon Trust Company, N.A., as trustee (the “Indenture”). The Notes bear an interest rate of\n\n5.0\n\n%\n\nper annum payable semi-annually on January 1 and July 1 of each year, beginning on January 1, 2021. The Notes are unconditionally guaranteed on a senior unsecured basis by each of the Company’s existing and future wholly owned domestic restricted subsidiaries that is a borrower under or that guarantees the Company’s obligations under its Senior Secured Credit Facilities or that guarantees the Company’s or any of the Company’s wholly owned domestic subsidiaries’ long-term indebtedness in an aggregate amount in excess of $\n\n50\n\nmillion.\n\nThe Company may redeem some or all of the Notes at any time and from time to time at the applicable redemption prices listed in the Indenture, plus accrued and unpaid interest, if any, to, but excluding, the applicable redemption date.\n\nIf the Company experiences a change of control (as defined in the indenture), the Company is required to offer to repurchase the Notes at\n\n101\n\n%\n\nof the principal amount of such Notes, plus accrued and unpaid interest, if any, to, but excluding, the date of repurchase.\n\nThe Amended Credit Agreement and the Indenture both contain certain customary affirmative and negative covenants that limit or restrict the ability of the Company and its restricted subsidiaries to enter into certain transactions or take certain actions, as well as customary events of default. In addition, the Amended Credit Agreement contains a financial covenant that requires the Company to maintain a maximum Net Leverage Ratio of\n\n4.00\n\nto 1.00 for each\n\nfour\n\nfiscal quarter period (subject to an increase to\n\n5.00\n\nto 1.00 for four quarters in connection with certain significant acquisitions).\n\nThe Company has a committed loan facility in Japan. ",
+        "similarity": 0.5883893,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 81,
+        "sic": null
+      },
+      {
+        "src": {
+          "type": "Company",
+          "name": "Minerals Technologies Inc."
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Gearing Ratio (2020)",
+          "properties": {
+            "value": "101",
+            "unit": "%",
+            "year": "2020",
+            "metric_type": "Gearing Ratio"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "As of December 31, 2024, there were $\n\n4.5\n\nmillion in loans and $\n\n9.1\n\nmillion in letters of credit outstanding under the Revolving Facility.\n\nOn June 30, 2020, the Company issued $\n\n400\n\nmillion aggregate principal amount of “Notes”.\n\nThe Notes were issued pursuant to an indenture, dated as of June 30, 2020, between the Company and The Bank of New York Mellon Trust Company, N.A., as trustee (the “Indenture”). The Notes bear an interest rate of\n\n5.0\n\n%\n\nper annum payable semi-annually on January 1 and July 1 of each year, beginning on January 1, 2021. The Notes are unconditionally guaranteed on a senior unsecured basis by each of the Company’s existing and future wholly owned domestic restricted subsidiaries that is a borrower under or that guarantees the Company’s obligations under its Senior Secured Credit Facilities or that guarantees the Company’s or any of the Company’s wholly owned domestic subsidiaries’ long-term indebtedness in an aggregate amount in excess of $\n\n50\n\nmillion.\n\nThe Company may redeem some or all of the Notes at any time and from time to time at the applicable redemption prices listed in the Indenture, plus accrued and unpaid interest, if any, to, but excluding, the applicable redemption date.\n\nIf the Company experiences a change of control (as defined in the indenture), the Company is required to offer to repurchase the Notes at\n\n101\n\n%\n\nof the principal amount of such Notes, plus accrued and unpaid interest, if any, to, but excluding, the date of repurchase.\n\nThe Amended Credit Agreement and the Indenture both contain certain customary affirmative and negative covenants that limit or restrict the ability of the Company and its restricted subsidiaries to enter into certain transactions or take certain actions, as well as customary events of default. In addition, the Amended Credit Agreement contains a financial covenant that requires the Company to maintain a maximum Net Leverage Ratio of\n\n4.00\n\nto 1.00 for each\n\nfour\n\nfiscal quarter period (subject to an increase to\n\n5.00\n\nto 1.00 for four quarters in connection with certain significant acquisitions).\n\nThe Company has a committed loan facility in Japan. ",
+        "similarity": 0.5883893,
+        "section_title": "Item 15.  Exhibits and Financial Statement Schedules",
+        "source_page": 81,
         "sic": null
       }
     ]

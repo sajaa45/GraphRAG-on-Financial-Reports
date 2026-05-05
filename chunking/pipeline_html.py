@@ -52,7 +52,7 @@ class HTMLPipeline:
 
     def __init__(
         self,
-        collection_name: str = "financial_docs",
+        collection_name: str = "financial",
         qdrant_host: str = "localhost",
         qdrant_port: int = 6333,
         buffer_size: int = 1,
@@ -397,8 +397,8 @@ def main():
     )
     parser.add_argument(
         "--collection", "-c",
-        default="financial_docs",
-        help="Qdrant collection name (default: financial_docs)"
+        default="financial",
+        help="Qdrant collection name (default: financial)"
     )
     parser.add_argument(
         "--qdrant-host",
