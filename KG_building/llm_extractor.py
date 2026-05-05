@@ -30,12 +30,6 @@ _JSON_BLOCK_RE = re.compile(r'\[.*\]', re.DOTALL)
 # Strip Qwen3 chain-of-thought blocks emitted in thinking mode before we parse JSON.
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 
-ALLOWED_METRICS = frozenset({
-    "Gearing Ratio", "Net Debt", "Free Cash Flow", "EBITDA", "ROACE",
-    "Capital Expenditure", "Net Income", "Earnings per Share", "Revenue",
-    "EBIT", "Total Debt", "Interest Expense", "Current Assets",
-    "Current Liabilities", "Cash and Equivalents", "Short-term Investments",
-})
 
 _STOP_WORDS = frozenset({
     'the', 'and', 'for', 'of', 'in', 'a', 'an',
@@ -478,9 +472,6 @@ class LLMExtractor:
                 # empty-value entities before doing any chunk anchoring work.
                 if relation_config.name == 'HAS_METRIC':
                     metric_type = e.get('metric', '').strip()
-                    if metric_type not in ALLOWED_METRICS:
-                        print(f"[FILTER] Rejected non-standard metric: '{metric_type}'")
-                        continue
                     if not e.get('value', '').strip():
                         print(f"[FILTER] Rejected empty-value entity for metric: '{metric_type}'")
                         continue

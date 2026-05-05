@@ -259,208 +259,41 @@ STRICT Rules:
             "financial performance",
         ],
         extraction_prompt_template="""/no_think
-You are a strict data extraction auditor. Your ONLY job is to copy financial metrics that appear EXPLICITLY in the text below. You must NOT use any external knowledge or training data about this company.
 
-CRITICAL GROUNDING RULES:
-1. If a metric name or value does NOT appear in the text below, you MUST return [] for that metric
-2. You MUST quote the exact text snippet where you found each metric (we will verify this)
-3. DO NOT use your knowledge about {main_company} - ONLY extract what is written in this specific text
+Extract financial metrics explicitly stated in the text.
 
-IMPORTANT: You are a strict auditor. If the chunk_text does NOT contain the financial metric with an explicit numeric value, do not invent one. Do not provide values from your own knowledge; if you cannot find the metric and its value in the text, do not return it.
+Rules:
+- Copy the metric label exactly as written.
+- Extract only metrics with explicit numeric values.
+- Never infer, calculate, combine, or rename metrics.
+- In narrative text, the metric label and value must appear in the same sentence.
+- If multiple years appear, extract only the most recent reported year.
+- Do not extract from unlabeled tables.
 
-ROW-LABEL → STANDARD NAME MAPPING
-Match the row label from the table (case-insensitive). Use the standard name shown on the right.
+Important exclusions:
+- Operating cash flow ≠ Free Cash Flow
+- Net leverage ratio ≠ Net Debt
+- Capitalized interest ≠ Capital Expenditure
+- Debt maturity schedules ≠ Total Debt
 
-  Row label variants                                                  → Standard metric name
-  "Gearing" / "Gearing ratio"                                         → "Gearing Ratio"
-  "Net debt" / "Net debt (cash)"                                       → "Net Debt"
-  "Free cash flow"                                                     → "Free Cash Flow"
-  "EBITDA" / "Adjusted EBITDA"                                         → "EBITDA"
-  "ROACE"                                                              → "ROACE"
-  "Capital expenditures" / "Capital expenditures - cash basis"
-    / "Purchases of property, plant and equipment"
-    / "Acquisition of property, plant and equipment"                   → "Capital Expenditure"
-  "Net income" / "Net income attributable to the ordinary shareholders" → "Net Income"
-  "Earnings per share" / "Basic earnings per share"
-    / "Diluted earnings per share"                                     → "Earnings per Share"
-  "Revenue" / "Total revenues" / "External revenue" (Consolidated only)
-    / "Net revenues" / "Net sales" / "Total net revenues"
-    / "Sales" / "Net revenue"                                          → "Revenue"
-  "Earnings (losses) before interest, income taxes and zakat"
-    / "Operating income" / "EBIT"                                      → "EBIT"
-  "Total borrowings" / "Total borrowings (current and non-current)"
-    / "Long-term debt" / "Total long-term debt"
-    / "Long-term debt, net" / "Total debt"
-    / "Long-term debt, including current portion"                      → "Total Debt"
-  "Interest expense" / "Interest expense, net"
-    / "Interest and debt expense"                                      → "Interest Expense"
-  "Total current assets"                                               → "Current Assets"
-  "Total current liabilities"                                          → "Current Liabilities"
-  "Cash and cash equivalents"                                          → "Cash and Equivalents"
-  "Short-term investments"                                             → "Short-term Investments"
+Return ONLY a valid JSON array.
 
-SOURCE TABLE RULES:
-  ✓ Extract Net Income and EBIT from tables titled (or headed):
-      "Consolidated Statements of Income", "Consolidated Statements of Operations",
-      "Statements of Income", or "Statements of Operations".
-  ✓ Also extract Net Income and EBIT from clearly labeled narrative text, e.g.:
-      "Net income for [year] was $X million" or "EBIT increased to $X million in [year]".
-      Narrative sentences that name the metric and provide an explicit numeric value are valid sources.
-  ✗ DO NOT extract Net Income or EBIT from the Balance Sheet, Statement of Financial Position,
-      or Statement of Shareholders' Equity — values there represent cumulative or different
-      accounting snapshots and are NOT the period income figures.
-  ✗ Skip Net Income and EBIT ONLY when values appear in an unlabeled table with no surrounding
-      context identifying the table as an income/operations statement or a narrative sentence.
-NARRATIVE PARAGRAPH CAUTION:
-  Dense narrative paragraphs often contain many different numbers in close proximity.
-  Each number belongs to the specific label that directly precedes or follows it in the same
-  sentence. Do NOT "borrow" a number from one sentence and assign it to a label from a
-  different sentence. If a paragraph mentions restructuring charges, margins, interest rates,
-  and net income in consecutive sentences, extract ONLY the sentence where the metric label
-  and value appear together explicitly.
-  Example of correct extraction:
-    ✓ "Net income was $X million in [year]" → Net Income = X ([year])
-  Example of wrong extraction:
-    ✗ A value described as "impairment charges" or "restructuring charges" → do NOT label as EBIT
-    ✗ A percentage described as "of sales" or "of revenue" → do NOT label as Revenue
-
-CRITICAL — DO NOT confuse these:
-  ✗ "Acquisition of right-of-use assets"                      ≠  Capital Expenditure (lease asset addition)
-  ✗ "Net cash provided by operating activities" / "Cash flow from operations" /
-      "Operating cash flow" / "Cash provided by operating activities"
-                                                              ≠  Free Cash Flow
-      These labels describe OPERATING cash flow, not free cash flow.
-      Free Cash Flow = Operating Cash Flow MINUS Capital Expenditure.
-      ONLY extract "Free Cash Flow" if the document explicitly uses that exact label
-      (or "FCF") on a pre-computed line item. If no such label appears, do NOT extract it.
-  ✗ "Net cash used in investing activities"                   ≠  any listed metric
-  ✗ "Net cash used in financing activities"                   ≠  any listed metric
-  ✗ "Cash flow from operations" / "Cash provided from continuing operations" /
-      "Cash flows provided from operations" / "Operating cash flow"   ≠  Capital Expenditure
-      These are operating cash flow figures. Capital Expenditure requires an explicit label such as
-      "Capital expenditures", "Purchases of property, plant and equipment", or "Capex".
-  ✗ Revenue must be an absolute monetary amount (e.g. a dollar or currency figure in millions).
-      Do NOT extract a percentage as Revenue — any value followed by "%" or described as
-      "of sales", "of revenue", or "margin" is a ratio, not a revenue figure.
-  ✗ Restructuring charges, impairment charges, write-downs, and debt extinguishment expenses
-      are NOT Net Income, EBIT, or any listed metric — skip any value described as a "charge",
-      "write-down", "expense", or "loss" unless it is explicitly labeled as one of the mapped metrics.
-  ✗ "Cash, cash equivalents and short-term investments were $X million" is a COMBINED figure.
-      Do NOT assign this combined total to either Cash and Equivalents or Short-term Investments
-      individually. Each must come from a separately labeled line item or sentence.
-  ✗ Short-term Investments MUST come from a Balance Sheet line item explicitly labeled
-      "Short-term investments" or "Marketable securities" (current). Do NOT extract from:
-      · Narrative sentences that combine cash and investments
-      · Any line that says "cash and investments" or "cash, cash equivalents and short-term investments"
-      · Any value that is not a standalone Balance Sheet line item
-  ✗ "Borrowings" / "Short-term borrowings" / "Current portion of long-term debt" ≠ Short-term Investments.
-      These are LIABILITIES (debt), not assets. Never extract a borrowing as an investment.
-  ✗ Net interest expense / Net interest deductions ≠ Interest Expense.
-      Use only the standalone gross "Interest expense" line. If the text only mentions
-      "net interest expense", do not extract it as Interest Expense.
-  ✗ Loans outstanding under a revolving facility / letters of credit outstanding ≠ Net Debt.
-      Net Debt requires an explicit "Net debt" label. Do not derive it.
-  ✗ Bond or loan issuance sentences describe a historical transaction, not a current balance.
-      If the sentence says "the Company issued $X", "the Company entered into $X",
-      or "aggregate principal amount of $X", skip it — this is the original face value
-      at issuance, not the current outstanding balance.
-  ✗ "Total liabilities"                                       ≠  Net Debt
-  ✗ "Total equity" / "Total assets"                           ≠  any listed metric
-  ✗ "Net income attributable to non-controlling interests"    ≠  Net Income (it is a subset/deduction)
-  ✗ "Net income attributable to [subsidiary/segment]"         ≠  Net Income (use the consolidated total)
-  ✓ Net Income = the TOTAL "Net income" line from the Consolidated Statements of Income/Operations.
-     If you see two figures for Net Income in the same year, you are reading the wrong line —
-     use the larger consolidated total, NOT the amount attributable to a subset.
-  ✗ Upstream / Downstream / Corporate column values in a segment table — skip them;
-     extract ONLY from the "Consolidated" (rightmost total) column.
-  ✗ Do NOT write negative values for asset metrics (Cash and Equivalents, Short-term Investments,
-     Current Assets). These appear as deductions inside gearing calculations but are always
-     positive assets — strip the minus sign and write the absolute value.
-  ✗ "Long-term debt" from the Balance Sheet may include the current portion — use the TOTAL
-     long-term debt line, not the current-portion-only line.
-  ✗ Interest Expense: use the standalone "Interest expense" line from the Income Statement.
-     Do NOT use "Net interest expense" if it nets against interest income — prefer the gross line.
-  ✓ Current Assets = "Total current assets" from the Balance Sheet.
-  ✓ Current Liabilities = "Total current liabilities" from the Balance Sheet.
-  ✗ DEBT MATURITY SCHEDULE: A table or sentence listing amounts due in future periods
-      is a repayment schedule, not the current debt balance. Signs you are reading a
-      maturity schedule:
-      · The surrounding text describes when debt falls due: "due in [year]", "maturing in
-        [year]", "in [year]", "thereafter", "after [year]"
-      · Values are organized by future calendar years (any year after the reporting date)
-      · The table has column or row headers that are calendar years
-      Do NOT extract ANY such value as "Total Debt". Total Debt must come ONLY from the
-      Balance Sheet "Long-term debt" / "Total debt" total line.
-  ✗ Do NOT sum, calculate, or derive any value. If the exact figure is not stated as a single
-     number in the text, skip that metric entirely. Only copy numbers that are explicitly printed.
-
-OCR DECIMAL RULE:
-  PDF text extraction sometimes splits a decimal number across lines, e.g.:
-    "337" on one line and ".1" or "1" on the next.
-  When you see a whole number immediately followed by a decimal fragment in the surrounding text,
-  reconstruct the full number with the decimal: "337" + ".1" → "337.1".
-  NEVER concatenate without the decimal point ("3371" from "337.1" is always wrong).
-
-OCR ARTIFACT RULE:
-  Values like "393.891" or "452.753" (1–3 digits, period, exactly 3 digits) are large financial
-  amounts where the PDF comma was misread as a period. Write "393.891" as "393891", etc.
-
-==================== TEXT TO ANALYZE ====================
-{text}
-=========================================================
-
-The company in this document is: {main_company}
-
-VERIFICATION REQUIREMENT: For each metric you extract, you MUST be able to point to the exact sentence or table row in the text above where it appears. If you cannot find it in the text, DO NOT extract it.
-
-Return ONLY a valid JSON array. If you found 1 metric, return 1 object. If you found 3, return 3.
-Example of correct output (only metrics actually found in the text):
+Format:
 [
-  {{"metric": "Revenue", "value": "1234.5", "unit": "$ million", "year": "20XX", "organization": "{main_company}"}},
-  {{"metric": "Net Income", "value": "98.7", "unit": "$ million", "year": "20XX", "organization": "{main_company}"}}
+  {{
+    "metric": "Net sales",
+    "value": "2118.5",
+    "unit": "$ million",
+    "year": "2024",
+    "organization": "{main_company}"
+  }}
 ]
-If no metrics found: []
 
-JSON FORMAT RULES — these are hard requirements:
-- Return ONLY the metrics you actually found with a concrete numeric value. Do NOT return objects
-  for metrics that are absent from the text. If a metric is not in the text, simply omit it.
-- Return EACH metric AT MOST ONCE — the most recent year only. Do NOT return the same metric
-  name for 2024, 2023, and 2022 as three separate objects. Pick the most recent year and stop.
-- Every field value MUST be a JSON string (double-quoted). NEVER use arrays, objects, or null:
-    ✗ WRONG: "value": []    ✗ WRONG: "value": null    ✗ WRONG: "value": {{}}
-    ✓ RIGHT: omit the object entirely when the value is not found in the text.
-- Do NOT include comments of any kind: no // comments, no /* */ comments.
-- Do NOT add trailing commas after the last element in the array.
-- The output must parse correctly with Python's json.loads() — test it mentally before responding.
+If nothing valid is found:
+[]
 
-If you cannot find any metrics with explicit values in the text above, return: []
-
-STRICT Rules:
-- Only extract a metric when its row label matches one of the mappings above AND appears in the text
-- value: Take the most recent year column. Strip commas. Apply the OCR artifact rule.
-  Values in parentheses are negative: "(216,642)" → "-216642".
-- unit: Combine the currency symbol AND the scale from the document into one string:
-  · "$" or "USD" + "millions" → "$ million"   · "€" + "thousands" → "€ thousand"
-  · No currency symbol but scale present → "million" or "thousand" (no currency prefix)
-  · No currency and no scale stated → "ratio"
-  Read ONLY what is explicitly written in the text. Do NOT assume any currency.
-  Use "%" for Gearing Ratio and ROACE only.
-  For Earnings per Share: EPS is a per-share dollar amount, NEVER scaled by millions.
-    Write just the currency symbol (e.g. "$"). NEVER write "million per share" — that is always wrong.
-  When both local-currency and USD columns exist, use the local-currency column.
-- year: Most recent REPORTED year shown IN THE TEXT as an explicit four-digit calendar year.
-  Do NOT extract values from sentences using relative phrases such as "prior year",
-  "previous year", "compared with the prior year", or "compared to last year".
-  Do NOT use any year after the reporting period of this document — such years indicate
-  forecasts, maturities, or future obligations, not reported results.
-  Do NOT use a year that refers to a transaction date (e.g. a bond issuance year) rather
-  than a reporting period.
-  Only extract values paired with an explicit four-digit past or current reporting year.
-- organization: ALWAYS use "{main_company}".
-- Return [] if no mapped row label appears in the text.
-- DO NOT use external knowledge or your training data about {main_company}.
-- ONLY extract what is explicitly written in the text between the === markers above.
-""",
+TEXT:
+{text}""",
         entity_parser=parse_metric_entity,
         entity_parser_kwargs={}
     ),
