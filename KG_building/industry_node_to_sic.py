@@ -1,7 +1,3 @@
-"""
-Industry to SIC Code Converter using Groq API
-Converts industry names/fields to their corresponding SIC (Standard Industrial Classification) codes
-"""
 
 import os
 from groq import Groq

@@ -1,18 +1,15 @@
-#!/usr/bin/env python3
-"""
-Configuration for multi-relation extraction pipeline
-"""
+
 
 import re
 from typing import Dict, List, Any, Callable, Optional
 from dataclasses import dataclass, field
 
-# Pre-compiled regex patterns used in parse_metric_entity (avoids per-call recompilation)
-_OCR_FIX_RE = re.compile(r'(\d),\s+(\d)')
-_CLEAN_VALUE_RE = re.compile(r'[,₹#$€£¥\s]')
-_TRAILING_X_RE = re.compile(r'[xX]$')
-_OCR_PERIOD_RE = re.compile(r'^\d{1,3}\.\d{3}$')
-_ACCOUNTING_NEG_RE = re.compile(r'^\(([0-9.]+)\)$')
+#clean the numeric values
+_OCR_FIX_RE = re.compile(r'(\d),\s+(\d)') #remove , : 1,000->1000
+_CLEAN_VALUE_RE = re.compile(r'[,₹#$€£¥\s]') #remove currencies: €500->500
+_TRAILING_X_RE = re.compile(r'[xX]$') #remove x and X: 10x->10
+_OCR_PERIOD_RE = re.compile(r'^\d{1,3}\.\d{3}$') #remove . when there are 3 digits after . (.252) and before is not 0 and not >3 digits
+_ACCOUNTING_NEG_RE = re.compile(r'^\(([0-9.]+)\)$') #add negative if it is between (): (123.45)-> -123.45
 
 
 @dataclass(slots=True)
@@ -25,30 +22,16 @@ class RelationConfig:
     chunk_keywords: str
     extraction_prompt_template: str
     entity_parser: Callable[..., Optional[Dict]]
-    # Optional extra kwargs forwarded to entity_parser (e.g. main_company for OPERATES_IN)
     entity_parser_kwargs: Dict[str, Any] = field(default_factory=dict)
-    # Per-relation retrieval tuning (override global defaults)
     n_sections: int = 2
     n_chunks_per_section: int = 3
-    # Minimum cosine similarity for a chunk to be passed to the LLM.
-    # Lower this for relations whose content lives in dense tables (e.g. HAS_METRIC).
     chunk_similarity_threshold: float = 0.3
-    # If non-empty, one Qdrant query is issued per entry; results are union-deduplicated.
-    # Overrides chunk_keywords when set.
     chunk_keywords_list: List[str] = field(default_factory=list)
-    # When False, each keyword in chunk_keywords_list retrieves its own fresh chunk set.
-    # Entity-level dedup still applies. Set False for dense tables (e.g. HAS_METRIC)
-    # where a single chunk contains multiple distinct metrics.
     deduplicate_chunks_across_keywords: bool = True
-    # Fix D: ordered list of section title substrings (lowercase). Earlier entries get a
-    # larger similarity boost so the most structured financial sections surface first.
     section_priority_tiers: List[str] = field(default_factory=list)
 
 
-# ============================================================================
-# ENTITY PARSERS
-# ============================================================================
-
+#entities
 def parse_person_entity(entity: Dict, main_company: str = 'the Company') -> Dict:
     person = str(entity.get('person', '')).strip()
     role = str(entity.get('role', '')).strip()
@@ -90,19 +73,19 @@ def parse_metric_entity(entity: Dict, main_company: str = 'the Company') -> Dict
     if not metric or not value:
         return None
 
-    # FIX: Reject em-dash and similar placeholder values
+    # reject when value=placeholder
     if value in ('—', '–', '-', '—', 'N/A', 'n/a', 'NA', 'na'):
         print(f"[FILTER] Rejected placeholder value '{value}' for metric '{metric}'")
         return None
 
-    # Fix OCR-spaced thousands ("216, 642" → "216,642"), then strip commas/currency/whitespace in one pass
+    # "216, 642" → "216,642"
     value = _OCR_FIX_RE.sub(r'\1,\2', value)
     value_clean = _CLEAN_VALUE_RE.sub('', value)
     value_clean = _TRAILING_X_RE.sub('', value_clean)
-    # Normalize OCR period-as-comma artifact: "393.891" → "393891"
+    # "393.891" → "393891"
     if _OCR_PERIOD_RE.match(value_clean):
         value_clean = value_clean.replace('.', '')
-    # Convert accounting negatives: (78078) → -78078
+    # (78078) → -78078
     m = _ACCOUNTING_NEG_RE.match(value_clean)
     if m:
         value_clean = '-' + m.group(1)
@@ -112,7 +95,7 @@ def parse_metric_entity(entity: Dict, main_company: str = 'the Company') -> Dict
     except ValueError:
         return None
 
-    # FIX: Reject zero values (often placeholder or irrelevant)
+    # reject zero values
     if numeric_value == 0.0:
         print(f"[FILTER] Rejected zero value for metric '{metric}'")
         return None
@@ -163,7 +146,6 @@ def parse_risk_entity(entity: Dict, main_company: str = 'the Company') -> Dict:
 def parse_industry_entity(entity: Dict, main_company: str = 'the Company') -> Dict:
     industry = str(entity.get('industry', '')).strip()
     sector = str(entity.get('sector', '')).strip()
-    # Allow entity itself to carry the company name as a fallback
     org = str(entity.get('organization', main_company)).strip() or main_company
 
     if not industry:
@@ -181,9 +163,7 @@ def parse_industry_entity(entity: Dict, main_company: str = 'the Company') -> Di
     }
 
 
-# ============================================================================
-# RELATION CONFIGURATIONS
-# ============================================================================
+#prmpts
 
 RELATION_CONFIGS: Dict[str, RelationConfig] = {
     'CEO': RelationConfig(
@@ -191,29 +171,32 @@ RELATION_CONFIGS: Dict[str, RelationConfig] = {
         source_entity_type='Person',
         target_entity_type='Company',
         relationship_type='CEO_OF',
-        section_keywords='corporate governance executive officers overview introduction',
-        chunk_keywords='president and ceo chief executive officer ceo president chief executive information about our executive officers named executive',
+        section_keywords='',
+        chunk_keywords='chief executive officer ceo president chairman executive officers names ages positions table registrant',
         extraction_prompt_template="""/no_think
-Extract ONLY the CURRENT CEO from this text. Ignore board members, CFOs, former executives.
+            Extract ONLY the CURRENT CEO from this text. Ignore board members, CFOs, former executives.
 
-Text: {text}
+            Text: {text}
 
-The company in this document is: {main_company}
+            The company in this document is: {main_company}
 
-Return ONLY a valid JSON array (no other text):
-[
-  {{"person": "Full Name", "role": "CEO", "organization": "{main_company}", "is_current": true}}
-]
+            Return ONLY a valid JSON array (no other text):
+            [
+            {{"person": "Full Name", "role": "CEO", "organization": "{main_company}", "is_current": true}}
+            ]
 
-STRICT Rules:
-- Extract ONLY the person explicitly called "President and CEO", "Chief Executive Officer", or "CEO" who currently holds the position.
-- Ignore anyone with titles like "Chairman", "Director", "CFO", "Executive Vice President", or past tense.
-- organization: ALWAYS use "{main_company}".
-- Extract exactly ONE person.
-- Return empty array [] if no current CEO is clearly identified.
-""",
+            STRICT Rules:
+            - Extract ONLY the person explicitly called "President and CEO", "Chief Executive Officer", or "CEO" who currently holds the position.
+            - Ignore anyone with titles like "Chairman", "Director", "CFO", "Executive Vice President", or past tense.
+            - organization: ALWAYS use "{main_company}".
+            - Extract exactly ONE person.
+            - Return empty array [] if no current CEO is clearly identified.
+            """,
         entity_parser=parse_person_entity,
-        entity_parser_kwargs={}
+        entity_parser_kwargs={},
+        n_sections=3,
+        n_chunks_per_section=4,
+        chunk_similarity_threshold=0.15
     ),
 
     'HAS_METRIC': RelationConfig(
@@ -260,40 +243,40 @@ STRICT Rules:
         ],
         extraction_prompt_template="""/no_think
 
-Extract financial metrics explicitly stated in the text.
+            Extract financial metrics explicitly stated in the text.
 
-Rules:
-- Copy the metric label exactly as written.
-- Extract only metrics with explicit numeric values.
-- Never infer, calculate, combine, or rename metrics.
-- In narrative text, the metric label and value must appear in the same sentence.
-- If multiple years appear, extract only the most recent reported year.
-- Do not extract from unlabeled tables.
+            Rules:
+            - Copy the metric label exactly as written.
+            - Extract only metrics with explicit numeric values.
+            - Never infer, calculate, combine, or rename metrics.
+            - In narrative text, the metric label and value must appear in the same sentence.
+            - If multiple years appear, extract only the most recent reported year.
+            - Do not extract from unlabeled tables.
 
-Important exclusions:
-- Operating cash flow ≠ Free Cash Flow
-- Net leverage ratio ≠ Net Debt
-- Capitalized interest ≠ Capital Expenditure
-- Debt maturity schedules ≠ Total Debt
+            Important exclusions:
+            - Operating cash flow ≠ Free Cash Flow
+            - Net leverage ratio ≠ Net Debt
+            - Capitalized interest ≠ Capital Expenditure
+            - Debt maturity schedules ≠ Total Debt
 
-Return ONLY a valid JSON array.
+            Return ONLY a valid JSON array.
 
-Format:
-[
-  {{
-    "metric": "Net sales",
-    "value": "2118.5",
-    "unit": "$ million",
-    "year": "2024",
-    "organization": "{main_company}"
-  }}
-]
+            Format:
+            [
+            {{
+                "metric": "Net sales",
+                "value": "2118.5",
+                "unit": "$ million",
+                "year": "2024",
+                "organization": "{main_company}"
+            }}
+            ]
 
-If nothing valid is found:
-[]
+            If nothing valid is found:
+            []
 
-TEXT:
-{text}""",
+            TEXT:
+            {text}""",
         entity_parser=parse_metric_entity,
         entity_parser_kwargs={}
     ),
@@ -347,23 +330,23 @@ STRICT Rules:
         source_entity_type='Company',
         target_entity_type='Industry',
         relationship_type='OPERATES_IN',
-        section_keywords='overview strategy introduction',
-        chunk_keywords='oil gas energy refining petrochemicals chemicals upstream downstream renewable energy marketing distribution production exploration',
+        section_keywords='overview strategy introduction business description',
+        chunk_keywords='industry sector business operations products services markets manufacturing technology healthcare financial pharmaceutical retail automotive aerospace telecommunications',
         extraction_prompt_template="""/no_think
-Extract the PRIMARY industry of {main_company} ONLY.
+            Extract the PRIMARY industry of {main_company} ONLY.
 
-Text: {text}
+            Text: {text}
 
-Return ONLY a valid JSON array:
-[
-  {{"industry": "Oil & Gas", "sector": "Energy"}}
-]
+            Return ONLY a valid JSON array:
+            [
+            {{"industry": "Industry Name", "sector": "Sector Name"}}
+            ]
 
-Rules:
-- ONLY extract the industry of {main_company} — ignore all other companies, subsidiaries, or partners
-- Return exactly ONE entry
-- If unclear, return []
-""",
+            Rules:
+            - ONLY extract the industry of {main_company} — ignore all other companies, subsidiaries, or partners
+            - Return exactly ONE entry
+            - If unclear, return []
+            """,
         entity_parser=parse_industry_entity,
         entity_parser_kwargs={}
     )

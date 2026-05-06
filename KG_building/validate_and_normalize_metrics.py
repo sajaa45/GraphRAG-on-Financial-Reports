@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-"""Validate and normalize extracted financial metrics."""
-
 import os
 import sys
 import json
@@ -140,7 +137,7 @@ class MetricValidator:
             print(f"    [UNGROUNDED] Value '{value}' not found in source text")
             return False
 
-        # Non-core types stop here — grounding is enough
+        # Non-core types stop here
         if metric_type != "core":
             return True
 
