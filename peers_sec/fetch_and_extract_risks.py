@@ -5,6 +5,7 @@ import json
 import time
 from bs4 import BeautifulSoup
 import urllib3
+import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
@@ -16,8 +17,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HEADERS = {"User-Agent": "YourName your_email@example.com"}
 
 
-def get_sic_from_neo4j() -> str:
-    """Query Neo4j for the SIC code of the target company (is_target=true)."""
+def get_sic_from_neo4j() -> list:
+    """Query Neo4j for the SIC code(s) of the target company (is_target=true)."""
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     user = os.getenv("NEO4J_USERNAME", "neo4j")
     password = os.getenv("NEO4J_PASSWORD", "")
@@ -30,66 +31,106 @@ def get_sic_from_neo4j() -> str:
                 # Pattern 1: Direct path through Industry
                 """
                 MATCH (c:Company {is_target: true})-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
+                RETURN DISTINCT s.code AS sic_code
                 """,
                 # Pattern 2: Direct HAS_SIC_CODE from Company
                 """
                 MATCH (c:Company {is_target: true})-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
+                RETURN DISTINCT s.code AS sic_code
                 """,
                 # Pattern 3: Any Company with SIC code
                 """
                 MATCH (c:Company)-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
+                RETURN DISTINCT s.code AS sic_code
                 """,
                 # Pattern 4: Any SIC code in the database
                 """
                 MATCH (s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
+                RETURN DISTINCT s.code AS sic_code
                 """
             ]
             
             for i, query in enumerate(queries, 1):
                 result = session.run(query)
-                record = result.single()
-                if record and record["sic_code"]:
-                    code = str(record["sic_code"]).strip()
-                    print(f"✓ SIC code from Neo4j (pattern {i}): {code}")
-                    driver.close()
-                    return code
+                records = list(result)
+                if records:
+                    codes = [str(record["sic_code"]).strip() for record in records if record["sic_code"]]
+                    if codes:
+                        print(f"✓ SIC code(s) from Neo4j (pattern {i}): {codes}")
+                        driver.close()
+                        return codes
         
         driver.close()
     except Exception as e:
         print(f"⚠ Could not connect to Neo4j: {e}")
     
-    # Fallback to default SIC code for Oil & Gas
-    print("⚠ No SIC code found in Neo4j, using default: 1311 (Oil & Gas)")
-    return "1311"
+    print("⚠ No SIC code found in Neo4j, using default: ['1311'] (Oil & Gas)")
+    return ["1311"]
 
 
-def get_companies_from_api(sic_code='1311', start_date='2023-01-01', end_date='2024-01-01', size=100):
-    params = {
-        "forms": "10-K",
-        "dateRange": "custom",
-        "startdt": start_date,
-        "enddt": end_date,
-        "sics": [sic_code],
-        "size": size,
-    }
-    data = requests.get("https://efts.sec.gov/LATEST/search-index", params=params, headers=HEADERS, verify=False).json()
+def get_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date='2024-01-01', size=100):
+    """Fetch companies from EDGAR company browse endpoint for given SIC code(s)."""
+    if isinstance(sic_codes, str):
+        sic_codes = [sic_codes]
+
+    print(f"  Querying EDGAR company browse for SIC codes: {sic_codes}")
+
+    seen_ciks = set()
     companies = []
-    for hit in data.get("hits", {}).get("hits", []):
-        s = hit.get("_source", {})
-        companies.append({
-            "name": (s.get("display_names") or ["N/A"])[0],
-            "cik": (s.get("ciks") or ["N/A"])[0],
-            "ticker": (s.get("tickers") or ["N/A"])[0],
-            "filing_date": s.get("file_date", "N/A"),
-        })
+
+    for sic in sic_codes:
+        try:
+            params = {
+                "action": "getcompany",
+                "SIC": sic,
+                "type": "10-K",
+                "dateb": "",
+                "owner": "include",
+                "count": size,
+                "search_text": "",
+                "output": "atom",
+            }
+            response = requests.get(
+                "https://www.sec.gov/cgi-bin/browse-edgar",
+                params=params,
+                headers=HEADERS,
+                verify=False,
+            )
+            print(f"  SIC {sic} — status: {response.status_code}")
+
+            root = ET.fromstring(response.content)
+            ns = {"atom": "http://www.w3.org/2005/Atom"}
+            entries = root.findall("atom:entry", ns)
+            print(f"  SIC {sic} — found {len(entries)} entries")
+
+            for entry in entries:
+                # CIK is embedded in the <id> tag as a URL ending in ?action=getcompany&CIK=...
+                id_text = entry.findtext("atom:id", default="", namespaces=ns)
+                cik_match = re.search(r"CIK=(\d+)", id_text)
+                if not cik_match:
+                    continue
+                cik = cik_match.group(1)
+                if cik in seen_ciks:
+                    continue
+                seen_ciks.add(cik)
+
+                name = entry.findtext("atom:company-name", default="", namespaces=ns)
+                if not name:
+                    title = entry.findtext("atom:title", default="", namespaces=ns)
+                    name = title.split(" (")[0] if title else "N/A"
+
+                companies.append({
+                    "name": name,
+                    "cik": cik,
+                    "ticker": "N/A",
+                    "filing_date": "N/A",
+                    "sic": sic,
+                })
+
+        except Exception as e:
+            print(f"  ✗ Error fetching SIC {sic}: {e}")
+
+    print(f"  Total unique companies found: {len(companies)}")
     return companies
 
 
@@ -155,13 +196,14 @@ def get_risk_factor_data(cik: str, company_name: str):
     }
 
 
-def process_companies_from_api(sic_code='1311', start_date='2023-01-01', end_date='2024-01-01',
+def process_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date='2024-01-01',
                                size=100, delay=0.5, output_file='all_companies_risks.json'):
-    companies = get_companies_from_api(sic_code, start_date, end_date, size)
-    print(f"Fetched {len(companies)} companies")
+    """Process companies from SEC API for given SIC code(s)."""
+    companies = get_companies_from_api(sic_codes, start_date, end_date, size)
+    print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes}")
 
     with open('companies_list.json', 'w', encoding='utf-8') as f:
-        json.dump({"total_count": len(companies), "companies": companies}, f, indent=2, ensure_ascii=False)
+        json.dump({"total_count": len(companies), "companies": companies, "sic_codes": sic_codes}, f, indent=2, ensure_ascii=False)
 
     results = []
     for i, company in enumerate(companies, 1):
@@ -190,5 +232,5 @@ def process_companies_from_api(sic_code='1311', start_date='2023-01-01', end_dat
 
 
 if __name__ == "__main__":
-    sic_code = get_sic_from_neo4j()
-    process_companies_from_api(sic_code=sic_code, start_date='2023-01-01', end_date='2024-01-01', size=100, delay=0.5)
+    sic_codes = get_sic_from_neo4j()
+    process_companies_from_api(sic_codes=sic_codes, start_date='2023-01-01', end_date='2024-01-01', size=100, delay=0.5)

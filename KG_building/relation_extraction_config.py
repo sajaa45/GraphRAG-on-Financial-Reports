@@ -222,7 +222,6 @@ RELATION_CONFIGS: Dict[str, RelationConfig] = {
         chunk_similarity_threshold=0.15,
         deduplicate_chunks_across_keywords=False,
         section_priority_tiers=[
-            # Tier 1 — structured statement tables (highest boost)
             "consolidated statements of income",
             "consolidated statements of operations",
             "statements of income",
@@ -232,12 +231,10 @@ RELATION_CONFIGS: Dict[str, RelationConfig] = {
             "statement of financial position",
             "consolidated statements of cash flows",
             "statements of cash flows",
-            # Tier 2 — narrative sections with financial numbers
             "results of operations",
             "financial highlights",
             "selected financial data",
             "selected consolidated financial data",
-            # Tier 3 — broad fallback
             "management discussion",
             "financial performance",
         ],

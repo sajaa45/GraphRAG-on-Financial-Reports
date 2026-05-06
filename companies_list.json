@@ -2,604 +2,708 @@
   "total_count": 100,
   "companies": [
     {
+      "name": "DAILY JOURNAL CORP  (DJCO)  (CIK 0000783412)",
+      "cik": "0000783412",
+      "ticker": "N/A",
+      "filing_date": "2024-12-31",
+      "sic": "2711"
+    },
+    {
+      "name": "TOKEN COMMUNITIES LTD.  (TKCM)  (CIK 0001683252)",
+      "cik": "0001683252",
+      "ticker": "N/A",
+      "filing_date": "2024-12-31",
+      "sic": "7374"
+    },
+    {
+      "name": "EXP OldCo Winddown, Inc.  (EXPRQ)  (CIK 0001483510)",
+      "cik": "0001483510",
+      "ticker": "N/A",
+      "filing_date": "2024-12-31",
+      "sic": "5600"
+    },
+    {
+      "name": "NORTH EUROPEAN OIL ROYALTY TRUST  (NRT)  (CIK 0000072633)",
+      "cik": "0000072633",
+      "ticker": "N/A",
+      "filing_date": "2024-12-31",
+      "sic": "6792"
+    },
+    {
+      "name": "TANICO Inc.  (CIK 0001895939)",
+      "cik": "0001895939",
+      "ticker": "N/A",
+      "filing_date": "2024-12-31",
+      "sic": "7371"
+    },
+    {
+      "name": "Global Innovative Platforms Inc.  (GIPL)  (CIK 0001837774)",
+      "cik": "0001837774",
+      "ticker": "N/A",
+      "filing_date": "2024-12-30",
+      "sic": "6770"
+    },
+    {
+      "name": "CEMTREX INC  (CETX, CETXP)  (CIK 0001435064)",
+      "cik": "0001435064",
+      "ticker": "N/A",
+      "filing_date": "2024-12-30",
+      "sic": "3670"
+    },
+    {
+      "name": "INNOVATIVE SOLUTIONS & SUPPORT INC  (ISSC)  (CIK 0000836690)",
+      "cik": "0000836690",
+      "ticker": "N/A",
+      "filing_date": "2024-12-30",
+      "sic": "7371"
+    },
+    {
+      "name": "Nano Nuclear Energy Inc.  (NNE)  (CIK 0001923891)",
+      "cik": "0001923891",
+      "ticker": "N/A",
+      "filing_date": "2024-12-30",
+      "sic": "4911"
+    },
+    {
+      "name": "Born, Inc.  (CIK 0001397795)",
+      "cik": "0001397795",
+      "ticker": "N/A",
+      "filing_date": "2024-12-30",
+      "sic": "8741"
+    },
+    {
+      "name": "T-REX Acquisition Corp.  (TRXA)  (CIK 0001437750)",
+      "cik": "0001437750",
+      "ticker": "N/A",
+      "filing_date": "2024-12-30",
+      "sic": "6199"
+    },
+    {
+      "name": "StageWise Strategies Corp.  (CIK 0001999261)",
+      "cik": "0001999261",
+      "ticker": "N/A",
+      "filing_date": "2024-12-30",
+      "sic": "7374"
+    },
+    {
+      "name": "BALLY, CORP.  (BLYQ)  (CIK 0001591565)",
+      "cik": "0001591565",
+      "ticker": "N/A",
+      "filing_date": "2024-12-30",
+      "sic": "5200"
+    },
+    {
+      "name": "Forward Industries, Inc.  (FORD)  (CIK 0000038264)",
+      "cik": "0000038264",
+      "ticker": "N/A",
+      "filing_date": "2024-12-27",
+      "sic": "3089"
+    },
+    {
+      "name": "CITIUS ONCOLOGY, INC.  (CTOR)  (CIK 0001851484)",
+      "cik": "0001851484",
+      "ticker": "N/A",
+      "filing_date": "2024-12-27",
+      "sic": "2834"
+    },
+    {
+      "name": "NightFood Holdings, Inc.  (NGTF)  (CIK 0001593001)",
+      "cik": "0001593001",
+      "ticker": "N/A",
+      "filing_date": "2024-12-27",
+      "sic": "2060"
+    },
+    {
+      "name": "Transit Pro Tech Inc.  (CIK 0002016167)",
+      "cik": "0002016167",
+      "ticker": "N/A",
+      "filing_date": "2024-12-27",
+      "sic": "7372"
+    },
+    {
+      "name": "FUELCELL ENERGY INC  (FCEL, FCELB)  (CIK 0000886128)",
+      "cik": "0000886128",
+      "ticker": "N/A",
+      "filing_date": "2024-12-27",
+      "sic": "3620"
+    },
+    {
+      "name": "INGLES MARKETS INC  (IMKTA)  (CIK 0000050493)",
+      "cik": "0000050493",
+      "ticker": "N/A",
+      "filing_date": "2024-12-27",
+      "sic": "5411"
+    },
+    {
+      "name": "Citius Pharmaceuticals, Inc.  (CTXR)  (CIK 0001506251)",
+      "cik": "0001506251",
+      "ticker": "N/A",
+      "filing_date": "2024-12-27",
+      "sic": "2834"
+    },
+    {
+      "name": "FLANIGANS ENTERPRISES INC  (BDL)  (CIK 0000012040)",
+      "cik": "0000012040",
+      "ticker": "N/A",
+      "filing_date": "2024-12-27",
+      "sic": "5812"
+    },
+    {
+      "name": "Outlook Therapeutics, Inc.  (OTLK)  (CIK 0001649989)",
+      "cik": "0001649989",
+      "ticker": "N/A",
+      "filing_date": "2024-12-27",
+      "sic": "2836"
+    },
+    {
+      "name": "LION COPPER & GOLD CORP.  (LCGMF)  (CIK 0001339688)",
+      "cik": "0001339688",
+      "ticker": "N/A",
+      "filing_date": "2024-12-26",
+      "sic": "1000"
+    },
+    {
+      "name": "Voip-pal.com Inc  (VPLM)  (CIK 0001410738)",
+      "cik": "0001410738",
+      "ticker": "N/A",
+      "filing_date": "2024-12-26",
+      "sic": "3661"
+    },
+    {
+      "name": "MOBIX LABS, INC  (MOBX, MOBXW)  (CIK 0001855467)",
+      "cik": "0001855467",
+      "ticker": "N/A",
+      "filing_date": "2024-12-26",
+      "sic": "3674"
+    },
+    {
+      "name": "SIFCO INDUSTRIES INC  (SIF)  (CIK 0000090168)",
+      "cik": "0000090168",
+      "ticker": "N/A",
+      "filing_date": "2024-12-26",
+      "sic": "3724"
+    },
+    {
+      "name": "Bridgeline Digital, Inc.  (BLIN)  (CIK 0001378590)",
+      "cik": "0001378590",
+      "ticker": "N/A",
+      "filing_date": "2024-12-26",
+      "sic": "7372"
+    },
+    {
+      "name": "IB Acquisition Corp.  (IBAC, IBACR)  (CIK 0001998781)",
+      "cik": "0001998781",
+      "ticker": "N/A",
+      "filing_date": "2024-12-26",
+      "sic": "6770"
+    },
+    {
+      "name": "Eureka Acquisition Corp  (EURK, EURKR, EURKU)  (CIK 0002000410)",
+      "cik": "0002000410",
+      "ticker": "N/A",
+      "filing_date": "2024-12-26",
+      "sic": "6770"
+    },
+    {
+      "name": "FUSE GROUP HOLDING INC.  (FUST)  (CIK 0001636051)",
+      "cik": "0001636051",
+      "ticker": "N/A",
+      "filing_date": "2024-12-26",
+      "sic": "1000"
+    },
+    {
+      "name": "Quanterix Corp  (QTRX)  (CIK 0001503274)",
+      "cik": "0001503274",
+      "ticker": "N/A",
+      "filing_date": "2024-12-26",
+      "sic": "3826"
+    },
+    {
+      "name": "GREIF, INC  (GEF, GEF-B)  (CIK 0000043920)",
+      "cik": "0000043920",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "3412"
+    },
+    {
+      "name": "Track Group, Inc.  (TRCK)  (CIK 0001045942)",
+      "cik": "0001045942",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "3669"
+    },
+    {
+      "name": "Treasure Holdco, Inc.  (CIK 0002021031)",
+      "cik": "0002021031",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "2621"
+    },
+    {
+      "name": "Discover Financial Services  (DFS)  (CIK 0001393612)",
+      "cik": "0001393612",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "6141"
+    },
+    {
+      "name": "Eline Entertainment Group, Inc.  (EEGI)  (CIK 0001043150)",
+      "cik": "0001043150",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "1520"
+    },
+    {
+      "name": "OPTICAL CABLE CORP  (OCC)  (CIK 0001000230)",
+      "cik": "0001000230",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "3357"
+    },
+    {
+      "name": "ANAVEX LIFE SCIENCES CORP.  (AVXL)  (CIK 0001314052)",
+      "cik": "0001314052",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "2836"
+    },
+    {
+      "name": "Eline Entertainment Group, Inc.  (EEGI)  (CIK 0001043150)",
+      "cik": "0001043150",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "1520"
+    },
+    {
+      "name": "DFP HOLDINGS Ltd  (CIK 0001976900)",
+      "cik": "0001976900",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "8200"
+    },
+    {
+      "name": "Toughbuilt Industries, Inc  (TBLT)  (CIK 0001668370)",
+      "cik": "0001668370",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "3420"
+    },
+    {
+      "name": "Limoneira CO  (LMNR)  (CIK 0001342423)",
+      "cik": "0001342423",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "0100"
+    },
+    {
+      "name": "SmartMetric, Inc.  (SMME)  (CIK 0001301991)",
+      "cik": "0001301991",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "3990"
+    },
+    {
+      "name": "Summit Networks Inc.  (SNTW)  (CIK 0001619096)",
+      "cik": "0001619096",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "4953"
+    },
+    {
+      "name": "MIDDLEFIELD BANC CORP  (MBCN)  (CIK 0000836147)",
+      "cik": "0000836147",
+      "ticker": "N/A",
+      "filing_date": "2024-12-23",
+      "sic": "6022"
+    },
+    {
+      "name": "FutureTech II Acquisition Corp.  (FTII, FTIIU, FTIIW)  (CIK 0001889450)",
+      "cik": "0001889450",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "6770"
+    },
+    {
+      "name": "Gouverneur Bancorp, Inc./MD/  (GOVB)  (CIK 0001978811)",
+      "cik": "0001978811",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "6036"
+    },
+    {
+      "name": "CIENA CORP  (CIEN)  (CIK 0000936395)",
+      "cik": "0000936395",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "3661"
+    },
+    {
+      "name": "Broadcom Inc.  (AVGO)  (CIK 0001730168)",
+      "cik": "0001730168",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "3674"
+    },
+    {
+      "name": "Atmos Energy Kansas Securitization I, LLC  (CIK 0001967097)",
+      "cik": "0001967097",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "6189"
+    },
+    {
+      "name": "ZoomInfo Technologies Inc.  (ZI)  (CIK 0001794515)",
+      "cik": "0001794515",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "7372"
+    },
+    {
+      "name": "Toll Brothers, Inc.  (TOL)  (CIK 0000794170)",
+      "cik": "0000794170",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "1531"
+    },
+    {
+      "name": "CSP INC /MA/  (CSPI)  (CIK 0000356037)",
+      "cik": "0000356037",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "7373"
+    },
+    {
+      "name": "Pineapple Financial Inc.  (PAPL)  (CIK 0001938109)",
+      "cik": "0001938109",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "6199"
+    },
+    {
+      "name": "Rafael Holdings, Inc.  (RFL)  (CIK 0001713863)",
+      "cik": "0001713863",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "2834"
+    },
+    {
+      "name": "Edesa Biotech, Inc.  (EDSA)  (CIK 0001540159)",
+      "cik": "0001540159",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "2834"
+    },
+    {
+      "name": "AGILENT TECHNOLOGIES, INC.  (A)  (CIK 0001090872)",
+      "cik": "0001090872",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "3826"
+    },
+    {
+      "name": "SS Innovations International, Inc.  (SSII)  (CIK 0001676163)",
+      "cik": "0001676163",
+      "ticker": "N/A",
+      "filing_date": "2024-12-20",
+      "sic": "3841"
+    },
+    {
+      "name": "SusGlobal Energy Corp.  (SNRG)  (CIK 0001652539)",
+      "cik": "0001652539",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "4953"
+    },
+    {
+      "name": "GEE Group Inc.  (JOB)  (CIK 0000040570)",
+      "cik": "0000040570",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "7361"
+    },
+    {
+      "name": "Born, Inc.  (CIK 0001397795)",
+      "cik": "0001397795",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "8741"
+    },
+    {
+      "name": "Mission Produce, Inc.  (AVO)  (CIK 0001802974)",
+      "cik": "0001802974",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "0700"
+    },
+    {
+      "name": "LIVE VENTURES Inc  (LIVE)  (CIK 0001045742)",
+      "cik": "0001045742",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "5900"
+    },
+    {
+      "name": "SRM Entertainment, Inc.  (SRM)  (CIK 0001956744)",
+      "cik": "0001956744",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "3944"
+    },
+    {
+      "name": "PHOTRONICS INC  (PLAB)  (CIK 0000810136)",
+      "cik": "0000810136",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "3674"
+    },
+    {
+      "name": "Oaktree Gardens OLP, LLC  (CIK 0001974793)",
+      "cik": "0001974793",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "N/A"
+    },
+    {
+      "name": "Hewlett Packard Enterprise Co  (HPE, HPE-PC)  (CIK 0001645590)",
+      "cik": "0001645590",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "3570"
+    },
+    {
+      "name": "Latch, Inc.  (LTCH)  (CIK 0001826000)",
+      "cik": "0001826000",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "5072"
+    },
+    {
+      "name": "Optex Systems Holdings Inc  (OPXS)  (CIK 0001397016)",
+      "cik": "0001397016",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "3827"
+    },
+    {
+      "name": "ARK RESTAURANTS CORP  (ARKR)  (CIK 0000779544)",
+      "cik": "0000779544",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "5812"
+    },
+    {
+      "name": "SYNOPSYS INC  (SNPS)  (CIK 0000883241)",
+      "cik": "0000883241",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "7372"
+    },
+    {
+      "name": "SPDR GOLD TRUST  (GLD)  (CIK 0001222333)",
+      "cik": "0001222333",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "6221"
+    },
+    {
+      "name": "Oaktree Strategic Credit Fund  (CIK 0001872371)",
+      "cik": "0001872371",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "N/A"
+    },
+    {
+      "name": "Energy Services of America CORP  (ESOA)  (CIK 0001357971)",
+      "cik": "0001357971",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "1623"
+    },
+    {
+      "name": "ABM INDUSTRIES INC /DE/  (ABM)  (CIK 0000771497)",
+      "cik": "0000771497",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "7340"
+    },
+    {
+      "name": "Magyar Bancorp, Inc.  (MGYR)  (CIK 0001337068)",
+      "cik": "0001337068",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "6035"
+    },
+    {
+      "name": "HEICO CORP  (HEI, HEI-A)  (CIK 0000046619)",
+      "cik": "0000046619",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "3724"
+    },
+    {
+      "name": "World Gold Trust  (GLDM)  (CIK 0001618181)",
+      "cik": "0001618181",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "6221"
+    },
+    {
+      "name": "enGene Holdings Inc.  (ENGN, ENGNW)  (CIK 0001980845)",
+      "cik": "0001980845",
+      "ticker": "N/A",
+      "filing_date": "2024-12-19",
+      "sic": "2836"
+    },
+    {
+      "name": "cbdMD, Inc.  (YCBD, YCBD-PA)  (CIK 0001644903)",
+      "cik": "0001644903",
+      "ticker": "N/A",
+      "filing_date": "2024-12-18",
+      "sic": "2844"
+    },
+    {
+      "name": "NORDSON CORP  (NDSN)  (CIK 0000072331)",
+      "cik": "0000072331",
+      "ticker": "N/A",
+      "filing_date": "2024-12-18",
+      "sic": "3569"
+    },
+    {
+      "name": "Ranger Gold Corp.  (CIK 0001434740)",
+      "cik": "0001434740",
+      "ticker": "N/A",
+      "filing_date": "2024-12-18",
+      "sic": "1040"
+    },
+    {
+      "name": "HOVNANIAN ENTERPRISES INC  (HOV, HOVNP, HOVVB)  (CIK 0000357294)",
+      "cik": "0000357294",
+      "ticker": "N/A",
+      "filing_date": "2024-12-18",
+      "sic": "1531"
+    },
+    {
+      "name": "ROYAL GOLD INC  (RGLD)  (CIK 0000085535)",
+      "cik": "0000085535",
+      "ticker": "N/A",
+      "filing_date": "2024-12-18",
+      "sic": "6795"
+    },
+    {
+      "name": "Allied Corp.  (ALID)  (CIK 0001575295)",
+      "cik": "0001575295",
+      "ticker": "N/A",
+      "filing_date": "2024-12-18",
+      "sic": "5961"
+    },
+    {
+      "name": "TORO CO  (TTC)  (CIK 0000737758)",
+      "cik": "0000737758",
+      "ticker": "N/A",
+      "filing_date": "2024-12-18",
+      "sic": "3524"
+    },
+    {
+      "name": "Novo Integrated Sciences, Inc.  (NVOS)  (CIK 0001138978)",
+      "cik": "0001138978",
+      "ticker": "N/A",
+      "filing_date": "2024-12-18",
+      "sic": "3510"
+    },
+    {
+      "name": "Cyclo Therapeutics, Inc.  (CYTH, CYTHW)  (CIK 0000922247)",
+      "cik": "0000922247",
+      "ticker": "N/A",
+      "filing_date": "2024-12-18",
+      "sic": "2836"
+    },
+    {
+      "name": "PhenixFIN Corp  (PFX, PFXNZ)  (CIK 0001490349)",
+      "cik": "0001490349",
+      "ticker": "N/A",
+      "filing_date": "2024-12-17",
+      "sic": "N/A"
+    },
+    {
       "name": "BARNWELL INDUSTRIES INC  (BRN)  (CIK 0000010048)",
       "cik": "0000010048",
       "ticker": "N/A",
-      "filing_date": "2023-12-18"
+      "filing_date": "2024-12-17",
+      "sic": "1311"
     },
     {
-      "name": "ALTEX INDUSTRIES INC  (ALTX)  (CIK 0000775057)",
-      "cik": "0000775057",
+      "name": "Amentum Holdings, Inc.  (AMTM)  (CIK 0002011286)",
+      "cik": "0002011286",
       "ticker": "N/A",
-      "filing_date": "2023-12-15"
+      "filing_date": "2024-12-17",
+      "sic": "7389"
     },
     {
-      "name": "Sustainable Projects Group Inc.  (SPGX)  (CIK 0001500305)",
-      "cik": "0001500305",
+      "name": "NEUROONE MEDICAL TECHNOLOGIES Corp  (NMTC)  (CIK 0001500198)",
+      "cik": "0001500198",
       "ticker": "N/A",
-      "filing_date": "2023-12-12"
+      "filing_date": "2024-12-17",
+      "sic": "3841"
     },
     {
-      "name": "CoJax Oil & Gas Corp  (CJAX)  (CIK 0001763925)",
-      "cik": "0001763925",
+      "name": "Sonnet BioTherapeutics Holdings, Inc.  (SONN)  (CIK 0001106838)",
+      "cik": "0001106838",
       "ticker": "N/A",
-      "filing_date": "2023-11-20"
+      "filing_date": "2024-12-17",
+      "sic": "2834"
     },
     {
-      "name": "HIMALAYA TECHNOLOGIES, INC  (HMLA)  (CIK 0001409624)",
-      "cik": "0001409624",
+      "name": "Lodging Fund REIT III, Inc.  (CIK 0001745032)",
+      "cik": "0001745032",
       "ticker": "N/A",
-      "filing_date": "2023-10-27"
+      "filing_date": "2024-12-17",
+      "sic": "6798"
     },
     {
-      "name": "Tianci International, Inc.  (CIIT)  (CIK 0001557798)",
-      "cik": "0001557798",
+      "name": "APPLIED DNA SCIENCES INC  (APDN)  (CIK 0000744452)",
+      "cik": "0000744452",
       "ticker": "N/A",
-      "filing_date": "2023-10-23"
+      "filing_date": "2024-12-17",
+      "sic": "8734"
     },
     {
-      "name": "OKMIN RESOURCES, INC.  (OKMN)  (CIK 0001848334)",
-      "cik": "0001848334",
+      "name": "ESSA Pharma Inc.  (EPIX)  (CIK 0001633932)",
+      "cik": "0001633932",
       "ticker": "N/A",
-      "filing_date": "2023-09-28"
+      "filing_date": "2024-12-17",
+      "sic": "2834"
     },
     {
-      "name": "EVOLUTION PETROLEUM CORP  (EPM)  (CIK 0001006655)",
-      "cik": "0001006655",
+      "name": "Ranger Gold Corp.  (CIK 0001434740)",
+      "cik": "0001434740",
       "ticker": "N/A",
-      "filing_date": "2023-09-13"
+      "filing_date": "2024-12-17",
+      "sic": "1040"
     },
     {
-      "name": "Laredo Oil, Inc.  (LRDC)  (CIK 0001442492)",
-      "cik": "0001442492",
+      "name": "Keysight Technologies, Inc.  (KEYS)  (CIK 0001601046)",
+      "cik": "0001601046",
       "ticker": "N/A",
-      "filing_date": "2023-09-13"
+      "filing_date": "2024-12-17",
+      "sic": "3823"
     },
     {
-      "name": "VERDE BIO HOLDINGS, INC.  (CIK 0001490054)",
-      "cik": "0001490054",
+      "name": "Certara, Inc.  (CERT)  (CIK 0001827090)",
+      "cik": "0001827090",
       "ticker": "N/A",
-      "filing_date": "2023-08-02"
+      "filing_date": "2024-12-16",
+      "sic": "7372"
     },
     {
-      "name": "BitNile Metaverse, Inc.  (ROII)  (CIK 0001437491)",
-      "cik": "0001437491",
+      "name": "Astra Energy, Inc.  (ASRE)  (CIK 0001231339)",
+      "cik": "0001231339",
       "ticker": "N/A",
-      "filing_date": "2023-07-14"
-    },
-    {
-      "name": "GB SCIENCES INC  (GBLX)  (CIK 0001165320)",
-      "cik": "0001165320",
-      "ticker": "N/A",
-      "filing_date": "2023-07-14"
-    },
-    {
-      "name": "PetroGas Co  (PTCO)  (CIK 0001609258)",
-      "cik": "0001609258",
-      "ticker": "N/A",
-      "filing_date": "2023-07-10"
-    },
-    {
-      "name": "MEXCO ENERGY CORP  (MXC)  (CIK 0000066418)",
-      "cik": "0000066418",
-      "ticker": "N/A",
-      "filing_date": "2023-06-26"
-    },
-    {
-      "name": "RESERVE PETROLEUM CO  (RSRV)  (CIK 0000083350)",
-      "cik": "0000083350",
-      "ticker": "N/A",
-      "filing_date": "2023-06-15"
-    },
-    {
-      "name": "Norris Industries, Inc.  (NRIS)  (CIK 0001603793)",
-      "cik": "0001603793",
-      "ticker": "N/A",
-      "filing_date": "2023-05-26"
-    },
-    {
-      "name": "HNR Acquisition Corp.  (HNRA, HNRA-WT)  (CIK 0001842556)",
-      "cik": "0001842556",
-      "ticker": "N/A",
-      "filing_date": "2023-05-24"
-    },
-    {
-      "name": "Royale Energy, Inc.  (ROYL)  (CIK 0001694617)",
-      "cik": "0001694617",
-      "ticker": "N/A",
-      "filing_date": "2023-05-19"
-    },
-    {
-      "name": "Petrolia Energy Corp  (CIK 0001368637)",
-      "cik": "0001368637",
-      "ticker": "N/A",
-      "filing_date": "2023-05-12"
-    },
-    {
-      "name": "OCCIDENTAL PETROLEUM CORP /DE/  (OXY, OXY-WT)  (CIK 0000797468)",
-      "cik": "0000797468",
-      "ticker": "N/A",
-      "filing_date": "2023-05-09"
-    },
-    {
-      "name": "BLUE DOLPHIN ENERGY CO  (BDCO)  (CIK 0000793306)",
-      "cik": "0000793306",
-      "ticker": "N/A",
-      "filing_date": "2023-05-01"
-    },
-    {
-      "name": "Next Bridge Hydrocarbons, Inc.  (CIK 0001936756)",
-      "cik": "0001936756",
-      "ticker": "N/A",
-      "filing_date": "2023-05-01"
-    },
-    {
-      "name": "BATTALION OIL CORP  (BATL)  (CIK 0001282648)",
-      "cik": "0001282648",
-      "ticker": "N/A",
-      "filing_date": "2023-04-28"
-    },
-    {
-      "name": "DORCHESTER MINERALS, L.P.  (DMLP)  (CIK 0001172358)",
-      "cik": "0001172358",
-      "ticker": "N/A",
-      "filing_date": "2023-04-27"
-    },
-    {
-      "name": "Ranger Oil Corp  (CIK 0000077159)",
-      "cik": "0000077159",
-      "ticker": "N/A",
-      "filing_date": "2023-04-26"
-    },
-    {
-      "name": "CONTINENTAL RESOURCES, INC  (CIK 0000732834)",
-      "cik": "0000732834",
-      "ticker": "N/A",
-      "filing_date": "2023-04-21"
-    },
-    {
-      "name": "PRIMEENERGY RESOURCES CORP  (PNRG)  (CIK 0000056868)",
-      "cik": "0000056868",
-      "ticker": "N/A",
-      "filing_date": "2023-04-18"
-    },
-    {
-      "name": "SPINDLETOP OIL & GAS CO  (SPND)  (CIK 0000867038)",
-      "cik": "0000867038",
-      "ticker": "N/A",
-      "filing_date": "2023-04-17"
-    },
-    {
-      "name": "SPIRITS TIME INTERNATIONAL, INC.  (SRSG)  (CIK 0001434737)",
-      "cik": "0001434737",
-      "ticker": "N/A",
-      "filing_date": "2023-04-17"
-    },
-    {
-      "name": "Clean Coal Technologies Inc.  (NSGP)  (CIK 0001445109)",
-      "cik": "0001445109",
-      "ticker": "N/A",
-      "filing_date": "2023-04-17"
-    },
-    {
-      "name": "PRIMEENERGY RESOURCES CORP  (PNRG)  (CIK 0000056868)",
-      "cik": "0000056868",
-      "ticker": "N/A",
-      "filing_date": "2023-04-17"
-    },
-    {
-      "name": "ABRAXAS PETROLEUM CORP  (CIK 0000867665)",
-      "cik": "0000867665",
-      "ticker": "N/A",
-      "filing_date": "2023-04-17"
-    },
-    {
-      "name": "ALPHA ENERGY INC  (TRLM)  (CIK 0000855787)",
-      "cik": "0000855787",
-      "ticker": "N/A",
-      "filing_date": "2023-04-17"
-    },
-    {
-      "name": "US ENERGY CORP  (USEG)  (CIK 0000101594)",
-      "cik": "0000101594",
-      "ticker": "N/A",
-      "filing_date": "2023-04-13"
-    },
-    {
-      "name": "VICTORY OILFIELD TECH, INC.  (VYEY)  (CIK 0000700764)",
-      "cik": "0000700764",
-      "ticker": "N/A",
-      "filing_date": "2023-04-11"
-    },
-    {
-      "name": "VAALCO ENERGY INC /DE/  (EGY)  (CIK 0000894627)",
-      "cik": "0000894627",
-      "ticker": "N/A",
-      "filing_date": "2023-04-06"
-    },
-    {
-      "name": "BLUE DOLPHIN ENERGY CO  (BDCO)  (CIK 0000793306)",
-      "cik": "0000793306",
-      "ticker": "N/A",
-      "filing_date": "2023-04-03"
-    },
-    {
-      "name": "Sustainable Projects Group Inc.  (SPGX)  (CIK 0001500305)",
-      "cik": "0001500305",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "HOUSTON AMERICAN ENERGY CORP  (HUSA)  (CIK 0001156041)",
-      "cik": "0001156041",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "Flame Acquisition Corp.  (SOC, SOC-WT)  (CIK 0001831481)",
-      "cik": "0001831481",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "PermRock Royalty Trust  (PRT)  (CIK 0001724009)",
-      "cik": "0001724009",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "Energy 11, L.P.  (CIK 0001581552)",
-      "cik": "0001581552",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "CKX LANDS, INC.  (CKX)  (CIK 0000352955)",
-      "cik": "0000352955",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "TXO Energy Partners, L.P.  (TXO)  (CIK 0001559432)",
-      "cik": "0001559432",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "MEWBOURNE ENERGY PARTNERS 09-A, L.P.  (CIK 0001462103)",
-      "cik": "0001462103",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "HNR Acquisition Corp.  (HNRA, HNRA-WT)  (CIK 0001842556)",
-      "cik": "0001842556",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "RESERVE PETROLEUM CO  (RSRV)  (CIK 0000083350)",
-      "cik": "0000083350",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "Next Bridge Hydrocarbons, Inc.  (CIK 0001936756)",
-      "cik": "0001936756",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "EMPIRE PETROLEUM CORP  (EP)  (CIK 0000887396)",
-      "cik": "0000887396",
-      "ticker": "N/A",
-      "filing_date": "2023-03-31"
-    },
-    {
-      "name": "C2E ENERGY, INC.  (OOGI)  (CIK 0001160798)",
-      "cik": "0001160798",
-      "ticker": "N/A",
-      "filing_date": "2023-03-30"
-    },
-    {
-      "name": "BATTALION OIL CORP  (BATL)  (CIK 0001282648)",
-      "cik": "0001282648",
-      "ticker": "N/A",
-      "filing_date": "2023-03-30"
-    },
-    {
-      "name": "PEDEVCO CORP  (PED)  (CIK 0001141197)",
-      "cik": "0001141197",
-      "ticker": "N/A",
-      "filing_date": "2023-03-29"
-    },
-    {
-      "name": "Circle Energy, Inc./NV  (CRCE)  (CIK 0001911467)",
-      "cik": "0001911467",
-      "ticker": "N/A",
-      "filing_date": "2023-03-29"
-    },
-    {
-      "name": "Advanced Voice Recognition Systems, Inc  (RIVF)  (CIK 0001342936)",
-      "cik": "0001342936",
-      "ticker": "N/A",
-      "filing_date": "2023-03-28"
-    },
-    {
-      "name": "Evolve Transition Infrastructure LP  (CIK 0001362705)",
-      "cik": "0001362705",
-      "ticker": "N/A",
-      "filing_date": "2023-03-27"
-    },
-    {
-      "name": "Granite Ridge Resources, Inc.  (GRNT)  (CIK 0001928446)",
-      "cik": "0001928446",
-      "ticker": "N/A",
-      "filing_date": "2023-03-27"
-    },
-    {
-      "name": "ALPINE SUMMIT ENERGY PARTNERS, INC.  (CIK 0001882607)",
-      "cik": "0001882607",
-      "ticker": "N/A",
-      "filing_date": "2023-03-27"
-    },
-    {
-      "name": "Epsilon Energy Ltd.  (EPSN)  (CIK 0001726126)",
-      "cik": "0001726126",
-      "ticker": "N/A",
-      "filing_date": "2023-03-24"
-    },
-    {
-      "name": "CHESAPEAKE GRANITE WASH TRUST  (CHKR)  (CIK 0001524769)",
-      "cik": "0001524769",
-      "ticker": "N/A",
-      "filing_date": "2023-03-24"
-    },
-    {
-      "name": "EVERFLOW EASTERN PARTNERS LP  (CIK 0000868082)",
-      "cik": "0000868082",
-      "ticker": "N/A",
-      "filing_date": "2023-03-24"
-    },
-    {
-      "name": "VIKING ENERGY GROUP, INC.  (CIK 0001102432)",
-      "cik": "0001102432",
-      "ticker": "N/A",
-      "filing_date": "2023-03-24"
-    },
-    {
-      "name": "ECA Marcellus Trust I  (ECTM)  (CIK 0001487798)",
-      "cik": "0001487798",
-      "ticker": "N/A",
-      "filing_date": "2023-03-23"
-    },
-    {
-      "name": "Permianville Royalty Trust  (PVL)  (CIK 0001520048)",
-      "cik": "0001520048",
-      "ticker": "N/A",
-      "filing_date": "2023-03-23"
-    },
-    {
-      "name": "ENERGY RESOURCES 12, L.P.  (CIK 0001696088)",
-      "cik": "0001696088",
-      "ticker": "N/A",
-      "filing_date": "2023-03-22"
-    },
-    {
-      "name": "New Concept Energy, Inc.  (GBR)  (CIK 0000105744)",
-      "cik": "0000105744",
-      "ticker": "N/A",
-      "filing_date": "2023-03-21"
-    },
-    {
-      "name": "CAMBER ENERGY, INC.  (CEIN)  (CIK 0001309082)",
-      "cik": "0001309082",
-      "ticker": "N/A",
-      "filing_date": "2023-03-17"
-    },
-    {
-      "name": "UNIT CORP  (UNTC, UNTCW)  (CIK 0000798949)",
-      "cik": "0000798949",
-      "ticker": "N/A",
-      "filing_date": "2023-03-17"
-    },
-    {
-      "name": "MV Oil Trust  (MVO)  (CIK 0001371782)",
-      "cik": "0001371782",
-      "ticker": "N/A",
-      "filing_date": "2023-03-16"
-    },
-    {
-      "name": "VOC Energy Trust  (VOC)  (CIK 0001505413)",
-      "cik": "0001505413",
-      "ticker": "N/A",
-      "filing_date": "2023-03-16"
-    },
-    {
-      "name": "Gulf Coast Ultra Deep Royalty Trust  (GULTU)  (CIK 0001565146)",
-      "cik": "0001565146",
-      "ticker": "N/A",
-      "filing_date": "2023-03-15"
-    },
-    {
-      "name": "SANDRIDGE ENERGY INC  (SD)  (CIK 0001349436)",
-      "cik": "0001349436",
-      "ticker": "N/A",
-      "filing_date": "2023-03-15"
-    },
-    {
-      "name": "Amplify Energy Corp.  (AMPY)  (CIK 0001533924)",
-      "cik": "0001533924",
-      "ticker": "N/A",
-      "filing_date": "2023-03-09"
-    },
-    {
-      "name": "Ranger Oil Corp  (CIK 0000077159)",
-      "cik": "0000077159",
-      "ticker": "N/A",
-      "filing_date": "2023-03-09"
-    },
-    {
-      "name": "RING ENERGY, INC.  (REI)  (CIK 0001384195)",
-      "cik": "0001384195",
-      "ticker": "N/A",
-      "filing_date": "2023-03-09"
-    },
-    {
-      "name": "W&T OFFSHORE INC  (WTI)  (CIK 0001288403)",
-      "cik": "0001288403",
-      "ticker": "N/A",
-      "filing_date": "2023-03-08"
-    },
-    {
-      "name": "Sitio Royalties Corp.  (STR)  (CIK 0001949543)",
-      "cik": "0001949543",
-      "ticker": "N/A",
-      "filing_date": "2023-03-08"
-    },
-    {
-      "name": "Riley Exploration Permian, Inc.  (REPX)  (CIK 0001001614)",
-      "cik": "0001001614",
-      "ticker": "N/A",
-      "filing_date": "2023-03-08"
-    },
-    {
-      "name": "EARTHSTONE ENERGY INC  (CIK 0000010254)",
-      "cik": "0000010254",
-      "ticker": "N/A",
-      "filing_date": "2023-03-08"
-    },
-    {
-      "name": "Crescent Energy Co  (CRGY)  (CIK 0001866175)",
-      "cik": "0001866175",
-      "ticker": "N/A",
-      "filing_date": "2023-03-07"
-    },
-    {
-      "name": "SILVERBOW RESOURCES, INC.  (CIK 0000351817)",
-      "cik": "0000351817",
-      "ticker": "N/A",
-      "filing_date": "2023-03-02"
-    },
-    {
-      "name": "Golden Royal Development Inc.  (GRDV)  (CIK 0001761534)",
-      "cik": "0001761534",
-      "ticker": "N/A",
-      "filing_date": "2023-03-02"
-    },
-    {
-      "name": "GULFPORT ENERGY CORP  (GPOR)  (CIK 0000874499)",
-      "cik": "0000874499",
-      "ticker": "N/A",
-      "filing_date": "2023-03-01"
-    },
-    {
-      "name": "Matador Resources Co  (MTDR)  (CIK 0001520006)",
-      "cik": "0001520006",
-      "ticker": "N/A",
-      "filing_date": "2023-03-01"
-    },
-    {
-      "name": "TALOS ENERGY INC.  (TALO)  (CIK 0001724965)",
-      "cik": "0001724965",
-      "ticker": "N/A",
-      "filing_date": "2023-03-01"
-    },
-    {
-      "name": "Kosmos Energy Ltd.  (KOS)  (CIK 0001509991)",
-      "cik": "0001509991",
-      "ticker": "N/A",
-      "filing_date": "2023-02-28"
-    },
-    {
-      "name": "Berry Corp (bry)  (BRY)  (CIK 0001705873)",
-      "cik": "0001705873",
-      "ticker": "N/A",
-      "filing_date": "2023-02-28"
-    },
-    {
-      "name": "Chord Energy Corp  (CHRD, OASPW, WLLAW, WLLBW)  (CIK 0001486159)",
-      "cik": "0001486159",
-      "ticker": "N/A",
-      "filing_date": "2023-02-28"
-    },
-    {
-      "name": "Hess Midstream LP  (HESM)  (CIK 0001789832)",
-      "cik": "0001789832",
-      "ticker": "N/A",
-      "filing_date": "2023-02-27"
-    },
-    {
-      "name": "Coterra Energy Inc.  (CTRA)  (CIK 0000858470)",
-      "cik": "0000858470",
-      "ticker": "N/A",
-      "filing_date": "2023-02-27"
-    },
-    {
-      "name": "OCCIDENTAL PETROLEUM CORP /DE/  (OXY, OXY-WT)  (CIK 0000797468)",
-      "cik": "0000797468",
-      "ticker": "N/A",
-      "filing_date": "2023-02-27"
-    },
-    {
-      "name": "TETRA TECHNOLOGIES INC  (TTI)  (CIK 0000844965)",
-      "cik": "0000844965",
-      "ticker": "N/A",
-      "filing_date": "2023-02-27"
-    },
-    {
-      "name": "MURPHY OIL CORP  (MUR)  (CIK 0000717423)",
-      "cik": "0000717423",
-      "ticker": "N/A",
-      "filing_date": "2023-02-27"
-    },
-    {
-      "name": "PAR PACIFIC HOLDINGS, INC.  (PARR)  (CIK 0000821483)",
-      "cik": "0000821483",
-      "ticker": "N/A",
-      "filing_date": "2023-02-27"
-    },
-    {
-      "name": "RANGE RESOURCES CORP  (RRC)  (CIK 0000315852)",
-      "cik": "0000315852",
-      "ticker": "N/A",
-      "filing_date": "2023-02-27"
-    },
-    {
-      "name": "Ovintiv Inc.  (OVV)  (CIK 0001792580)",
-      "cik": "0001792580",
-      "ticker": "N/A",
-      "filing_date": "2023-02-27"
-    },
-    {
-      "name": "California Resources Corp  (CRC, CRCQW)  (CIK 0001609253)",
-      "cik": "0001609253",
-      "ticker": "N/A",
-      "filing_date": "2023-02-24"
-    },
-    {
-      "name": "Permian Resources Corp  (PR)  (CIK 0001658566)",
-      "cik": "0001658566",
-      "ticker": "N/A",
-      "filing_date": "2023-02-24"
-    },
-    {
-      "name": "NORTHERN OIL & GAS, INC.  (NOG)  (CIK 0001104485)",
-      "cik": "0001104485",
-      "ticker": "N/A",
-      "filing_date": "2023-02-24"
-    },
-    {
-      "name": "Viper Energy Partners LP  (VNOM)  (CIK 0001602065)",
-      "cik": "0001602065",
-      "ticker": "N/A",
-      "filing_date": "2023-02-23"
-    },
-    {
-      "name": "APA Corp  (APA)  (CIK 0001841666)",
-      "cik": "0001841666",
-      "ticker": "N/A",
-      "filing_date": "2023-02-23"
+      "filing_date": "2024-12-16",
+      "sic": "4911"
     }
+  ],
+  "sic_codes": [
+    "2839",
+    "2819"
   ]
 }

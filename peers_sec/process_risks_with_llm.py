@@ -9,12 +9,10 @@ env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'
 load_dotenv(env_path)
 
 MODEL_ID = "meta.llama3-70b-instruct-v1:0"
-MAX_CONTEXT = 8042       # 8192 - 150 prompt overhead
-MAX_BATCH_RISKS = 10     # cap for reliable JSON output from Llama
+MAX_CONTEXT = 8042       
+MAX_BATCH_RISKS = 10     
 TOKENS_PER_WORD = 1.33
-OUTPUT_PER_RISK = 80     # estimated output tokens per extracted risk
-
-# Configure AWS client with credentials from .env
+OUTPUT_PER_RISK = 80     
 client = boto3.client(
     "bedrock-runtime",
     region_name=os.getenv('AWS_REGION', 'us-east-1'),
@@ -24,8 +22,6 @@ client = boto3.client(
 
 SYSTEM_PROMPT = "You are a financial analyst expert at extracting structured risk information from SEC filings."
 
-# Fix 3: ask the model to echo source_index so results can be mapped back
-# to their original input text regardless of how many objects the model returns.
 BATCH_PROMPT = """Analyze the following {n} risk factors from a 10-K filing.
 For EACH risk, extract:
 1. A concise risk name (max 10 words)
@@ -42,8 +38,6 @@ Return ONLY a JSON array. Include the original risk number as "source_index" so 
 
 
 def call_llama(prompt, n_risks):
-    # Fix 4: prime the assistant turn with '[' to force JSON array output and
-    # prevent the model from prepending conversational filler like "Here is...".
     formatted = (
         "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n"
         f"{SYSTEM_PROMPT}<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n"
@@ -53,7 +47,7 @@ def call_llama(prompt, n_risks):
     body = json.dumps({"prompt": formatted, "max_gen_len": max_gen_len, "temperature": 0.3, "top_p": 0.9})
     response = client.invoke_model(modelId=MODEL_ID, body=body)
     raw = json.loads(response["body"].read()).get("generation", "").strip()
-    return "[" + raw  # re-attach the opening bracket we primed
+    return "[" + raw 
 
 
 def extract_json_array(text):
@@ -64,10 +58,7 @@ def extract_json_array(text):
 
 
 def _map_results_to_batch(results, batch):
-    """
-    Fix 3: use source_index to map each result back to its original input text.
-    Returns a list of (result, source_text) pairs, or None if mapping fails.
-    """
+    
     indexed = {
         r.get("source_index"): r
         for r in results
@@ -79,7 +70,6 @@ def _map_results_to_batch(results, batch):
 
 
 def extract_single_risk(risk_text):
-    """Fallback: process one risk individually."""
     single_prompt = BATCH_PROMPT.format(n=1, risks_text=f"RISK #1:\n{risk_text}")
     try:
         text = call_llama(single_prompt, 1)
@@ -100,17 +90,14 @@ def extract_batch(risks, batch_num):
         if not isinstance(results, list):
             return None
 
-        # Fix 2 + Fix 3: try source_index mapping regardless of count match
         mapped = _map_results_to_batch(results, risks)
         if mapped:
-            return mapped  # list of (result_dict, source_text)
+            return mapped  
 
-        # Exact count match without valid source_index: fall back to positional
         if len(results) == len(risks):
             print(f"  Batch {batch_num}: no source_index, using positional mapping")
             return list(zip(results, risks))
 
-        # Fix 2: count mismatch with no reliable mapping — signal caller to fall back
         print(f"  Batch {batch_num}: got {len(results)} results for {len(risks)} risks — will retry individually")
         return None
     except Exception as e:
@@ -119,7 +106,6 @@ def extract_batch(risks, batch_num):
 
 
 def make_batches(risks):
-    """Group risks by token budget and cap at MAX_BATCH_RISKS for reliability."""
     batches, current, current_tokens = [], [], 0
     for risk in risks:
         cost = len(risk.split()) * TOKENS_PER_WORD + OUTPUT_PER_RISK
@@ -159,13 +145,10 @@ def process_all_risks(input_file="all_companies_risks.json", output_file="struct
                 for result, source_text in mapped:
                     result.pop("source_index", None)
                     result["source_text"] = source_text
-                    # Fix 1: ID is always len(company_risks)+1 so it stays
-                    # contiguous even when earlier batches were dropped.
                     result["risk_id"] = f"{cik}_risk_{len(company_risks) + 1}"
                     company_risks.append(result)
                 print("✓")
             else:
-                # Fix 2: per-risk fallback instead of silently dropping the batch
                 print("✗ falling back to per-risk processing")
                 for risk_text in batch:
                     single = extract_single_risk(risk_text)
