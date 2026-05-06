@@ -24,18 +24,14 @@ from relation_extraction_config import (
     list_available_relations,
     set_main_company,
 )
-from industry_node_to_sic import get_sic_code
+from company_utils import CompanyDetector, SICLookup
 
+#take what is inside [...]
 _JSON_BLOCK_RE = re.compile(r'\[.*\]', re.DOTALL)
-# Strip Qwen3 chain-of-thought blocks emitted in thinking mode before we parse JSON.
+# remove them from Qwen response
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 
 
-_STOP_WORDS = frozenset({
-    'the', 'and', 'for', 'of', 'in', 'a', 'an',
-    'company', 'corporation', 'incorporated', 'limited', 'group', 'holdings',
-})
-_TOKEN_CLEAN_RE = re.compile(r'[^a-z0-9 ]')
 
 TOP_N_SECTIONS = 2
 TOP_N_CHUNKS_PER_SECTION = 3
@@ -81,7 +77,7 @@ class LLMExtractor:
         self.collection_name = collection_name
         print(f"✓ Connected to Qdrant collection: {collection_name}")
 
-        self.bedrock_model = os.getenv("BEDROCK_MODEL", "meta.llama3-70b-instruct-v1:0")
+        self.bedrock_model = os.getenv("BEDROCK_MODEL", "")
         region = os.getenv("AWS_REGION", os.getenv("AWS_DEFAULT_REGION", "us-east-1"))
         self.bedrock = boto3.client(
             service_name="bedrock-runtime",
@@ -94,13 +90,22 @@ class LLMExtractor:
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
 
+        # Initialize company detector and SIC lookup utilities
+        self.company_detector = CompanyDetector(
+            qdrant_client=self.client,
+            collection_name=collection_name,
+            embedding_fn=self._embed,
+            llm_fn=self._call_llm
+        )
+        self.sic_lookup = SICLookup()
+
         self.main_company = main_company
         if main_company == "the Company":
-            self.main_company = self.detect_main_company()
+            self.main_company = self.company_detector.detect_main_company()
+        else:
+            self.company_detector.main_company = main_company
         set_main_company(self.main_company)
         print(f"✓ Main company: {self.main_company}")
-
-        self._sic_cache: Dict[str, str] = {}
 
         base = os.path.splitext(os.path.basename(source_file))[0] if source_file else collection_name
         self.log_file = os.path.join(self.output_dir, f"relationships_{base}.txt")
@@ -196,106 +201,6 @@ class LLMExtractor:
         with open(self.log_file, 'w', encoding='utf-8') as f:
             f.write(header + existing)
     # ========================================================================
-    # COMPANY DETECTION / NORMALISATION
-    # ========================================================================
-    def detect_main_company(self) -> str:
-        print("  Auto-detecting main company from vector store...")
-        try:
-            query_vec = self._embed("annual report company overview")
-            results = self.client.query_points(
-                collection_name=self.collection_name,
-                query=query_vec,
-                query_filter=Filter(must=[FieldCondition(key="type", match=MatchValue(value="chunk"))]),
-                limit=4,
-                with_payload=True
-            ).points
-            docs = [r.payload["text"] for r in results]
-        except Exception:
-            self.company_aliases = set()
-            return "the Company"
-
-        context = "\n\n---\n\n".join(docs)
-
-        if os.getenv("AWS_ACCESS_KEY_ID"):
-            try:
-                prompt = (
-                    "Read the following excerpts from an annual report and return ONLY "
-                    "the full legal name of the main company this report is about. "
-                    "No explanation, just the name.\n\n" + context
-                )
-                name = self._call_llm(prompt).strip().strip('"').strip("'")
-                if name and len(name) > 3:
-                    print(f"  ✓ Detected main company: {name}")
-                    self.company_aliases = {name}
-                    return name
-            except Exception as e:
-                print(f"  ⚠ Bedrock detection failed ({e}), falling back to regex")
-
-        candidates: Dict[str, int] = {}
-        ORG_PATTERNS = [
-            r'\b((?:[A-Z][A-Za-z0-9&\'\-\.]+\s+){1,8}(?:Corporation|Incorporated|Limited|Company|Corp\.|Inc\.|Ltd\.|plc|LLC|L\.L\.C\.|S\.A\.|N\.V\.|AG|SE|GmbH))\b',
-            r'\b((?:[A-Z][A-Za-z0-9&\'\-\.]+\s+){1,6}(?:Group|Holdings|Holding|Bancorp|Financial|Energy|Capital|Resources|Technologies|Industries|International|Enterprises|Partners))\b',
-        ]
-        for doc in docs:
-            for pattern in ORG_PATTERNS:
-                for match in re.finditer(pattern, doc):
-                    name = match.group(1).strip()
-                    if len(name) >= 8 and name.lower() not in ('the company', 'this company'):
-                        candidates[name] = candidates.get(name, 0) + 1
-
-        if not candidates:
-            print("  ⚠ Could not detect company name — using 'the Company'")
-            self.company_aliases = set()
-            return "the Company"
-
-        names = list(candidates.keys())
-        filtered = {n for n in names if not any(n != o and n in o for o in names)}
-        candidates = {n: v for n, v in candidates.items() if n in filtered}
-        canonical = max(candidates, key=lambda k: (candidates[k], len(k)))
-
-        canonical_tokens = set(self._significant_tokens(canonical))
-        self.company_aliases = {
-            n for n in candidates if canonical_tokens & set(self._significant_tokens(n))
-        }
-        print(f"  ✓ Detected main company: {canonical}")
-        return canonical
-
-    @staticmethod
-    def _significant_tokens(name: str) -> List[str]:
-        return [t for t in _TOKEN_CLEAN_RE.sub('', name.lower()).split()
-                if len(t) > 3 and t not in _STOP_WORDS]
-
-    def normalize_company_name(self, name: str) -> str:
-        if not name or name.lower() in ('the company', 'this company', ''):
-            return self.main_company
-        if name in getattr(self, 'company_aliases', set()):
-            return self.main_company
-        name_tokens = set(self._significant_tokens(name))
-        canonical_tokens = set(self._significant_tokens(self.main_company))
-        if name_tokens and canonical_tokens:
-            overlap = len(name_tokens & canonical_tokens) / min(len(name_tokens), len(canonical_tokens))
-            if overlap >= 0.5:
-                return self.main_company
-        return name
-
-    # ========================================================================
-    # SIC LOOKUP
-    # ========================================================================
-    def _lookup_sic(self, sector: str) -> str:
-        if not sector:
-            return None
-        key = sector.strip().lower()
-        if key not in self._sic_cache:
-            try:
-                code = get_sic_code(sector)
-                self._sic_cache[key] = str(code).strip()
-                print(f"    ✓ SIC lookup: '{sector}' → {self._sic_cache[key]}")
-            except Exception as e:
-                print(f"    ⚠ SIC lookup failed for '{sector}': {e}")
-                self._sic_cache[key] = None
-        return self._sic_cache[key]
-
-    # ========================================================================
     # HIERARCHICAL RETRIEVAL
     # ========================================================================
     def hierarchical_retrieval(self, relation_config,
@@ -313,28 +218,33 @@ class LLMExtractor:
         chunk_embeddings = [self._embed_expanded(kw) for kw in kw_list]
         print(f"  Using {len(chunk_embeddings)} chunk query vector(s)")
 
-        section_embedding = self._embed(relation_config.section_keywords)
-        priority_tiers = getattr(relation_config, 'section_priority_tiers', [])
-        # Fix D: fetch a wider candidate pool so priority boost can re-rank meaningfully
-        section_fetch_limit = n_sections * 3 if priority_tiers else n_sections
-        section_results = self.client.query_points(
-            collection_name=self.collection_name,
-            query=section_embedding,
-            query_filter=Filter(must=[FieldCondition(key="type", match=MatchValue(value="section"))]),
-            limit=section_fetch_limit,
-            with_payload=True
-        ).points
-
-        if priority_tiers and section_results:
-            section_results = self._apply_section_priority_boost(section_results, priority_tiers, n_sections)
-
+        # Skip section-level filtering if section_keywords is empty
         use_sections = False
-        if section_results:
-            best_sim = section_results[0].score
-            print(f"  Best section similarity: {best_sim:.3f}")
-            if best_sim >= section_threshold:
-                use_sections = True
-                print(f"  ✓ Using {len(section_results)} relevant sections")
+        if relation_config.section_keywords.strip():
+            section_embedding = self._embed(relation_config.section_keywords)
+            priority_tiers = getattr(relation_config, 'section_priority_tiers', [])
+            # Fix D: fetch a wider candidate pool so priority boost can re-rank meaningfully
+            section_fetch_limit = n_sections * 3 if priority_tiers else n_sections
+            section_results = self.client.query_points(
+                collection_name=self.collection_name,
+                query=section_embedding,
+                query_filter=Filter(must=[FieldCondition(key="type", match=MatchValue(value="section"))]),
+                limit=section_fetch_limit,
+                with_payload=True
+            ).points
+
+            if priority_tiers and section_results:
+                section_results = self._apply_section_priority_boost(section_results, priority_tiers, n_sections)
+
+            if section_results:
+                best_sim = section_results[0].score
+                print(f"  Best section similarity: {best_sim:.3f}")
+                if best_sim >= section_threshold:
+                    use_sections = True
+                    print(f"  ✓ Using {len(section_results)} relevant sections")
+        else:
+            print(f"  ⊘ Skipping section-level filtering (empty section_keywords)")
+            section_results = []
 
         seen_ids: set = set()
         all_chunks = []
@@ -514,7 +424,7 @@ class LLMExtractor:
                     for node_key in ('source', 'target'):
                         node = p[node_key]
                         if node['type'] in ('Company', 'Organization'):
-                            node['name'] = self.normalize_company_name(node['name'])
+                            node['name'] = self.company_detector.normalize_company_name(node['name'])
                     results.append((p, best_chunk))
             return results
         except Exception as e:
@@ -544,7 +454,7 @@ class LLMExtractor:
                     for node_key in ('source', 'target'):
                         node = p[node_key]
                         if node['type'] in ('Company', 'Organization'):
-                            node['name'] = self.normalize_company_name(node['name'])
+                            node['name'] = self.company_detector.normalize_company_name(node['name'])
                     parsed.append(p)
             return parsed
         except Exception as e:
@@ -972,7 +882,7 @@ class LLMExtractor:
                     if rel == 'OPERATES_IN':
                         industry_name = tgt['name']
                         sector = tgt.get('properties', {}).get('sector', '')
-                        sic_code = self._lookup_sic(industry_name)
+                        sic_code = self.sic_lookup.lookup(industry_name)
                         if sic_code:
                             sic = {
                                 'code': sic_code,
