@@ -3,7 +3,6 @@ import os
 import sys
 import json
 import argparse
-import re
 from typing import List, Dict, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -13,12 +12,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env
 
 from neo4j import GraphDatabase
 from industry_node_to_sic import get_sic_code
-
-_STOP_WORDS = frozenset({
-    'the', 'and', 'for', 'of', 'in', 'a', 'an',
-    'company', 'corporation', 'incorporated', 'limited', 'group', 'holdings',
-})
-_TOKEN_CLEAN_RE = re.compile(r'[^a-z0-9 ]')
+from company_utils import CompanyDetector
 
 
 class Neo4jBuilder:
@@ -37,14 +31,6 @@ class Neo4jBuilder:
         self.main_company = main_company
         self._sic_cache: Dict[str, str] = {}
 
-    # ========================================================================
-    # COMPANY STAMP
-    # ========================================================================
-    @staticmethod
-    def _significant_tokens(name: str) -> List[str]:
-        return [t for t in _TOKEN_CLEAN_RE.sub('', name.lower()).split()
-                if len(t) > 3 and t not in _STOP_WORDS]
-
     def stamp_target_company(self, main_company: str):
         """Convert Company node to TargetCompany node type for the main company."""
         if main_company.lower() in ('the company', 'this company', ''):
@@ -52,13 +38,11 @@ class Neo4jBuilder:
             return
         try:
             with self.driver.session() as session:
-                # Remove generic placeholder companies
                 session.run(
                     "MATCH (c:Company) WHERE toLower(c.name) IN ['the company', 'this company'] DETACH DELETE c"
                 )
                 
-                # Remove case-variant duplicates
-                canonical_tokens = set(self._significant_tokens(main_company))
+                canonical_tokens = set(CompanyDetector._significant_tokens(main_company))
                 if canonical_tokens:
                     result = session.run(
                         "MATCH (c:Company) WHERE c.name <> $name RETURN c.name AS name",
@@ -66,14 +50,13 @@ class Neo4jBuilder:
                     )
                     for record in result:
                         variant = record["name"]
-                        if canonical_tokens == set(self._significant_tokens(variant)):
+                        if canonical_tokens == set(CompanyDetector._significant_tokens(variant)):
                             session.run(
                                 "MATCH (c:Company {name: $variant}) DETACH DELETE c",
                                 {"variant": variant}
                             )
                             print(f"  ✓ Removed case-variant duplicate: '{variant}'")
                 
-                # Check if Company node exists and convert it to TargetCompany
                 result = session.run(
                     "MATCH (c:Company {name: $name}) RETURN c",
                     {"name": main_company}
@@ -109,7 +92,7 @@ class Neo4jBuilder:
                     )
                     print(f"✓ Converted Company → TargetCompany: {main_company}")
                 else:
-                    # Create new TargetCompany node
+                    #  new TargetCompany node
                     session.run(
                         """
                         MERGE (c:TargetCompany {name: $name})
@@ -122,9 +105,6 @@ class Neo4jBuilder:
         except Exception as e:
             print(f"⚠ Could not stamp target company: {e}")
 
-    # ========================================================================
-    # SIC LOOKUP (fallback for items where sic was not resolved during extraction)
-    # ========================================================================
     def _lookup_sic(self, sector: str) -> str:
         if not sector:
             return None
@@ -139,9 +119,6 @@ class Neo4jBuilder:
                 self._sic_cache[key] = None
         return self._sic_cache[key]
 
-    # ========================================================================
-    # GRAPH OPERATIONS
-    # ========================================================================
     def clear_database(self):
         with self.driver.session() as session:
             session.run("MATCH (n) DETACH DELETE n")
@@ -197,9 +174,6 @@ class Neo4jBuilder:
         """
         session.run(query, {"source_name": source_name, "target_name": target_name, **props})
 
-    # ========================================================================
-    # BUILD FROM JSON
-    # ========================================================================
     def build_from_json(self, json_file: str, clear: bool = False):
         """Read extracted JSON and write all entities/relationships to Neo4j."""
         with open(json_file, 'r', encoding='utf-8') as f:
@@ -255,7 +229,6 @@ class Neo4jBuilder:
                     )
 
                     sic = item.get('sic')
-                    # Fallback: resolve SIC now if the extractor didn't store it
                     if not sic and item.get('rel') == 'OPERATES_IN':
                         industry_name = item['tgt']['name']
                         sector = item['tgt'].get('properties', {}).get('sector', '')
@@ -283,9 +256,6 @@ class Neo4jBuilder:
         print(f"\n✓ Total items written to Neo4j: {total_written}")
         return total_written
 
-    # ========================================================================
-    # STATS
-    # ========================================================================
     def show_graph_stats(self):
         with self.driver.session() as session:
             print(f"\n{'='*60}")

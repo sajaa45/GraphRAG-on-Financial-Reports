@@ -6,7 +6,6 @@ import argparse
 import time
 import re
 import boto3
-import numpy as np
 from typing import List, Dict, Any, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -32,28 +31,11 @@ _JSON_BLOCK_RE = re.compile(r'\[.*\]', re.DOTALL)
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 
 
-
 TOP_N_SECTIONS = 2
 TOP_N_CHUNKS_PER_SECTION = 3
 SECTION_SIMILARITY_THRESHOLD = 0.25
 CHUNK_SIMILARITY_THRESHOLD = 0.3
 MAX_CHUNKS_PER_LLM_BATCH = 8
-
-# Fix A: synonym map for keyword expansion.
-# Keys are lowercase substrings matched against each query keyword.
-# Values list extra query variants whose embeddings are averaged in.
-METRIC_SYNONYMS: Dict[str, List[str]] = {
-    "ebitda": ["earnings before interest tax depreciation", "operating income before depreciation", "adjusted ebitda"],
-    "roace": ["return on capital employed", "roce", "return on average capital employed"],
-    "revenue": ["net sales", "net revenues", "total revenues", "turnover", "total net revenues"],
-    "free cash flow": ["fcf", "levered free cash flow", "unlevered free cash flow"],
-    "gearing": ["net debt to equity", "leverage ratio", "debt to equity ratio"],
-    "net income": ["net profit", "net earnings", "profit for the year", "profit attributable"],
-    "total debt": ["total borrowings", "long-term debt", "total financial debt", "total indebtedness"],
-    "interest coverage": ["interest cover ratio", "ebit to interest", "fixed charge coverage ratio"],
-    "current ratio": ["liquidity ratio", "quick ratio", "current assets liabilities"],
-    "capital expenditure": ["capex", "purchases of property plant and equipment", "capital spending"],
-}
 
 
 class LLMExtractor:
@@ -90,7 +72,7 @@ class LLMExtractor:
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
 
-        # Initialize company detector and SIC lookup utilities
+        # company detector and SIC lookup utilities
         self.company_detector = CompanyDetector(
             qdrant_client=self.client,
             collection_name=collection_name,
@@ -112,42 +94,18 @@ class LLMExtractor:
         self.json_file = os.path.join(self.output_dir, f"extracted_{base}.json")
         self.log_buffer = []
         self.start_time = time.time()
-        # Truncate log file at the start of each run so headers don't accumulate
         open(self.log_file, 'w', encoding='utf-8').close()
 
         print(f"✓ Logging to  : {self.log_file}")
         print(f"✓ JSON output : {self.json_file}")
 
-    # ========================================================================
-    # EMBEDDING / CACHING
-    # ========================================================================
     def _embed(self, text: str) -> list:
         if text not in self._embed_cache:
             self._embed_cache[text] = self.embedding_model.encode([text])[0].tolist()
         return self._embed_cache[text]
 
-    def _expand_keyword(self, keyword: str) -> List[str]:
-        """Return keyword plus synonym variants from METRIC_SYNONYMS."""
-        kw_lower = keyword.lower()
-        for key, variants in METRIC_SYNONYMS.items():
-            if key in kw_lower:
-                return [keyword] + [v for v in variants if v.lower() not in kw_lower]
-        return [keyword]
-
-    def _embed_expanded(self, keyword: str) -> list:
-        """Embed keyword with synonym expansion; return L2-normalised average vector."""
-        variants = self._expand_keyword(keyword)
-        if len(variants) == 1:
-            return self._embed(variants[0])
-        vecs = np.array([self._embed(v) for v in variants], dtype=np.float32)
-        avg = vecs.mean(axis=0)
-        norm = np.linalg.norm(avg)
-        if norm > 1e-9:
-            avg = avg / norm
-        return avg.tolist()
-
+    #rescore chunks by keyword density + numeric density + table bonus
     def _rerank_chunks(self, chunks: List[Dict], keyword: str = "") -> List[Dict]:
-        """Fix C: Re-score chunks by keyword density + numeric density + table bonus."""
         if not chunks:
             return chunks
         kw_words = {w.lower() for w in keyword.split() if len(w) > 3} if keyword else set()
@@ -163,7 +121,6 @@ class LLMExtractor:
         return sorted(chunks, key=_score, reverse=True)
 
     def _apply_section_priority_boost(self, candidates, priority_tiers: List[str], keep_n: int):
-        """Fix D: Re-rank section candidates using tiered title boost, return top keep_n."""
         scored = []
         for hit in candidates:
             title = hit.payload.get("title", "").lower()
@@ -180,9 +137,6 @@ class LLMExtractor:
             print(f"  Section priority boost applied — top: '{top_title}'")
         return result
 
-    # ========================================================================
-    # LOGGING
-    # ========================================================================
     def _log(self, message: str):
         self.log_buffer.append(message)
         with open(self.log_file, 'a', encoding='utf-8') as f:
@@ -200,9 +154,7 @@ class LLMExtractor:
             existing = f.read()
         with open(self.log_file, 'w', encoding='utf-8') as f:
             f.write(header + existing)
-    # ========================================================================
-    # HIERARCHICAL RETRIEVAL
-    # ========================================================================
+    
     def hierarchical_retrieval(self, relation_config,
                                n_sections=TOP_N_SECTIONS,
                                n_chunks_per_section=TOP_N_CHUNKS_PER_SECTION,
@@ -215,15 +167,14 @@ class LLMExtractor:
         n_chunks_per_section = relation_config.n_chunks_per_section
 
         kw_list = relation_config.chunk_keywords_list or [relation_config.chunk_keywords]
-        chunk_embeddings = [self._embed_expanded(kw) for kw in kw_list]
+        chunk_embeddings = [self._embed(kw) for kw in kw_list]
         print(f"  Using {len(chunk_embeddings)} chunk query vector(s)")
 
-        # Skip section-level filtering if section_keywords is empty
+        # filter by sections keywrods and skip if empty
         use_sections = False
         if relation_config.section_keywords.strip():
             section_embedding = self._embed(relation_config.section_keywords)
             priority_tiers = getattr(relation_config, 'section_priority_tiers', [])
-            # Fix D: fetch a wider candidate pool so priority boost can re-rank meaningfully
             section_fetch_limit = n_sections * 3 if priority_tiers else n_sections
             section_results = self.client.query_points(
                 collection_name=self.collection_name,
@@ -302,9 +253,6 @@ class LLMExtractor:
         print(f"  ✓ Retrieved {len(all_chunks)} chunks total (deduplicated)")
         return all_chunks
 
-    # ========================================================================
-    # LLM CALLS
-    # ========================================================================
     def _call_llm(self, prompt: str) -> str:
         for attempt in range(5):
             try:
@@ -314,7 +262,6 @@ class LLMExtractor:
                     inferenceConfig={"maxTokens": 4096, "temperature": 0.1},
                 )
                 text = response["output"]["message"]["content"][0]["text"]
-                # Remove Qwen3 reasoning blocks before returning so callers see only the answer.
                 text = _THINK_RE.sub('', text).strip()
                 return text
             except Exception as e:
@@ -328,9 +275,6 @@ class LLMExtractor:
                 else:
                     raise
 
-    # ========================================================================
-    # ENTITY EXTRACTION
-    # ========================================================================
     def _extract_entities_batch(self, chunks: List[Dict], relation_config) -> List[tuple]:
         chunks_text = "\n\n---CHUNK SEPARATOR---\n\n".join(
             f"[Chunk {i+1}]\n{c['text']}" for i, c in enumerate(chunks)
@@ -350,13 +294,11 @@ class LLMExtractor:
             try:
                 entities_data = json.loads(raw_json)
             except json.JSONDecodeError as je:
-                # Attempt 1: strip markdown fences
                 cleaned = re.sub(r'```(?:json)?', '', raw_json).strip()
                 try:
                     entities_data = json.loads(cleaned)
                 except json.JSONDecodeError:
-                    # Attempt 2: repair truncated JSON by keeping only complete objects.
-                    # Find the last closing brace of a complete object and close the array.
+                    # find the last closing brace of a complete object and close the array.
                     last_brace = cleaned.rfind('}')
                     if last_brace > 0:
                         repaired = cleaned[:last_brace + 1] + '\n]'
@@ -371,34 +313,29 @@ class LLMExtractor:
                         return []
             results = []
             for e in entities_data:
-                # Coerce non-string values (e.g. "value": [] or null) to strings so that
-                # downstream str() calls don't crash and the empty-value guard works correctly.
+                # non-string values (e.g. "value": [] or null) to strings so that it wont crash
                 for _f in ('metric', 'value', 'unit', 'year', 'organization'):
                     raw = e.get(_f)
                     if not isinstance(raw, str):
                         e[_f] = '' if raw is None or isinstance(raw, (list, dict)) else str(raw)
 
-                # Issue 3 + Bug 5: for HAS_METRIC, reject non-allowlist metrics AND
-                # empty-value entities before doing any chunk anchoring work.
                 if relation_config.name == 'HAS_METRIC':
                     metric_type = e.get('metric', '').strip()
                     if not e.get('value', '').strip():
                         print(f"[FILTER] Rejected empty-value entity for metric: '{metric_type}'")
                         continue
 
-                # For metrics, anchor to the chunk that actually contains the value
-                # string — word-overlap is unreliable for dense numeric tables.
+                # (ffor metrics) anchor to the chunk that actually contains the value string
                 value_str = str(e.get('value', '')).strip()
                 if value_str:
-                    # Normalize whitespace to handle PDF-extracted text with newline-split numbers
+                    # normalize whitespace to handle PDF-extracted text with newline-split numbers
                     _ws = re.compile(r'\s+')
                     value_norm = _ws.sub(' ', value_str)
                     best_chunk = next(
                         (c for c in chunks if value_norm in _ws.sub(' ', c['text'])),
                         None,
                     )
-                    # Secondary fallback: strip all non-digit/non-period chars from both
-                    # value and chunk text so commas in "2,118.5" don't block a match.
+                    # strip all non-digit/non-period chars so commas in "2,118.5" don't block a match.
                     if best_chunk is None:
                         value_digits = re.sub(r'[^\d.]', '', value_str)
                         if value_digits:
@@ -445,7 +382,6 @@ class LLMExtractor:
             entities_data = json.loads(m.group())
             parsed = []
             for e in entities_data:
-                # No chunk info available in this method
                 if not self._validate_entity_in_text(e, text, relation_config.name, chunk_info=None):
                     continue
                 kwargs = {**relation_config.entity_parser_kwargs, 'main_company': self.main_company}
@@ -466,7 +402,6 @@ class LLMExtractor:
         metric = str(entity.get('metric', '')).strip()
         value = str(entity.get('value', '')).strip()
         
-        # --- CHUNK ID NOTIFICATION ---
         if chunk_info:
             chunk_id = chunk_info.get('_id', chunk_info.get('chunk_index', 'Unknown'))
             section_title = chunk_info.get('section_title', 'Unknown Section')
@@ -506,20 +441,18 @@ class LLMExtractor:
                     cid = chunk_info.get('_id', chunk_info.get('chunk_index', 'Unknown'))
                     print(f"[VALIDATION] Chunk {cid}: FAILED - {reason}")
                 return False
-
-            # ANTI-PATTERN: Maturity bucket detection for Total Debt
+            ###POSSIBLE TO REMOVE
             if metric == 'Total Debt':
-                # Check for maturity schedule indicators
                 maturity_indicators = [
                     r'\bdue in\b', r'\bmaturing in\b', r'\bafter\b', r'\bthereafter\b',
-                    r'\b20\d{2}\b.*\b20\d{2}\b.*\b20\d{2}\b',  # Multiple future years
+                    r'\b20\d{2}\b.*\b20\d{2}\b.*\b20\d{2}\b',  
                     r'\bpayments?\s+due\b', r'\bdebt\s+maturit(y|ies)\b',
                     r'\brepayment\s+schedule\b', r'\bfuture\s+maturit(y|ies)\b'
                 ]
                 if any(re.search(pattern, text_lower) for pattern in maturity_indicators):
                     return _fail("Maturity schedule detected - not a current balance")
                 
-                # Check if the year in the entity is in the future (relative to typical reporting)
+                #  if the year in the entity is in the future 
                 year_str = str(entity.get('year', '')).strip()
                 if year_str and year_str.isdigit():
                     year_int = int(year_str)
@@ -527,7 +460,7 @@ class LLMExtractor:
                     if year_int > 2026:
                         return _fail(f"Year {year_int} appears to be a future maturity date, not a reporting period")
 
-            # ANTI-PATTERN: Short-term Investments must be from Balance Sheet line item
+            # short-term Investments must be from Balance Sheet line item
             if metric == 'Short-term Investments':
                 # Check for combined cash+investments language
                 combined_patterns = [
@@ -546,33 +479,33 @@ class LLMExtractor:
                 if any(re.search(pattern, text_lower) for pattern in borrowing_patterns):
                     return _fail("Borrowing/liability detected - not an investment asset")
 
-            # Check 1: direct substring (case-insensitive)
+            # direct substring (case-insensitive)
             if value.lower() in text.lower():
                 return _pass(f"'{value}' found verbatim")
 
-            # Check 2: comma-stripped match — handles "2118.5" vs "2,118.5" in text
+            # handles "2118.5" vs "2,118.5" in text
             text_no_comma = text.replace(',', '')
             if value in text_no_comma:
                 return _pass(f"'{value}' found after stripping commas from text")
 
-            # Check 3: whitespace-collapsed match — handles PDF-split numbers
+            # whitespace collapsed match ( handles PDF-split numbers)
             _ws = re.compile(r'\s+')
             value_norm = _ws.sub(' ', value)
             if value_norm in _ws.sub(' ', text):
                 return _pass(f"'{value_norm}' found after whitespace collapse")
 
-            # Check 4: digit-and-period strip — "2118.5" → "2118.5" vs text "2,118.5" → "2118.5"
+            # "2118.5" → "2118.5" vs text "2,118.5" → "2118.5"
             value_dp = re.sub(r'[^\d.]', '', value)
             if value_dp and value_dp in re.sub(r'[^\d.]', '', text):
                 return _pass(f"digit+period form '{value_dp}' found in text")
 
-            # Check 5: digit-only strip (last resort for large integers without decimal)
+            #  digit-only strip (last resort for large integers without decimal)
             core_digits = re.sub(r'[^\d]', '', value)[:6]
             if len(core_digits) >= 4:
                 if core_digits in re.sub(r'[^\d]', '', text):
                     return _pass(f"digit-only form '{core_digits}' found in text")
 
-            # Check 6: regex patterns (currency prefix/suffix, parentheses)
+            #  regex patterns (currency prefix/suffix, parentheses)
             patterns = [
                 rf'\b{re.escape(value)}\b',
                 rf'[₹#$€£¥]\s*{re.escape(value)}',
@@ -607,9 +540,6 @@ class LLMExtractor:
 
         return True
 
-    # ========================================================================
-    # EXTRACTION ORCHESTRATION
-    # ========================================================================
     def extract_relation(self, relation_name: str) -> List[Dict]:
         """Run LLM extraction for one relation and return the write_queue (list of items)."""
         relation_config = get_relation_config(relation_name)
@@ -642,7 +572,6 @@ class LLMExtractor:
             print(f"\n  Per-keyword batch mode: {total_kw} keywords × {n_per_kw} chunks each (threshold: {threshold})")
             self._log(f"\n  Per-keyword batch mode: {total_kw} keywords × {n_per_kw} chunks each (threshold: {threshold})")
 
-            # NEW: Pre-filter sections using priority tiers if configured
             priority_tiers = getattr(relation_config, 'section_priority_tiers', [])
             allowed_section_ids = None
             
@@ -650,9 +579,8 @@ class LLMExtractor:
                 print(f"  ✓ Applying section priority filter with {len(priority_tiers)} tiers")
                 self._log(f"  ✓ Applying section priority filter with {len(priority_tiers)} tiers")
                 
-                # Fetch candidate sections
                 section_embedding = self._embed(relation_config.section_keywords)
-                section_fetch_limit = relation_config.n_sections * 5  # Wider pool for filtering
+                section_fetch_limit = relation_config.n_sections * 5  
                 section_results = self.client.query_points(
                     collection_name=self.collection_name,
                     query=section_embedding,
@@ -661,7 +589,6 @@ class LLMExtractor:
                     with_payload=True
                 ).points
                 
-                # Apply priority boost and select top sections
                 if section_results:
                     section_results = self._apply_section_priority_boost(
                         section_results, 
@@ -705,16 +632,12 @@ class LLMExtractor:
                 
                 kw_results = self.client.query_points(
                     collection_name=self.collection_name,
-                    query=self._embed_expanded(kw),  # Fix A: synonym-averaged embedding
+                    query=self._embed(kw),
                     query_filter=query_filter,
                     limit=n_per_kw,
                     with_payload=True,
                 ).points
 
-                # Per-keyworad dedup set: always prevents duplicates within one batch.
-                # Cross-keyword dedup is skipped when deduplicate_chunks_across_keywords=False
-                # (e.g. HAS_METRIC) because a single financial table chunk contains many
-                # distinct metrics — letting each keyword re-process it finds them all.
                 dedup_ids = global_seen_ids if relation_config.deduplicate_chunks_across_keywords else set()
 
                 kw_chunks = [
@@ -723,7 +646,6 @@ class LLMExtractor:
                     if r.score >= threshold and r.id not in dedup_ids
                 ]
 
-                # Fallback: if nothing passed the threshold, retry with a softer cut
                 if not kw_chunks:
                     kw_chunks = [
                         _to_chunk(r)
@@ -750,9 +672,6 @@ class LLMExtractor:
 
                 kw_chunks = self._rerank_chunks(kw_chunks, kw)
 
-                # Guard: deduplicate within this keyword batch by vector ID to
-                # prevent the same chunk being logged and sent to the LLM twice
-                # (can happen when a point is indexed more than once in Qdrant).
                 _seen_in_kw: set = set()
                 kw_chunks = [
                     c for c in kw_chunks

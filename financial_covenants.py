@@ -478,7 +478,6 @@ def main():
         print(f"Error getting target metrics: {e}\n")
         target_metrics = []
     
-    # Step 1: Get companies from Neo4j graph first
     print("=" * 80)
     print("STEP 1: CHECKING NEO4J GRAPH FOR PEER COMPANIES")
     print("=" * 80)
@@ -600,10 +599,8 @@ def main():
                 companies_without_covenants.append(company)
                 print(f"  ✗ No covenant tags or target metrics found\n")
         
-        # Rate limiting - be respectful to SEC servers
         time.sleep(0.2)
     
-    # Summary
     print("=" * 80)
     print("SUMMARY")
     print("=" * 80)
@@ -618,7 +615,6 @@ def main():
     print(f"Companies with errors: {len(companies_with_errors)}")
     print()
     
-    # Detailed results for companies with covenants
     if companies_with_covenants:
         print("=" * 80)
         print("COMPANIES WITH FINANCIAL COVENANTS")
