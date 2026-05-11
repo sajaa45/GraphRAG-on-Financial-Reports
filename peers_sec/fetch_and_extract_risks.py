@@ -126,7 +126,17 @@ def get_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date
                 if name == "N/A" or name.startswith("ARRAY("):
                     title = entry.findtext("atom:title", default="", namespaces=ns)
                     if title and not title.startswith("ARRAY("):
-                        name = title.split(" (")[0]
+                        name = title.split(" (")[0].strip()
+
+                # Try extracting name from the company-info nested elements
+                if name == "N/A" and content is not None:
+                    for child in content.iter():
+                        if child.get("name"):
+                            name = child.get("name")
+                            break
+                        if child.tag.lower().endswith("company-name") and child.text:
+                            name = child.text.strip()
+                            break
 
                 companies.append({
                     "name": name,
@@ -146,6 +156,7 @@ def get_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date
 def get_10k_filings(cik: str, limit: int = 1):
     cik_padded = cik.zfill(10)
     data = requests.get(f"https://data.sec.gov/submissions/CIK{cik_padded}.json", headers=HEADERS, verify=False).json()
+    company_name = data.get("name", "N/A")
     filings = data["filings"]["recent"]
     results = [
         {
@@ -156,7 +167,7 @@ def get_10k_filings(cik: str, limit: int = 1):
         for i, form in enumerate(filings["form"])
         if form == "10-K"
     ][:limit]
-    return results, cik_padded
+    return results, cik_padded, company_name
 
 
 def get_doc_url(cik_padded, accession_raw, primary_document):
@@ -182,9 +193,12 @@ def split_risks(text):
 
 
 def get_risk_factor_data(cik: str, company_name: str):
-    filings, cik_padded = get_10k_filings(cik)
+    filings, cik_padded, real_name = get_10k_filings(cik)
     if not filings:
         return None
+
+    if real_name and real_name != "N/A":
+        company_name = real_name
 
     filing = filings[0]
     doc_url = get_doc_url(cik_padded, filing["accession_raw"], filing["primary_document"])
@@ -216,16 +230,19 @@ def process_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_
 
     results = []
     for i, company in enumerate(companies, 1):
-        print(f"\n[{i}/{len(companies)}] {company['name']}")
+        print(f"\n[{i}/{len(companies)}] CIK {company['cik']}")
         try:
             data = get_risk_factor_data(company['cik'], company['name'])
-            if data and data['length']['words'] > 5000:
-                results.append(data)
-                print(f"  Added ({len(results)}/3)")
-                if len(results) >= 3:
-                    break
-            elif data:
-                print(f"  Skipped — only {data['length']['words']} words")
+            if data:
+                if data['risk_count'] < 10:
+                    print(f"  Skipped — only {data['risk_count']} risks (minimum 10 required)")
+                elif data['length']['words'] > 5000:
+                    results.append(data)
+                    print(f"  Added ({len(results)}/3)")
+                    if len(results) >= 3:
+                        break
+                else:
+                    print(f"  Skipped — only {data['length']['words']} words")
         except Exception as e:
             print(f"  Error: {e}")
         if i < len(companies):
