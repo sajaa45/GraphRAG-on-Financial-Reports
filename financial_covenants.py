@@ -363,8 +363,6 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                                 fp = entry.get('fp', '')
                                 fy = entry.get('fy')
                                 form = entry.get('form', '')
-                                
-                                # Only include full year (FY) data from 10-K
                                 if fp == 'FY' and form == '10-K' and fy == default_fiscal_year:
                                     filtered_entries.append({
                                         'end': entry.get('end'),
@@ -379,37 +377,29 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                             if filtered_entries:
                                 tag_data['units'][unit_name] = filtered_entries
                         
-                        # Only add if we have data after filtering
                         if tag_data['units']:
                             results[covenant_type][tag_name] = tag_data
                 
-                # Check if this tag matches any target company metrics
                 if target_metrics:
                     for metric in target_metrics:
-                        # Use metric_type for matching (e.g., "EBITDA", "Net Income")
                         metric_type = metric.get('type', '')
                         if not metric_type:
                             continue
                         
-                        # Use metric's specific year if provided, otherwise use default
                         target_year = metric.get('year') or default_fiscal_year
                         
-                        # Normalize: lowercase, remove spaces and special chars for matching
                         normalized_metric = ''.join(c.lower() for c in metric_type if c.isalnum())
                         normalized_tag = tag_name.lower()
                         
-                        # Try multiple matching strategies
                         match = False
                         if normalized_metric in normalized_tag or normalized_tag in normalized_metric:
                             match = True
-                        # Also try word-by-word matching for multi-word metrics
                         elif len(normalized_metric) > 3:
                             metric_words = [w for w in metric_type.lower().split() if len(w) > 2]
                             if metric_words and all(w in normalized_tag for w in metric_words):
                                 match = True
                         
                         if match:
-                            # Use metric_type as the key (not the full name with year)
                             if metric_type not in target_metric_results:
                                 target_metric_results[metric_type] = []
                             
@@ -433,7 +423,6 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                                     fy = entry.get('fy')
                                     form = entry.get('form', '')
                                     
-                                    # Only include full year (FY) data from 10-K for the target year
                                     if fp == 'FY' and form == '10-K' and fy == target_year:
                                         filtered_entries.append({
                                             'end': entry.get('end'),
@@ -448,7 +437,6 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                                 if filtered_entries:
                                     tag_data['units'][unit_name] = filtered_entries
                             
-                            # Only add if we have data after filtering
                             if tag_data['units']:
                                 target_metric_results[metric_type].append(tag_data)
         
@@ -485,7 +473,6 @@ def main():
     
     companies = get_companies_from_neo4j()
     
-    # Filter out companies without CIK (can't analyze them via SEC)
     companies_with_cik = [c for c in companies if c.get('cik')]
     companies_without_cik = [c for c in companies if not c.get('cik')]
     
@@ -495,7 +482,6 @@ def main():
             print(f"  - {c['name']}")
         print()
     
-    # Step 2: If we need more companies, fetch from SEC
     if len(companies_with_cik) < MAX_COMPANIES:
         needed = MAX_COMPANIES - len(companies_with_cik)
         print("=" * 80)
@@ -503,7 +489,6 @@ def main():
         print("=" * 80)
         print()
         
-        # Get SIC code from Neo4j
         try:
             sic_code = get_sic_from_neo4j()
             sic_codes = [sic_code]
@@ -512,14 +497,11 @@ def main():
             print("Falling back to default SIC code: 1311\n")
             sic_codes = ['1311']
         
-        # Fetch from SEC
         sec_companies = fetch_companies_by_sic(sic_codes, START_DATE, END_DATE, FORM_TYPE, needed)
         
-        # Mark as from SEC and add to list
         for c in sec_companies:
             c['source'] = 'sec'
         
-        # Combine, avoiding duplicates by CIK
         existing_ciks = {c['cik'] for c in companies_with_cik}
         new_companies = [c for c in sec_companies if c['cik'] not in existing_ciks]
         

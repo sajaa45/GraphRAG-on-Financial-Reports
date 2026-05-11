@@ -1,0 +1,291 @@
+{
+  "parameters": {
+    "sic_codes": [
+      "2810"
+    ],
+    "size": 50
+  },
+  "total_count": 40,
+  "companies": [
+    {
+      "name": "N/A",
+      "cik": "0001274893",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000002969",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000836243",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000350832",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000078319",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000788340",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001392719",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001977303",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001041577",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001102027",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001909658",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000909992",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001427030",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000715095",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001071322",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000889431",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000812701",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000310431",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001298195",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001035497",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001851048",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001061786",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000846978",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001830166",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000352947",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001176187",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001094592",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000854599",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000929697",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001145328",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001072548",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001817232",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001681222",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001081260",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0000716101",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001119985",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001173218",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001176979",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001173219",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "N/A",
+      "cik": "0001176236",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    }
+  ]
+}

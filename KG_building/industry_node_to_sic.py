@@ -24,6 +24,7 @@ def get_sic_code(industry: str, api_key: str = None) -> dict:
     prompt = f"""Given the industry field: "{industry}"
 
 Provide ONLY the 4-digit SIC (Standard Industrial Classification) code number. 
+The code must be a valid SIC code that appears in SEC EDGAR's classification system.
 Return only the number, nothing else. No text, no explanation, just the 4-digit code."""
     
     response = client.chat.completions.create(
@@ -31,7 +32,7 @@ Return only the number, nothing else. No text, no explanation, just the 4-digit 
         messages=[
             {
                 "role": "system",
-                "content": "You are an expert in SIC codes. Return ONLY the 4-digit SIC code number, nothing else."
+                "content": "You are an expert in SEC EDGAR SIC codes. Return ONLY the 4-digit SIC code number that SEC EDGAR uses in its filings. Do not return codes that exist in general SIC manuals but are rarely or never used in EDGAR — prefer the parent or most commonly filed code. Return nothing else."
             },
             {
                 "role": "user",
