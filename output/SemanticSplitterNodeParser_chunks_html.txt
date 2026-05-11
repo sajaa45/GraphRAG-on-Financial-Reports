@@ -5,7 +5,7 @@ SemanticSplitterNodeParser Chunks (HTML)
 Source HTML: input/NYSE_MTX_2024.htm
 Total sections: 26
 Total chunks: 667
-Created at: 2026-05-04 21:29:36
+Created at: 2026-05-07 15:47:35
 ================================================================================
 
 CHUNK 0001

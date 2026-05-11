@@ -104,9 +104,9 @@ def get_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date
             print(f"  SIC {sic} — found {len(entries)} entries")
 
             for entry in entries:
-                # CIK is embedded in the <id> tag as a URL ending in ?action=getcompany&CIK=...
+                # CIK is embedded in the <id> tag in format: urn:tag:www.sec.gov:cik=0001311901
                 id_text = entry.findtext("atom:id", default="", namespaces=ns)
-                cik_match = re.search(r"CIK=(\d+)", id_text)
+                cik_match = re.search(r"cik[=:](\d+)", id_text, re.IGNORECASE)
                 if not cik_match:
                     continue
                 cik = cik_match.group(1)
@@ -114,10 +114,19 @@ def get_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date
                     continue
                 seen_ciks.add(cik)
 
-                name = entry.findtext("atom:company-name", default="", namespaces=ns)
-                if not name:
+                # Company name is in the <content><company-info name="..."> structure
+                name = "N/A"
+                content = entry.find("atom:content", ns)
+                if content is not None:
+                    company_info = content.find("company-info")
+                    if company_info is not None:
+                        name = company_info.get("name", "N/A")
+                
+                # Fallback to title if name not found
+                if name == "N/A" or name.startswith("ARRAY("):
                     title = entry.findtext("atom:title", default="", namespaces=ns)
-                    name = title.split(" (")[0] if title else "N/A"
+                    if title and not title.startswith("ARRAY("):
+                        name = title.split(" (")[0]
 
                 companies.append({
                     "name": name,

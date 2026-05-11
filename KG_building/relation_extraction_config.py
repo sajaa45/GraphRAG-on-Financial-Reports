@@ -283,10 +283,10 @@ RELATION_CONFIGS: Dict[str, RelationConfig] = {
         source_entity_type='Company',
         target_entity_type='Risk',
         relationship_type='FACES_RISK',
-        section_keywords='risk management exposure factors financial operational',
+        section_keywords='risk factors',
         chunk_keywords='could materially adversely affect business financial condition operations results',
-        n_sections=3,
-        n_chunks_per_section=5,
+        n_sections=2,
+        n_chunks_per_section=10,
         extraction_prompt_template="""/no_think
 Extract ALL risks explicitly disclosed in this text.
 
@@ -327,23 +327,40 @@ STRICT Rules:
         source_entity_type='Company',
         target_entity_type='Industry',
         relationship_type='OPERATES_IN',
-        section_keywords='overview strategy introduction business description',
-        chunk_keywords='industry sector business operations products services markets manufacturing technology healthcare financial pharmaceutical retail automotive aerospace telecommunications',
+        section_keywords='item 1. business',
+        chunk_keywords='company primary business activity manufacturing production products principal products operations producer supplier processing industrial services ',
+        n_sections=1,
+        n_chunks_per_section=3,
+        chunk_similarity_threshold=0.3,
         extraction_prompt_template="""/no_think
-            Extract the PRIMARY industry of {main_company} ONLY.
 
-            Text: {text}
+Extract the PRIMARY industry of {main_company} ONLY.
 
-            Return ONLY a valid JSON array:
-            [
-            {{"industry": "Industry Name", "sector": "Sector Name"}}
-            ]
+Text:
+{text}
 
-            Rules:
-            - ONLY extract the industry of {main_company} — ignore all other companies, subsidiaries, or partners
-            - Return exactly ONE entry
-            - If unclear, return []
-            """,
+Return ONLY a valid JSON array:
+[
+{{
+"industry": "Industry Name",
+"sector": "Sector Name"
+}}
+]
+
+Rules:
+
+* ONLY classify {main_company}
+* Return exactly ONE entry
+* Use a stable industrial/business category
+* Prefer industry labels commonly associated with SEC/SIC-style classifications
+* Avoid niche, marketing, or overly specialized labels
+* Avoid overly broad parent sectors
+* The industry should reasonably map to a commonly used SIC category
+* Prefer practical categories used across multiple public companies
+* If uncertain, choose the broader established industry
+* If unclear, return []
+
+""",
         entity_parser=parse_industry_entity,
         entity_parser_kwargs={}
     )
