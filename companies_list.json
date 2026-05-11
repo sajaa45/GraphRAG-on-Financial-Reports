@@ -1,8 +1,547 @@
 {
-  "total_count": 0,
-  "companies": [],
+  "total_count": 77,
+  "companies": [
+    {
+      "name": "ARRAY(0x562c972e2958)",
+      "cik": "0001274893",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972e7360)",
+      "cik": "0000002969",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973d0b10)",
+      "cik": "0000836243",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973d42e0)",
+      "cik": "0000350832",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972e7678)",
+      "cik": "0000078319",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973c39d0)",
+      "cik": "0000788340",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973df2c0)",
+      "cik": "0001392719",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973d4538)",
+      "cik": "0001977303",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973f07a0)",
+      "cik": "0001041577",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c96525500)",
+      "cik": "0001102027",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973f5a38)",
+      "cik": "0001909658",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97379e98)",
+      "cik": "0000909992",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973bfcf0)",
+      "cik": "0001427030",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973482d0)",
+      "cik": "0000715095",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972f51a8)",
+      "cik": "0001071322",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973349f0)",
+      "cik": "0000889431",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97386478)",
+      "cik": "0000812701",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c9738ed40)",
+      "cik": "0000310431",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97334828)",
+      "cik": "0001298195",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97373f08)",
+      "cik": "0001035497",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97371568)",
+      "cik": "0001851048",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972f5088)",
+      "cik": "0001061786",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97386028)",
+      "cik": "0000846978",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97347970)",
+      "cik": "0001830166",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973f37f0)",
+      "cik": "0000352947",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973e1468)",
+      "cik": "0001176187",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972f7698)",
+      "cik": "0001094592",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973d8750)",
+      "cik": "0000854599",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c9737a3a8)",
+      "cik": "0000929697",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972f1958)",
+      "cik": "0001145328",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97391780)",
+      "cik": "0001072548",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972f1b80)",
+      "cik": "0001817232",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97379ef8)",
+      "cik": "0001681222",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973c5370)",
+      "cik": "0001081260",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972f5520)",
+      "cik": "0000716101",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c9738acc8)",
+      "cik": "0001119985",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973868e0)",
+      "cik": "0001173218",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973508c8)",
+      "cik": "0001176979",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973dc078)",
+      "cik": "0001173219",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973e1b10)",
+      "cik": "0001176236",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97339288)",
+      "cik": "0001257640",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973e20b0)",
+      "cik": "0001084554",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97377070)",
+      "cik": "0000884905",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973e2068)",
+      "cik": "0001707925",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973bc528)",
+      "cik": "0001384135",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973c3130)",
+      "cik": "0000060714",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c9733d810)",
+      "cik": "0001099561",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973ca868)",
+      "cik": "0001085217",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973c2f98)",
+      "cik": "0001096056",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973d48b0)",
+      "cik": "0000852600",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97353420)",
+      "cik": "0000816955",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973ca8e0)",
+      "cik": "0001158638",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c9737e718)",
+      "cik": "0001017295",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97364d58)",
+      "cik": "0001018099",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973d8960)",
+      "cik": "0000891014",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c9738a938)",
+      "cik": "0000072162",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97219ae0)",
+      "cik": "0001527273",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c9738fa48)",
+      "cik": "0000317158",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972fb380)",
+      "cik": "0001281216",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973d8408)",
+      "cik": "0001387135",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973bcba0)",
+      "cik": "0000890397",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97374058)",
+      "cik": "0000769107",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973d09f0)",
+      "cik": "0001778805",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972e75e8)",
+      "cik": "0002095926",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97339c48)",
+      "cik": "0000842295",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c9734c5f8)",
+      "cik": "0000098788",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973831c0)",
+      "cik": "0000810020",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973c2d58)",
+      "cik": "0001530804",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973f0440)",
+      "cik": "0001328910",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c96a64940)",
+      "cik": "0001360523",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972fb488)",
+      "cik": "0001360522",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97393828)",
+      "cik": "0001346861",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973c5748)",
+      "cik": "0001103220",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973913d8)",
+      "cik": "0000059255",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c972f47b8)",
+      "cik": "0001705682",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c973512a0)",
+      "cik": "0001177647",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    },
+    {
+      "name": "ARRAY(0x562c97350f10)",
+      "cik": "0001676580",
+      "ticker": "N/A",
+      "filing_date": "N/A",
+      "sic": "2810"
+    }
+  ],
   "sic_codes": [
-    "2839",
-    "2819"
+    "2810"
   ]
 }

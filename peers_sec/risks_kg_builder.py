@@ -16,12 +16,12 @@ from neo4j import GraphDatabase
 class RisksKGBuilder:
     """
     Builds a Neo4j knowledge graph from:
-      - structured_risks.json  → Company, Risk, RiskCategory nodes
+      - structured_risks.json  → Company, Risk nodes
       - companies_list.json    → peer Company nodes with COMPETES_WITH edges
 
     Graph schema
     ------------
-    (:Company)-[:FACES_RISK]->(:Risk)-[:BELONGS_TO_CATEGORY]->(:RiskCategory)
+    (:Company)-[:FACES_RISK]->(:Risk)
     (:Company {is_peer:true})-[:COMPETES_WITH]->(:Company {is_target:true})
     """
 
@@ -97,7 +97,7 @@ class RisksKGBuilder:
     def build_from_structured_risks(self, json_file: str) -> int:
         """
         Load structured_risks.json and write:
-          Company → FACES_RISK → Risk → BELONGS_TO_CATEGORY → RiskCategory
+          Company → FACES_RISK → Risk
         """
         with open(json_file, 'r', encoding='utf-8') as f:
             entries = json.load(f)
@@ -105,7 +105,6 @@ class RisksKGBuilder:
         if not isinstance(entries, list):
             raise ValueError(f"Expected a JSON array in {json_file}")
 
-        categories_seen: set = set()
         total_risks = 0
 
         print(f"\n{'='*60}")
@@ -151,7 +150,7 @@ class RisksKGBuilder:
                     risk_id = risk.get("risk_id", "")
                     risk_name = risk.get("risk_name", "Unnamed Risk")
                     description = risk.get("description", "")
-                    category = risk.get("category", "Uncategorized")
+                    why = risk.get("why", "")
                     source_text = risk.get("source_text", "")
 
                     if not risk_id:
@@ -162,17 +161,17 @@ class RisksKGBuilder:
                         """
                         MERGE (r:Risk {risk_id: $risk_id})
                         ON CREATE SET r.name = $risk_name, r.description = $description,
-                                      r.category = $category,
+                                      r.why = $why,
                                       r.source_text = $source_text,
                                       r.filing_date = $filing_date,
                                       r.created_at = datetime()
                         ON MATCH  SET r.name = $risk_name, r.description = $description,
-                                      r.category = $category,
+                                      r.why = $why,
                                       r.source_text = $source_text,
                                       r.updated_at = datetime()
                         """,
                         {"risk_id": risk_id, "risk_name": risk_name,
-                         "description": description, "category": category,
+                         "description": description, "why": why,
                          "source_text": source_text[:2000], "filing_date": filing_date},
                     )
 
@@ -184,24 +183,6 @@ class RisksKGBuilder:
                         MERGE (c)-[:FACES_RISK]->(r)
                         """,
                         {"name": company_name, "risk_id": risk_id},
-                    )
-
-                    # Upsert RiskCategory
-                    if category not in categories_seen:
-                        session.run(
-                            "MERGE (:RiskCategory {name: $name})",
-                            {"name": category},
-                        )
-                        categories_seen.add(category)
-
-                    # Risk -[BELONGS_TO_CATEGORY]-> RiskCategory
-                    session.run(
-                        """
-                        MATCH (r:Risk          {risk_id: $risk_id})
-                        MATCH (rc:RiskCategory {name: $category})
-                        MERGE (r)-[:BELONGS_TO_CATEGORY]->(rc)
-                        """,
-                        {"risk_id": risk_id, "category": category},
                     )
 
                     total_risks += 1

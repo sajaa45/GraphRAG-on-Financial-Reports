@@ -96,9 +96,12 @@ def get_companies_from_neo4j():
         with driver.session() as session:
             result = session.run(
                 """
-                MATCH (c:Company)
-                WHERE NOT c:TargetCompany AND NOT c.is_target = true
-                RETURN c.name AS name, c.cik AS cik, c.ticker AS ticker
+                MATCH (c:Company)-[:FACES_RISK]->(r:Risk)
+                WHERE c.is_peer = true OR (NOT c:TargetCompany AND NOT c.is_target = true)
+                WITH c, count(r) AS risk_count
+                WHERE risk_count >= 10
+                RETURN c.name AS name, c.cik AS cik, c.ticker AS ticker, risk_count
+                ORDER BY risk_count DESC
                 """
             )
             companies = []
