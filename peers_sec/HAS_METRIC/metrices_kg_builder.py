@@ -16,11 +16,12 @@ def write_metrics_to_neo4j(json_file: str):
     with open(json_file, 'r') as f:
         data = json.load(f)
     
-    companies_with_covenants = data.get('companies_with_covenants', [])
+    companies_with_covenants = data.get('companies_with_metrics', data.get('companies_with_covenants', []))
     
     driver = GraphDatabase.driver(uri, auth=(user, password))
     total_metrics = 0
     total_companies = 0
+    total_competitors = 0
     
     print("=" * 80)
     print("WRITING METRICS TO NEO4J")
@@ -29,6 +30,17 @@ def write_metrics_to_neo4j(json_file: str):
     
     try:
         with driver.session() as session:
+            # First, ensure target company exists as TargetCompany
+            session.run(
+                """
+                MERGE (tc:TargetCompany {name: $name})
+                SET tc.updated_at = datetime()
+                """,
+                {"name": target_company_name}
+            )
+            print(f"  ✓ Target company created/updated: {target_company_name}")
+            print()
+            
             for item in companies_with_covenants:
                 company = item['company']
                 company_name = company['name']
@@ -43,6 +55,18 @@ def write_metrics_to_neo4j(json_file: str):
                     """,
                     {"name": company_name, "cik": cik, "ticker": ticker}
                 )
+                
+                # Create COMPETES_WITH relationship to target company
+                session.run(
+                    """
+                    MATCH (c:Company {name: $company_name})
+                    MATCH (tc:TargetCompany {name: $target_name})
+                    MERGE (c)-[r:COMPETES_WITH]->(tc)
+                    SET r.updated_at = datetime()
+                    """,
+                    {"company_name": company_name, "target_name": target_company_name}
+                )
+                total_competitors += 1
                 
                 company_metrics = 0
                 
@@ -161,7 +185,9 @@ def write_metrics_to_neo4j(json_file: str):
         print("=" * 80)
         print("SUMMARY")
         print("=" * 80)
-        print(f"Total companies: {total_companies}")
+        print(f"Target company: {target_company_name}")
+        print(f"Total competitor companies: {total_competitors}")
+        print(f"Total companies with metrics: {total_companies}")
         print(f"Total metrics: {total_metrics}")
         print()
         

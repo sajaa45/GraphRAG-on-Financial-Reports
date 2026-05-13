@@ -474,7 +474,7 @@ def main():
     parser.add_argument(
         "--output", "-o",
         help="Output file path (JSON format)",
-        default="output/parsed_sections_html.json"
+        default="parsing/parsed_sections_html.json"
     )
 
     args = parser.parse_args()

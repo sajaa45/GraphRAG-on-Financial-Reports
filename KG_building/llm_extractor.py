@@ -397,7 +397,7 @@ def main():
         print("Available relations:", list_available_relations())
         return
 
-    default_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "output")
+    default_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "parsing")
     output_dir = args.output_dir or os.getenv("OUTPUT_DIR", default_output)
 
     default_sections = os.path.join(default_output, "parsed_sections_html.json")

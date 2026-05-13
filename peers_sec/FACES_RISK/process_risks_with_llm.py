@@ -5,11 +5,11 @@ import time
 import boto3
 from dotenv import load_dotenv
 
-# Load environment variables from .env file in parent directory
-env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env')
+# Load environment variables from project root (two levels up)
+env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env')
 load_dotenv(env_path)
 
-MODEL_ID = "meta.llama3-70b-instruct-v1:0"
+MODEL_ID = "qwen.qwen3-next-80b-a3b"
 MAX_CONTEXT = 8042       
 MAX_BATCH_RISKS = 10     
 TOKENS_PER_WORD = 1.33
@@ -56,23 +56,54 @@ STRICT Rules:
 - DO NOT use external knowledge — only what is written."""
 
 
-def call_llama(prompt, n_risks, max_retries=5):
-    formatted = (
-        "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\n"
-        f"{SYSTEM_PROMPT}<|eot_id|><|start_header_id|>user<|end_header_id|>\n\n"
-        f"{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n["
-    )
+def call_qwen(prompt, n_risks, max_retries=5):
+    """Call Qwen model via AWS Bedrock with proper formatting."""
+    # Qwen uses a simpler message format
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": prompt}
+    ]
+    
     max_gen_len = n_risks * OUTPUT_PER_RISK + 100
-    body = json.dumps({"prompt": formatted, "max_gen_len": max_gen_len, "temperature": 0.3, "top_p": 0.9})
+    body = json.dumps({
+        "messages": messages,
+        "max_tokens": max_gen_len,
+        "temperature": 0.3,
+        "top_p": 0.9
+    })
     
     for attempt in range(max_retries):
         try:
             response = client.invoke_model(modelId=MODEL_ID, body=body)
-            raw = json.loads(response["body"].read()).get("generation", "").strip()
-            return "[" + raw
+            response_body = json.loads(response["body"].read())
+            
+            # Try different response formats
+            raw = None
+            if "output" in response_body:
+                if isinstance(response_body["output"], dict):
+                    raw = response_body["output"].get("text", "")
+                else:
+                    raw = response_body["output"]
+            elif "content" in response_body:
+                if isinstance(response_body["content"], list):
+                    raw = response_body["content"][0].get("text", "")
+                else:
+                    raw = response_body["content"]
+            elif "completion" in response_body:
+                raw = response_body["completion"]
+            elif "choices" in response_body:
+                raw = response_body["choices"][0].get("message", {}).get("content", "")
+            else:
+                raise ValueError(f"Unexpected response format: {list(response_body.keys())}")
+            
+            if raw:
+                return raw.strip()
+            else:
+                raise ValueError("Could not extract text from response")
+                
         except Exception as e:
             if "ThrottlingException" in str(e) or "Too many requests" in str(e):
-                wait_time = (2 ** attempt) + (attempt * 0.5)  # Exponential backoff: 1s, 2.5s, 5s, 9s, 17s
+                wait_time = (2 ** attempt) + (attempt * 0.5)
                 print(f"    ⚠ Throttled, waiting {wait_time:.1f}s (attempt {attempt + 1}/{max_retries})...")
                 time.sleep(wait_time)
             else:
@@ -190,7 +221,7 @@ def extract_single_risk(risk_text, main_company="the Company", max_retries=2):
     
     for attempt in range(max_retries):
         try:
-            text = call_llama(single_prompt, 1)
+            text = call_qwen(single_prompt, 1)
             results = extract_json_array(text)
             if isinstance(results, list) and results:
                 # Validate and fix the result
@@ -221,7 +252,7 @@ def extract_batch(risks, batch_num, main_company="the Company"):
     risks_text = "\n\n".join(f"RISK #{i+1}:\n{r}" for i, r in enumerate(risks))
     prompt = BATCH_PROMPT.format(n=len(risks), risks_text=risks_text, main_company=main_company)
     try:
-        text = call_llama(prompt, len(risks))
+        text = call_qwen(prompt, len(risks))
         results = extract_json_array(text)
         if not isinstance(results, list):
             return None
@@ -266,7 +297,8 @@ def make_batches(risks):
     return batches
 
 
-def process_all_risks(input_file="all_companies_risks.json", output_file="structured_risks.json", 
+def process_all_risks(input_file="peers_sec/FACES_RISK/companies_risks.json", 
+                     output_file="peers_sec/FACES_RISK/structured_risks.json", 
                      batch_delay=1.0, fallback_delay=0.5):
     """
     Process risks with rate limiting to avoid throttling.
@@ -293,6 +325,7 @@ def process_all_risks(input_file="all_companies_risks.json", output_file="struct
         company_risks = []
 
         company_name = company.get("company_name", "the Company") or "the Company"
+
 
         for b, batch in enumerate(batches):
             print(f"  Batch {b+1}/{len(batches)} ({len(batch)} risks)...", end=" ")

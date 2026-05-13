@@ -3,6 +3,10 @@ import os
 import json
 import re
 import argparse
+import time
+import urllib3
+import requests
+import xml.etree.ElementTree as ET
 from typing import List, Dict, Optional
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -14,7 +18,49 @@ from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '.env')
 load_dotenv(env_path)
 
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 MODEL = os.getenv("BEDROCK_MODEL", "qwen.qwen3-next-80b-a3b")
+
+EDGAR_HEADERS = {"User-Agent": os.getenv("SEC_USER_AGENT", "YourName your_email@example.com")}
+_edgar_sic_cache: Dict[str, bool] = {}
+
+
+def _sic_exists_in_edgar(sic_code: str) -> bool:
+    """Return True if SEC EDGAR recognises this SIC code (has at least one 10-K filer)."""
+    if sic_code in _edgar_sic_cache:
+        return _edgar_sic_cache[sic_code]
+    try:
+        time.sleep(0.3)  # respect SEC rate limit
+        resp = requests.get(
+            "https://www.sec.gov/cgi-bin/browse-edgar",
+            params={"action": "getcompany", "SIC": sic_code, "type": "10-K",
+                    "owner": "include", "count": "1", "output": "atom"},
+            headers=EDGAR_HEADERS,
+            timeout=10,
+            verify=False,
+        )
+        if resp.status_code != 200:
+            print(f"    EDGAR returned HTTP {resp.status_code} for SIC {sic_code} — keeping candidate")
+            _edgar_sic_cache[sic_code] = True
+            return True
+
+        # Parse the Atom feed the same way fetch_and_extract_risks.py does
+        root = ET.fromstring(resp.content)
+        ns = {"atom": "http://www.w3.org/2005/Atom"}
+        entries = root.findall("atom:entry", ns)
+        exists = len(entries) > 0
+        _edgar_sic_cache[sic_code] = exists
+        return exists
+    except ET.ParseError:
+        # EDGAR returned HTML (e.g. error page) instead of XML — treat as not found
+        print(f"    EDGAR returned non-XML for SIC {sic_code} — marking as invalid")
+        _edgar_sic_cache[sic_code] = False
+        return False
+    except Exception as e:
+        print(f"  ⚠ Could not verify SIC {sic_code} against EDGAR: {e} — keeping candidate")
+        _edgar_sic_cache[sic_code] = True
+        return True  # optimistic fallback
 
 
 def _build_prompt(company_name: str, candidates: List[Dict], chunk_texts: List[str]) -> str:
@@ -28,7 +74,7 @@ def _build_prompt(company_name: str, candidates: List[Dict], chunk_texts: List[s
 
     return f"""/no_think
 
-You are an expert in SEC SIC classification. Given excerpts from {company_name}'s 10-K filing and a list of candidate industry classifications, choose the ONE candidate that best represents the company's PRIMARY business activity.
+You are an expert in SEC EDGAR SIC classification. Given excerpts from {company_name}'s 10-K filing and a list of candidate industry classifications, choose the ONE candidate whose SIC code SEC EDGAR would most likely assign to this company.
 
 COMPANY EXCERPTS:
 {combined_text}
@@ -38,9 +84,10 @@ CANDIDATE INDUSTRIES:
 
 Rules:
 - Choose exactly one candidate number from the list above
-- Prefer the classification that captures the company's core revenue-generating activity
-- Prefer a specific industry over a broad parent category when the specific one fits
-- Prefer the SIC code that SEC EDGAR would actually use for this type of company
+- Prioritise the SIC code that SEC EDGAR actually uses for companies with this primary business activity — not just the closest description
+- Prefer a specific, narrow SIC code over a broad parent category when the specific one fits
+- Prefer the classification that captures the company's core revenue-generating activity as SEC EDGAR would record it
+- Avoid generic or catch-all SIC codes (e.g. "Services-Not Elsewhere Classified") when a more specific code is present
 
 Return ONLY the candidate number (e.g. "2"). No explanation, no text."""
 
@@ -87,8 +134,30 @@ def validate_operates_in(extracted_json_path: str) -> Optional[Dict]:
         print("No SIC-backed candidates found.")
         return None
 
+    # --- Filter out SIC codes not recognised by SEC EDGAR ---
+    print(f"Verifying {len(candidates)} candidate SIC codes against SEC EDGAR...")
+    valid_candidates: List[Dict] = []
+    valid_candidate_to_relation: Dict[int, Dict] = {}
+    for old_idx, cand in enumerate(candidates):
+        if _sic_exists_in_edgar(cand['sic_code']):
+            new_idx = len(valid_candidates)
+            valid_candidates.append(cand)
+            valid_candidate_to_relation[new_idx] = candidate_to_relation[old_idx]
+            print(f"  ✓ SIC {cand['sic_code']} ({cand['industry']}) — confirmed in EDGAR")
+        else:
+            print(f"  ✗ SIC {cand['sic_code']} ({cand['industry']}) — NOT found in EDGAR, removed")
+
+    if not valid_candidates:
+        print("⚠ All candidates removed by EDGAR validation — falling back to original list.")
+        valid_candidates = candidates
+        valid_candidate_to_relation = candidate_to_relation
+
+    candidates = valid_candidates
+    candidate_to_relation = valid_candidate_to_relation
+    # --------------------------------------------------------
+
     if len(candidates) == 1:
-        print(f"Single candidate — keeping: {candidates[0]}")
+        print(f"Single candidate after EDGAR validation — keeping: {candidates[0]}")
         return {
             'main_company': company_name,
             'validated_relation': candidate_to_relation[0]

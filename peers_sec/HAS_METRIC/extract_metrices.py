@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 import json
 import time
@@ -6,6 +7,7 @@ from datetime import datetime
 import urllib3
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
+from rank_bm25 import BM25Okapi
 
 # Load environment variables
 load_dotenv()
@@ -13,74 +15,13 @@ load_dotenv()
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# Define financial covenant tag groups
-debt_ebitda_tags = [
-    'DebtInstrumentCovenantComplianceRatioOfConsolidatedNetDebtToConsolidatedEBITDA',
-    'NetDebtToEBITDARatio',
-    'DebtToEbitda',
-    'ActualDebtToEbitdaRatio',
-    'DebtInstrumentCovenantDebtToEBITDARatio',
-    'DebtInstrumentCovenantMaximumDebtToEBITDARatio',
-    'DebtInstrumentCovenantNetDebtToEBITDARatio',
-    'RatioOfIndebtednessToEBITDA',
-    'DebtInstrumentCovenantConsolidatedIndebtednessToConsolidatedEBITDAMaximum',
-    'DebtToEbitdaRatioMaximum'
-]
-
-interest_coverage_ratio_tags = [
-    'InterestCoverageRatio',
-    'ConsolidatedInterestCoverageRatio',
-    'DebtInstrumentCovenantActualInterestCoverageRatio',
-    'DebtInstrumentCovenantComplianceConsolidatedInterestCoverageRatio',
-    'DebtInstrumentCovenantInterestCoverageRatio',
-    'DebtInstrumentCovenantMinimumInterestCoverageRatio',
-    'DebtInstrumentConsolidatedInterestCoverageRatio',
-    'DebtInstrumentCovenantComplianceMinimumInterestCoverageRatio',
-    'LineofCreditFacilityCovenantComplianceActualInterestCoverageRatio',
-    'DebtInstrumentCovenantConsolidatedInterestCoverageRatioMinimum'
-]
-
-current_ratio_tags = [
-    'CurrentRatio',
-    'DebtServiceCoverageRatioCurrentFiscalYear',
-    'DebtInstrumentCovenantComplianceCurrentRatio',
-    'DebtInstrumentCovenantCurrentRatio',
-    'MinimumCurrentRatioPerCreditFacility',
-    'MinimumCurrentRatioRequired',
-    'DebtCovenantCurrentRatio',
-    'LineOfCreditFacilityCovenantTermsMinimumCurrentRatio',
-    'DebtInstrumentCovenantCurrentRatioMinimum',
-    'FinancialCovenantsCurrentAssetsToCurrentLiabilitiesRatio',
-    'DebtInstrumentCovenantComplianceCurrentRatio'
-]
-
-debt_to_equity_tags = [
-    'DebtToEquityRatio',
-    'DebtEquityRatio',
-    'NetDebtToEquityRatio',
-    'DebtInstrumentCovenantDebtToEquityRatio',
-    'DebtInstrumentCovenantDebtToEquityRatioMaximum',
-    'RatioOfDebtToDebtPlusEquity',
-    'DebtCovenantRatioOfDebtToDebtPlusEquity',
-    'TargetedMaximumDebtToEquityRatio',
-    'LineofCreditFacilityCovenantTermsMaximumDebttoEquityRatio',
-    'DebtInstrumentCovenantDebtToAllowanceAndEquityRatioMaximum'
-]
-
-credit_risk_tags = [
-    'MaximumExposureToCreditRisk',
-    'NetExposureToCreditRisk',
-    'ConcentrationRiskCreditRiskFinancialInstrumentMaximumExposure',
-    'MaximumExposureToCreditRiskOfFinancialAssets',
-    'CreditRiskExposureToBankingAndFinancialSectorPercentage'
-]
 
 # Configuration
 START_DATE = "2023-01-01"
 END_DATE = "2024-01-01"
 FORM_TYPE = "10-K"
-TARGET_FISCAL_YEAR = 2024 
-MAX_COMPANIES = 3  
+TARGET_FISCAL_YEAR = 2024
+MAX_COMPANIES = 10
 
 headers = {"User-Agent": "User (your_email@example.com)"}
 
@@ -138,6 +79,7 @@ def get_companies_from_neo4j():
 
 def get_sic_from_neo4j() -> str:
     """Query Neo4j for the SIC code of the target company (is_target=true)."""
+    print("  → Querying Neo4j for SIC code...")
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     user = os.getenv("NEO4J_USERNAME", "neo4j")
     password = os.getenv("NEO4J_PASSWORD", "")
@@ -171,16 +113,12 @@ def get_sic_from_neo4j() -> str:
                 RETURN s.code AS sic_code
                 LIMIT 1
                 """,
-                # Pattern 5: Any Company with SIC code
+                # Pattern 5: SIC code stored directly on the Industry node
                 """
-                MATCH (c:Company)-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
-                """,
-                # Pattern 4: Any SIC code in the database
-                """
-                MATCH (s:SICCode)
-                RETURN s.code AS sic_code
+                MATCH (c)-[:OPERATES_IN]->(i:Industry)
+                WHERE c:TargetCompany OR (c:Company AND c.is_target = true)
+                AND i.sic_code IS NOT NULL
+                RETURN i.sic_code AS sic_code
                 LIMIT 1
                 """
             ]
@@ -211,12 +149,12 @@ def get_target_company_metrics():
     driver = GraphDatabase.driver(uri, auth=(user, password))
     try:
         with driver.session() as session:
-            # Try both TargetCompany and Company node types
+            # Updated query to match new structure: Company -> MetricCategory -> Metric
             result = session.run(
                 """
-                MATCH (c)-[:HAS_METRIC]->(m:Metric)
+                MATCH (c)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
                 WHERE c:TargetCompany OR (c:Company AND c.is_target = true)
-                RETURN m.name AS metric_name, m.metric_type AS metric_type, m.year AS year
+                RETURN m.name AS metric_name, m.metric_type AS metric_type, m.year AS year, mc.name AS category
                 """
             )
             metrics = []
@@ -226,6 +164,7 @@ def get_target_company_metrics():
                 metric_name = record["metric_name"]
                 metric_type = record["metric_type"]
                 year = record.get("year")
+                category = record.get("category", "Uncategorised")
                 
                 # If metric_type is not set, try to extract it from the name
                 if not metric_type and metric_name:
@@ -247,7 +186,8 @@ def get_target_company_metrics():
                     metrics.append({
                         "name": metric_name,
                         "type": metric_type,
-                        "year": year  # Will be None if not found, then use default
+                        "year": year,  # Will be None if not found, then use default
+                        "category": category
                     })
                     seen_types.add(metric_type)
             
@@ -255,7 +195,8 @@ def get_target_company_metrics():
                 print(f"✓ Found {len(metrics)} unique metric types in target company:")
                 for m in metrics:
                     year_str = f" (year: {m['year']})" if m['year'] else " (using default year)"
-                    print(f"  - {m['type']}{year_str}")
+                    category_str = f" [{m['category']}]" if m.get('category') else ""
+                    print(f"  - {m['type']}{year_str}{category_str}")
                 print()
             else:
                 print("⚠ No metrics found in target company\n")
@@ -264,14 +205,6 @@ def get_target_company_metrics():
     finally:
         driver.close()
 
-# Combine all tag groups
-all_covenant_tags = {
-    'Debt/EBITDA Ratio': debt_ebitda_tags,
-    'Interest Coverage Ratio': interest_coverage_ratio_tags,
-    'Current Ratio': current_ratio_tags,
-    'Debt to Equity': debt_to_equity_tags,
-    'Credit Risk': credit_risk_tags
-}
 
 
 def fetch_companies_by_sic(sic_codes, start_date, end_date, form_type, size=100):
@@ -319,8 +252,30 @@ def fetch_companies_by_sic(sic_codes, start_date, end_date, form_type, size=100)
         return []
 
 
+BM25_TOP_K = 3
+BM25_MIN_SCORE = 1.0
+
+
+def _tokenize_xbrl_tag(tag: str) -> list:
+    """Split a PascalCase/camelCase XBRL tag into lowercase tokens, preserving acronyms.
+
+    EBITDACoverageRatio -> ['ebitda', 'coverage', 'ratio']
+    NetIncomeLoss       -> ['net', 'income', 'loss']
+    """
+    # Separate acronym from next capitalised word: EBITDACoverage -> EBITDA Coverage
+    s = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', tag)
+    # Separate camelCase boundary: netIncome -> net Income
+    s = re.sub(r'([a-z])([A-Z])', r'\1 \2', s)
+    return [t.lower() for t in s.split() if len(t) >= 2]
+
+
+def _tokenize_metric(metric: str) -> list:
+    """Tokenize a human-readable metric name into lowercase tokens."""
+    return [t.lower() for t in re.split(r'[\s\-_/]+', metric) if len(t) >= 2]
+
+
 def analyze_company_covenants(cik, company_name, target_metrics=None, default_fiscal_year=2024):
-    """Analyze a single company for financial covenant tags and target metrics.
+    """Analyze a single company for target metrics.
     
     Args:
         cik: Company CIK number
@@ -336,114 +291,80 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
         data = response.json()
         facts = data.get('facts', {})
         
-        results = {}
         target_metric_results = {}
-        
-        # Search through all taxonomies
-        for taxonomy_name, taxonomy_data in facts.items():
-            for tag_name, tag_content in taxonomy_data.items():
-                # Check if this tag matches any of our covenant tags
-                for covenant_type, tag_list in all_covenant_tags.items():
-                    if tag_name in tag_list:
-                        if covenant_type not in results:
-                            results[covenant_type] = {}
-                        
-                        # Extract the data
-                        units = tag_content.get('units', {})
-                        tag_data = {
-                            'taxonomy': taxonomy_name,
-                            'tag': tag_name,
-                            'label': tag_content.get('label', ''),
-                            'description': tag_content.get('description', ''),
-                            'units': {}
+
+        if not target_metrics:
+            return target_metric_results
+
+        # Phase 1: collect every (taxonomy, tag_name, tag_content) tuple once
+        all_tags = [
+            (taxonomy_name, tag_name, tag_content)
+            for taxonomy_name, taxonomy_data in facts.items()
+            for tag_name, tag_content in taxonomy_data.items()
+        ]
+
+        if not all_tags:
+            return target_metric_results
+
+        # Phase 2: build BM25 index over tokenized tag names
+        tokenized_tags = [_tokenize_xbrl_tag(tag_name) for _, tag_name, _ in all_tags]
+        bm25 = BM25Okapi(tokenized_tags)
+
+        # Phase 3: for each metric, query BM25 and keep top-K above threshold
+        for metric in target_metrics:
+            metric_type = metric.get('type', '')
+            if not metric_type:
+                continue
+
+            target_year = metric.get('year') or default_fiscal_year
+            query_tokens = _tokenize_metric(metric_type)
+            if not query_tokens:
+                continue
+
+            scores = bm25.get_scores(query_tokens)
+            top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:BM25_TOP_K]
+            top_indices = [i for i in top_indices if scores[i] >= BM25_MIN_SCORE]
+
+            for idx in top_indices:
+                taxonomy_name, tag_name, tag_content = all_tags[idx]
+                units = tag_content.get('units', {})
+
+                tag_data = {
+                    'taxonomy': taxonomy_name,
+                    'tag': tag_name,
+                    'label': tag_content.get('label', ''),
+                    'description': tag_content.get('description', ''),
+                    'metric_type': metric_type,
+                    'target_year': target_year,
+                    'bm25_score': round(float(scores[idx]), 4),
+                    'units': {}
+                }
+
+                for unit_name, entries in units.items():
+                    filtered_entries = [
+                        {
+                            'end': e.get('end'),
+                            'val': e.get('val'),
+                            'accn': e.get('accn'),
+                            'fy': e.get('fy'),
+                            'fp': e.get('fp'),
+                            'form': e.get('form'),
+                            'filed': e.get('filed', ''),
                         }
-                        
-                        # Get all unit data and filter by fiscal year and period
-                        for unit_name, entries in units.items():
-                            filtered_entries = []
-                            for entry in entries:
-                                # Filter: only FY (full year) and matching fiscal year
-                                fp = entry.get('fp', '')
-                                fy = entry.get('fy')
-                                form = entry.get('form', '')
-                                if fp == 'FY' and form == '10-K' and fy == default_fiscal_year:
-                                    filtered_entries.append({
-                                        'end': entry.get('end'),
-                                        'val': entry.get('val'),
-                                        'accn': entry.get('accn'),
-                                        'fy': fy,
-                                        'fp': fp,
-                                        'form': form,
-                                        'filed': entry.get('filed', '')
-                                    })
-                            
-                            if filtered_entries:
-                                tag_data['units'][unit_name] = filtered_entries
-                        
-                        if tag_data['units']:
-                            results[covenant_type][tag_name] = tag_data
-                
-                if target_metrics:
-                    for metric in target_metrics:
-                        metric_type = metric.get('type', '')
-                        if not metric_type:
-                            continue
-                        
-                        target_year = metric.get('year') or default_fiscal_year
-                        
-                        normalized_metric = ''.join(c.lower() for c in metric_type if c.isalnum())
-                        normalized_tag = tag_name.lower()
-                        
-                        match = False
-                        if normalized_metric in normalized_tag or normalized_tag in normalized_metric:
-                            match = True
-                        elif len(normalized_metric) > 3:
-                            metric_words = [w for w in metric_type.lower().split() if len(w) > 2]
-                            if metric_words and all(w in normalized_tag for w in metric_words):
-                                match = True
-                        
-                        if match:
-                            if metric_type not in target_metric_results:
-                                target_metric_results[metric_type] = []
-                            
-                            units = tag_content.get('units', {})
-                            tag_data = {
-                                'taxonomy': taxonomy_name,
-                                'tag': tag_name,
-                                'label': tag_content.get('label', ''),
-                                'description': tag_content.get('description', ''),
-                                'metric_type': metric_type,
-                                'target_year': target_year,
-                                'units': {}
-                            }
-                            
-                            # Get all unit data and filter by fiscal year and period
-                            for unit_name, entries in units.items():
-                                filtered_entries = []
-                                for entry in entries:
-                                    # Filter: only FY (full year) and matching fiscal year
-                                    fp = entry.get('fp', '')
-                                    fy = entry.get('fy')
-                                    form = entry.get('form', '')
-                                    
-                                    if fp == 'FY' and form == '10-K' and fy == target_year:
-                                        filtered_entries.append({
-                                            'end': entry.get('end'),
-                                            'val': entry.get('val'),
-                                            'accn': entry.get('accn'),
-                                            'fy': fy,
-                                            'fp': fp,
-                                            'form': form,
-                                            'filed': entry.get('filed', '')
-                                        })
-                                
-                                if filtered_entries:
-                                    tag_data['units'][unit_name] = filtered_entries
-                            
-                            if tag_data['units']:
-                                target_metric_results[metric_type].append(tag_data)
-        
-        return results, target_metric_results
+                        for e in entries
+                        if e.get('fp') == 'FY'
+                        and e.get('form') == '10-K'
+                        and e.get('fy') == target_year
+                    ]
+                    if filtered_entries:
+                        tag_data['units'][unit_name] = filtered_entries
+
+                if tag_data['units']:
+                    if metric_type not in target_metric_results:
+                        target_metric_results[metric_type] = []
+                    target_metric_results[metric_type].append(tag_data)
+
+        return target_metric_results
     
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
@@ -458,7 +379,7 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
 def main():
     """Main execution function."""
     print("=" * 80)
-    print("FINANCIAL COVENANT ANALYSIS - BATCH PROCESSING")
+    print("TARGET METRICS ANALYSIS - BATCH PROCESSING")
     print("=" * 80)
     print()
     
@@ -494,6 +415,7 @@ def main():
         
         try:
             sic_code = get_sic_from_neo4j()
+            print(f"✓ Using SIC code: {sic_code}\n")
             sic_codes = [sic_code]
         except Exception as e:
             print(f"Error getting SIC from Neo4j: {e}")
@@ -523,10 +445,9 @@ def main():
         return
     
     all_results = {}
-    companies_with_covenants = []
-    companies_without_covenants = []
+    companies_with_metrics = []
+    companies_without_metrics = []
     companies_with_errors = []
-    companies_with_target_metrics = []
     
     print("=" * 80)
     print("ANALYZING COMPANIES")
@@ -540,49 +461,37 @@ def main():
         
         print(f"[{idx}/{len(companies)}] {name} ({ticker}) - CIK: {cik}")
         
-        covenant_results, metric_results = analyze_company_covenants(
+        metric_results = analyze_company_covenants(
             cik, name, target_metrics, TARGET_FISCAL_YEAR
         )
         
-        if covenant_results is None and metric_results is None:
+        if metric_results is None:
             companies_with_errors.append(company)
             print(f"  ⚠ Data not available or error occurred\n")
         else:
-            has_covenants = bool(covenant_results)
             has_metrics = bool(metric_results)
             
-            if has_covenants or has_metrics:
+            if has_metrics:
                 # Count total tags found
-                total_covenant_tags = sum(len(tags) for tags in covenant_results.values()) if covenant_results else 0
-                total_metric_matches = sum(len(matches) for matches in metric_results.values()) if metric_results else 0
+                total_metric_matches = sum(len(matches) for matches in metric_results.values())
                 
                 company_data = {
                     'company': company,
-                    'covenant_count': total_covenant_tags,
-                    'covenants': covenant_results,
                     'target_metric_count': total_metric_matches,
                     'target_metrics': metric_results
                 }
                 
-                companies_with_covenants.append(company_data)
+                companies_with_metrics.append(company_data)
                 
-                if has_covenants:
-                    print(f"  ✓ Found {total_covenant_tags} covenant tag(s)")
-                    for covenant_type, tags in covenant_results.items():
-                        if tags:
-                            print(f"    - {covenant_type}: {len(tags)} tag(s)")
-                
-                if has_metrics:
-                    print(f"  ✓ Found {total_metric_matches} target metric match(es)")
-                    for metric_name, matches in metric_results.items():
-                        if matches:
-                            print(f"    - {metric_name}: {len(matches)} match(es)")
-                    companies_with_target_metrics.append(company_data)
+                print(f"  ✓ Found {total_metric_matches} target metric match(es)")
+                for metric_name, matches in metric_results.items():
+                    if matches:
+                        print(f"    - {metric_name}: {len(matches)} match(es)")
                 
                 print()
             else:
-                companies_without_covenants.append(company)
-                print(f"  ✗ No covenant tags or target metrics found\n")
+                companies_without_metrics.append(company)
+                print(f"  ✗ No target metrics found\n")
         
         time.sleep(0.2)
     
@@ -594,30 +503,29 @@ def main():
     print(f"Companies from Neo4j graph: {neo4j_count}")
     print(f"Companies from SEC EDGAR: {sec_count}")
     print(f"Total companies analyzed: {len(companies)}")
-    print(f"Companies with covenant tags or metrics: {len(companies_with_covenants)}")
-    print(f"Companies with target metrics: {len(companies_with_target_metrics)}")
-    print(f"Companies without covenant tags: {len(companies_without_covenants)}")
+    print(f"Companies with target metrics: {len(companies_with_metrics)}")
+    print(f"Companies without target metrics: {len(companies_without_metrics)}")
     print(f"Companies with errors: {len(companies_with_errors)}")
     print()
     
-    if companies_with_covenants:
+    if companies_with_metrics:
         print("=" * 80)
-        print("COMPANIES WITH FINANCIAL COVENANTS")
+        print("COMPANIES WITH TARGET METRICS")
         print("=" * 80)
         print()
         
-        for item in companies_with_covenants:
+        for item in companies_with_metrics:
             company = item['company']
             print(f"{company['name']} ({company['ticker']}) - CIK: {company['cik']}")
-            print(f"  Total covenant tags: {item['covenant_count']}")
+            print(f"  Total metric matches: {item['target_metric_count']}")
             
-            for covenant_type, tags in item['covenants'].items():
-                if tags:
-                    print(f"  {covenant_type}:")
-                    for tag_name, tag_data in tags.items():
-                        print(f"    - {tag_name}")
+            for metric_type, matches in item['target_metrics'].items():
+                if matches:
+                    print(f"  {metric_type}:")
+                    for match in matches:
+                        print(f"    - {match['tag']}")
                         # Show latest value
-                        for unit_name, entries in tag_data['units'].items():
+                        for unit_name, entries in match['units'].items():
                             if entries:
                                 latest = entries[-1]
                                 print(f"      Latest: {latest['val']} ({unit_name}) as of {latest['end']}")
@@ -634,14 +542,12 @@ def main():
             'form_type': FORM_TYPE,
             'analysis_date': datetime.now().isoformat(),
             'total_companies': len(companies),
-            'companies_with_covenants': len(companies_with_covenants),
-            'companies_with_target_metrics': len(companies_with_target_metrics),
-            'companies_without_covenants': len(companies_without_covenants),
+            'companies_with_metrics': len(companies_with_metrics),
+            'companies_without_metrics': len(companies_without_metrics),
             'companies_with_errors': len(companies_with_errors)
         },
-        'companies_with_covenants': companies_with_covenants,
-        'companies_with_target_metrics': companies_with_target_metrics,
-        'companies_without_covenants': companies_without_covenants,
+        'companies_with_metrics': companies_with_metrics,
+        'companies_without_metrics': companies_without_metrics,
         'companies_with_errors': companies_with_errors
     }
     
