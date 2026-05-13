@@ -174,18 +174,36 @@ class Neo4jBuilder:
         """
         session.run(query, {"source_name": source_name, "target_name": target_name, **props})
 
-    def build_from_json(self, json_file: str, clear: bool = False):
-        """Read extracted JSON and write all entities/relationships to Neo4j."""
-        with open(json_file, 'r', encoding='utf-8') as f:
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _normalise_validated_file(filepath: str) -> Optional[Dict]:
+        """Load a validated JSON file and normalise to {main_company, relations: {REL: [...]}}."""
+        with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        main_company = data.get("main_company", self.main_company)
-        self.main_company = main_company
-        self.stamp_target_company(main_company)
+        main_company = data.get('main_company', '')
 
-        if clear:
-            self.clear_database()
+        # OPERATES_IN format: single item under 'validated_relation'
+        if 'validated_relation' in data:
+            item = data['validated_relation']
+            rel_type = item.get('rel', '')
+            if not rel_type:
+                print(f"  ⚠ No 'rel' key in validated_relation in {filepath}")
+                return None
+            return {'main_company': main_company, 'relations': {rel_type: [item]}}
 
+        # Standard format: already has 'relations' dict
+        if 'relations' in data:
+            return data
+
+        print(f"  ⚠ Unrecognised validated file format: {filepath}")
+        return None
+
+    def _build_from_data(self, data: Dict) -> int:
+        """Write all entities/relationships from a normalised data dict to Neo4j."""
         relations = data.get("relations", {})
         total_written = 0
 
@@ -217,16 +235,38 @@ class Neo4jBuilder:
                     tgt_props = dict(item['tgt'].get('properties', {}))
                     if metadata_str:
                         tgt_props['metadata'] = metadata_str
-                    self.create_node(tx, item['tgt']['type'], item['tgt']['name'], tgt_props)
 
-                    self.create_relationship(
-                        tx,
-                        item['src']['type'], item['src']['name'],
-                        item['tgt']['type'], item['tgt']['name'],
-                        item['rel'], item.get('props', {}),
-                        item.get('chunk_text'), item.get('similarity'),
-                        item.get('section_title'), item.get('source_page'),
-                    )
+                    if item.get('rel') == 'HAS_METRIC':
+                        # Structure:
+                        #   Company -[HAS_METRIC_CATEGORY]-> MetricCategory -[HAS_METRIC]-> Metric
+                        category = tgt_props.pop('category', None) or 'Uncategorised'
+
+                        self.create_node(tx, 'MetricCategory', category, {'name': category})
+                        self.create_relationship(
+                            tx,
+                            item['src']['type'], item['src']['name'],
+                            'MetricCategory', category,
+                            'HAS_METRIC_CATEGORY',
+                        )
+                        self.create_node(tx, item['tgt']['type'], item['tgt']['name'], tgt_props)
+                        self.create_relationship(
+                            tx,
+                            'MetricCategory', category,
+                            item['tgt']['type'], item['tgt']['name'],
+                            'HAS_METRIC', item.get('props', {}),
+                            item.get('chunk_text'), item.get('similarity'),
+                            item.get('section_title'), item.get('source_page'),
+                        )
+                    else:
+                        self.create_node(tx, item['tgt']['type'], item['tgt']['name'], tgt_props)
+                        self.create_relationship(
+                            tx,
+                            item['src']['type'], item['src']['name'],
+                            item['tgt']['type'], item['tgt']['name'],
+                            item['rel'], item.get('props', {}),
+                            item.get('chunk_text'), item.get('similarity'),
+                            item.get('section_title'), item.get('source_page'),
+                        )
 
                     sic = item.get('sic')
                     if not sic and item.get('rel') == 'OPERATES_IN':
@@ -256,6 +296,84 @@ class Neo4jBuilder:
         print(f"\n✓ Total items written to Neo4j: {total_written}")
         return total_written
 
+    # ------------------------------------------------------------------
+    # Public build methods
+    # ------------------------------------------------------------------
+
+    def build_from_json(self, json_file: str, clear: bool = False):
+        """Read a raw extracted JSON file and write to Neo4j."""
+        with open(json_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        main_company = data.get("main_company", self.main_company)
+        self.main_company = main_company
+        self.stamp_target_company(main_company)
+
+        if clear:
+            self.clear_database()
+
+        return self._build_from_data(data)
+
+    def build_from_validated_dirs(self, relations_dir: str, clear: bool = False):
+        """
+        Scan each subdirectory of relations_dir for a validated_*.json file,
+        merge all relations across files, and write to Neo4j.
+
+        Expected layout:
+            relations_dir/
+                OPERATES_IN/validated_industry.json
+                FACES_RISK/validated_risks.json
+                HAS_METRIC/validated_metrics.json
+        """
+        if not os.path.isdir(relations_dir):
+            raise FileNotFoundError(f"Relations directory not found: {relations_dir}")
+
+        combined_relations: Dict[str, List] = {}
+        main_company = self.main_company
+
+        for entry in sorted(os.listdir(relations_dir)):
+            sub_dir = os.path.join(relations_dir, entry)
+            if not os.path.isdir(sub_dir):
+                continue
+
+            validated_files = sorted(
+                f for f in os.listdir(sub_dir)
+                if f.startswith('validated_') and f.endswith('.json')
+            )
+
+            if not validated_files:
+                print(f"  ⚠ No validated_*.json found in {sub_dir} — skipping")
+                continue
+
+            for fname in validated_files:
+                fpath = os.path.join(sub_dir, fname)
+                print(f"  Loading {os.path.join(entry, fname)} ...")
+                normalised = self._normalise_validated_file(fpath)
+                if normalised is None:
+                    continue
+
+                if not main_company:
+                    main_company = normalised.get('main_company', '')
+
+                for rel_type, items in normalised.get('relations', {}).items():
+                    combined_relations.setdefault(rel_type, []).extend(items)
+                    print(f"    ✓ {len(items)} {rel_type} items")
+
+        if not main_company:
+            raise ValueError("Could not determine main_company from any validated file.")
+
+        self.main_company = main_company
+        self.stamp_target_company(main_company)
+
+        if clear:
+            self.clear_database()
+
+        total = sum(len(v) for v in combined_relations.values())
+        print(f"\nMerged {total} total items across {len(combined_relations)} relation type(s): "
+              f"{', '.join(combined_relations)}")
+
+        return self._build_from_data({'main_company': main_company, 'relations': combined_relations})
+
     def show_graph_stats(self):
         with self.driver.session() as session:
             print(f"\n{'='*60}")
@@ -275,8 +393,24 @@ class Neo4jBuilder:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Neo4j Builder — loads extracted JSON into Neo4j")
-    parser.add_argument("json_file", help="Path to the extracted JSON file produced by llm_extractor.py")
+    parser = argparse.ArgumentParser(description="Neo4j Builder — loads extracted/validated JSON into Neo4j")
+
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument(
+        "json_file",
+        nargs="?",
+        help="Path to a single raw extracted JSON file (legacy mode)",
+    )
+    mode.add_argument(
+        "--validated-dir",
+        metavar="DIR",
+        help=(
+            "Directory containing relation subdirs with validated_*.json files "
+            "(e.g. KG_building/relations). "
+            "Defaults to <this script's dir>/relations when flag is given without a value."
+        ),
+    )
+
     parser.add_argument("--clear", action="store_true", help="Clear database before loading")
 
     args = parser.parse_args()
@@ -288,7 +422,12 @@ def main():
     )
 
     try:
-        builder.build_from_json(args.json_file, clear=args.clear)
+        if args.validated_dir:
+            relations_dir = args.validated_dir
+            builder.build_from_validated_dirs(relations_dir, clear=args.clear)
+        else:
+            builder.build_from_json(args.json_file, clear=args.clear)
+
         builder.show_graph_stats()
     finally:
         builder.close()

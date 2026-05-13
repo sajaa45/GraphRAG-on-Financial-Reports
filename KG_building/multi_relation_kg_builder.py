@@ -27,19 +27,13 @@ class MultiRelationKGBuilder:
                  neo4j_uri: str,
                  neo4j_user: str,
                  neo4j_password: str,
-                 collection_name: str = "financial_docs",
-                 qdrant_host: str = "localhost",
-                 qdrant_port: int = 6333,
-                 embedding_model: str = "all-MiniLM-L6-v2",
+                 parsed_sections_file: str,
                  output_dir: str = "/app/output",
                  main_company: str = "the Company",
                  source_file: str = ""):
 
         self.extractor = LLMExtractor(
-            collection_name=collection_name,
-            qdrant_host=qdrant_host,
-            qdrant_port=qdrant_port,
-            embedding_model=embedding_model,
+            parsed_sections_file=parsed_sections_file,
             output_dir=output_dir,
             main_company=main_company,
             source_file=source_file,
@@ -55,8 +49,8 @@ class MultiRelationKGBuilder:
         self.builder.clear_database()
 
     def extract_multiple_relations(self, relation_names):
-        json_path = self.extractor.extract_multiple_relations(relation_names)
-        self.builder.build_from_json(json_path)
+        for json_path in self.extractor.extract_multiple_relations(relation_names):
+            self.builder.build_from_json(json_path)
 
     def show_graph_stats(self):
         self.builder.show_graph_stats()
@@ -72,10 +66,7 @@ def main():
     parser.add_argument("--all", action="store_true", help="Extract all relations")
     parser.add_argument("--list", action="store_true", help="List available relations")
     parser.add_argument("--clear", action="store_true", help="Clear database first")
-    parser.add_argument("--collection", default="financial_docs", help="Qdrant collection name")
-    parser.add_argument("--qdrant-host", default="localhost", help="Qdrant host")
-    parser.add_argument("--qdrant-port", type=int, default=6333, help="Qdrant port")
-    parser.add_argument("--embedding-model", default="all-MiniLM-L6-v2", help="Sentence transformer model")
+    parser.add_argument("--parsed-sections-file", default=None, help="Path to parsed_sections_html.json")
     parser.add_argument("--main-company", default=None, help="Main company name")
     parser.add_argument("--source-file", default="", help="Source document filename used to name output files")
     parser.add_argument("--output-dir", default=None, help="Directory for output files")
@@ -89,16 +80,19 @@ def main():
     default_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "output")
     output_dir = args.output_dir or os.getenv("OUTPUT_DIR", default_output)
 
+    default_sections = os.path.join(default_output, "parsed_sections_html.json")
+    parsed_sections_file = (
+        args.parsed_sections_file
+        or os.getenv("PARSED_SECTIONS_FILE", default_sections)
+    )
+
     relations = list_available_relations() if args.all else [r.upper() for r in args.relations]
 
     kg = MultiRelationKGBuilder(
         neo4j_uri=os.getenv("NEO4J_URI", "neo4j://localhost:7687"),
         neo4j_user=os.getenv("NEO4J_USERNAME", "neo4j"),
         neo4j_password=os.getenv("NEO4J_PASSWORD", "Lexical12345*"),
-        collection_name=args.collection,
-        qdrant_host=args.qdrant_host or os.getenv("QDRANT_HOST", "localhost"),
-        qdrant_port=args.qdrant_port or int(os.getenv("QDRANT_PORT", "6333")),
-        embedding_model=args.embedding_model,
+        parsed_sections_file=parsed_sections_file,
         output_dir=output_dir,
         main_company=args.main_company or os.getenv("MAIN_COMPANY", "the Company"),
         source_file=args.source_file or os.getenv("SOURCE_FILE", ""),

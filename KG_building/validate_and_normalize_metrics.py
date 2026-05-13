@@ -286,6 +286,35 @@ Return a JSON array — one object per input metric in the same order:
             by_type.setdefault(m.get("type", "unknown"), []).append(entry)
         return by_type
 
+    def _deduplicate_metrics(self, metrics: List[Dict]) -> List[Dict]:
+        """Remove duplicate metrics with same value, unit, year, and all properties.
+        Keep the one with highest priority (prefer totals, longer names, higher similarity)."""
+        seen_signatures: Dict[str, Dict] = {}
+        
+        for metric in metrics:
+            # Create signature from value, unit, year (ignore title/name since LLM may generate different ones)
+            value = str(metric.get("value", "")).strip()
+            unit = str(metric.get("unit", "")).strip()
+            year = str(metric.get("year", "")).strip()
+            
+            # Normalize value for comparison (remove commas, spaces)
+            normalized_value = re.sub(r'[,\s]', '', value)
+            
+            signature = f"{normalized_value}|{unit}|{year}"
+            
+            if signature in seen_signatures:
+                # Compare priority: keep the better one
+                existing = seen_signatures[signature]
+                if self._metric_priority(metric) > self._metric_priority(existing):
+                    seen_signatures[signature] = metric
+                    print(f"  [DEDUP] Replaced duplicate: {value} {unit} ({year}) - kept '{metric.get('original_name', '?')}' over '{existing.get('original_name', '?')}'")
+                else:
+                    print(f"  [DEDUP] Skipped duplicate: {value} {unit} ({year}) - '{metric.get('original_name', '?')}'")
+            else:
+                seen_signatures[signature] = metric
+        
+        return list(seen_signatures.values())
+
     def _organize_by_standard_names(self, metrics: List[Dict]) -> Dict[str, Any]:
         """Keep most recent year; break same-year ties by priority (prefer totals over sub-components)."""
         organized: Dict[str, Any] = {}
@@ -356,10 +385,16 @@ Return a JSON array — one object per input metric in the same order:
         other = [v for v in all_validated if v.get("type") != "core"]
         print(f"\n✓ Validated: {len(core)} core, {len(other)} supplementary")
 
+        # Deduplicate metrics before organizing
+        print(f"\nDeduplicating metrics...")
+        core_deduped = self._deduplicate_metrics(core)
+        other_deduped = self._deduplicate_metrics(other)
+        print(f"✓ After deduplication: {len(core_deduped)} core (removed {len(core) - len(core_deduped)}), {len(other_deduped)} supplementary (removed {len(other) - len(other_deduped)})")
+
         result = {
             "main_company": main_company,
-            "standardized_metrics": self._organize_by_standard_names(core),
-            "classified_metrics": self._organize_classified(other),
+            "standardized_metrics": self._organize_by_standard_names(core_deduped),
+            "classified_metrics": self._organize_classified(other_deduped),
         }
 
         with open(self.output_file, 'w', encoding='utf-8') as f:
