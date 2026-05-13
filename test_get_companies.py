@@ -14,8 +14,8 @@ import json
 
 
 def test_get_companies():
-    sic_codes = ['2869']  
-    size = 50  
+    sic_codes = ['2819']  
+    size = 5000 
     print("Testing get_companies_from_api function")
     print(f"  SIC Codes: {sic_codes}")
     print(f"  Size: {size}")

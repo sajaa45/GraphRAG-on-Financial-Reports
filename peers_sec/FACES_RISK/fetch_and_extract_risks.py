@@ -9,7 +9,8 @@ import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
+# Load .env from project root (two levels up from this file)
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env'))
 
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -153,20 +154,32 @@ def get_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date
     return companies
 
 
-def get_10k_filings(cik: str, limit: int = 1):
+def get_10k_filings(cik: str, start_date: str = None, end_date: str = None, limit: int = 1):
     cik_padded = cik.zfill(10)
     data = requests.get(f"https://data.sec.gov/submissions/CIK{cik_padded}.json", headers=HEADERS, verify=False).json()
     company_name = data.get("name", "N/A")
     filings = data["filings"]["recent"]
-    results = [
-        {
-            "accession_raw": filings["accessionNumber"][i],
-            "date": filings["filingDate"][i],
-            "primary_document": filings["primaryDocument"][i],
-        }
-        for i, form in enumerate(filings["form"])
-        if form == "10-K"
-    ][:limit]
+    
+    results = []
+    for i, form in enumerate(filings["form"]):
+        if form == "10-K":
+            filing_date = filings["filingDate"][i]
+            
+            # Filter by date range if provided
+            if start_date and filing_date < start_date:
+                continue
+            if end_date and filing_date > end_date:
+                continue
+            
+            results.append({
+                "accession_raw": filings["accessionNumber"][i],
+                "date": filing_date,
+                "primary_document": filings["primaryDocument"][i],
+            })
+            
+            if len(results) >= limit:
+                break
+    
     return results, cik_padded, company_name
 
 
@@ -192,8 +205,8 @@ def split_risks(text):
     return [r.strip() for r in re.split(r'\n\s*\n', text) if len(r.split()) > 30]
 
 
-def get_risk_factor_data(cik: str, company_name: str):
-    filings, cik_padded, real_name = get_10k_filings(cik)
+def get_risk_factor_data(cik: str, company_name: str, start_date: str = None, end_date: str = None):
+    filings, cik_padded, real_name = get_10k_filings(cik, start_date, end_date)
     if not filings:
         return None
 
@@ -205,7 +218,7 @@ def get_risk_factor_data(cik: str, company_name: str):
     risk_text = extract_risk_factors(doc_url)
     individual_risks = split_risks(risk_text)
 
-    print(f"  chars={len(risk_text)}, words={len(risk_text.split())}, risks={len(individual_risks)}")
+    print(f"  filing_date={filing['date']}, chars={len(risk_text)}, words={len(risk_text.split())}, risks={len(individual_risks)}")
     return {
         "company_name": company_name,
         "cik": cik,
@@ -220,19 +233,19 @@ def get_risk_factor_data(cik: str, company_name: str):
 
 
 def process_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date='2024-01-01',
-                               size=100, delay=0.5, output_file='all_companies_risks.json'):
+                               size=100, delay=0.5, output_file='peers_sec/FACES_RISK/companies_risks.json'):
     """Process companies from SEC API for given SIC code(s)."""
     companies = get_companies_from_api(sic_codes, start_date, end_date, size)
     print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes}")
 
-    with open('companies_list.json', 'w', encoding='utf-8') as f:
+    with open('peers_sec/FACES_RISK/companies_list.json', 'w', encoding='utf-8') as f:
         json.dump({"total_count": len(companies), "companies": companies, "sic_codes": sic_codes}, f, indent=2, ensure_ascii=False)
 
     results = []
     for i, company in enumerate(companies, 1):
         print(f"\n[{i}/{len(companies)}] CIK {company['cik']}")
         try:
-            data = get_risk_factor_data(company['cik'], company['name'])
+            data = get_risk_factor_data(company['cik'], company['name'], start_date, end_date)
             if data:
                 if data['risk_count'] < 10:
                     print(f"  Skipped — only {data['risk_count']} risks (minimum 10 required)")
@@ -243,8 +256,11 @@ def process_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_
                         break
                 else:
                     print(f"  Skipped — only {data['length']['words']} words")
+            else:
+                print(f"  Skipped — no 10-K filing found in date range {start_date} to {end_date}")
         except Exception as e:
             print(f"  Error: {e}")
+        
         if i < len(companies):
             time.sleep(delay)
 
