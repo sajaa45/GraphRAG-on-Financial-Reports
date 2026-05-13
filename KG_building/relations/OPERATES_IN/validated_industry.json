@@ -1,0 +1,29 @@
+{
+  "main_company": "Minerals Technologies Inc.",
+  "validated_relation": {
+    "src": {
+      "type": "Company",
+      "name": "Minerals Technologies Inc."
+    },
+    "tgt": {
+      "type": "Industry",
+      "name": "Specialty Chemicals",
+      "properties": {
+        "sector": "Chemicals",
+        "sic_code": ""
+      }
+    },
+    "rel": "OPERATES_IN",
+    "props": {},
+    "chunk_text": "PART I\n\nAnchor\n\nItem 1. Business\n\nMinerals Technologies Inc. (together with its subsidiaries, the \u201cCompany\u201d, \u201cwe\u201d, \u201cMTI\u201d, \u201cus\u201d or \u201cour\u201d) is a leading, technology-driven specialty minerals company that develops, produces, and markets a broad range of mineral and mineral-based products, related systems and services. The Company serves globally a wide range of consumer and industrial markets,\n\nAnchor\n\nincluding household and personal care, paper and packaging, food and pharmaceutical, automotive, construction, steel and foundry, environmental, and infrastructure.\n\nAt December 31, 2024, the Company reported our operations in the following two reportable business segments under which we managed our operations, assessed performance and reported earnings: Consumer & Specialties and Engineered Solutions.\n\n[TABLE START]\n|  | \u25cf | The Consumer & Specialties segment serves consumer end markets directly with mineral-to-market finished products and also provides specialty mineral-based solutions and technologies that are an essential component of our customers\u2019 finished products. |\n|--|---|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n[TABLE END]\n\n[TABLE START]\n|  | \u25cf | The Engineered Solutions segment serves industrial end markets with engineered systems, mineral blends, and technologies that are designed to improve our customers\u2019 manufacturing processes and projects . |\n|--|---|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n[TABLE END]\n\nThe Company is focused on executing our growth strategy of expanding our business into faster-growing markets and geographies and strengthening our leadership positions in existing markets. In addition, the Company maintains a research and development focus by accelerating the development of advanced new products and technologies to satisfy the changing customer requirements and creating market opportunities.\n\nThe following table sets forth the percentage of our revenues generated from each segment for each of our last three fiscal years:\n\n[TABLE START]\n|                         |  | 2024 |     |   |  | 2023 |     |   |  | 2022 |     |   |\n|-------------------------|--|------|-----|---|--|------|-----|---|--|------|-----|---|\n| Percentage of Net Sales |  |      |     |   |  |      |     |   |  |      |     |   |\n| Consumer & Specialties  |  |      |  54 | % |  |      |  54 | % |  |      |  53 | % |\n| Engineered Solutions    |  |      |  46 | % |  |      |  46 | % |  |      |  47 | % |\n| Total                   |  |      | 100 | % |  |      | 100 | % |  |      | 100 | % |\n[TABLE END]\n\nSee Note 21 to the Consolidated Financial Statements for additional details on our two business segments.\n\nCONSUMER & SPECIALTIES SEGMENT\n\nThe Consumer & Specialties segment provides technologically enhanced products to consumer-driven end markets, including mineral-to-market household products, as well as specialty additives that become functional components in a variety of consumer and industrial goods. This segment includes two product lines: Household & Personal Care and Specialty Additives\n\nHousehold & Personal Care Products and Markets\n\nThe Household & Personal Care product line delivers mineral-to-market products to a variety of consumer-oriented markets, including pet litter, personal care, fabric care, edible oil and renewable fuel purification, animal health, and agricultural. The core technology used in this product line is called, \u201cFunctional Additives,\u201d which is the use of unique minerals and additives to deliver functionality to our products and our customers\u2019 products. The principal products of this product line are marketed under various registered trade names, including PREMIUM CHOICE\n\n\u00ae\n\n, VitaLife\n\n\u00ae\n\n, Sivocat\n\nTM\n\n,SIVO\n\nTM\n\n, RAFINOL\n\nTM\n\nand ENERSOL\n\n\u00ae\n\n.\n\nThe Company\u2019s cat litter products include sodium bentonite-based scoopable (clumping), traditional and alternative cat litters sold to grocery and drug stores, mass merchandisers, wholesale clubs and pet specialty stores throughout North America, Europe, and Asia. The Company\u2019s scoopable products\u2019 clump-forming capability traps urine, thereby reducing waste by allowing for easy removal of only the odor-producing elements from the litter box. The Company is a provider of private-label cat litter to retail partners, as well as a provider of bulk cat litter to national brands and other private label packaging companies. The Company\u2019s internal transportation group provides logistics services and is a key component of our capability in supplying customers on a national basis. The Company has completed a number of acquisitions of cat litter manufacturers over the past several years in both the European and North American markets.\n\n3",
+    "section_title": "Item 1.\u00a0 Business",
+    "source_page": 3,
+    "sic": {
+      "code": "2819",
+      "industry": "Specialty Chemicals",
+      "sector": "Chemicals",
+      "src_type": "Industry",
+      "src_name": "Specialty Chemicals"
+    }
+  }
+}
