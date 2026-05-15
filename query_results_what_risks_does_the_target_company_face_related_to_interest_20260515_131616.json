@@ -1,0 +1,179 @@
+{
+  "question": "What risks does the target company face related to interest rates?",
+  "cypher": "MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)\nWHERE toLower(r.name) CONTAINS 'interest' \n   OR toLower(r.description) CONTAINS 'interest' \n   OR toLower(r.why) CONTAINS 'interest' \n   OR toLower(r.source_text) CONTAINS 'interest'\nWITH tc, COLLECT(DISTINCT properties(r)) AS risks\nOPTIONAL MATCH (peer:Company {is_peer:true})-[:COMPETES_WITH]->(tc)\nOPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)\nWHERE toLower(pr.name) CONTAINS 'interest' \n   OR toLower(pr.description) CONTAINS 'interest' \n   OR toLower(pr.why) CONTAINS 'interest' \n   OR toLower(pr.source_text) CONTAINS 'interest'\nWITH tc, risks, COLLECT(DISTINCT properties(pr)) AS peer_risks\nRETURN tc.name AS company, risks, peer_risks",
+  "record_count": 1,
+  "results": [
+    {
+      "company": "Minerals Technologies Inc.",
+      "risks": [
+        {
+          "metadata": "{\"source_page\": 13, \"section_title\": \"Item 1A.\\u00a0 Risk Factors\", \"source_text\": \"Anchor\\n\\nItem 1A. Risk Factors\\n\\nOur business faces significant risks. Set forth below are all risks that we believe are material at this time. Our business, financial condition and results of operations could be materially adversely affected by any of these risks. These risks should be read in conjunction with the other information in this Annual Report on Form 10-K.\\n\\nIndustry and Market Risks\\n\\nWorldwide general economic, business, and industry conditions may have an adverse effect on the Company\\u2019s results.\\n\\nThe Company\\u2019s business and operating results are affected by worldwide and regional economic, business, and industry conditions. In recent years, we have experienced, among other things, declining consumer and business confidence, volatile raw material prices, instability in credit markets, high unemployment, fluctuating interest and exchange rates, and other challenges in the countries in which we operate. Uncertainty or a deterioration in the economic conditions affecting the businesses to which, or geographic areas in which, we sell products could reduce demand for our products and inflationary pressures may increase our costs. The Company\\u2019s customers and potential customers may experience deterioration of their businesses, cash flow shortages, and difficulty obtaining financing. As discussed below, the industries we serve have in the past been adversely affected by the uncertain global economic climate due to the cyclical nature of their businesses. As a result, existing or potential customers may reduce or delay their growth and investments and their plans to purchase products, pursue inventory reduction measures, and may not be able to fulfill their obligations in a timely fashion. Further, suppliers could experience similar conditions, which could affect their ability to fulfill their obligations to the Company. We may also experience pricing pressure on products and services, or be unsuccessful in passing along to our customers an increase in our raw materials costs or energy prices, which could decrease our revenues and have an adverse effect on our financial condition and cash flows. Adversity within capital markets may also impact the Company\\u2019s results of operations by negatively affecting the amount of expense the Company records for its pension and other postretirement benefit plans. Actuarial valuations used to calculate income or expense for the plans reflect assumptions about financial market and other economic conditions \\u2013 the most significant of which are the discount rate and the expected long-term rate of return on plan assets. Such actuarial valuations may change based on changes in key economic indicators. Global economic markets remain uncertain, and there can be no assurance that market conditions will improve in the near future. Future weakness in the global economy could materially and adversely affect our business and operating results.\\n\\nA number of our customers\\u2019 businesses are cyclical or have changing regional demands. Our operations are subject to these trends, and we may not be able to mitigate these risks.\\n\\nA significant portion of the sales of the High-Temperature product line of our Engineered Solutions segment are derived from the metalcasting market. The metalcasting market is dependent upon the demand for castings for automobile components, farm and construction equipment, oil and gas production equipment, power generation turbine castings, and rail car components. Many of these types of equipment are sensitive to fluctuations in demand during periods of recession or difficult economic conditions. This product line also serves the steel industry. In recent years, global steel production has been volatile. These trends have affected and may continue to affect the demand for our Engineered Solutions segment\\u2019s products and services. We expect steel consumption to be similar to 2024 levels.\\n\\nIn the paper industry, which is served by the Specialty Additives product line of our Consumer & Specialties segment, production levels for uncoated freesheet within North America and Europe, our two largest markets, are projected to continue to decrease. The reduced demand for premium writing paper products has resulted in closures and conversions of mills in both North America and Europe. We expect paper consumption to remain similar to prior year levels in both regions.\\n\\nThe Environmental & Infrastructure product line of our Engineered Solutions segment serves the commercial construction, infrastructure and oil & gas markets. In addition, the Specialty Additives product line of our Consumer & Specialties segment is affected by the domestic residential building and construction markets, as well as the automotive market.\\n\\nDemand for our products is subject to trends in these markets. During periods of economic slowdown, our customers often reduce their capital expenditure and defer or cancel pending projects. Such developments occur even amongst customers that are not experiencing financial difficulties. In addition, these trends could cause our customers to face liquidity issues or bankruptcy, which could deteriorate the aging of our accounts receivable, increase our bad debt exposure and possibly trigger impairment of assets or realignment of our businesses. The Company has taken steps to reduce its exposure to variations in its customers\\u2019 businesses, including by diversifying its portfolio of products and services through geographic expansion, growth in less cyclical consumer-oriented markets, and by structuring most of its long-term satellite contracts to provide a degree of protection against declines in the quantity of product purchased, since the price per ton of our products generally rises as the number of tons purchased declines. In addition, many of our product lines lower our customers\\u2019 costs of production or increase their productivity, which should encourage them to use our products. However, there can be no assurance that these efforts will mitigate the risks of our dependence on these industries. Continued weakness in the industries we serve has had, and may in the future have, an adverse effect on sales of our products and our results of operations. A continued or renewed economic downturn in one or more of the industries or geographic regions that the Company serves, or in the worldwide economy, could cause actual results of operations to differ materially from historical and expected results.\\n\\n13\"}",
+          "name": "Worldwide general economic, business, and industry conditions",
+          "created_at": "2026-05-15T09:31:18.942000000+00:00",
+          "description": "Global economic conditions, including declining confidence, volatile raw material prices, credit market instability, high unemployment, and fluctuating interest and exchange rates, may adversely affect the Company\u2019s results.",
+          "why": "These conditions reduce customer demand, increase costs, impair customers' and suppliers' ability to fulfill obligations, and limit the Company\u2019s ability to pass on cost increases, directly impacting revenues and cash flows."
+        },
+        {
+          "metadata": "{\"source_page\": 14, \"section_title\": \"Item 1A.\\u00a0 Risk Factors\", \"source_text\": \"The Company operates in very competitive industries, which could adversely affect our profitability.\\n\\nThe Company has many competitors. Some of our principal competitors have greater financial and other resources than we have. Accordingly, these competitors may be better able to withstand economic downturns and changes in conditions within the industries in which we operate and may have significantly greater operating and financial flexibility than we do. We also face competition for some of our products from alternative products, and some of the competition we face comes from competitors in lower-cost production countries like China and India. As a result of the competitive environment in the markets in which we operate, we currently face and will continue to face pressure on the sales prices of our products from competitors, which could reduce profit margins.\\n\\nThe Company\\u2019s sales could be adversely affected by consolidation in customer industries.\\n\\nSeveral consolidations in the paper industry have taken place in recent years and such consolidation could continue in the future. These consolidations could result in partial or total closure of some paper mills where the Company operates satellite plants. Such closures would reduce the Company\\u2019s sales, except to the extent that they resulted in shifting paper production and associated purchases of calcium carbonate to another location served by the Company. Similarly, consolidations have occurred in the foundry and steel industries. Such consolidations in the major industries we serve concentrate purchasing power in the hands of a smaller number of manufacturers, enabling them to increase pressure on suppliers, such as the Company. This increased pressure could have an adverse effect on the Company\\u2019s results of operations in the future.\\n\\nThe Company\\u2019s sales could be adversely affected by our failure to renew or extend long-term sales contracts for our satellite operations.\\n\\nThe Company\\u2019s sales of calcium carbonate to paper customers are typically pursuant to long-term evergreen agreements, initially ten years in length, with paper mills where the Company operates satellite plants. Sales pursuant to these contracts represent a significant portion of our sales in the Specialty Additives product line of the Consumer & Specialties segment. The terms of many of these agreements have been extended or renewed in the past, often in connection with an expansion of the satellite plant. However, failure of a number of the Company\\u2019s customers to renew or extend existing agreements on terms as favorable to the Company as those currently in effect, or at all, could have a substantial adverse effect on the Company\\u2019s results of operations, and could also result in impairment of the assets associated with the satellite plant.\\n\\nFinancial Risks\\n\\nServicing the Company\\u2019s debt will require a significant amount of cash. This could reduce the Company\\u2019s flexibility to respond to changing business and economic conditions or fund capital expenditures or working capital needs. Our ability to generate cash depends on many factors beyond our control.\\n\\nAt December 31, 2024, the Company had $971.3 million aggregate principal amount of total indebtedness (consisting primarily of $575.0 million aggregate principal amount of loans under our term facility, $400.0 million aggregate principal amount of notes and $4.5 million outstanding under our revolving credit facility) and an additional $386.4 million of borrowing capacity under the revolving credit facility (after giving effect to $9.1 million of outstanding letters of credit). Our outstanding indebtedness will require a significant amount of cash to make interest payments. Further, the interest rate on a significant portion of our borrowings under our senior secured credit facility is based on SOFR interest rates, which has resulted in and could continue to result in higher interest expense in the event of continued increases in interest rates. Our ability to pay interest on our debt and to satisfy our other debt obligations will depend in part upon our future financial and operating performance and upon our ability to renew or refinance borrowings. Prevailing economic conditions and financial, business, competitive, regulatory and other factors, many of which are beyond our control, will affect our ability to make these payments. We cannot guarantee that our business will generate sufficient cash flow from operations or that future borrowings will be available to us in an amount sufficient to enable us to fund our liquidity needs. If we are unable to generate sufficient cash flow to meet our debt service obligations, we will have to pursue one or more alternatives, such as reducing or delaying capital or other expenditures, refinancing debt, selling assets, or raising equity capital. Further, the requirement to make significant interest payments may reduce the Company\\u2019s flexibility to respond to changing business and economic conditions or fund capital expenditure or working capital needs and may increase the Company\\u2019s vulnerability to adverse economic conditions.\\n\\n14\"}",
+          "name": "Servicing the Company\u2019s debt",
+          "created_at": "2026-05-15T09:31:21.332000000+00:00",
+          "description": "Servicing $971.3 million of debt requires significant cash, reducing flexibility and increasing vulnerability to economic conditions and rising interest rates.",
+          "why": "Debt includes $575M term loans, $400M notes, and $4.5M revolving credit; interest is tied to rising SOFR rates, and cash flow depends on uncontrollable factors like economic conditions and refinancing ability."
+        },
+        {
+          "metadata": "{\"source_page\": 15, \"section_title\": \"Item 1A.\\u00a0 Risk Factors\", \"source_text\": \"The agreements and instruments governing our debt contain various covenants that could significantly impact our ability to operate our business.\\n\\nThe agreement governing our senior secured credit facility and the indenture that governs our 5.0% Senior Notes due 2028 contain a number of significant covenants that, among other things, limit our ability to: incur or guarantee additional indebtedness, pay dividends or make other distributions or repurchase or redeem capital stock, prepay, redeem or repurchase certain debt, issue certain preferred stock or similar equity securities, make loans and investments, sell or otherwise dispose of assets, incur liens, enter into transactions with affiliates, enter into agreements restricting our subsidiaries\\u2019 ability to pay dividends and consolidate, merge or sell all or substantially all of our assets. In addition, we are required to comply with specific financial ratios, including a maximum net leverage ratio, under which we are required to achieve specific financial results. Our ability to comply with these provisions may be affected by events beyond our control. A breach of any of these covenants would result in a default under the applicable agreements. In the event of any default under our senior secured credit facility, our lenders could elect to declare all amounts borrowed under the credit agreement, together with accrued interest thereon, to be due and payable. In such an event, we cannot assure you that we would have sufficient assets to pay debt then outstanding under the credit agreement, the indenture governing our notes, and any other agreements governing our debt. Any future refinancing of the senior secured credit facility is likely to contain similar restrictive covenants. We may also incur future debt obligations that might subject us to additional restrictive covenants that could affect our financial and operational flexibility. We cannot assure you that we will be granted waivers or amendments to these agreements if for any reason we are unable to comply with these agreements or that we will be able to refinance our debt on terms acceptable to us, or at all.\\n\\nTechnology, Development and Growth Risks\\n\\nThe Company\\u2019s results could be adversely affected if it is unable to effectively achieve and implement its growth initiatives.\\n\\nSales and income growth of the Company depends upon a number of uncertain events. Growth will depend in part on sales growth from our existing businesses and customers. The Company has a strategic growth initiative to increase penetration into geographic markets such as Brazil, India and China as well as other Asian and Eastern European countries. The Company also has a strategic growth initiative to increase penetration into consumer-oriented markets such as pet litter, personal care, and oil purification. Our strategy also anticipates growth through future acquisitions. However, our ability to identify and consummate any future acquisitions on terms that are favorable to us may be limited by the number of attractive acquisition targets, internal demands on our resources and our ability to obtain financing. Our success in integrating newly acquired businesses will depend upon our ability to retain key personnel, avoid diversion of management\\u2019s attention from operational matters, and integrate general and administrative services. In addition, future acquisitions could result in the incurrence of additional debt, costs and contingent liabilities. Integration of acquired operations may take longer, or be more costly or disruptive to our business, than originally anticipated, and it is also possible that expected synergies from future acquisitions may not materialize. We also may incur costs and divert management attention with regard to potential acquisitions that are never consummated. Difficulties, delays or failure of any of these strategies could affect the future growth rate of the Company.\\n\\nDelays or failures in new product development could adversely affect the Company\\u2019s operations.\\n\\nThe Company\\u2019s future business success will depend in part upon its ability to maintain and enhance its technological capabilities, to respond to changing customer needs, and to successfully anticipate or respond to technological changes on a cost-effective and timely basis. The Company is engaged in a continuous effort to develop new products and processes in all of its product lines. Difficulties, delays or failures in the development, testing, production, marketing or sale of such new products could cause actual results of operations to differ materially from our expected results.\\n\\nThe Company\\u2019s ability to compete is dependent upon its ability to defend its intellectual property against inappropriate disclosure, theft and infringement.\\n\\nThe Company\\u2019s ability to compete is based in part upon proprietary knowledge, both patented and unpatented. The Company\\u2019s ability to achieve anticipated results depends in part on its ability to defend its intellectual property against inappropriate disclosure and theft as well as against infringement. In addition, development by the Company\\u2019s competitors of new products or technologies that are more effective or less expensive than those the Company offers could have a material adverse effect on the Company\\u2019s financial condition or results of operations.\\n\\n15\"}",
+          "name": "Failure to comply with debt covenants",
+          "created_at": "2026-05-15T09:31:21.430000000+00:00",
+          "description": "A breach of debt covenants could result in default, causing lenders to declare all borrowed amounts immediately due and payable.",
+          "why": "Lenders under the senior secured credit facility could demand immediate repayment of all outstanding debt plus interest, and the Company cannot assure it has sufficient assets to pay all debt obligations."
+        }
+      ],
+      "peer_risks": [
+        {
+          "risk_id": "0001817232_risk_33",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Exemption from SEC Rule 419 protections for blank check companies",
+          "created_at": "2026-05-15T09:41:22.274000000+00:00",
+          "description": "The company is exempt from SEC Rule 419 protections, meaning investors lack safeguards typically afforded to blank check company investors.",
+          "why": "The passage states that because the company has net tangible assets over $5M and filed an 8-K, it is exempt from Rule 419, meaning investors lose protections such as restrictions on trading units and interest release from trust accounts."
+        },
+        {
+          "risk_id": "0001817232_risk_67",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Conflicts of interest from key personnel compensation arrangements",
+          "created_at": "2026-05-15T09:41:24.220000000+00:00",
+          "description": "Key personnel may negotiate employment deals with target businesses, creating misaligned incentives.",
+          "why": "Key personnel may receive compensation post-combination, and business combinations may be conditioned on their retention or resignation, potentially biasing their judgment."
+        },
+        {
+          "risk_id": "0001817232_risk_71",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Substantial debt incurrence to complete business combination",
+          "created_at": "2026-05-15T09:41:24.361000000+00:00",
+          "description": "Using debt to finance the business combination may increase leverage, reduce cash flow, and limit future borrowing capacity.",
+          "why": "Debt incurrence could accelerate repayment obligations upon covenant breaches, consume cash flow for interest/principal, and restrict funds for operations, acquisitions, or dividends."
+        },
+        {
+          "risk_id": "0001817232_risk_78",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Conflict of interest due to sponsor and management's financial stake in completing a deal",
+          "created_at": "2026-05-15T09:41:24.614000000+00:00",
+          "description": "Sponsor and management stand to lose their entire investment if no business combination is completed, potentially biasing target selection.",
+          "why": "The Sponsor holds 4,312,500 founder shares and 4,850,000 private placement warrants that become worthless if no combination occurs by the 18-month deadline, creating pressure to complete any deal."
+        },
+        {
+          "risk_id": "0001817232_risk_79",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Allocation of time to other businesses causing conflicts of interest",
+          "created_at": "2026-05-15T09:41:24.650000000+00:00",
+          "description": "Executive officers and directors are not required to dedicate full time to the company, risking reduced focus on identifying and completing a business combination.",
+          "why": "They are engaged in other business endeavors with substantial compensation, and do not commit specified hours to the company, which may limit time available for due diligence and negotiations."
+        },
+        {
+          "risk_id": "0001817232_risk_80",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Conflicts of interest from fiduciary obligations to other entities",
+          "created_at": "2026-05-15T09:41:24.709000000+00:00",
+          "description": "Officers and directors may be contractually obligated to present business opportunities to other entities, potentially depriving the company of viable targets.",
+          "why": "They have existing fiduciary or contractual duties to other entities, and may be required to offer opportunities elsewhere first, with no guarantee such conflicts will be resolved in the company\u2019s favor."
+        },
+        {
+          "risk_id": "0001817232_risk_81",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Conflicts of interest due to lack of prohibition on personal financial interests",
+          "created_at": "2026-05-15T09:41:24.750000000+00:00",
+          "description": "Directors, executive officers, and affiliates may have personal financial interests in transactions involving the company, creating conflicts between their interests and those of stockholders.",
+          "why": "The company has no policy prohibiting such persons from having pecuniary interests in acquisitions or transactions, and they may engage in competing business activities, potentially influencing decisions on target selection and deal terms."
+        },
+        {
+          "risk_id": "0001817232_risk_82",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Potential business combinations with affiliated entities",
+          "created_at": "2026-05-15T09:41:24.799000000+00:00",
+          "description": "The company may pursue a business combination with a target affiliated with the Sponsor, directors, or executive officers, despite not targeting such entities.",
+          "why": "Although not intended, the company may still pursue such transactions if they meet criteria and are approved by independent directors, and conflicts of interest may result in less advantageous terms for public stockholders."
+        },
+        {
+          "risk_id": "0001817232_risk_83",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Loss of control over target business post-combination",
+          "created_at": "2026-05-15T09:41:24.836000000+00:00",
+          "description": "The company may not maintain control of the target business after the initial business combination due to dilution or minority shareholder consolidation.",
+          "why": "Issuing a substantial number of new shares in a transaction could result in pre-combination stockholders owning a minority interest, and other minority holders may later consolidate ownership, reducing management control."
+        },
+        {
+          "risk_id": "0001817232_risk_86",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Reduced returns due to holding trust account funds in cash instead of interest-bearing securities",
+          "created_at": "2026-05-15T09:41:24.952000000+00:00",
+          "description": "Holding trust account funds in cash to avoid Investment Company Act classification reduces interest income, lowering the amount available for distribution to shareholders.",
+          "why": "To avoid being deemed an investment company, funds were moved from U.S. government securities and money market funds to non-interest-bearing cash accounts, resulting in minimal or no interest accrual."
+        },
+        {
+          "risk_id": "0001817232_risk_89",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Reduced interest income from trust account funds",
+          "created_at": "2026-05-15T09:41:25.058000000+00:00",
+          "description": "Funds in the trust account were liquidated from U.S. treasury obligations to cash, resulting in minimal or no interest income.",
+          "why": "After December 15, 2022, trust assets were held in interest-bearing demand deposit accounts instead of U.S. treasury obligations or money market funds, which will reduce interest earned and the amount available for redemption."
+        },
+        {
+          "risk_id": "0001817232_risk_95",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Dilution from issuance of additional shares in connection with business combination or employee plans",
+          "created_at": "2026-05-15T09:41:25.592000000+00:00",
+          "description": "Issuance of additional Class A common stock or preferred stock could dilute existing shareholders' interests.",
+          "why": "The company may issue up to 378,817,946 additional Class A shares or 20M Class B shares (convertible to Class A), and preferred stock, potentially diluting ownership and control."
+        },
+        {
+          "risk_id": "0001817232_risk_104",
+          "source_text": "",
+          "filing_date": "2023-04-10",
+          "name": "Material agreements may be amended without stockholder approval",
+          "created_at": "2026-05-15T09:41:25.926000000+00:00",
+          "description": "Key agreements like the underwriting and letter agreements can be amended by board consent without stockholder approval, potentially harming investor interests.",
+          "why": "Amendments to lock-up provisions or other material terms can be made by board approval alone, potentially allowing early sales by insiders and reducing share value without investor consent."
+        },
+        {
+          "risk_id": "0001676580_risk_5",
+          "source_text": "",
+          "filing_date": "2023-03-31",
+          "name": "Dilution or financial burden from raising capital",
+          "created_at": "2026-05-15T09:41:26.790000000+00:00",
+          "description": "Raising capital through equity or debt could dilute shareholders or divert cash flow to debt payments.",
+          "why": "Equity financing would dilute existing shareholders, while debt financing would dedicate significant operating cash flow to principal and interest payments, limiting funds for business activities."
+        },
+        {
+          "risk_id": "0001676580_risk_36",
+          "source_text": "",
+          "filing_date": "2023-03-31",
+          "name": "Concentration of voting power among two shareholders",
+          "created_at": "2026-05-15T09:41:28.000000000+00:00",
+          "description": "Two shareholders, including the CEO, collectively own 57% of equity and can exert significant control over corporate decisions.",
+          "why": "These two shareholders, one of whom is the CEO, hold 57% of equity and can control board composition, amendments to articles, mergers, and asset sales, potentially prioritizing their interests over other shareholders."
+        },
+        {
+          "risk_id": "0000059255_risk_9",
+          "source_text": "",
+          "filing_date": "2023-03-09",
+          "name": "High leverage and debt service obligations",
+          "created_at": "2026-05-15T09:41:28.445000000+00:00",
+          "description": "Significant debt levels ($560M as of Dec 2022) increase vulnerability to economic downturns and limit financial flexibility.",
+          "why": "Debt requires substantial cash flow for interest payments, restricts access to new financing, and includes variable-rate loans exposed to rising interest rates, reducing funds for operations or dividends."
+        }
+      ]
+    }
+  ]
+}
