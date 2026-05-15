@@ -8,7 +8,7 @@ from typing import List, Optional
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from dotenv import load_dotenv
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env'))
 
 from neo4j import GraphDatabase
 
@@ -277,18 +277,15 @@ class RisksKGBuilder:
 # ----------------------------------------------------------------------
 # CLI  — all arguments have defaults so bare `python risks_kg_builder.py` works
 # ----------------------------------------------------------------------
-_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Build a Neo4j KG from structured_risks.json and companies_list.json"
+        description="Build a Neo4j KG from structured_risks.json"
     )
     parser.add_argument("--risks-json",
                         default=os.path.join(_ROOT, "structured_risks.json"),
-                        help="Path to structured_risks.json (default: ../structured_risks.json)")
-    parser.add_argument("--peers-json",
-                        default=os.path.join(_ROOT, "companies_list.json"),
-                        help="Path to companies_list.json (default: ../companies_list.json)")
+                        help="Path to structured_risks.json (default: FACES_RISK/structured_risks.json)")
     parser.add_argument("--target-company", default="",
                         help="Target company name — auto-detected from Neo4j if omitted")
     parser.add_argument("--clear", action="store_true",
@@ -307,14 +304,9 @@ def main():
         if args.clear:
             builder.clear_database()
 
-        if args.peers_json and os.path.exists(args.peers_json):
-            builder.build_peer_companies(args.peers_json)
-        elif args.peers_json:
-            print(f"⚠ peers-json not found: {args.peers_json}")
-
-        if args.risks_json and os.path.exists(args.risks_json):
+        if os.path.exists(args.risks_json):
             builder.build_from_structured_risks(args.risks_json)
-        elif args.risks_json:
+        else:
             print(f"⚠ risks-json not found: {args.risks_json}")
 
         builder.show_graph_stats()

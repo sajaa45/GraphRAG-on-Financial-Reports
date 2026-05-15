@@ -1,544 +1,71 @@
 {
-  "total_count": 77,
+  "total_count": 11,
   "companies": [
     {
-      "name": "ARRAY(0x559d43885228)",
-      "cik": "0001274893",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43882dc0)",
+      "name": "Air Products & Chemicals, Inc.  (APD)  (CIK 0000002969)",
       "cik": "0000002969",
       "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
+      "filing_date": "2023-11-16"
     },
     {
-      "name": "ARRAY(0x559d43851610)",
-      "cik": "0000836243",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4388c590)",
-      "cik": "0000350832",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437ce8e8)",
-      "cik": "0000078319",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437bf298)",
-      "cik": "0000788340",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4387b240)",
-      "cik": "0001392719",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4386de00)",
-      "cik": "0001977303",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4388aec0)",
-      "cik": "0001041577",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4388fe78)",
-      "cik": "0001102027",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d438195e8)",
-      "cik": "0001909658",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4388d028)",
-      "cik": "0000909992",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43857cd8)",
-      "cik": "0001427030",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4386e2e0)",
-      "cik": "0000715095",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437bc8b0)",
-      "cik": "0001071322",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4380e970)",
-      "cik": "0000889431",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d436eff30)",
-      "cik": "0000812701",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43885288)",
-      "cik": "0000310431",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43884fb8)",
-      "cik": "0001298195",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437beaa0)",
-      "cik": "0001035497",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d436efab0)",
-      "cik": "0001851048",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437d3230)",
-      "cik": "0001061786",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d438829a0)",
-      "cik": "0000846978",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437bc820)",
-      "cik": "0001830166",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4386d908)",
-      "cik": "0000352947",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43851fb8)",
-      "cik": "0001176187",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4386e4f0)",
-      "cik": "0001094592",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d436e4130)",
-      "cik": "0000854599",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4384e718)",
-      "cik": "0000929697",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d438548d0)",
-      "cik": "0001145328",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43874a58)",
-      "cik": "0001072548",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43858998)",
+      "name": "Dune Acquisition Corp  (HGAS, HGASW)  (CIK 0001817232)",
       "cik": "0001817232",
       "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
+      "filing_date": "2023-07-17"
     },
     {
-      "name": "ARRAY(0x559d43846f48)",
-      "cik": "0001681222",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43854ae0)",
-      "cik": "0001081260",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43855218)",
-      "cik": "0000716101",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d438233c8)",
-      "cik": "0001119985",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43858308)",
-      "cik": "0001173218",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43897040)",
-      "cik": "0001176979",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4387acd0)",
-      "cik": "0001173219",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43812648)",
-      "cik": "0001176236",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d438855b8)",
-      "cik": "0001257640",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d436f1ba8)",
-      "cik": "0001084554",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4386e328)",
-      "cik": "0000884905",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43862a40)",
-      "cik": "0001707925",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43855008)",
-      "cik": "0001384135",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4385f560)",
-      "cik": "0000060714",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4360ee50)",
-      "cik": "0001099561",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437c6728)",
-      "cik": "0001085217",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437c6770)",
-      "cik": "0001096056",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d436f1ab8)",
-      "cik": "0000852600",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4387e530)",
-      "cik": "0000816955",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437bceb0)",
-      "cik": "0001158638",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43896d88)",
-      "cik": "0001017295",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437ca1f0)",
-      "cik": "0001018099",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437cc7e8)",
-      "cik": "0000891014",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d437cc7b8)",
-      "cik": "0000072162",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4381c5a8)",
-      "cik": "0001527273",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4381cb60)",
-      "cik": "0000317158",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4381cc38)",
-      "cik": "0001281216",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382ab38)",
-      "cik": "0001387135",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382a9d0)",
-      "cik": "0000890397",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382b198)",
-      "cik": "0000769107",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382b3a8)",
-      "cik": "0001778805",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382b7c8)",
-      "cik": "0002095926",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382bf10)",
-      "cik": "0000842295",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382c3a8)",
-      "cik": "0000098788",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382c558)",
-      "cik": "0000810020",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382dbe8)",
-      "cik": "0001530804",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382e548)",
-      "cik": "0001328910",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382ddf8)",
-      "cik": "0001360523",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4382e5f0)",
-      "cik": "0001360522",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4386e370)",
-      "cik": "0001346861",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d438653e8)",
-      "cik": "0001103220",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43889f48)",
-      "cik": "0000059255",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4383c430)",
-      "cik": "0001705682",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d43878428)",
-      "cik": "0001177647",
-      "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
-    },
-    {
-      "name": "ARRAY(0x559d4385ec90)",
+      "name": "VISION ENERGY Corp  (VENG)  (CIK 0001676580)",
       "cik": "0001676580",
       "ticker": "N/A",
-      "filing_date": "N/A",
-      "sic": "2810"
+      "filing_date": "2023-03-31"
+    },
+    {
+      "name": "VALHI INC /DE/  (VHI)  (CIK 0000059255)",
+      "cik": "0000059255",
+      "ticker": "N/A",
+      "filing_date": "2023-03-09"
+    },
+    {
+      "name": "NL INDUSTRIES INC  (NL)  (CIK 0000072162)",
+      "cik": "0000072162",
+      "ticker": "N/A",
+      "filing_date": "2023-03-08"
+    },
+    {
+      "name": "KRONOS WORLDWIDE INC  (KRO)  (CIK 0001257640)",
+      "cik": "0001257640",
+      "ticker": "N/A",
+      "filing_date": "2023-03-08"
+    },
+    {
+      "name": "LUXFER HOLDINGS PLC  (LXFR)  (CIK 0001096056)",
+      "cik": "0001096056",
+      "ticker": "N/A",
+      "filing_date": "2023-03-01"
+    },
+    {
+      "name": "LINDE PLC  (LIN)  (CIK 0001707925)",
+      "cik": "0001707925",
+      "ticker": "N/A",
+      "filing_date": "2023-02-28"
+    },
+    {
+      "name": "LSB INDUSTRIES, INC.  (LXU)  (CIK 0000060714)",
+      "cik": "0000060714",
+      "ticker": "N/A",
+      "filing_date": "2023-02-23"
+    },
+    {
+      "name": "Tronox Holdings plc  (TROX)  (CIK 0001530804)",
+      "cik": "0001530804",
+      "ticker": "N/A",
+      "filing_date": "2023-02-22"
+    },
+    {
+      "name": "MINERALS TECHNOLOGIES INC  (MTX)  (CIK 0000891014)",
+      "cik": "0000891014",
+      "ticker": "N/A",
+      "filing_date": "2023-02-17"
     }
   ],
   "sic_codes": [

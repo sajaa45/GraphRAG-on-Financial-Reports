@@ -5,7 +5,6 @@ import json
 import time
 from bs4 import BeautifulSoup
 import urllib3
-import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
@@ -70,88 +69,57 @@ def get_sic_from_neo4j() -> list:
 
 
 def get_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date='2024-01-01', size=100):
-    """Fetch companies from EDGAR company browse endpoint for given SIC code(s)."""
+    """Fetch companies from EDGAR full-text search index filtered by SIC code and date range."""
     if isinstance(sic_codes, str):
         sic_codes = [sic_codes]
 
-    print(f"  Querying EDGAR company browse for SIC codes: {sic_codes}")
+    print(f"  Querying EDGAR search index for SIC codes: {sic_codes}, {start_date} → {end_date}")
 
-    seen_ciks = set()
-    companies = []
+    params = {
+        "q": "",
+        "forms": "10-K",
+        "dateRange": "custom",
+        "startdt": start_date,
+        "enddt": end_date,
+        "form": "10-K",
+        "sics": sic_codes,
+        "size": size,
+    }
 
-    for sic in sic_codes:
-        try:
-            params = {
-                "action": "getcompany",
-                "SIC": sic,
-                "type": "10-K",
-                "dateb": "",
-                "owner": "include",
-                "count": size,
-                "search_text": "",
-                "output": "atom",
-            }
-            response = requests.get(
-                "https://www.sec.gov/cgi-bin/browse-edgar",
-                params=params,
-                headers=HEADERS,
-                verify=False,
-            )
-            print(f"  SIC {sic} — status: {response.status_code}")
+    try:
+        response = requests.get(
+            "https://efts.sec.gov/LATEST/search-index",
+            params=params,
+            headers=HEADERS,
+            verify=False,
+        )
+        print(f"  Status: {response.status_code}")
+        data = response.json()
+        hits = data.get("hits", {}).get("hits", [])
 
-            root = ET.fromstring(response.content)
-            ns = {"atom": "http://www.w3.org/2005/Atom"}
-            entries = root.findall("atom:entry", ns)
-            print(f"  SIC {sic} — found {len(entries)} entries")
+        seen_ciks = set()
+        companies = []
+        for hit in hits:
+            source = hit.get("_source", {})
+            cik = source.get("ciks", [None])[0]
+            if not cik or cik in seen_ciks:
+                continue
+            seen_ciks.add(cik)
+            name = source.get("display_names", ["Unknown"])[0]
+            ticker = source.get("tickers", ["N/A"])[0] if source.get("tickers") else "N/A"
+            companies.append({
+                "name": name,
+                "cik": str(cik).zfill(10),
+                "ticker": ticker,
+                "filing_date": source.get("file_date", "N/A"),
+            })
 
-            for entry in entries:
-                # CIK is embedded in the <id> tag in format: urn:tag:www.sec.gov:cik=0001311901
-                id_text = entry.findtext("atom:id", default="", namespaces=ns)
-                cik_match = re.search(r"cik[=:](\d+)", id_text, re.IGNORECASE)
-                if not cik_match:
-                    continue
-                cik = cik_match.group(1)
-                if cik in seen_ciks:
-                    continue
-                seen_ciks.add(cik)
+        print(f"  Total unique companies found: {len(companies)}")
+        return companies
 
-                # Company name is in the <content><company-info name="..."> structure
-                name = "N/A"
-                content = entry.find("atom:content", ns)
-                if content is not None:
-                    company_info = content.find("company-info")
-                    if company_info is not None:
-                        name = company_info.get("name", "N/A")
-                
-                # Fallback to title if name not found
-                if name == "N/A" or name.startswith("ARRAY("):
-                    title = entry.findtext("atom:title", default="", namespaces=ns)
-                    if title and not title.startswith("ARRAY("):
-                        name = title.split(" (")[0].strip()
-
-                # Try extracting name from the company-info nested elements
-                if name == "N/A" and content is not None:
-                    for child in content.iter():
-                        if child.get("name"):
-                            name = child.get("name")
-                            break
-                        if child.tag.lower().endswith("company-name") and child.text:
-                            name = child.text.strip()
-                            break
-
-                companies.append({
-                    "name": name,
-                    "cik": cik,
-                    "ticker": "N/A",
-                    "filing_date": "N/A",
-                    "sic": sic,
-                })
-
-        except Exception as e:
-            print(f"  ✗ Error fetching SIC {sic}: {e}")
-
-    print(f"  Total unique companies found: {len(companies)}")
-    return companies
+    except Exception as e:
+        print(f"  ✗ Error fetching companies: {e}")
+        return []
 
 
 def get_10k_filings(cik: str, start_date: str = None, end_date: str = None, limit: int = 1):
@@ -235,8 +203,9 @@ def get_risk_factor_data(cik: str, company_name: str, start_date: str = None, en
 def process_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date='2024-01-01',
                                size=100, delay=0.5, output_file='peers_sec/FACES_RISK/companies_risks.json'):
     """Process companies from SEC API for given SIC code(s)."""
+    print(f"Date range: {start_date} → {end_date}")
     companies = get_companies_from_api(sic_codes, start_date, end_date, size)
-    print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes}")
+    print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes} [{start_date} → {end_date}]")
 
     with open('peers_sec/FACES_RISK/companies_list.json', 'w', encoding='utf-8') as f:
         json.dump({"total_count": len(companies), "companies": companies, "sic_codes": sic_codes}, f, indent=2, ensure_ascii=False)
