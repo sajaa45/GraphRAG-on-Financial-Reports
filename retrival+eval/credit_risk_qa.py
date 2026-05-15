@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from rank_bm25 import BM25Okapi
 
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
 
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 _CYPHER_BLOCK_RE = re.compile(r'```(?:cypher)?\s*(.*?)```', re.DOTALL | re.IGNORECASE)
@@ -224,12 +224,12 @@ class CreditRiskQA:
     # Name resolution
     # ------------------------------------------------------------------
     def _top_k_embedding(self, query_emb: np.ndarray, corpus_emb: np.ndarray,
-                          names: list, k: int) -> list[str]:
+                          names: list, k: int, min_score: float = 0.0) -> list[str]:
         if not names or corpus_emb.shape[0] == 0:
             return []
         scores = (query_emb @ corpus_emb.T)[0]
         idx = scores.argsort()[-k:][::-1]
-        return [names[i] for i in idx]
+        return [names[i] for i in idx if scores[i] >= min_score]
 
     def resolve_names(self, query: str, top_k: int = 5) -> dict:
         """Return top-k real graph names most relevant to the query."""
@@ -238,8 +238,9 @@ class CreditRiskQA:
 
         top_metrics = self._top_k_embedding(q_emb, self._metric_emb,
                                              self.metric_names, top_k)
+        # Categories: only top-2 with similarity >= 0.3 to avoid fetching every category
         top_categories = self._top_k_embedding(q_emb, self._category_emb,
-                                                self.category_names, top_k)
+                                                self.category_names, k=2, min_score=0.3)
 
         # Risks: hybrid BM25 (keyword) + embedding (semantic)
         if self._bm25 and self.risk_names:
@@ -418,7 +419,6 @@ class CreditRiskQA:
         risk_names = resolved.get("risks", [])
         if not risk_names:
             return []
-        # Derive keyword from the top resolved risk name
         keyword = risk_names[0].split()[0].lower() if risk_names else ""
         with self.driver.session() as session:
             res = session.run(
@@ -435,69 +435,66 @@ class CreditRiskQA:
             )
             return [dict(r) for r in res]
 
-    @staticmethod
-    def _question_scope(question: str) -> str:
-        """Return 'target', 'peers', or 'both' based on question wording."""
-        q = question.lower()
-        mentions_peer = any(w in q for w in ("peer", "competitor", "compet", "other compan", "all compan"))
-        mentions_target = any(w in q for w in ("target", "the company", "target company"))
-        if mentions_peer and not mentions_target:
-            return "peers"
-        if mentions_peer and mentions_target:
-            return "both"
-        return "both"   # always include peers for comparison context
-
-    def _fetch_resolved_metrics(self, resolved: dict, question: str = "") -> list[dict]:
+    def _fetch_resolved_metrics(self, resolved: dict) -> list[dict]:
         """
-        Fetch metrics following the proper graph path:
-          (TargetCompany|Company)-[:HAS_METRIC_CATEGORY]->(MetricCategory)-[:HAS_METRIC]->(Metric)
-
-        Scope is inferred from the question. Categories are constrained to the 5 known ones.
-        Metrics are matched by resolved metric names (exact) OR by keyword derived from top name.
+        Fetch metrics by category match (primary) + semantic similarity to resolved
+        metric names (secondary filter, threshold 0.25).  The literal keyword no longer
+        needs to appear in m.name — category membership is the main gate.
         """
         metric_names = resolved.get("metrics", [])
-        # Only keep resolved categories that exist in the fixed set
         category_names = [c for c in resolved.get("categories", []) if c in self.KNOWN_CATEGORIES]
 
         if not metric_names and not category_names:
             return []
 
-        # Keyword from the top resolved metric name for text-search fallback
-        keyword = metric_names[0].rsplit("(", 1)[0].strip().lower() if metric_names else ""
-
-        scope = self._question_scope(question)
         rows = []
-
         with self.driver.session() as session:
-            if scope in ("target", "both"):
-                res = session.run(
-                    """
-                    MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)
-                          -[:HAS_METRIC]->(m:Metric)
-                    WHERE mc.name IN $categories
-                      AND (m.name IN $metric_names OR toLower(m.name) CONTAINS $keyword)
-                    RETURN tc.name AS company, 'target' AS role,
-                           mc.name AS category, properties(m) AS metric
-                    ORDER BY mc.name, m.name
-                    """,
-                    {"categories": category_names, "metric_names": metric_names, "keyword": keyword},
-                )
-                rows += [dict(r) for r in res]
+            res = session.run(
+                """
+                MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)
+                      -[:HAS_METRIC]->(m:Metric)
+                WHERE mc.name IN $categories
+                RETURN tc.name AS company, 'target' AS role,
+                       mc.name AS category, properties(m) AS metric
+                ORDER BY mc.name, m.name
+                """,
+                {"categories": category_names},
+            )
+            rows += [dict(r) for r in res]
 
-            if scope in ("peers", "both"):
-                res = session.run(
-                    """
-                    MATCH (c:Company)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)
-                          -[:HAS_METRIC]->(m:Metric)
-                    WHERE mc.name IN $categories
-                      AND m.name IN $metric_names
-                    RETURN c.name AS company, 'peer' AS role,
-                           mc.name AS category, properties(m) AS metric
-                    ORDER BY c.name, mc.name, m.name
-                    """,
-                    {"categories": category_names, "metric_names": metric_names},
-                )
-                rows += [dict(r) for r in res]
+            res = session.run(
+                """
+                MATCH (c:Company)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)
+                      -[:HAS_METRIC]->(m:Metric)
+                WHERE mc.name IN $categories
+                RETURN c.name AS company, 'peer' AS role,
+                       mc.name AS category, properties(m) AS metric
+                ORDER BY c.name, mc.name, m.name
+                """,
+                {"categories": category_names},
+            )
+            rows += [dict(r) for r in res]
+
+        # Secondary filter: keep only metrics whose name is semantically close to
+        # at least one resolved metric name (cosine similarity >= 0.25).
+        # Skip filtering if no resolved metric names are available.
+        if metric_names and rows:
+            # Strip year suffixes for cleaner embedding comparison
+            clean_refs = [n.rsplit("(", 1)[0].strip() for n in metric_names]
+            ref_embs = self._embed_model.encode(clean_refs, normalize_embeddings=True)
+
+            kept = []
+            for row in rows:
+                m_name = (row.get("metric") or {}).get("name", "")
+                if not m_name:
+                    kept.append(row)
+                    continue
+                candidate = m_name.rsplit("(", 1)[0].strip()
+                cand_emb = self._embed_model.encode([candidate], normalize_embeddings=True)[0]
+                sim = float(np.max(ref_embs @ cand_emb))
+                if sim >= 0.40:
+                    kept.append(row)
+            rows = kept
 
         return rows
 
@@ -537,10 +534,9 @@ class CreditRiskQA:
             results = results + peer_risk_results
 
         # Fetch resolved metrics programmatically using proper graph traversal
-        metric_results = self._fetch_resolved_metrics(resolved, question)
+        metric_results = self._fetch_resolved_metrics(resolved)
         if metric_results:
-            scope = self._question_scope(question)
-            print(f"      → {len(metric_results)} metric records fetched (scope: {scope})")
+            print(f"      → {len(metric_results)} metric records fetched")
             results = results + metric_results
 
         if verbose and results:
@@ -567,13 +563,14 @@ class CreditRiskQA:
 
     # ------------------------------------------------------------------
     def _save_query_results(self, question: str, cypher: str, results: list[dict]):
-        """Save the raw query results (all node properties) to a JSON file."""
-        import re as _re
+        """Save the raw query results (all node properties) to retrival_results/."""
         from datetime import datetime
-        slug = _re.sub(r'[^a-z0-9]+', '_', question.lower())[:60].strip('_')
+        results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "retrival_results")
+        os.makedirs(results_dir, exist_ok=True)
+        slug = re.sub(r'[^a-z0-9]+', '_', question.lower())[:60].strip('_')
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"query_results_{slug}_{timestamp}.json"
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
+        path = os.path.join(results_dir, filename)
         payload = {
             "question": question,
             "cypher": cypher,
@@ -582,7 +579,7 @@ class CreditRiskQA:
         }
         with open(path, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2, default=str)
-        print(f"      → Results saved to: {filename}")
+        print(f"      → Results saved to: retrival_results/{filename}")
 
     def close(self):
         self.driver.close()
