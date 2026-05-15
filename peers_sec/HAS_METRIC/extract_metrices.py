@@ -10,7 +10,7 @@ from neo4j import GraphDatabase
 from rank_bm25 import BM25Okapi
 
 # Load environment variables
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env'))
 
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -20,8 +20,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 START_DATE = "2023-01-01"
 END_DATE = "2024-01-01"
 FORM_TYPE = "10-K"
-TARGET_FISCAL_YEAR = 2024
-MAX_COMPANIES = 10
+MAX_COMPANIES = 3
 
 headers = {"User-Agent": "User (your_email@example.com)"}
 
@@ -354,7 +353,7 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                         for e in entries
                         if e.get('fp') == 'FY'
                         and e.get('form') == '10-K'
-                        and e.get('fy') == target_year
+                        and START_DATE <= e.get('end', '') <= END_DATE
                     ]
                     if filtered_entries:
                         tag_data['units'][unit_name] = filtered_entries
@@ -462,7 +461,7 @@ def main():
         print(f"[{idx}/{len(companies)}] {name} ({ticker}) - CIK: {cik}")
         
         metric_results = analyze_company_covenants(
-            cik, name, target_metrics, TARGET_FISCAL_YEAR
+            cik, name, target_metrics, int(END_DATE[:4]) - 1
         )
         
         if metric_results is None:
@@ -551,10 +550,10 @@ def main():
         'companies_with_errors': companies_with_errors
     }
     
-    output_file = f"financial_covenants_analysis_{START_DATE}_to_{END_DATE}.json"
+    output_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "companies_metrices.json")
     with open(output_file, 'w') as f:
         json.dump(output_data, f, indent=2)
-    
+
     print(f"Complete results saved to: {output_file}")
 
 
