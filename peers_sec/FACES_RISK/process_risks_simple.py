@@ -209,10 +209,15 @@ def process_all_risks(
         for b, batch in enumerate(batches):
             print(f"  Batch {b + 1}/{len(batches)} ({len(batch)} paragraphs)...", end=" ")
             found = extract_batch(batch, company_name)
+            batch_text = "\n\n".join(batch)
 
             for risk in found:
                 risk.pop("source_index", None)
                 risk["risk_id"] = f"{cik}_risk_{len(company_risks) + 1}"
+                risk["metadata"] = {
+                    "document_url": company.get("document_url", ""),
+                    "source_text": batch_text,
+                }
                 company_risks.append(risk)
 
             print(f"→ {len(found)} risk(s) found")

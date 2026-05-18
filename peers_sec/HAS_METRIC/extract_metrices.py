@@ -336,7 +336,11 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                     'metric_type': metric_type,
                     'target_year': target_year,
                     'bm25_score': round(float(scores[idx]), 4),
-                    'units': {}
+                    'units': {},
+                    'metadata': {
+                        'cik': cik,
+                        'source_url': url,
+                    },
                 }
 
                 for unit_name, entries in units.items():

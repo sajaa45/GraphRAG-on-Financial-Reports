@@ -191,13 +191,11 @@ For each query result, list what was found:
   - Data type (risk name, metric name + value + year, etc.)
   - Filing date (use Risk.filing_date or Company.filing_date when available)
   - Source reference:
-      • For TARGET risks → quote up to 2 sentences from Risk.source_text AND include the
-        page/section from the risk's metadata field if present:
-        metadata may contain {{"source_page": <N>, "section_title": "<title>"}}.
-        Cite as: Page <N> — <section_title>
-      • For PEER risks   → note the peer name and risk name only (no page citation needed)
+      • For TARGET risks → quote up to 2 sentences from Risk.source_text AND include
+        metadata.document_url if present. Cite as: [document_url] — "<quote>"
+      • For PEER risks   → note the peer name, risk name, and metadata.document_url if present
       • For companies    → include Company.document_url or TargetCompany.document_url
-      • For metrics      → note the MetricCategory and Metric.year
+      • For metrics      → note the MetricCategory, Metric.year, and metadata.source_url if present
 
 ## 3. Reasoning Steps
 Walk through your analysis step by step:
@@ -210,10 +208,10 @@ Walk through your analysis step by step:
 List every document or data point cited, one per line.
 
 For TARGET company risks use this format:
-  [Company | Target] Filing: <filing_date> | Page: <source_page from metadata, or N/A> | Section: <section_title from metadata, or N/A> "
+  [Company | Target] Filing: <filing_date> | URL: <metadata.document_url or N/A> | Source: "<excerpt from source_text, or N/A>"
 
 For PEER company risks use this format:
-  [Company | Peer] Risk: <risk name>
+  [Company | Peer] Risk: <risk name> | URL: <metadata.document_url or N/A>
 
 For metrics use this format:
   [Company | Role] Category: <MetricCategory> | Metric: <name> | Value: <value> | Year: <year>
@@ -474,23 +472,20 @@ class CreditRiskQA:
 
     @staticmethod
     def _strip_meta(node) -> dict | None:
-        """Keep only source_page and section_title from a risk/node dict's metadata."""
+        """Drop source_text from metadata (too large for LLM context); keep document_url, cik, source_url."""
         if not isinstance(node, dict):
             return node
         node = dict(node)
         raw_meta = node.get("metadata")
+        keep_keys = ("document_url", "cik", "source_url")
         if isinstance(raw_meta, str):
             try:
                 meta = json.loads(raw_meta)
-                node["metadata"] = {
-                    k: meta[k] for k in ("source_page", "section_title") if k in meta
-                }
+                node["metadata"] = {k: meta[k] for k in keep_keys if k in meta}
             except (json.JSONDecodeError, TypeError):
                 pass
         elif isinstance(raw_meta, dict):
-            node["metadata"] = {
-                k: raw_meta[k] for k in ("source_page", "section_title") if k in raw_meta
-            }
+            node["metadata"] = {k: raw_meta[k] for k in keep_keys if k in raw_meta}
         return node
 
     @staticmethod
@@ -554,7 +549,7 @@ class CreditRiskQA:
         with open(path, "w", encoding="utf-8") as f:
             json.dump({"question": question, "queries": queries,
                        "record_count": len(results),
-                       "results": self._clean_metadata(results)},
+                       "results": results},  # full metadata preserved (incl. source_text, document_url, source_url)
                       f, indent=2, default=str)
         print(f"      → Saved: retrival_results/{os.path.basename(path)}")
 
