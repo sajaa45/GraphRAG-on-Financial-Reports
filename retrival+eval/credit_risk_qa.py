@@ -14,9 +14,6 @@ load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 _CYPHER_BLOCK_RE = re.compile(r'```(?:cypher)?\s*(.*?)```', re.DOTALL | re.IGNORECASE)
 
-# ---------------------------------------------------------------------------
-# Graph schema (category names are injected dynamically at startup)
-# ---------------------------------------------------------------------------
 GRAPH_SCHEMA = """
 Node labels and key properties:
   - TargetCompany   {name, cik, ticker, is_target:true, filing_date, document_url}
@@ -159,9 +156,6 @@ class CreditRiskQA:
         self._load_graph_index()
         print("  ✓ Name index ready")
 
-    # ------------------------------------------------------------------
-    # Index loading
-    # ------------------------------------------------------------------
     def _load_graph_index(self):
         """Pull all real names from the graph and build embedding + BM25 indexes."""
         self._embed_model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -190,7 +184,7 @@ class CreditRiskQA:
             for r in risk_rows if r["name"]
         ]
 
-        # Embeddings (encode once, cache as numpy arrays)
+        
         if self.metric_names:
             self._metric_emb = self._embed_model.encode(
                 self.metric_names, normalize_embeddings=True, show_progress_bar=False
@@ -220,9 +214,6 @@ class CreditRiskQA:
         print(f"    ✓ Risks      ({len(self.risk_names)} total, sample): "
               f"{self.risk_names[:3]}{' …' if len(self.risk_names) > 3 else ''}")
 
-    # ------------------------------------------------------------------
-    # Name resolution
-    # ------------------------------------------------------------------
     def _top_k_embedding(self, query_emb: np.ndarray, corpus_emb: np.ndarray,
                           names: list, k: int, min_score: float = 0.0) -> list[str]:
         if not names or corpus_emb.shape[0] == 0:
@@ -276,9 +267,6 @@ class CreditRiskQA:
         ]
         return "\n".join(lines)
 
-    # ------------------------------------------------------------------
-    # Fallback: retrieve risk docs when Cypher returns nothing
-    # ------------------------------------------------------------------
     def _retrieve_risk_docs(self, query: str, top_k: int = 5) -> list[str]:
         if not self._risk_docs:
             return []
@@ -295,8 +283,7 @@ class CreditRiskQA:
             idx = emb_scores.argsort()[-top_k:][::-1]
         return [self._risk_docs[i] for i in idx]
 
-    # ------------------------------------------------------------------
-    def _call_llm(self, system: str, user_msg: str, max_tokens: int = 2048) -> str:
+     def _call_llm(self, system: str, user_msg: str, max_tokens: int = 2048) -> str:
         prompt = f"{system}\n\nUser: {user_msg}"
         for attempt in range(4):
             try:
@@ -316,7 +303,6 @@ class CreditRiskQA:
                 else:
                     raise
 
-    # ------------------------------------------------------------------
     def translate_to_cypher(self, question: str, max_retries: int = 2) -> str:
         resolved = self.resolve_names(question)
         name_hints = self._build_name_hints(resolved)
@@ -362,7 +348,6 @@ class CreditRiskQA:
             result = session.run(query)
             return [dict(record) for record in result]
 
-    # ------------------------------------------------------------------
     def _deduplicate_results(self, results: list[dict], max_records: int = 100) -> list[dict]:
         seen = set()
         unique = []
@@ -375,7 +360,6 @@ class CreditRiskQA:
                     break
         return unique
 
-    # ------------------------------------------------------------------
     def generate_answer(self, question: str, cypher: str, results: list[dict]) -> str:
         if not results:
             results_text = "No data returned from the graph."
@@ -411,7 +395,6 @@ class CreditRiskQA:
             return obj
         return _trim(results)
 
-    # Fixed set of known MetricCategory names
     KNOWN_CATEGORIES = {"Leverage", "Coverage", "Liquidity", "Profitability", "Debt Structure"}
 
     def _fetch_peer_risks(self, resolved: dict) -> list[dict]:
@@ -476,8 +459,6 @@ class CreditRiskQA:
             rows += [dict(r) for r in res]
 
         # Secondary filter: keep only metrics whose name is semantically close to
-        # at least one resolved metric name (cosine similarity >= 0.25).
-        # Skip filtering if no resolved metric names are available.
         if metric_names and rows:
             # Strip year suffixes for cleaner embedding comparison
             clean_refs = [n.rsplit("(", 1)[0].strip() for n in metric_names]
@@ -503,7 +484,6 @@ class CreditRiskQA:
         user_msg = f"Question: {question}\n\nRelevant risk documents:\n{docs_text}"
         return self._call_llm(FALLBACK_ANSWER_PROMPT, user_msg, max_tokens=1024)
 
-    # ------------------------------------------------------------------
     def ask(self, question: str, verbose: bool = False) -> str:
         print(f"\n{'='*70}")
         print(f"Question: {question}")
@@ -561,7 +541,6 @@ class CreditRiskQA:
         print(answer)
         return answer
 
-    # ------------------------------------------------------------------
     def _save_query_results(self, question: str, cypher: str, results: list[dict]):
         """Save the raw query results (all node properties) to retrival_results/."""
         from datetime import datetime
@@ -585,9 +564,6 @@ class CreditRiskQA:
         self.driver.close()
 
 
-# ---------------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------------
 def main():
     import argparse
 
