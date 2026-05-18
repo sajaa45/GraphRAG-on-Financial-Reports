@@ -19,5 +19,7 @@ fastapi>=0.110.0
 uvicorn>=0.29.0
 python-multipart>=0.0.9
 pandas
+langchain_community
+langchain_neo4j
 google-genai
 rank-bm25
