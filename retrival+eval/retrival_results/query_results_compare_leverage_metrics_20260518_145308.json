@@ -1,0 +1,116 @@
+{
+  "question": "Compare leverage metrics",
+  "queries": [
+    {
+      "strategy": "risks",
+      "cypher": "MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)\nWHERE toLower(m.name) CONTAINS 'leverage' OR toLower(m.label) CONTAINS 'leverage'\nOPTIONAL MATCH (peer:Company {is_peer:true})-[:COMPETES_WITH]->(tc)\nOPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(mc2:MetricCategory {name: mc.name})-[:HAS_METRIC]->(pm:Metric {name: m.name, year: m.year})\nRETURN DISTINCT tc.name AS company, peer.name AS peer, mc.name AS category, m.name AS metric, m.value AS target_value, pm.value AS peer_value, m.year AS year, m.unit AS unit"
+    },
+    {
+      "strategy": "metrics",
+      "cypher": "MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)\nWHERE toLower(m.name) CONTAINS 'leverage' OR toLower(m.label) CONTAINS 'leverage'\nOPTIONAL MATCH (peer:Company {is_peer:true})-[:COMPETES_WITH]->(tc)\nOPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(mc2:MetricCategory {name: mc.name})-[:HAS_METRIC]->(pm:Metric {name: m.name, year: m.year})\nRETURN DISTINCT tc.name AS company, peer.name AS peer, mc.name AS category, m.name AS metric, toFloat(m.value) AS target_value, toFloat(pm.value) AS peer_value, m.year AS year, m.unit AS unit"
+    },
+    {
+      "strategy": "comparison",
+      "cypher": "MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)\nWHERE toLower(m.name) CONTAINS 'leverage'\nOPTIONAL MATCH (peer:Company {is_peer:true})-[:COMPETES_WITH]->(tc)\nOPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(mc2:MetricCategory {name: mc.name})-[:HAS_METRIC]->(pm:Metric {name: m.name, year: m.year})\nRETURN DISTINCT tc.name AS company, peer.name AS peer, mc.name AS category, m.name AS metric, toFloat(m.value) AS target_value, toFloat(pm.value) AS peer_value, m.year AS year"
+    }
+  ],
+  "record_count": 9,
+  "results": [
+    {
+      "company": "Minerals Technologies Inc.",
+      "peer": "Global Gas Corp",
+      "category": "Leverage",
+      "metric": "Net Leverage Ratio (2024)",
+      "target_value": "4.00",
+      "peer_value": null,
+      "year": "2024",
+      "unit": "to 1.00",
+      "_strategy": "risks"
+    },
+    {
+      "company": "Minerals Technologies Inc.",
+      "peer": "VISION ENERGY Corp",
+      "category": "Leverage",
+      "metric": "Net Leverage Ratio (2024)",
+      "target_value": "4.00",
+      "peer_value": null,
+      "year": "2024",
+      "unit": "to 1.00",
+      "_strategy": "risks"
+    },
+    {
+      "company": "Minerals Technologies Inc.",
+      "peer": "VALHI INC /DE/",
+      "category": "Leverage",
+      "metric": "Net Leverage Ratio (2024)",
+      "target_value": "4.00",
+      "peer_value": null,
+      "year": "2024",
+      "unit": "to 1.00",
+      "_strategy": "risks"
+    },
+    {
+      "company": "Minerals Technologies Inc.",
+      "peer": "Global Gas Corp",
+      "category": "Leverage",
+      "metric": "Net Leverage Ratio (2024)",
+      "target_value": 4.0,
+      "peer_value": null,
+      "year": "2024",
+      "unit": "to 1.00",
+      "_strategy": "metrics"
+    },
+    {
+      "company": "Minerals Technologies Inc.",
+      "peer": "VISION ENERGY Corp",
+      "category": "Leverage",
+      "metric": "Net Leverage Ratio (2024)",
+      "target_value": 4.0,
+      "peer_value": null,
+      "year": "2024",
+      "unit": "to 1.00",
+      "_strategy": "metrics"
+    },
+    {
+      "company": "Minerals Technologies Inc.",
+      "peer": "VALHI INC /DE/",
+      "category": "Leverage",
+      "metric": "Net Leverage Ratio (2024)",
+      "target_value": 4.0,
+      "peer_value": null,
+      "year": "2024",
+      "unit": "to 1.00",
+      "_strategy": "metrics"
+    },
+    {
+      "company": "Minerals Technologies Inc.",
+      "peer": "Global Gas Corp",
+      "category": "Leverage",
+      "metric": "Net Leverage Ratio (2024)",
+      "target_value": 4.0,
+      "peer_value": null,
+      "year": "2024",
+      "_strategy": "comparison"
+    },
+    {
+      "company": "Minerals Technologies Inc.",
+      "peer": "VISION ENERGY Corp",
+      "category": "Leverage",
+      "metric": "Net Leverage Ratio (2024)",
+      "target_value": 4.0,
+      "peer_value": null,
+      "year": "2024",
+      "_strategy": "comparison"
+    },
+    {
+      "company": "Minerals Technologies Inc.",
+      "peer": "VALHI INC /DE/",
+      "category": "Leverage",
+      "metric": "Net Leverage Ratio (2024)",
+      "target_value": 4.0,
+      "peer_value": null,
+      "year": "2024",
+      "_strategy": "comparison"
+    }
+  ]
+}
