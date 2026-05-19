@@ -338,16 +338,6 @@ class CreditRiskQA:
         return {"answer": answer, "cypher": cypher, "results": results}
 
     # ------------------------------------------------------------------
-    # Single-query mode
-    # ------------------------------------------------------------------
-
-    def ask_single(self, question: str, verbose: bool = False) -> dict:
-        data = self._run_pipeline(question)
-
-
-        return data
-
-    # ------------------------------------------------------------------
     # Multi-strategy mode: one pipeline call per strategy, unified answer.
     # ------------------------------------------------------------------
 
@@ -370,8 +360,7 @@ class CreditRiskQA:
 
         
 
-        # Deduplicate — sort all values as strings so minor type differences
-        # (float vs int) and alias differences don't create false uniques.
+        # Row-level dedup — catches identical rows across strategies.
         seen = set()
         unique = []
         for row in all_results:
@@ -381,6 +370,11 @@ class CreditRiskQA:
             if key not in seen:
                 seen.add(key)
                 unique.append(row)
+
+        # List-field dedup — target_* lists are deduplicated globally (same
+        # risk appears in every peer row); peer_* lists are deduplicated per
+        # peer so two peers can share the same risk name without one being dropped.
+        unique = self._dedup_list_fields(unique)
 
         # Generate unified answer from combined results using the QA prompt
         clean = self._clean_metadata(unique[:100])
@@ -398,36 +392,23 @@ class CreditRiskQA:
     # Main entry point — choose single or multi strategy
     # ------------------------------------------------------------------
 
-    def ask(self, question: str, verbose: bool = False,
-            mode: str = "multi", reasoning: bool = False) -> str:
+    def ask(self, question: str, verbose: bool = False, reasoning: bool = False) -> str:
         """
-        mode="single"   → one pipeline call end-to-end.
-        mode="multi"    → one pipeline call per strategy, unified answer (default).
+        Runs one pipeline call per strategy, then generates a unified answer.
         reasoning=True  → also run REASONING_PROMPT for a cited chain-of-thought trace.
         """
         print(f"\n{'='*70}")
         print(f"Question : {question}")
-        print(f"Mode     : {mode}{'  +reasoning' if reasoning else ''}")
+        print(f"Mode     : multi{'  +reasoning' if reasoning else ''}")
         print('='*70)
 
-        if mode == "single":
-            print("\n[1/2] Generating Cypher and querying graph (single) …")
-            data = self.ask_single(question, verbose=verbose)
-            print(f"      → Cypher: {data['cypher'][:120]}")
-            print(f"      → {len(data['results'])} records")
-            print("\n[2/2] Answer generated.")
-            answer = data["answer"]
-            queries_run = [{"cypher": data["cypher"]}]
-            results = data["results"]
-
-        else:  # multi
-            print("\n[1/2] Generating Cypher and querying graph per strategy …")
-            data = self.ask_multi(question, verbose=verbose)
-            print(f"      → {len(data['results'])} unique records across {len(data['queries'])} queries")
-            print("\n[2/2] Unified answer generated.")
-            answer = data["answer"]
-            queries_run = data["queries"]
-            results = data["results"]
+        print("\n[1/2] Generating Cypher and querying graph per strategy …")
+        data = self.ask_multi(question, verbose=verbose)
+        print(f"      → {len(data['results'])} unique records across {len(data['queries'])} queries")
+        print("\n[2/2] Unified answer generated.")
+        answer = data["answer"]
+        queries_run = data["queries"]
+        results = data["results"]
 
         answer = _THINK_RE.sub('', answer).strip()
 
@@ -456,6 +437,45 @@ class CreditRiskQA:
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _dedup_list_fields(
+        rows: list,
+        key_fields: tuple = ("risk_id", "name", "xbrl_tag"),
+    ) -> list:
+        """
+        Deduplicate items inside list-valued fields across rows.
+
+        - target_* fields: global dedup — a risk that appears in every peer row
+          is kept only in the first row that contains it.
+        - peer_* fields: per-peer dedup — scoped by the row's 'peer' value so
+          two different peers can legitimately share the same risk/metric name.
+        """
+        seen: dict[str, set] = {}  # namespace -> set of seen item keys
+        result = []
+        for row in rows:
+            new_row = dict(row)
+            peer_ns = str(row.get("peer", ""))
+            for field, val in row.items():
+                if not isinstance(val, list):
+                    continue
+                ns = f"{field}::{peer_ns}" if field.startswith("peer") else field
+                seen.setdefault(ns, set())
+                deduped = []
+                for item in val:
+                    if not isinstance(item, dict):
+                        deduped.append(item)
+                        continue
+                    item_key = next(
+                        (str(item[k]) for k in key_fields if k in item), None
+                    )
+                    if item_key is None or item_key not in seen[ns]:
+                        deduped.append(item)
+                        if item_key:
+                            seen[ns].add(item_key)
+                new_row[field] = deduped
+            result.append(new_row)
+        return result
 
     @staticmethod
     def _clean_metadata(results: list) -> list:
@@ -557,10 +577,6 @@ def main():
     parser.add_argument("question", nargs="?", help="Question (omit for interactive mode)")
     parser.add_argument("--verbose", "-v", action="store_true")
     parser.add_argument(
-        "--mode", choices=["single", "multi"], default="multi",
-        help="single: one chain call; multi: one call per strategy (default: multi)",
-    )
-    parser.add_argument(
         "--reasoning", "-r", action="store_true",
         help="After answering, run the reasoning-trace prompt showing step-by-step "
              "analysis with source citations (filing dates, document URLs, source text).",
@@ -570,9 +586,9 @@ def main():
     qa = CreditRiskQA()
     try:
         if args.question:
-            qa.ask(args.question, verbose=args.verbose, mode=args.mode, reasoning=args.reasoning)
+            qa.ask(args.question, verbose=args.verbose, reasoning=args.reasoning)
         else:
-            print(f"\nCredit Risk Q&A — interactive mode  [mode={args.mode}]  (type 'exit' to quit)\n")
+            print("\nCredit Risk Q&A — interactive mode  (type 'exit' to quit)\n")
             while True:
                 try:
                     question = input("Question> ").strip()
@@ -582,7 +598,7 @@ def main():
                     continue
                 if question.lower() in ("exit", "quit", "q"):
                     break
-                qa.ask(question, verbose=args.verbose, mode=args.mode, reasoning=args.reasoning)
+                qa.ask(question, verbose=args.verbose, reasoning=args.reasoning)
     finally:
         qa.close()
 

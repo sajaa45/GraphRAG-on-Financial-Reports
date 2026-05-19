@@ -178,7 +178,7 @@ class RisksKGBuilder:
                         """,
                         {"risk_id": risk_id, "risk_name": risk_name,
                          "description": description, "why": why,
-                         "source_text": source_text[:5000], "document_url": risk_document_url,
+                         "source_text": source_text, "document_url": risk_document_url,
                          "filing_date": filing_date},
                     )
 

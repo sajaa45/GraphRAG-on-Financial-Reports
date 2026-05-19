@@ -1,17 +1,15 @@
-Minerals Technologies Inc. (MTI) generated $167.1 million in net income in 2024, with a 13.5% operating margin and $5.17 diluted EPS. Compared to peers:
+Minerals Technologies Inc. (MTI) generated $167.1 million in net income in 2024, with an operating margin of 13.5% and diluted EPS of $5.17. Compared to peers:
 
-- **VALHI Inc.**: Net income of $108 million, diluted EPS of $3.79 — lower than MTI’s profitability.
-- **NL Industries Inc.**: Net income of $67.2 million, diluted EPS of $1.38 — significantly lower than MTI.
-- **Global Gas Corp**: Not profitable; reported a $130.7 million operating loss and negative equity. No revenue or operational history.
+- **VALHI INC**: Net income of $108 million, diluted EPS of $3.79, operating margin not directly comparable but income from operations was $169.8 million. MTI’s profitability per share and margin are stronger.
+- **NL INDUSTRIES INC**: Net income of $67.2 million, diluted EPS of $1.38. MTI significantly outperforms in both absolute and per-share profitability.
+- **Global Gas Corp**: Reported a net loss of $130.7 million and no revenue history. MTI is profitable; Global Gas is not.
 
-MTI outperforms all peers in profitability. Its operating margin (13.5%) and EPS are higher than VALHI and NL, and it is the only profitable, operating company among the peers. Global Gas Corp is a pre-revenue entity with no earnings capacity.
+MTI’s profitability is superior to all peers. No peer exceeds MTI in net income or EPS. Global Gas Corp is not profitable, while VALHI and NL are materially less profitable than MTI.
 
-**Elevated risks for MTI**: Competitive pressure, shipping cost volatility, and climate regulation exposure remain concerns, but these have not yet impaired profitability.
+**Sources:**
+- Minerals Technologies Inc.: not available
+- Global Gas Corp: https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json
+- VALHI INC /DE/: https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json
+- NL INDUSTRIES INC: https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json
 
-**Conclusion**: Yes, MTI is achieving the best profit among its peers based on explicit 2024 metrics.
-
-**Sources**:  
-- Minerals Technologies Inc.: Not applicable (no document URL provided in graph for target)  
-- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390024028142/ea0202696-10k_global.htm  
-- VALHI INC /DE/: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm  
-- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm
+Elevated risk: MTI faces competitive pressures, shipping cost volatility, and regulatory risks, but these have not impaired profitability. MTI is currently achieving the best profit among peers.
