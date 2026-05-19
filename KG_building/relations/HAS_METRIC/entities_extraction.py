@@ -108,11 +108,11 @@ CONFIG = RelationConfig(
             Use the descriptions to decide — do NOT use the example labels as an exhaustive list.
 
             Categories:
-            - "Leverage": Metrics that measure how much debt a company carries relative to its earnings, equity, or assets. Includes absolute debt amounts and debt-to-X ratios.
-            - "Coverage": Metrics that assess whether a company generates enough earnings or cash flow to meet its interest and debt obligations. Includes interest coverage ratios and debt service measures.
-            - "Liquidity": Metrics that reflect a company's ability to meet near-term obligations using available cash, liquid assets, or short-term cash generation. Includes cash positions, short-term ratios, and cash flow measures.
-            - "Profitability": Metrics that capture the company's ability to generate earnings and cash from its operations, including revenue, margins, and income measures at various levels of the P&L.
-            - "Debt Structure": Metrics that describe how the company's debt is composed or organized — its maturity profile, cost of debt, debt type mix, credit standing, and covenant flexibility.
+            - "Leverage": Metrics that measure debt, liabilities, or obligations relative to earnings, equity, or assets. Includes total debt, long-term debt, total liabilities, debt-to-equity ratios, net debt, and leverage ratios. ALWAYS categorize liability and debt amounts here.
+            - "Coverage": Metrics that assess whether a company generates enough earnings or cash flow to meet its interest and debt obligations. Includes interest coverage ratios, EBITDA coverage, debt service coverage, and fixed charge coverage ratios.
+            - "Liquidity": Metrics that reflect a company's ability to meet near-term obligations using available cash, liquid assets, or short-term cash generation. Includes cash and cash equivalents, working capital, current ratio, quick ratio, and operating cash flow.
+            - "Profitability": Metrics that capture the company's ability to generate positive earnings from its operations. ONLY include revenue, sales, gross profit, operating income, net income, EBITDA, EBIT, and margin percentages. EXCLUDE losses, expenses, liabilities, and debt.
+            - "Debt Structure": Metrics that describe how the company's debt is composed or organized — its maturity profile, cost of debt, debt type mix, credit standing, and covenant flexibility. Includes interest rates, debt maturities, credit ratings, and covenant terms.
 
             Return ONLY a valid JSON array.
 

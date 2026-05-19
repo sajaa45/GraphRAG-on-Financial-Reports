@@ -196,9 +196,6 @@ def process_all_risks(
         cik = company["cik"]
         company_name = company.get("company_name", "") or "the Company"
 
-        if company["risk_count"] < 10:
-            print(f"[CIK {cik}] Skipping — only {company['risk_count']} paragraphs")
-            continue
 
         paragraphs = company["individual_risks"]
         batches = make_batches(paragraphs)
