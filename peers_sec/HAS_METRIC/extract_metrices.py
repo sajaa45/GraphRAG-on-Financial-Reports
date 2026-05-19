@@ -17,8 +17,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 # Configuration
-START_DATE = "2023-01-01"
-END_DATE = "2024-01-01"
+START_DATE = "2024-01-01"
+END_DATE   = "2025-01-01"
 FORM_TYPE = "10-K"
 MAX_COMPANIES = 3
 
@@ -119,9 +119,21 @@ def get_sic_from_neo4j() -> str:
                 AND i.sic_code IS NOT NULL
                 RETURN i.sic_code AS sic_code
                 LIMIT 1
+                """,
+                # Pattern 6: Any company with a SIC code (same broad fallback used by risk extractor)
+                """
+                MATCH (c:Company)-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
+                """,
+                # Pattern 7: Any SIC code node in the DB
+                """
+                MATCH (s:SICCode)
+                RETURN s.code AS sic_code
+                LIMIT 1
                 """
             ]
-            
+
             for i, query in enumerate(queries, 1):
                 result = session.run(query)
                 record = result.single()
@@ -130,12 +142,11 @@ def get_sic_from_neo4j() -> str:
                     print(f"✓ SIC code from Neo4j (pattern {i}): {code}")
                     driver.close()
                     return code
-        
+
         driver.close()
     except Exception as e:
         print(f"⚠ Could not connect to Neo4j: {e}")
-    
-    # Fallback to default SIC code for Oil & Gas
+
     print("⚠ No SIC code found in Neo4j, using default: 1311 (Oil & Gas)")
     return "1311"
 
@@ -251,8 +262,8 @@ def fetch_companies_by_sic(sic_codes, start_date, end_date, form_type, size=100)
         return []
 
 
-BM25_TOP_K = 3
-BM25_MIN_SCORE = 1.0
+BM25_TOP_K = 1
+BM25_MIN_SCORE = 3.0
 
 
 def _tokenize_xbrl_tag(tag: str) -> list:
@@ -305,9 +316,15 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
         if not all_tags:
             return target_metric_results
 
-        # Phase 2: build BM25 index over tokenized tag names
-        tokenized_tags = [_tokenize_xbrl_tag(tag_name) for _, tag_name, _ in all_tags]
+        # Phase 2: build BM25 index — prefer human-readable label, fall back to tag name
+        def _tag_tokens(tag_name, tag_content):
+            label = tag_content.get('label', '')
+            return _tokenize_metric(label) if label else _tokenize_xbrl_tag(tag_name)
+
+        tokenized_tags = [_tag_tokens(tag_name, tag_content) for _, tag_name, tag_content in all_tags]
         bm25 = BM25Okapi(tokenized_tags)
+
+        _STOP_WORDS = {'the', 'and', 'or', 'of', 'in', 'to', 'a', 'an', 'for', 'net', 'total'}
 
         # Phase 3: for each metric, query BM25 and keep top-K above threshold
         for metric in target_metrics:
@@ -316,7 +333,9 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                 continue
 
             target_year = metric.get('year') or default_fiscal_year
-            query_tokens = _tokenize_metric(metric_type)
+            raw_tokens = _tokenize_metric(metric_type)
+            # Remove stop words so "the related tax benefit" → ["related", "tax", "benefit"]
+            query_tokens = [t for t in raw_tokens if t not in _STOP_WORDS] or raw_tokens
             if not query_tokens:
                 continue
 

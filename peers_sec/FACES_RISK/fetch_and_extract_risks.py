@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import urllib3
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
+from rank_bm25 import BM25Okapi
 
 # Load .env from project root (two levels up from this file)
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env'))
@@ -68,7 +69,7 @@ def get_sic_from_neo4j() -> list:
     return ["1311"]
 
 
-def get_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date='2024-01-01', size=100):
+def get_companies_from_api(sic_codes=['1311'], start_date='2024-01-01', end_date='2025-01-01', size=100):
     """Fetch companies from EDGAR full-text search index filtered by SIC code and date range."""
     if isinstance(sic_codes, str):
         sic_codes = [sic_codes]
@@ -200,12 +201,65 @@ def get_risk_factor_data(cik: str, company_name: str, start_date: str = None, en
     }
 
 
-def process_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_date='2024-01-01',
+def is_target_company(company_name: str, target_name: str, threshold: float = 15.0) -> bool:
+    """
+    Check if company_name matches target_name using BM25 similarity.
+    Returns True if the BM25 score exceeds the threshold.
+    
+    Args:
+        company_name: Name to check
+        target_name: Target company name from Neo4j
+        threshold: BM25 score threshold (default 15.0, higher = stricter matching)
+    """
+    if not target_name or not company_name:
+        return False
+    
+    # Tokenize both names
+    target_tokens = target_name.lower().split()
+    company_tokens = company_name.lower().split()
+    
+    # Create BM25 index with just the target name
+    bm25 = BM25Okapi([target_tokens])
+    
+    # Score the company name against target
+    scores = bm25.get_scores(company_tokens)
+    score = scores[0] if len(scores) > 0 else 0.0
+    
+    return score >= threshold
+
+
+def get_target_name() -> str | None:
+    """Return the name of the target company so it can be excluded from peers."""
+    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+    user = os.getenv("NEO4J_USERNAME", "neo4j")
+    password = os.getenv("NEO4J_PASSWORD", "")
+    try:
+        driver = GraphDatabase.driver(uri, auth=(user, password))
+        with driver.session() as session:
+            for query in [
+                "MATCH (c:TargetCompany) RETURN c.name AS name LIMIT 1",
+                "MATCH (c:Company {is_target: true}) RETURN c.name AS name LIMIT 1",
+            ]:
+                record = session.run(query).single()
+                if record and record["name"]:
+                    return record["name"].strip().lower()
+        driver.close()
+    except Exception:
+        pass
+    return None
+
+
+def process_companies_from_api(sic_codes=['1311'], start_date='2024-01-01', end_date='2025-01-01',
                                size=100, delay=0.5, output_file='peers_sec/FACES_RISK/companies_risks.json'):
     """Process companies from SEC API for given SIC code(s)."""
     print(f"Date range: {start_date} → {end_date}")
     companies = get_companies_from_api(sic_codes, start_date, end_date, size)
     print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes} [{start_date} → {end_date}]")
+
+    target_name = get_target_name()
+    if target_name:
+        print(f"Excluding target company: {target_name}")
+        companies = [c for c in companies if not is_target_company(c['name'], target_name, threshold=15.0)]
 
     with open('peers_sec/FACES_RISK/companies_list.json', 'w', encoding='utf-8') as f:
         json.dump({"total_count": len(companies), "companies": companies, "sic_codes": sic_codes}, f, indent=2, ensure_ascii=False)
@@ -216,9 +270,14 @@ def process_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_
         try:
             data = get_risk_factor_data(company['cik'], company['name'], start_date, end_date)
             if data:
-                if data['risk_count'] < 10:
+                # Double-check: exclude target company using BM25 after fetching real company name
+                if target_name and is_target_company(data['company_name'], target_name, threshold=15.0):
+                    print(f"  Skipped — this is the target company: {data['company_name']}")
+                    continue
+                
+                if data['risk_count'] < 7:
                     print(f"  Skipped — only {data['risk_count']} risks (minimum 10 required)")
-                elif data['length']['words'] > 5000:
+                elif data['length']['words'] > 4800:
                     results.append(data)
                     print(f"  Added ({len(results)}/3)")
                     if len(results) >= 3:
@@ -229,7 +288,7 @@ def process_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_
                 print(f"  Skipped — no 10-K filing found in date range {start_date} to {end_date}")
         except Exception as e:
             print(f"  Error: {e}")
-        
+
         if i < len(companies):
             time.sleep(delay)
 
@@ -244,4 +303,4 @@ def process_companies_from_api(sic_codes=['1311'], start_date='2023-01-01', end_
 
 if __name__ == "__main__":
     sic_codes = get_sic_from_neo4j()
-    process_companies_from_api(sic_codes=sic_codes, start_date='2023-01-01', end_date='2024-01-01', size=100, delay=0.5)
+    process_companies_from_api(sic_codes=sic_codes, start_date='2024-01-01', end_date='2025-01-01', size=100, delay=0.5)

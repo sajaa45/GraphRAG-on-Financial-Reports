@@ -92,8 +92,16 @@ def write_metrics_to_neo4j(json_file: str):
                 company_metrics = 0
 
                 def write_metric(metric_type, metric_name, latest, unit_name, year,
-                                 xbrl_tag, taxonomy, label):
+                                 xbrl_tag, taxonomy, label, metadata=None):
                     category = category_map.get(metric_type, "Other")
+                    
+                    # Extract metadata fields
+                    source_url = ""
+                    metric_cik = cik  # fallback to company CIK
+                    if metadata:
+                        source_url = metadata.get("source_url", "")
+                        metric_cik = metadata.get("cik", cik)
+                    
                     session.run(
                         """
                         MATCH (c:Company {name: $company_name})
@@ -107,6 +115,8 @@ def write_metrics_to_neo4j(json_file: str):
                             m.xbrl_tag = $xbrl_tag,
                             m.taxonomy = $taxonomy,
                             m.label = $label,
+                            m.source_url = $source_url,
+                            m.cik = $cik,
                             m.updated_at = datetime()
                         MERGE (mc)-[:HAS_METRIC]->(m)
                         """,
@@ -121,6 +131,8 @@ def write_metrics_to_neo4j(json_file: str):
                             "xbrl_tag": xbrl_tag,
                             "taxonomy": taxonomy,
                             "label": label,
+                            "source_url": source_url,
+                            "cik": metric_cik,
                         }
                     )
 
@@ -132,10 +144,12 @@ def write_metrics_to_neo4j(json_file: str):
                                 latest = sorted(entries, key=lambda x: x.get('end', ''), reverse=True)[0]
                                 end_date = latest.get('end', '')
                                 year = end_date.split('-')[0] if end_date else 'Unknown'
+                                metadata = tag_data.get('metadata', {})
                                 write_metric(
                                     covenant_type, f"{covenant_type} ({year})",
                                     latest, unit_name, year,
-                                    tag_name, tag_data.get('taxonomy', ''), tag_data.get('label', '')
+                                    tag_name, tag_data.get('taxonomy', ''), tag_data.get('label', ''),
+                                    metadata
                                 )
                                 company_metrics += 1
 
@@ -147,10 +161,12 @@ def write_metrics_to_neo4j(json_file: str):
                                 latest = sorted(entries, key=lambda x: x.get('end', ''), reverse=True)[0]
                                 end_date = latest.get('end', '')
                                 year = latest.get('fy', end_date.split('-')[0] if end_date else 'Unknown')
+                                metadata = match.get('metadata', {})
                                 write_metric(
                                     metric_type, f"{metric_type} ({year})",
                                     latest, unit_name, year,
-                                    match.get('tag', ''), match.get('taxonomy', ''), match.get('label', '')
+                                    match.get('tag', ''), match.get('taxonomy', ''), match.get('label', ''),
+                                    metadata
                                 )
                                 company_metrics += 1
 

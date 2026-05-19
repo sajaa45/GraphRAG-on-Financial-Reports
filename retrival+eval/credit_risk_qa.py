@@ -21,8 +21,9 @@ Node labels and key properties:
   - TargetCompany   {name, cik, ticker, is_target:true, filing_date, document_url}
   - Company         {name, cik, ticker, is_peer:true, filing_date, document_url}
   - MetricCategory  {name}
-  - Metric          {name, value, unit, year, metric_type, xbrl_tag, label}
-  - Risk            {risk_id, name, description, why, source_text, filing_date}
+  - Metric          {name, value, unit, year, metric_type, xbrl_tag, label, source_url, cik}
+                    NOTE: name = "{metric_type} ({year})" — use xbrl_tag to identify the exact concept
+  - Risk            {risk_id, name, description, why, source_text, document_url, filing_date}
   - Industry        {name, sector}
   - SICCode         {code, industry, sector}
 
@@ -56,40 +57,33 @@ KNOWN_CATEGORIES = {"Leverage", "Coverage", "Liquidity", "Profitability", "Debt 
 
 CYPHER_GENERATION_PROMPT = PromptTemplate(
     input_variables=["schema", "categories", "question"],
-    template="""You are a Neo4j Cypher expert for a KYC / credit-risk knowledge graph.
-Generate a single, valid Cypher query that retrieves all data needed to answer the question.
-Include peer comparison data where relevant to the question.
+    template="""You are a Neo4j Cypher expert for a credit-risk knowledge graph.
+Generate a single valid Cypher query that retrieves all data needed to answer the question.
 
 Schema:
 {schema}
 
-Known MetricCategory names (use EXACT spelling when filtering by category):
+Known MetricCategory names (use EXACT spelling):
 {categories}
 
 Rules:
-1. Output ONLY the Cypher query. No explanation, no markdown fences, no comments.
-2. Always match the TargetCompany node when the question is about the analyzed company.
-3. Use OPTIONAL MATCH for peer data — queries must work even when no peers exist.
-4. No write operations (CREATE, MERGE, SET, DELETE, DETACH DELETE).
-5. Use DISTINCT to avoid duplicates.
-6. Use toFloat() for numeric comparisons on Metric.value.
-7. Return readable aliases: tc.name AS company, m.value AS value, m.year AS year, etc.
-8. Use properties(node) to return full node data rather than hardcoding property names.
-9. For risk topics, search ALL text fields: name, description, why, source_text.
-10. For metric topics, traverse: Company -> HAS_METRIC_CATEGORY -> MetricCategory -> HAS_METRIC -> Metric.
-11. When filtering by MetricCategory, use ONLY the known category names listed above.
-    Match the question intent to the closest category — e.g. "leverage" → "Leverage",
-    "debt" → "Leverage" or "Debt Structure", "liquidity" → "Liquidity".
+1. Output ONLY the Cypher query — no markdown, no comments, no explanation.
+2. No write operations (CREATE, MERGE, SET, DELETE).
+3. Always LIMIT 300.
+4. Use OPTIONAL MATCH for peer data so the query works even with no peers.
+5. Use TWO separate OPTIONAL MATCHes for peers: first find the peer via COMPETES_WITH, then find its data in a second OPTIONAL MATCH.
+6. NEVER chain COMPETES_WITH and FACES_RISK in one path — that returns target risks, not peer risks.
+7. Use COLLECT to aggregate peer data into lists — never produce cartesian products between target rows and peer rows.
+8. Use toFloat() for numeric comparisons on Metric.value.
+9. For risks, search all four fields: name, description, why, source_text.
+10. For metrics, fetch target metrics and peer metrics independently — both filtered by the same MetricCategory.
+    Do NOT try to join them row-by-row in Cypher. Collect each side into a list and return them separately.
+    The LLM will align target and peer metrics by label/name after retrieval.
+11. When filtering MetricCategory, map the question intent to the closest known category name.
 
-Rules (CRITICAL — these prevent common failure modes):
-11. NEVER chain COMPETES_WITH and FACES_RISK in a single path. WRONG: (p)-[:COMPETES_WITH]->(tc)-[:FACES_RISK]->(pr). This makes pr a target risk, not a peer risk.
-12. NEVER create cartesian products between target rows and peer rows. Always use COLLECT to aggregate peer data.
-13. Always add LIMIT 300 at the end of every query to prevent full-graph scans.
-14. For peers: use TWO separate OPTIONAL MATCHes — one to find peers, one to find their data.
+Reference patterns:
 
-Correct patterns:
-
-Risks with peer comparison (COLLECT avoids cartesian explosion, includes all peers even with no matches):
+Risks with peer comparison:
     MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
     WHERE toLower(r.description) CONTAINS 'keyword' OR toLower(r.name) CONTAINS 'keyword'
            OR toLower(r.why) CONTAINS 'keyword' OR toLower(r.source_text) CONTAINS 'keyword'
@@ -102,30 +96,14 @@ Risks with peer comparison (COLLECT avoids cartesian explosion, includes all pee
     RETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks
     LIMIT 300
 
-Metrics by category — filter to ONLY relevant categories, COLLECT peer metrics per row:
+Metrics with peer comparison (fetch independently by category — let the LLM align by label):
     MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
-    WHERE mc.name IN ['Leverage', 'Debt Structure']
+    WHERE mc.name = 'Profitability'
+    WITH tc, mc, collect({{name: m.name, label: m.label, value: m.value, year: m.year, metric_type: m.metric_type}}) AS target_metrics
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(pmc:MetricCategory {{name: mc.name}})-[:HAS_METRIC]->(pm:Metric)
-    WHERE pm.year = m.year
-    WITH tc, peer, mc, m, collect({{name: pm.name, value: pm.value, year: pm.year}}) AS peer_metrics
-    RETURN tc.name AS target, peer.name AS peer, mc.name AS category,
-           m.name AS target_metric, m.value AS target_value, m.year AS year,
-           peer_metrics
-    LIMIT 300
-
-Risks unique to target:
-    MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
-    WHERE NOT EXISTS {{ MATCH (p:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc) MATCH (p)-[:FACES_RISK]->(pr:Risk) WHERE pr.name = r.name }}
-    RETURN DISTINCT tc.name AS company, r.name AS risk_name, r.why AS reason
-    LIMIT 300
-
-Risk counts:
-    MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
-    WITH tc, count(r) AS tc_count
-    MATCH (p:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
-    OPTIONAL MATCH (p)-[:FACES_RISK]->(pr:Risk)
-    RETURN tc.name AS company, tc_count, p.name AS peer, count(pr) AS peer_count
+    WITH tc, mc, target_metrics, peer, collect({{name: pm.name, label: pm.label, value: pm.value, year: pm.year, metric_type: pm.metric_type}}) AS peer_metrics
+    RETURN tc.name AS target, mc.name AS category, target_metrics, peer.name AS peer, peer_metrics
     LIMIT 300
 
 Question: {question}
@@ -136,14 +114,17 @@ Cypher query:""",
 QA_PROMPT = PromptTemplate(
     input_variables=["context", "question"],
     template="""You are a senior credit-risk analyst providing KYC assessments.
-Using the graph query results below, write a clear and concise answer.
+Answer the question using only the graph results below.
 
-Requirements:
-- Directly answer the question.
-- Highlight how the target company compares to its peers where data is available.
-- Flag elevated risks or concerning metrics.
-- Use plain language suitable for a credit committee.
-- Stay under 300 words unless the data requires more detail.
+- Lead with a **Sources** section listing one document URL per company — only include URLs that appear in the graph results. Omit any company with no URL.
+- Use ONLY values present in the graph results. Never infer or derive a metric that is not explicitly returned.
+- If a metric is missing for a peer, state "not available" rather than estimating it.
+- Directly answer the question; compare target vs peers where data exists.
+- Flag any elevated risks or concerning metrics.
+- Plain language suitable for a credit committee; ≤ 300 words unless data requires more.
+
+**Sources:**
+- [Company Name]: [document_url]
 
 Graph results:
 {context}
@@ -178,6 +159,13 @@ QUESTION
 {question}
 
 ─────────────────────────────────────────
+STRICT RULES — follow these before writing anything:
+─────────────────────────────────────────
+- Use ONLY values explicitly present in the graph results. Never infer, calculate, or derive a value that is not directly in the data.
+- If a metric is missing for a company, say "not available" — do not substitute a related value.
+- If a document_url is missing for a company, omit it entirely — do not guess or construct one.
+
+─────────────────────────────────────────
 INSTRUCTIONS — produce the sections below in order:
 ─────────────────────────────────────────
 
@@ -190,12 +178,7 @@ For each query result, list what was found:
   - Company name and role (target / peer)
   - Data type (risk name, metric name + value + year, etc.)
   - Filing date (use Risk.filing_date or Company.filing_date when available)
-  - Source reference:
-      • For TARGET risks → quote up to 2 sentences from Risk.source_text AND include
-        metadata.document_url if present. Cite as: [document_url] — "<quote>"
-      • For PEER risks   → note the peer name, risk name, and metadata.document_url if present
-      • For companies    → include Company.document_url or TargetCompany.document_url
-      • For metrics      → note the MetricCategory, Metric.year, and metadata.source_url if present
+  - Document URL (Risk.document_url or Company.document_url)
 
 ## 3. Reasoning Steps
 Walk through your analysis step by step:
@@ -205,16 +188,15 @@ Walk through your analysis step by step:
   … (add as many steps as the data warrants)
 
 ## 4. Sources & References
-List every document or data point cited, one per line.
+List document URLs grouped by company, using ONLY URLs present in the graph results.
+If no document_url exists for a company, omit that company from this section — do NOT invent or guess URLs.
 
-For TARGET company risks use this format:
-  [Company | Target] Filing: <filing_date> | URL: <metadata.document_url or N/A> | Source: "<excerpt from source_text, or N/A>"
+**Target Company:**
+  [Company Name] — Filing: <filing_date> (omit URL line if not in results)
 
-For PEER company risks use this format:
-  [Company | Peer] Risk: <risk name> | URL: <metadata.document_url or N/A>
-
-For metrics use this format:
-  [Company | Role] Category: <MetricCategory> | Metric: <name> | Value: <value> | Year: <year>
+**Peer Companies:**
+  [Peer 1 Name] — URL: <document_url> (omit if not in results)
+  [Peer 2 Name] — URL: <document_url> (omit if not in results)
 
 ## 5. Final Answer
 A concise credit-committee-ready answer (≤ 200 words) that directly responds to
@@ -246,13 +228,13 @@ QUERY_STRATEGIES = {
     "metrics": (
         "Using ONLY HAS_METRIC_CATEGORY → HAS_METRIC relationships, fetch metric nodes "
         "for the TargetCompany AND its peers. "
-        "Filter MetricCategory to ONLY the categories MOST RELEVANT to: {question}. "
+        "Filter MetricCategory to ONLY the categories most relevant to: {question}. "
         "Map the question to the closest category names from: "
         "Leverage, Coverage, Liquidity, Profitability, Debt Structure. "
-        "Do NOT fetch all categories — choose only those that match the question intent. "
-        "CRITICAL: Use COLLECT to avoid row explosion — return one row per (target_metric, peer) pair "
-        "by collecting peer metrics into a list. Include ALL peers even if they have no data. "
-        "Add LIMIT 300. "
+        "Fetch target metrics and peer metrics independently — both filtered by the same MetricCategory. "
+        "Do NOT join them row-by-row in Cypher. "
+        "Collect target metrics into a list, collect each peer's metrics into a separate list, "
+        "and return them side by side. Include ALL peers even if they have no data. "
         "Do NOT fetch any Risk nodes in this query."
     ),
 }
@@ -400,14 +382,15 @@ class CreditRiskQA:
                 unique.append(row)
 
         # Generate unified answer from combined results using the QA prompt
-        context = json.dumps(self._truncate(unique[:100]), indent=2, default=str)
+        clean = self._clean_metadata(unique[:100])
+        context = json.dumps(self._truncate(clean), indent=2, default=str)
         answer_msg = QA_PROMPT.format(context=context, question=question)
         unified_answer = self._call_llm_raw(answer_msg)
 
         return {
             "answer": unified_answer,
             "queries": queries_run,
-            "results": unique,
+            "results": unique,  # Return original uncleaned results for saving
         }
 
     # ------------------------------------------------------------------
@@ -471,37 +454,33 @@ class CreditRiskQA:
     # ------------------------------------------------------------------
 
     @staticmethod
-    def _strip_meta(node) -> dict | None:
-        """Drop source_text from metadata (too large for LLM context); keep document_url, cik, source_url."""
-        if not isinstance(node, dict):
-            return node
-        node = dict(node)
-        raw_meta = node.get("metadata")
-        keep_keys = ("document_url", "cik", "source_url")
-        if isinstance(raw_meta, str):
-            try:
-                meta = json.loads(raw_meta)
-                node["metadata"] = {k: meta[k] for k in keep_keys if k in meta}
-            except (json.JSONDecodeError, TypeError):
-                pass
-        elif isinstance(raw_meta, dict):
-            node["metadata"] = {k: raw_meta[k] for k in keep_keys if k in raw_meta}
-        return node
-
-    @staticmethod
     def _clean_metadata(results: list) -> list:
         """
-        Strip source_text from every risk/peer_risk metadata in results,
-        keeping only source_page and section_title.
+        Strip source_text and cik from results before sending to LLM.
+        Keep only document_url and source_url for citations.
         Returns a new list (originals are not mutated).
         """
         cleaned = []
         for row in results:
             row = dict(row)
-            if "risk" in row:
-                row["risk"] = CreditRiskQA._strip_meta(row["risk"])
-            if "peer_risk" in row:
-                row["peer_risk"] = CreditRiskQA._strip_meta(row["peer_risk"])
+            
+            # Strip source_text and cik from any node in the row
+            for key, value in row.items():
+                if isinstance(value, dict):
+                    # Remove source_text and cik from individual nodes
+                    if 'source_text' in value:
+                        del value['source_text']
+                    if 'cik' in value:
+                        del value['cik']
+                elif isinstance(value, list):
+                    # Handle lists of nodes (like target_risks, peer_risks)
+                    for item in value:
+                        if isinstance(item, dict):
+                            if 'source_text' in item:
+                                del item['source_text']
+                            if 'cik' in item:
+                                del item['cik']
+            
             cleaned.append(row)
         return cleaned
 

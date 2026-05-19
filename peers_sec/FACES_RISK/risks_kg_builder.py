@@ -151,28 +151,35 @@ class RisksKGBuilder:
                     risk_name = risk.get("risk_name", "Unnamed Risk")
                     description = risk.get("description", "")
                     why = risk.get("why", "")
-                    source_text = risk.get("source_text", "")
+                    
+                    # Extract metadata fields
+                    metadata = risk.get("metadata", {})
+                    source_text = metadata.get("source_text", "")
+                    risk_document_url = metadata.get("document_url", document_url)  # fallback to company doc_url
 
                     if not risk_id:
                         continue
 
-                    # Upsert Risk node
+                    # Upsert Risk node with metadata fields
                     session.run(
                         """
                         MERGE (r:Risk {risk_id: $risk_id})
                         ON CREATE SET r.name = $risk_name, r.description = $description,
                                       r.why = $why,
                                       r.source_text = $source_text,
+                                      r.document_url = $document_url,
                                       r.filing_date = $filing_date,
                                       r.created_at = datetime()
                         ON MATCH  SET r.name = $risk_name, r.description = $description,
                                       r.why = $why,
                                       r.source_text = $source_text,
+                                      r.document_url = $document_url,
                                       r.updated_at = datetime()
                         """,
                         {"risk_id": risk_id, "risk_name": risk_name,
                          "description": description, "why": why,
-                         "source_text": source_text[:2000], "filing_date": filing_date},
+                         "source_text": source_text[:5000], "document_url": risk_document_url,
+                         "filing_date": filing_date},
                     )
 
                     # Company/TargetCompany -[FACES_RISK]-> Risk  (always look up by name)
