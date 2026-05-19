@@ -17,6 +17,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 HEADERS = {"User-Agent": "YourName your_email@example.com"}
 
+# Configuration
+FISCAL_YEAR = 2024  # Extract only this fiscal year
+
 
 def get_sic_from_neo4j() -> list:
     """Query Neo4j for the SIC code(s) of the target company (is_target=true)."""
@@ -69,12 +72,16 @@ def get_sic_from_neo4j() -> list:
     return ["1311"]
 
 
-def get_companies_from_api(sic_codes=['1311'], start_date='2024-01-01', end_date='2025-01-01', size=100):
-    """Fetch companies from EDGAR full-text search index filtered by SIC code and date range."""
+def get_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100):
+    """Fetch companies from EDGAR full-text search index filtered by SIC code and fiscal year."""
     if isinstance(sic_codes, str):
         sic_codes = [sic_codes]
 
-    print(f"  Querying EDGAR search index for SIC codes: {sic_codes}, {start_date} → {end_date}")
+    # Convert fiscal year to date range for API (filings are typically made in the following year)
+    start_date = f"{fiscal_year}-01-01"
+    end_date = f"{fiscal_year}-12-31"
+    
+    print(f"  Querying EDGAR search index for SIC codes: {sic_codes}, fiscal year {fiscal_year}")
 
     params = {
         "q": "",
@@ -123,7 +130,7 @@ def get_companies_from_api(sic_codes=['1311'], start_date='2024-01-01', end_date
         return []
 
 
-def get_10k_filings(cik: str, start_date: str = None, end_date: str = None, limit: int = 1):
+def get_10k_filings(cik: str, fiscal_year: int = None, limit: int = 1):
     cik_padded = cik.zfill(10)
     data = requests.get(f"https://data.sec.gov/submissions/CIK{cik_padded}.json", headers=HEADERS, verify=False).json()
     company_name = data.get("name", "N/A")
@@ -134,11 +141,12 @@ def get_10k_filings(cik: str, start_date: str = None, end_date: str = None, limi
         if form == "10-K":
             filing_date = filings["filingDate"][i]
             
-            # Filter by date range if provided
-            if start_date and filing_date < start_date:
-                continue
-            if end_date and filing_date > end_date:
-                continue
+            # Filter by fiscal year if provided
+            # Extract year from filing date (format: YYYY-MM-DD)
+            if fiscal_year:
+                filing_year = int(filing_date.split('-')[0])
+                if filing_year != fiscal_year:
+                    continue
             
             results.append({
                 "accession_raw": filings["accessionNumber"][i],
@@ -174,8 +182,8 @@ def split_risks(text):
     return [r.strip() for r in re.split(r'\n\s*\n', text) if len(r.split()) > 30]
 
 
-def get_risk_factor_data(cik: str, company_name: str, start_date: str = None, end_date: str = None):
-    filings, cik_padded, real_name = get_10k_filings(cik, start_date, end_date)
+def get_risk_factor_data(cik: str, company_name: str, fiscal_year: int = None):
+    filings, cik_padded, real_name = get_10k_filings(cik, fiscal_year)
     if not filings:
         return None
 
@@ -249,12 +257,12 @@ def get_target_name() -> str | None:
     return None
 
 
-def process_companies_from_api(sic_codes=['1311'], start_date='2024-01-01', end_date='2025-01-01',
-                               size=100, delay=0.5, output_file='peers_sec/FACES_RISK/companies_risks.json'):
-    """Process companies from SEC API for given SIC code(s)."""
-    print(f"Date range: {start_date} → {end_date}")
-    companies = get_companies_from_api(sic_codes, start_date, end_date, size)
-    print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes} [{start_date} → {end_date}]")
+def process_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100, delay=0.5, 
+                               output_file='peers_sec/FACES_RISK/companies_risks.json'):
+    """Process companies from SEC API for given SIC code(s) and fiscal year."""
+    print(f"Filtering for fiscal year: {fiscal_year}")
+    companies = get_companies_from_api(sic_codes, fiscal_year, size)
+    print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes} [fiscal year {fiscal_year}]")
 
     target_name = get_target_name()
     if target_name:
@@ -262,13 +270,13 @@ def process_companies_from_api(sic_codes=['1311'], start_date='2024-01-01', end_
         companies = [c for c in companies if not is_target_company(c['name'], target_name, threshold=15.0)]
 
     with open('peers_sec/FACES_RISK/companies_list.json', 'w', encoding='utf-8') as f:
-        json.dump({"total_count": len(companies), "companies": companies, "sic_codes": sic_codes}, f, indent=2, ensure_ascii=False)
+        json.dump({"total_count": len(companies), "companies": companies, "sic_codes": sic_codes, "fiscal_year": fiscal_year}, f, indent=2, ensure_ascii=False)
 
     results = []
     for i, company in enumerate(companies, 1):
         print(f"\n[{i}/{len(companies)}] CIK {company['cik']}")
         try:
-            data = get_risk_factor_data(company['cik'], company['name'], start_date, end_date)
+            data = get_risk_factor_data(company['cik'], company['name'], fiscal_year)
             if data:
                 # Double-check: exclude target company using BM25 after fetching real company name
                 if target_name and is_target_company(data['company_name'], target_name, threshold=15.0):
@@ -285,7 +293,7 @@ def process_companies_from_api(sic_codes=['1311'], start_date='2024-01-01', end_
                 else:
                     print(f"  Skipped — only {data['length']['words']} words")
             else:
-                print(f"  Skipped — no 10-K filing found in date range {start_date} to {end_date}")
+                print(f"  Skipped — no 10-K filing found for fiscal year {fiscal_year}")
         except Exception as e:
             print(f"  Error: {e}")
 
@@ -303,4 +311,4 @@ def process_companies_from_api(sic_codes=['1311'], start_date='2024-01-01', end_
 
 if __name__ == "__main__":
     sic_codes = get_sic_from_neo4j()
-    process_companies_from_api(sic_codes=sic_codes, start_date='2024-01-01', end_date='2025-01-01', size=100, delay=0.5)
+    process_companies_from_api(sic_codes=sic_codes, fiscal_year=FISCAL_YEAR, size=100, delay=0.5)

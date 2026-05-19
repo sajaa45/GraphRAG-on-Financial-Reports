@@ -99,10 +99,10 @@ Risks with peer comparison:
 Metrics with peer comparison (fetch independently by category — let the LLM align by label):
     MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
     WHERE mc.name = 'Profitability'
-    WITH tc, mc, collect({{name: m.name, label: m.label, value: m.value, year: m.year, metric_type: m.metric_type}}) AS target_metrics
+    WITH tc, mc, collect({{name: m.name, label: m.label, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag}}) AS target_metrics
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(pmc:MetricCategory {{name: mc.name}})-[:HAS_METRIC]->(pm:Metric)
-    WITH tc, mc, target_metrics, peer, collect({{name: pm.name, label: pm.label, value: pm.value, year: pm.year, metric_type: pm.metric_type}}) AS peer_metrics
+    WITH tc, mc, target_metrics, peer, collect({{name: pm.name, label: pm.label, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url}}) AS peer_metrics
     RETURN tc.name AS target, mc.name AS category, target_metrics, peer.name AS peer, peer_metrics
     LIMIT 300
 
@@ -233,7 +233,8 @@ QUERY_STRATEGIES = {
         "Leverage, Coverage, Liquidity, Profitability, Debt Structure. "
         "Fetch target metrics and peer metrics independently — both filtered by the same MetricCategory. "
         "Do NOT join them row-by-row in Cypher. "
-        "Collect target metrics into a list, collect each peer's metrics into a separate list, "
+        "Collect target metrics into a list (including xbrl_tag for validation), "
+        "collect each peer's metrics into a separate list (including xbrl_tag for validation), "
         "and return them side by side. Include ALL peers even if they have no data. "
         "Do NOT fetch any Risk nodes in this query."
     ),
@@ -431,7 +432,9 @@ class CreditRiskQA:
         answer = _THINK_RE.sub('', answer).strip()
 
         if results:
-            self._save(question, queries_run, results)
+            self._save_extraction_result(question, queries_run, results)
+        
+        self._save_answer(answer)
 
         print(f"\n{'='*70}")
         print("Answer:")
@@ -445,6 +448,7 @@ class CreditRiskQA:
             trace = self.generate_reasoning_trace(question, queries_run, results)
             trace = _THINK_RE.sub('', trace).strip()
             print(trace)
+            self._save_reasoning(trace)
             return answer + "\n\n---\n\n" + trace
 
         return answer
@@ -456,33 +460,19 @@ class CreditRiskQA:
     @staticmethod
     def _clean_metadata(results: list) -> list:
         """
-        Strip source_text and cik from results before sending to LLM.
-        Keep only document_url and source_url for citations.
-        Returns a new list (originals are not mutated).
+        Strip source_text, cik, and xbrl_tag before sending to LLM.
+        Deep-copies every row so the originals (saved to JSON) are never mutated.
         """
-        cleaned = []
-        for row in results:
-            row = dict(row)
-            
-            # Strip source_text and cik from any node in the row
-            for key, value in row.items():
-                if isinstance(value, dict):
-                    # Remove source_text and cik from individual nodes
-                    if 'source_text' in value:
-                        del value['source_text']
-                    if 'cik' in value:
-                        del value['cik']
-                elif isinstance(value, list):
-                    # Handle lists of nodes (like target_risks, peer_risks)
-                    for item in value:
-                        if isinstance(item, dict):
-                            if 'source_text' in item:
-                                del item['source_text']
-                            if 'cik' in item:
-                                del item['cik']
-            
-            cleaned.append(row)
-        return cleaned
+        import copy
+
+        def _strip(obj):
+            if isinstance(obj, dict):
+                return {k: _strip(v) for k, v in obj.items() if k not in ('source_text', 'cik', 'xbrl_tag')}
+            if isinstance(obj, list):
+                return [_strip(i) for i in obj]
+            return obj
+
+        return [_strip(dict(row)) for row in results]
 
     def _call_llm_raw(self, user_msg: str) -> str:
         """Direct LLM call for cases where we bypass the chain."""
@@ -518,19 +508,37 @@ class CreditRiskQA:
             REASONING_PROMPT.format(queries=queries_text, context=context, question=question)
         )
 
-    def _save(self, question: str, queries: list, results: list):
-        from datetime import datetime
+    def _save_extraction_result(self, question: str, queries: list, results: list):
+        """Save extraction results with question and queries to retrival_results/extraction_result.json"""
         out_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "retrival_results")
         os.makedirs(out_dir, exist_ok=True)
-        slug = re.sub(r'[^a-z0-9]+', '_', question.lower())[:60].strip('_')
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-        path = os.path.join(out_dir, f"query_results_{slug}_{ts}.json")
+        path = os.path.join(out_dir, "extraction_result.json")
         with open(path, "w", encoding="utf-8") as f:
-            json.dump({"question": question, "queries": queries,
-                       "record_count": len(results),
-                       "results": results},  # full metadata preserved (incl. source_text, document_url, source_url)
-                      f, indent=2, default=str)
-        print(f"      → Saved: retrival_results/{os.path.basename(path)}")
+            json.dump({
+                "question": question,
+                "queries": queries,
+                "record_count": len(results),
+                "results": results
+            }, f, indent=2, default=str)
+        print(f"      → Saved: retrival_results/extraction_result.json")
+
+    def _save_answer(self, answer: str):
+        """Save answer text to retrival_results/answer.txt"""
+        out_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "retrival_results")
+        os.makedirs(out_dir, exist_ok=True)
+        path = os.path.join(out_dir, "answer.txt")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(answer)
+        print(f"      → Saved: retrival_results/answer.txt")
+
+    def _save_reasoning(self, reasoning: str):
+        """Save reasoning trace to retrival_results/reasoning.txt"""
+        out_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "retrival_results")
+        os.makedirs(out_dir, exist_ok=True)
+        path = os.path.join(out_dir, "reasoning.txt")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(reasoning)
+        print(f"      → Saved: retrival_results/reasoning.txt")
 
     def close(self):
         self.graph.close()
