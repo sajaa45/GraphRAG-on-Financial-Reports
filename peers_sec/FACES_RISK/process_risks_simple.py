@@ -8,9 +8,7 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env'))
 
 MODEL_ID = "qwen.qwen3-next-80b-a3b"
-MAX_CONTEXT_WORDS = 4000
-MAX_BATCH_PARAGRAPHS = 15
-TOKENS_PER_WORD = 1.33
+MIN_BATCH_CHARS = 5000
 
 client = boto3.client(
     "bedrock-runtime",
@@ -154,14 +152,21 @@ def validate_risk(risk: dict, company_name: str):
 
 
 def make_batches(paragraphs: list) -> list:
-    batches, current, current_words = [], [], 0
+    batches, current, current_chars = [], [], 0
     for para in paragraphs:
-        words = len(para.split())
-        if current and (current_words + words > MAX_CONTEXT_WORDS or len(current) >= MAX_BATCH_PARAGRAPHS):
-            batches.append(current)
-            current, current_words = [], 0
-        current.append(para)
-        current_words += words
+        chars = len(para)
+        if chars >= MIN_BATCH_CHARS:
+            # Large paragraph: flush any accumulated small ones first, then send alone
+            if current:
+                batches.append(current)
+                current, current_chars = [], 0
+            batches.append([para])
+        else:
+            current.append(para)
+            current_chars += chars
+            if current_chars >= MIN_BATCH_CHARS:
+                batches.append(current)
+                current, current_chars = [], 0
     if current:
         batches.append(current)
     return batches
@@ -175,7 +180,13 @@ def extract_batch(paragraphs: list, company_name: str) -> list:
         results = extract_json_array(raw)
         if not isinstance(results, list):
             return []
-        validated = [r for r in (validate_risk(r, company_name) for r in results) if r]
+        validated = []
+        for r in results:
+            risk = validate_risk(r, company_name)
+            if risk:
+                # Since we're processing one paragraph at a time, use that paragraph as source
+                risk["_source_paragraph"] = text
+                validated.append(risk)
         return validated
     except Exception as e:
         print(f"    ✗ Batch failed: {e}")
@@ -206,14 +217,15 @@ def process_all_risks(
         for b, batch in enumerate(batches):
             print(f"  Batch {b + 1}/{len(batches)} ({len(batch)} paragraphs)...", end=" ")
             found = extract_batch(batch, company_name)
-            batch_text = "\n\n".join(batch)
 
             for risk in found:
-                risk.pop("source_index", None)
+                # Get the specific source paragraph for this risk
+                source_text = risk.pop("_source_paragraph", "\n\n".join(batch))
+                
                 risk["risk_id"] = f"{cik}_risk_{len(company_risks) + 1}"
                 risk["metadata"] = {
                     "document_url": company.get("document_url", ""),
-                    "source_text": batch_text,
+                    "source_text": source_text,
                 }
                 company_risks.append(risk)
 
