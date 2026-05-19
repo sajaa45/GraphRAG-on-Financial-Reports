@@ -16,9 +16,9 @@ load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..',
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
-# Configuration
-START_DATE = "2024-01-01"
-END_DATE   = "2025-01-01"
+FISCAL_YEAR = 2024  # Extract only this fiscal year
+START_DATE = f"{FISCAL_YEAR}-01-01"
+END_DATE = f"{FISCAL_YEAR}-12-31"
 FORM_TYPE = "10-K"
 MAX_COMPANIES = 3
 
@@ -376,7 +376,7 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                         for e in entries
                         if e.get('fp') == 'FY'
                         and e.get('form') == '10-K'
-                        and START_DATE <= e.get('end', '') <= END_DATE
+                        and e.get('fy') == FISCAL_YEAR
                     ]
                     if filtered_entries:
                         tag_data['units'][unit_name] = filtered_entries
@@ -484,7 +484,7 @@ def main():
         print(f"[{idx}/{len(companies)}] {name} ({ticker}) - CIK: {cik}")
         
         metric_results = analyze_company_covenants(
-            cik, name, target_metrics, int(END_DATE[:4]) - 1
+            cik, name, target_metrics, FISCAL_YEAR
         )
         
         if metric_results is None:
