@@ -1,15 +1,9 @@
-Minerals Technologies Inc. (MTI) generated $167.1 million in net income in 2024, with an operating margin of 13.5% and diluted EPS of $5.17. Compared to peers:
+Minerals Technologies Inc. (MTI) reported a net income of $167.1 million in 2024 [CITE:TARGET_M0024], with an operating margin of 13.5% [CITE:TARGET_M0035]. Compared to peers, MTI’s profitability is stronger than Global Gas Corp, which reported a net loss of $130.7 million in 2024 [CITE:PEER_M0015], indicating severe financial distress and elevated risk of insolvency [CITE:PEER_R0004][CITE:PEER_R0006]. 
 
-- **VALHI INC**: Net income of $108 million, diluted EPS of $3.79, operating margin not directly comparable but income from operations was $169.8 million. MTI’s profitability per share and margin are stronger.
-- **NL INDUSTRIES INC**: Net income of $67.2 million, diluted EPS of $1.38. MTI significantly outperforms in both absolute and per-share profitability.
-- **Global Gas Corp**: Reported a net loss of $130.7 million and no revenue history. MTI is profitable; Global Gas is not.
+VALHI Inc. reported net income of $108 million [CITE:PEER_M0070] and an operating margin of 21.1% [CITE:PEER_M0069], which exceeds MTI’s margin. NL Industries reported net income of $67.2 million [CITE:PEER_M0168] and an operating margin of 37.9% [CITE:PEER_M0154], significantly higher than MTI’s. 
 
-MTI’s profitability is superior to all peers. No peer exceeds MTI in net income or EPS. Global Gas Corp is not profitable, while VALHI and NL are materially less profitable than MTI.
+While MTI is profitable and outperforms Global Gas Corp, it does not achieve the highest profitability among peers. VALHI and especially NL Industries demonstrate superior operating margins, suggesting MTI is not the top performer in profit generation. 
 
-**Sources:**
-- Minerals Technologies Inc.: not available
-- Global Gas Corp: https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json
-- VALHI INC /DE/: https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json
-- NL INDUSTRIES INC: https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json
-
-Elevated risk: MTI faces competitive pressures, shipping cost volatility, and regulatory risks, but these have not impaired profitability. MTI is currently achieving the best profit among peers.
+Sources:  
+- VALHI INC /DE/: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm  
+- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm

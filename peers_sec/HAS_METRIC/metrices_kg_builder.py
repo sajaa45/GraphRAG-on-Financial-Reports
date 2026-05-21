@@ -22,6 +22,9 @@ def write_metrics_to_neo4j(json_file: str):
     total_metrics = 0
     total_companies = 0
     total_competitors = 0
+    
+    # Global counter for peer metrics
+    peer_metric_counter = 0
 
     print("=" * 80)
     print("WRITING METRICS TO NEO4J")
@@ -93,6 +96,7 @@ def write_metrics_to_neo4j(json_file: str):
 
                 def write_metric(metric_type, metric_name, latest, unit_name, year,
                                  xbrl_tag, taxonomy, label, metadata=None):
+                    nonlocal peer_metric_counter
                     category = category_map.get(metric_type, "Other")
                     
                     # Extract metadata fields
@@ -102,13 +106,19 @@ def write_metrics_to_neo4j(json_file: str):
                         source_url = metadata.get("source_url", "")
                         metric_cik = metadata.get("cik", cik)
                     
+                    # Generate citation_id for peer metrics
+                    # Format: PEER_M<counter>
+                    peer_metric_counter += 1
+                    citation_id = f"PEER_M{peer_metric_counter:04d}"
+                    
                     session.run(
                         """
                         MATCH (c:Company {name: $company_name})
                         MERGE (mc:MetricCategory {name: $category, company: $company_name})
                         MERGE (c)-[:HAS_METRIC_CATEGORY]->(mc)
                         MERGE (m:Metric {name: $metric_name, company: $company_name})
-                        SET m.value = $value,
+                        SET m.citation_id = $citation_id,
+                            m.value = $value,
                             m.unit = $unit,
                             m.year = $year,
                             m.metric_type = $metric_type,
@@ -124,6 +134,7 @@ def write_metrics_to_neo4j(json_file: str):
                             "company_name": company_name,
                             "category": category,
                             "metric_name": metric_name,
+                            "citation_id": citation_id,
                             "value": str(latest.get('val', '')),
                             "unit": unit_name,
                             "year": str(year),

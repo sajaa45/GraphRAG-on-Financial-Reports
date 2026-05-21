@@ -213,6 +213,49 @@ def validate_metrics(extraction_result_path: str, output_csv_path: str, debug: b
         output_csv_path: Path to output CSV file
         debug: If True, print detailed debug information
     """
+    # Set up logging to both console and file
+    log_file_path = output_csv_path.replace('.csv', '_log.txt')
+    
+    class TeeLogger:
+        """Write to both console and file"""
+        def __init__(self, filename):
+            import sys
+            self.terminal = sys.stdout
+            self.log = open(filename, 'w', encoding='utf-8')
+        
+        def write(self, message):
+            self.terminal.write(message)
+            self.log.write(message)
+        
+        def flush(self):
+            self.terminal.flush()
+            self.log.flush()
+        
+        def close(self):
+            self.log.close()
+    
+    import sys
+    original_stdout = sys.stdout
+    logger = TeeLogger(log_file_path)
+    sys.stdout = logger
+    
+    try:
+        _run_validation(extraction_result_path, output_csv_path, debug)
+    finally:
+        sys.stdout = original_stdout
+        logger.close()
+        print(f"\n✓ Log saved to {log_file_path}")
+
+
+def _run_validation(extraction_result_path: str, output_csv_path: str, debug: bool = False):
+    """
+    Main validation function.
+    
+    Args:
+        extraction_result_path: Path to extraction_result.json
+        output_csv_path: Path to output CSV file
+        debug: If True, print detailed debug information
+    """
     print("="*70)
     print("XBRL Metrics Ground Truth Validation")
     print("="*70)

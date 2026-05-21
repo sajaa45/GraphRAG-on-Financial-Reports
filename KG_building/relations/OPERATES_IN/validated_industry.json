@@ -10,7 +10,7 @@
       "name": "Chemical Manufacturing",
       "properties": {
         "sector": "Materials",
-        "sic_code": ""
+        "sic_code": "2810"
       }
     },
     "rel": "OPERATES_IN",

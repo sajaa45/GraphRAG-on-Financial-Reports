@@ -21,9 +21,11 @@ Node labels and key properties:
   - TargetCompany   {name, cik, ticker, is_target:true, filing_date, document_url}
   - Company         {name, cik, ticker, is_peer:true, filing_date, document_url}
   - MetricCategory  {name}
-  - Metric          {name, value, unit, year, metric_type, xbrl_tag, label, source_url, cik}
+  - Metric          {citation_id, name, value, unit, year, metric_type, xbrl_tag, label, source_url, cik}
                     NOTE: name = "{metric_type} ({year})" — use xbrl_tag to identify the exact concept
-  - Risk            {risk_id, name, description, why, source_text, document_url, filing_date}
+                    CRITICAL: Always return citation_id for citations
+  - Risk            {citation_id, risk_id, name, description, why, source_text, document_url, filing_date}
+                    CRITICAL: Always return citation_id for citations
   - Industry        {name, sector}
   - SICCode         {code, industry, sector}
 
@@ -45,6 +47,7 @@ Key rules:
   - Always use DISTINCT on risk rows to avoid duplicates from OPTIONAL MATCH joins.
   - CRITICAL: WHERE must follow MATCH/OPTIONAL MATCH directly, not come after WITH.
   - CRITICAL: Every variable used after WITH must be carried in that WITH clause.
+  - CRITICAL: Always return citation_id for every Risk and Metric node for citation traceability.
 """
 
 # ---------------------------------------------------------------------------
@@ -87,22 +90,22 @@ Risks with peer comparison:
     MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
     WHERE toLower(r.description) CONTAINS 'keyword' OR toLower(r.name) CONTAINS 'keyword'
            OR toLower(r.why) CONTAINS 'keyword' OR toLower(r.source_text) CONTAINS 'keyword'
-    WITH tc, collect(properties(r)) AS target_risks
+    WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, document_url: r.document_url}}) AS target_risks
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)
     WHERE toLower(pr.description) CONTAINS 'keyword' OR toLower(pr.name) CONTAINS 'keyword'
            OR toLower(pr.why) CONTAINS 'keyword' OR toLower(pr.source_text) CONTAINS 'keyword'
-    WITH tc, target_risks, peer, collect(properties(pr)) AS peer_risks
+    WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, document_url: pr.document_url}}) AS peer_risks
     RETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks
     LIMIT 300
 
 Metrics with peer comparison (fetch independently by category — let the LLM align by label):
     MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
     WHERE mc.name = 'Profitability'
-    WITH tc, mc, collect({{name: m.name, label: m.label, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag}}) AS target_metrics
+    WITH tc, mc, collect({{citation_id: m.citation_id, name: m.name, label: m.label, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag}}) AS target_metrics
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(pmc:MetricCategory {{name: mc.name}})-[:HAS_METRIC]->(pm:Metric)
-    WITH tc, mc, target_metrics, peer, collect({{name: pm.name, label: pm.label, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url}}) AS peer_metrics
+    WITH tc, mc, target_metrics, peer, collect({{citation_id: pm.citation_id, name: pm.name, label: pm.label, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url}}) AS peer_metrics
     RETURN tc.name AS target, mc.name AS category, target_metrics, peer.name AS peer, peer_metrics
     LIMIT 300
 
@@ -122,6 +125,11 @@ Answer the question using only the graph results below.
 - Directly answer the question; compare target vs peers where data exists.
 - Flag any elevated risks or concerning metrics.
 - Plain language suitable for a credit committee; ≤ 300 words unless data requires more.
+- After every claim drawn from a specific data point, append an inline citation using the citation_id from the graph results:
+  - Risk claim:   [CITE:<citation_id>]   e.g. [CITE:TARGET_RISK_Competitive_industries] or [CITE:PEER_RISK_1234567_risk_3]
+  - Metric claim: [CITE:<citation_id>]   e.g. [CITE:TARGET_METRIC_Net_income_2024] or [CITE:PEER_METRIC_891014_NetIncome_2024]
+  
+CRITICAL: The citation_id field is provided in every risk and metric object in the graph results. Use it EXACTLY as shown — do not construct or modify it.
 
 **Sources:**
 - [Company Name]: [document_url]
@@ -135,6 +143,7 @@ Answer:""",
 )
 
 # Shown when --reasoning is enabled.  The LLM must think step-by-step,
+
 # name what it found, and cite every source document it draws from.
 REASONING_PROMPT = PromptTemplate(
     input_variables=["context", "question", "queries"],
@@ -202,6 +211,12 @@ If no document_url exists for a company, omit that company from this section —
 A concise credit-committee-ready answer (≤ 200 words) that directly responds to
 the question, highlights peer comparisons, and flags any elevated risks or
 concerning metrics.
+After every claim drawn from a specific data point, append an inline citation using
+the citation_id from the graph results:
+  - Risk claim:   [CITE:<citation_id>]   e.g. [CITE:TARGET_RISK_Competitive_industries] or [CITE:PEER_RISK_1234567_risk_3]
+  - Metric claim: [CITE:<citation_id>]   e.g. [CITE:TARGET_METRIC_Net_income_2024] or [CITE:PEER_METRIC_891014_NetIncome_2024]
+
+CRITICAL: The citation_id field is provided in every risk and metric object. Use it EXACTLY as shown.
 """,
 )
 

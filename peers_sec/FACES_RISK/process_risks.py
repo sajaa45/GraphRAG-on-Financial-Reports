@@ -202,6 +202,9 @@ def process_all_risks(
         companies_data = json.load(f)
 
     structured_results = []
+    
+    # Global counter for peer risks
+    peer_risk_counter = 0
 
     for company in companies_data:
         cik = company["cik"]
@@ -222,7 +225,14 @@ def process_all_risks(
                 # Get the specific source paragraph for this risk
                 source_text = risk.pop("_source_paragraph", "\n\n".join(batch))
                 
-                risk["risk_id"] = f"{cik}_risk_{len(company_risks) + 1}"
+                risk_id = f"{cik}_risk_{len(company_risks) + 1}"
+                
+                # Generate citation_id using global counter
+                peer_risk_counter += 1
+                citation_id = f"PEER_R{peer_risk_counter:04d}"
+                
+                risk["risk_id"] = risk_id
+                risk["citation_id"] = citation_id
                 risk["metadata"] = {
                     "document_url": company.get("document_url", ""),
                     "source_text": source_text,

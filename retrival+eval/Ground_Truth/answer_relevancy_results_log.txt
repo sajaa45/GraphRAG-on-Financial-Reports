@@ -1,0 +1,51 @@
+======================================================================
+Answer Relevancy — RAGAS-style Ground Truth Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : is my company getting the best profit
+  Answer chars: 1186
+
+[2/5] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
+
+[3/5] Decomposing question into verifiable aspects
+  → 5 aspects identified:
+    1. Does the answer report at least one profitability metric for the target company?
+    2. Does the answer compare the target company’s profitability to at least one peer company using metrics from their 10-K filings?
+    3. Does the answer avoid implying external benchmarks, industry standards, or forecasts not present in the filings?
+    4. Does the answer acknowledge limitations in determining “best” profit due to lack of market or strategic context?
+    5. Does the answer refrain from recommending actions or implying optimal performance beyond what the filings show?
+
+[4/5] Judging answer coverage per aspect
+    [✓] YES      Does the answer report at least one profitability metric for the targe
+             The answer reports MTI’s net income of $167.1 million and operating margin of 13.5%.
+    [✓] YES      Does the answer compare the target company’s profitability to at least
+             The answer compares MTI’s profitability to VALHI Inc. and NL Industries using their report
+    [✓] YES      Does the answer avoid implying external benchmarks, industry standards
+             The answer relies solely on data from the cited 10-K filings and does not invoke external 
+    [✓] YES      Does the answer acknowledge limitations in determining “best” profit d
+             The answer acknowledges that MTI is not the top performer among peers and implies that “be
+    [✓] YES      Does the answer refrain from recommending actions or implying optimal 
+             The answer refrains from recommending actions or claiming optimal performance, limiting it
+
+[5/5] Computing overall relevancy score
+  Overall score : 1.00
+  Reason        : The answer directly compares the target company’s profitability (net income and operating margin) against all available peer companies using only the permitted 10-K data, clearly concluding that MTI is not the top performer despite being profitable.
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Aspects total   : 5
+  Fully covered   : 5  (YES)
+  Partially covered: 0  (PARTIAL)
+  Not covered     : 0  (NO)
+  Aspect score    : 1.00
+  Holistic score  : 1.00
+  Combined        : 1.00
+  Quality gate    : PASS  (threshold: 0.70)
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_relevancy_results.csv
+======================================================================
+Answer Relevancy Score : 1.00  [PASS]
+======================================================================

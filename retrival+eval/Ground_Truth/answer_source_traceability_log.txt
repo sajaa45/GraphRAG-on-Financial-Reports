@@ -1,0 +1,44 @@
+======================================================================
+Answer-Source Traceability — Phase 1 Ground Truth Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : is my company getting the best profit
+  Answer chars: 1186
+  Result rows : 6
+
+[2/5] Building source registry
+  Total sources: 219  (89 risks, 130 metrics)
+    [TARGET_R0004] Pricing pressure and inability to pass on cost increases — The Company may face 
+    [PEER_R0001] Limited operating history and no revenue — Global Gas Corp has no customers, no 
+    [PEER_R0002] Failure to implement business strategy — Global Gas Corp may fail to implement i
+    [PEER_R0003] Unproven business model — Global Gas Corp's business model has not been tested, 
+    [PEER_R0004] Inability to secure financing or generate sufficient revenue — Global Gas Corp m
+    ... and 214 more
+
+[3/5] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
+
+[4/5] Parsing claims and inline citations from answer
+  → 9 claims  |  9 cited  |  0 unresolved  |  0 uncited
+    C001: Minerals Technologies Inc. (MTI) reported a net income of $167.1 milli  [CITE:TARGET_M0024] ✓
+    C002: , with an operating margin of 13.5%  [CITE:TARGET_M0035] ✓
+    C003: Compared to peers, MTI’s profitability is stronger than Global Gas Cor  [CITE:PEER_M0015] ✓
+    C004: , indicating severe financial distress and elevated risk of insolvency  [CITE:PEER_R0004] ✓
+    C005: , indicating severe financial distress and elevated risk of insolvency  [CITE:PEER_R0006] ✓
+    ... and 4 more
+
+[5/5] Judging source correctness (9 LLM calls)
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Total claims       : 9
+  Correct source     : 9  (100.0%)
+  Wrong source       : 0
+  Fabricated (no src): 0
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_source_traceability.csv
+======================================================================
+Source Traceability Score: 100.0%
+======================================================================
