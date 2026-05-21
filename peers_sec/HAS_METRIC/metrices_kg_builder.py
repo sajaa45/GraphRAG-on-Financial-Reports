@@ -122,6 +122,7 @@ def write_metrics_to_neo4j(json_file: str):
                             m.unit = $unit,
                             m.year = $year,
                             m.metric_type = $metric_type,
+                            m.category = $category,
                             m.xbrl_tag = $xbrl_tag,
                             m.taxonomy = $taxonomy,
                             m.label = $label,

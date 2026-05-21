@@ -20,12 +20,12 @@ client = boto3.client(
 SYSTEM_PROMPT = "You are a financial analyst expert at extracting structured risk information from SEC filings."
 
 EXTRACT_PROMPT = """/no_think
-The following is a passage from the Risk Factors section of a 10-K filing.
+The following are numbered paragraphs from the Risk Factors section of a 10-K filing.
 The company is: {main_company}
 
 {text}
 
-Extract ONLY the distinct risks that are explicitly described in this passage.
+Extract ONLY the distinct risks that are explicitly described in these paragraphs.
 Return a valid JSON array. If no actual risk is described, return [].
 
 [
@@ -33,13 +33,14 @@ Return a valid JSON array. If no actual risk is described, return [].
     "risk_name": "Short title using the document's own wording — no invented category labels",
     "description": "Concise factual description of what the risk is, 80-160 chars, paraphrasing the text",
     "why": "Specific factual evidence or mechanism from the text explaining why it is a risk, 80-200 chars — use numbers, conditions, or specific facts. Do NOT write generic statements.",
-    "organization": "{main_company}"
+    "organization": "{main_company}",
+    "source_index": 0
   }}
 ]
 
 Rules:
 - Extract each distinct risk as a separate object. Merge near-duplicates.
-- Do NOT add severity, category, or source_index fields.
+- source_index must be the 0-based index of the paragraph the risk came from (0, 1, 2, …).
 - Do NOT use external knowledge — only what is written.
 - Return [] for preamble, introductory text, or passages with no concrete risk described."""
 
@@ -173,8 +174,9 @@ def make_batches(paragraphs: list) -> list:
 
 
 def extract_batch(paragraphs: list, company_name: str) -> list:
-    text = "\n\n".join(paragraphs)
-    prompt = EXTRACT_PROMPT.format(main_company=company_name, text=text)
+    # Number each paragraph so the LLM can report which one each risk came from
+    numbered = "\n\n".join(f"[{i}]\n{p}" for i, p in enumerate(paragraphs))
+    prompt = EXTRACT_PROMPT.format(main_company=company_name, text=numbered)
     try:
         raw = call_llm(prompt)
         results = extract_json_array(raw)
@@ -184,8 +186,12 @@ def extract_batch(paragraphs: list, company_name: str) -> list:
         for r in results:
             risk = validate_risk(r, company_name)
             if risk:
-                # Since we're processing one paragraph at a time, use that paragraph as source
-                risk["_source_paragraph"] = text
+                idx = risk.pop("source_index", None)
+                if isinstance(idx, int) and 0 <= idx < len(paragraphs):
+                    risk["_source_paragraph"] = paragraphs[idx]
+                else:
+                    # Fallback: use the full batch text if index is missing/invalid
+                    risk["_source_paragraph"] = "\n\n".join(paragraphs)
                 validated.append(risk)
         return validated
     except Exception as e:
@@ -249,6 +255,7 @@ def process_all_risks(
         structured_results.append({
             "cik": cik,
             "company_name": company_name,
+            "period_of_report": company.get("period_of_report"),
             "filing_date": company["filing_date"],
             "document_url": company["document_url"],
             "total_risks": len(company_risks),

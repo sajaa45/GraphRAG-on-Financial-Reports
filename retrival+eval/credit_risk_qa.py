@@ -24,7 +24,7 @@ Node labels and key properties:
   - Metric          {citation_id, name, value, unit, year, metric_type, xbrl_tag, label, source_url, cik}
                     NOTE: name = "{metric_type} ({year})" — use xbrl_tag to identify the exact concept
                     CRITICAL: Always return citation_id for citations
-  - Risk            {citation_id, risk_id, name, description, why, source_text, document_url, filing_date}
+  - Risk            {citation_id, risk_id, name, description, why, source_text, document_url, filing_date, section_title, source_page}
                     CRITICAL: Always return citation_id for citations
   - Industry        {name, sector}
   - SICCode         {code, industry, sector}
@@ -90,12 +90,12 @@ Risks with peer comparison:
     MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
     WHERE toLower(r.description) CONTAINS 'keyword' OR toLower(r.name) CONTAINS 'keyword'
            OR toLower(r.why) CONTAINS 'keyword' OR toLower(r.source_text) CONTAINS 'keyword'
-    WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, document_url: r.document_url}}) AS target_risks
+    WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page}}) AS target_risks
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)
     WHERE toLower(pr.description) CONTAINS 'keyword' OR toLower(pr.name) CONTAINS 'keyword'
            OR toLower(pr.why) CONTAINS 'keyword' OR toLower(pr.source_text) CONTAINS 'keyword'
-    WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, document_url: pr.document_url}}) AS peer_risks
+    WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page}}) AS peer_risks
     RETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks
     LIMIT 300
 

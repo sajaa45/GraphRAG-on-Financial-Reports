@@ -77,9 +77,11 @@ def get_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100
     if isinstance(sic_codes, str):
         sic_codes = [sic_codes]
 
-    # Convert fiscal year to date range for API (filings are typically made in the following year)
-    start_date = f"{fiscal_year}-01-01"
-    end_date = f"{fiscal_year}-12-31"
+    # Companies file their FY annual report months after the fiscal year ends.
+    # Search the second half of the fiscal year through mid-next-year to capture
+    # all fiscal year-end dates (e.g. FY2023 ending Jun–Dec 2023 filed Jul 2023–Apr 2024).
+    start_date = f"{fiscal_year}-07-01"
+    end_date = f"{fiscal_year + 1}-06-30"
     
     print(f"  Querying EDGAR search index for SIC codes: {sic_codes}, fiscal year {fiscal_year}")
 
@@ -136,21 +138,28 @@ def get_10k_filings(cik: str, fiscal_year: int = None, limit: int = 1):
     company_name = data.get("name", "N/A")
     filings = data["filings"]["recent"]
     
+    report_dates = filings.get("reportDate", [])
+
     results = []
     for i, form in enumerate(filings["form"]):
         if form == "10-K":
             filing_date = filings["filingDate"][i]
-            
-            # Filter by fiscal year if provided
-            # Extract year from filing date (format: YYYY-MM-DD)
+            report_date = report_dates[i] if i < len(report_dates) else None
+
             if fiscal_year:
-                filing_year = int(filing_date.split('-')[0])
-                if filing_year != fiscal_year:
-                    continue
-            
+                # Filter by the fiscal period end date (reportDate), not the submission date
+                if report_date:
+                    if int(report_date.split('-')[0]) != fiscal_year:
+                        continue
+                else:
+                    # Fallback: accept filings submitted in fiscal_year or fiscal_year+1
+                    if int(filing_date.split('-')[0]) not in (fiscal_year, fiscal_year + 1):
+                        continue
+
             results.append({
                 "accession_raw": filings["accessionNumber"][i],
                 "date": filing_date,
+                "report_date": report_date,
                 "primary_document": filings["primaryDocument"][i],
             })
             
@@ -195,10 +204,11 @@ def get_risk_factor_data(cik: str, company_name: str, fiscal_year: int = None):
     risk_text = extract_risk_factors(doc_url)
     individual_risks = split_risks(risk_text)
 
-    print(f"  filing_date={filing['date']}, chars={len(risk_text)}, words={len(risk_text.split())}, risks={len(individual_risks)}")
+    print(f"  period_of_report={filing['report_date']}, filing_date={filing['date']}, chars={len(risk_text)}, words={len(risk_text.split())}, risks={len(individual_risks)}")
     return {
         "company_name": company_name,
         "cik": cik,
+        "period_of_report": filing["report_date"],
         "filing_date": filing["date"],
         "document_url": doc_url,
         "section": "Item 1A - Risk Factors",

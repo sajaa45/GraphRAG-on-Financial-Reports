@@ -17,8 +17,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 FISCAL_YEAR = 2024  # Extract only this fiscal year
-START_DATE = f"{FISCAL_YEAR}-01-01"
-END_DATE = f"{FISCAL_YEAR}-12-31"
+# Companies file their FY annual report months after the fiscal year ends.
+# Span second half of FY through mid-next-year to capture all fiscal year-end dates.
+START_DATE = f"{FISCAL_YEAR}-07-01"
+END_DATE = f"{FISCAL_YEAR + 1}-06-30"
 FORM_TYPE = "10-K"
 MAX_COMPANIES = 3
 

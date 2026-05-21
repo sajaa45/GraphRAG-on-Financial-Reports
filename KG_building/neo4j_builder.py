@@ -248,7 +248,7 @@ class Neo4jBuilder:
                         
                         # Structure:
                         #   Company -[HAS_METRIC_CATEGORY]-> MetricCategory -[HAS_METRIC]-> Metric
-                        category = tgt_props.pop('category', None) or 'Uncategorised'
+                        category = tgt_props.get('category', None) or 'Uncategorised'
 
                         self.create_node(tx, 'MetricCategory', category, {'name': category})
                         self.create_relationship(
@@ -271,7 +271,17 @@ class Neo4jBuilder:
                         if item['src']['name'] == self.main_company:
                             self._target_risk_counter += 1
                             tgt_props['citation_id'] = f"TARGET_R{self._target_risk_counter:04d}"
-                        
+
+                        # Store source metadata as flat properties (not nested JSON string)
+                        # so Cypher can access r.source_page, r.section_title, r.source_text directly
+                        tgt_props.pop('metadata', None)
+                        if item.get('source_page') is not None:
+                            tgt_props['source_page'] = item['source_page']
+                        if item.get('section_title'):
+                            tgt_props['section_title'] = item['section_title']
+                        if item.get('chunk_text'):
+                            tgt_props['source_text'] = item['chunk_text']
+
                         self.create_node(tx, item['tgt']['type'], item['tgt']['name'], tgt_props)
                         self.create_relationship(
                             tx,
