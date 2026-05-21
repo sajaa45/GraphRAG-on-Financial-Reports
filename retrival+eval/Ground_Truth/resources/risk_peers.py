@@ -105,10 +105,13 @@ def check_chunks_against_themes(
         # Pattern 1: "1.1: YES — explanation" or "Chunk 1.1: YES — explanation"
         m = re.match(r'^(?:Chunk\s+)?(\d+)\.(\d+)(?:\.\d+)?\s*[:\.\)]\s*(YES|NO)\s*[-—–]?\s*(.*)', line, re.IGNORECASE)
         if not m:
-            # Pattern 2: "1.1 YES explanation" (no colon or dash)
+            # Pattern 2: "<chunk>.1.1: YES" (angle brackets)
+            m = re.match(r'^<chunk>\.(\d+)\.(\d+)(?:\.\d+)?\s*[:\.\)]\s*(YES|NO)\s*[-—–]?\s*(.*)', line, re.IGNORECASE)
+        if not m:
+            # Pattern 3: "1.1 YES explanation" (no colon or dash)
             m = re.match(r'^(?:Chunk\s+)?(\d+)\.(\d+)(?:\.\d+)?\s+(YES|NO)\s+(.*)', line, re.IGNORECASE)
         if not m:
-            # Pattern 3: Just look for numbers followed by YES/NO anywhere
+            # Pattern 4: Just look for numbers followed by YES/NO anywhere
             m = re.match(r'^(?:Chunk\s+)?(\d+)\.(\d+)(?:\.\d+)?.*?(YES|NO)(?:\s*[-—–:]\s*|\s+)(.*)', line, re.IGNORECASE)
         
         if m:
@@ -132,6 +135,44 @@ def check_chunks_against_themes(
 
 
 def validate_risk_chunks(
+    extraction_result_path: str,
+    output_csv_path: str,
+    use_llm_judge: bool = True
+):
+    # Set up logging to both console and file
+    log_file_path = output_csv_path.replace('.csv', '_log.txt')
+    
+    class TeeLogger:
+        """Write to both console and file"""
+        def __init__(self, filename):
+            self.terminal = sys.stdout
+            self.log = open(filename, 'w', encoding='utf-8')
+        
+        def write(self, message):
+            self.terminal.write(message)
+            self.log.write(message)
+        
+        def flush(self):
+            self.terminal.flush()
+            self.log.flush()
+        
+        def close(self):
+            self.log.close()
+    
+    import sys
+    original_stdout = sys.stdout
+    logger = TeeLogger(log_file_path)
+    sys.stdout = logger
+    
+    try:
+        _run_validation(extraction_result_path, output_csv_path, use_llm_judge)
+    finally:
+        sys.stdout = original_stdout
+        logger.close()
+        print(f"\n✓ Log saved to {log_file_path}")
+
+
+def _run_validation(
     extraction_result_path: str,
     output_csv_path: str,
     use_llm_judge: bool = True
@@ -259,7 +300,7 @@ def validate_risk_chunks(
             # Ask user if they want to continue
             print(f"\n  These chunks have source_text that is too long.")
             print(f"  This likely means the risk extraction didn't properly isolate individual paragraphs.")
-            print(f"  You should re-run the extraction with the updated process_risks_simple.py")
+            print(f"  You should re-run the extraction with the updated process_risks.py")
             print(f"\n  Continue validation anyway? (y/n): ", end="")
             
             # For non-interactive environments, default to continue

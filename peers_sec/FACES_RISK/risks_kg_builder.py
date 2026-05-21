@@ -106,6 +106,9 @@ class RisksKGBuilder:
             raise ValueError(f"Expected a JSON array in {json_file}")
 
         total_risks = 0
+        
+        # Global counter for peer risks (in case citation_id is missing)
+        peer_risk_counter = 0
 
         print(f"\n{'='*60}")
         print(f"Loading structured risks from: {json_file}")
@@ -148,6 +151,13 @@ class RisksKGBuilder:
 
                 for risk in risks:
                     risk_id = risk.get("risk_id", "")
+                    citation_id = risk.get("citation_id", "")
+                    
+                    # If citation_id is missing, generate one
+                    if not citation_id:
+                        peer_risk_counter += 1
+                        citation_id = f"PEER_R{peer_risk_counter:04d}"
+                    
                     risk_name = risk.get("risk_name", "Unnamed Risk")
                     description = risk.get("description", "")
                     why = risk.get("why", "")
@@ -164,19 +174,21 @@ class RisksKGBuilder:
                     session.run(
                         """
                         MERGE (r:Risk {risk_id: $risk_id})
-                        ON CREATE SET r.name = $risk_name, r.description = $description,
+                        ON CREATE SET r.citation_id = $citation_id,
+                                      r.name = $risk_name, r.description = $description,
                                       r.why = $why,
                                       r.source_text = $source_text,
                                       r.document_url = $document_url,
                                       r.filing_date = $filing_date,
                                       r.created_at = datetime()
-                        ON MATCH  SET r.name = $risk_name, r.description = $description,
+                        ON MATCH  SET r.citation_id = $citation_id,
+                                      r.name = $risk_name, r.description = $description,
                                       r.why = $why,
                                       r.source_text = $source_text,
                                       r.document_url = $document_url,
                                       r.updated_at = datetime()
                         """,
-                        {"risk_id": risk_id, "risk_name": risk_name,
+                        {"risk_id": risk_id, "citation_id": citation_id, "risk_name": risk_name,
                          "description": description, "why": why,
                          "source_text": source_text, "document_url": risk_document_url,
                          "filing_date": filing_date},

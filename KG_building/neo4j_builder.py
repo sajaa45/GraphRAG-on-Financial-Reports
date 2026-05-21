@@ -30,6 +30,10 @@ class Neo4jBuilder:
 
         self.main_company = main_company
         self._sic_cache: Dict[str, str] = {}
+        
+        # Citation ID counters for target company
+        self._target_metric_counter = 0
+        self._target_risk_counter = 0
 
     def stamp_target_company(self, main_company: str):
         """Convert Company node to TargetCompany node type for the main company."""
@@ -237,6 +241,11 @@ class Neo4jBuilder:
                         tgt_props['metadata'] = metadata_str
 
                     if item.get('rel') == 'HAS_METRIC':
+                        # Assign citation_id for target company metrics
+                        if item['src']['name'] == self.main_company:
+                            self._target_metric_counter += 1
+                            tgt_props['citation_id'] = f"TARGET_M{self._target_metric_counter:04d}"
+                        
                         # Structure:
                         #   Company -[HAS_METRIC_CATEGORY]-> MetricCategory -[HAS_METRIC]-> Metric
                         category = tgt_props.pop('category', None) or 'Uncategorised'
@@ -254,6 +263,21 @@ class Neo4jBuilder:
                             'MetricCategory', category,
                             item['tgt']['type'], item['tgt']['name'],
                             'HAS_METRIC', item.get('props', {}),
+                            item.get('chunk_text'), item.get('similarity'),
+                            item.get('section_title'), item.get('source_page'),
+                        )
+                    elif item.get('rel') == 'FACES_RISK':
+                        # Assign citation_id for target company risks
+                        if item['src']['name'] == self.main_company:
+                            self._target_risk_counter += 1
+                            tgt_props['citation_id'] = f"TARGET_R{self._target_risk_counter:04d}"
+                        
+                        self.create_node(tx, item['tgt']['type'], item['tgt']['name'], tgt_props)
+                        self.create_relationship(
+                            tx,
+                            item['src']['type'], item['src']['name'],
+                            item['tgt']['type'], item['tgt']['name'],
+                            item['rel'], item.get('props', {}),
                             item.get('chunk_text'), item.get('similarity'),
                             item.get('section_title'), item.get('source_page'),
                         )

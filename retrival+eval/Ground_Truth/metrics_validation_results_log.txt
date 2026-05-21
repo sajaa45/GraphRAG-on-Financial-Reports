@@ -1,0 +1,308 @@
+======================================================================
+XBRL Metrics Ground Truth Validation
+======================================================================
+
+[1/4] Loading extraction results from C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\..\retrival_results\extraction_result.json
+  → Found 94 metrics to validate
+
+[2/4] Fetching ground truth from SEC API
+
+[1/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  → Using cached data for CIK 1817232
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[2/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[3/94] Global Gas Corp - RetainedEarningsAccumulatedDeficit (2024)
+  ✓ Match: pipeline=-446808, gt=-446808
+
+[4/94] Global Gas Corp - NetIncomeLoss (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[5/94] Global Gas Corp - NetIncomeLoss (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[6/94] Global Gas Corp - CostOfRevenue (2024)
+  ✓ Match: pipeline=574, gt=574
+
+[7/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[8/94] Global Gas Corp - DerivativeNetAssetsPercentage (2024)
+  ✓ Match: pipeline=0.9, gt=0.9
+
+[9/94] Global Gas Corp - RetainedEarningsAccumulatedDeficit (2024)
+  ✓ Match: pipeline=-446808, gt=-446808
+
+[10/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[11/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[12/94] Global Gas Corp - NetIncomeLoss (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[13/94] Global Gas Corp - NetIncomeLoss (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[14/94] Global Gas Corp - DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost (2024)
+  ✓ Match: pipeline=47661, gt=47661
+
+[15/94] Global Gas Corp - NetIncomeLoss (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[16/94] Global Gas Corp - PreferredStockSharesOutstanding (2024)
+  ✓ Match: pipeline=0, gt=0
+
+[17/94] Global Gas Corp - DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost (2024)
+  ✓ Match: pipeline=47661, gt=47661
+
+[18/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[19/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[20/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[21/94] Global Gas Corp - EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate (2024)
+  ✓ Match: pipeline=0.21, gt=0.21
+
+[22/94] Global Gas Corp - UnsecuredDebt (2024)
+  ✓ Match: pipeline=103950, gt=103950
+
+[23/94] Global Gas Corp - Assets (2024)
+  ✓ Match: pipeline=264729, gt=264729
+
+[24/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=-130700, gt=-130700
+
+[25/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
+  → Using cached data for CIK 59255
+  ✓ Match: pipeline=169800000, gt=169800000
+
+[26/94] VALHI INC /DE/ - EarningsPerShareDiluted (2024)
+  ✓ Match: pipeline=3.79, gt=3.79
+
+[27/94] VALHI INC /DE/ - CostsAndExpenses (2024)
+  ✓ Match: pipeline=1922400000, gt=1922400000
+
+[28/94] VALHI INC /DE/ - ResearchAndDevelopmentExpense (2024)
+  ✓ Match: pipeline=14000000, gt=14000000
+
+[29/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
+  ✓ Match: pipeline=169800000, gt=169800000
+
+[30/94] VALHI INC /DE/ - OperatingIncomeLoss (2024)
+  ✓ Match: pipeline=210700000, gt=210700000
+
+[31/94] VALHI INC /DE/ - NetIncomeLoss (2024)
+  ✓ Match: pipeline=108000000, gt=108000000
+
+[32/94] VALHI INC /DE/ - SegmentExpenditureAdditionToLongLivedAssets (2024)
+  ✓ Match: pipeline=30900000, gt=30900000
+
+[33/94] VALHI INC /DE/ - SegmentExpenditureAdditionToLongLivedAssets (2024)
+  ✓ Match: pipeline=30900000, gt=30900000
+
+[34/94] VALHI INC /DE/ - DefinedContributionPlanCostRecognized (2024)
+  ✓ Match: pipeline=7700000, gt=7700000
+
+[35/94] VALHI INC /DE/ - GeneralAndAdministrativeExpense (2024)
+  ✓ Match: pipeline=4300000, gt=4300000
+
+[36/94] VALHI INC /DE/ - GeneralAndAdministrativeExpense (2024)
+  ✓ Match: pipeline=4300000, gt=4300000
+
+[37/94] VALHI INC /DE/ - ResearchAndDevelopmentExpense (2024)
+  ✓ Match: pipeline=14000000, gt=14000000
+
+[38/94] VALHI INC /DE/ - CostsAndExpenses (2024)
+  ✓ Match: pipeline=1922400000, gt=1922400000
+
+[39/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
+  ✓ Match: pipeline=169800000, gt=169800000
+
+[40/94] VALHI INC /DE/ - OperatingIncomeLoss (2024)
+  ✓ Match: pipeline=210700000, gt=210700000
+
+[41/94] VALHI INC /DE/ - InterestExpense (2024)
+  ✓ Match: pipeline=49900000, gt=49900000
+
+[42/94] VALHI INC /DE/ - DefinedBenefitPensionPlanLiabilitiesNoncurrent (2024)
+  ✓ Match: pipeline=117600000, gt=117600000
+
+[43/94] VALHI INC /DE/ - EarningsPerShareBasic (2024)
+  ✓ Match: pipeline=3.79, gt=3.79
+
+[44/94] VALHI INC /DE/ - EarningsPerShareBasic (2024)
+  ✓ Match: pipeline=3.79, gt=3.79
+
+[45/94] VALHI INC /DE/ - ComprehensiveIncomeNetOfTax (2024)
+  ✓ Match: pipeline=94300000, gt=94300000
+
+[46/94] VALHI INC /DE/ - ComprehensiveIncomeNetOfTax (2024)
+  ✓ Match: pipeline=94300000, gt=94300000
+
+[47/94] VALHI INC /DE/ - RestructuringCosts (2024)
+  ✓ Match: pipeline=2000000, gt=2000000
+
+[48/94] VALHI INC /DE/ - AssetImpairmentCharges (2024)
+  ✓ Match: pipeline=3800000, gt=3800000
+
+[49/94] VALHI INC /DE/ - TreasuryStockValue (2024)
+  ✓ Match: pipeline=49600000, gt=49600000
+
+[50/94] VALHI INC /DE/ - TreasuryStockValue (2024)
+  ✓ Match: pipeline=49600000, gt=49600000
+
+[51/94] VALHI INC /DE/ - OperatingLeaseWeightedAverageDiscountRatePercent (2024)
+  ✓ Match: pipeline=0.06, gt=0.06
+
+[52/94] VALHI INC /DE/ - NetIncomeLoss (2024)
+  ✓ Match: pipeline=108000000, gt=108000000
+
+[53/94] VALHI INC /DE/ - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
+  ✓ Match: pipeline=28.5, gt=28.5
+
+[54/94] VALHI INC /DE/ - PaymentsForRepurchaseOfCommonStock (2024)
+  ✓ Match: pipeline=2900000, gt=2900000
+
+[55/94] VALHI INC /DE/ - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
+  ✓ Match: pipeline=28.5, gt=28.5
+
+[56/94] VALHI INC /DE/ - EarningsPerShareBasic (2024)
+  ✓ Match: pipeline=3.79, gt=3.79
+
+[57/94] VALHI INC /DE/ - EarningsPerShareDiluted (2024)
+  ✓ Match: pipeline=3.79, gt=3.79
+
+[58/94] VALHI INC /DE/ - DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsPensions (2024)
+  ✓ Match: pipeline=14300000, gt=14300000
+
+[59/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
+  ✓ Match: pipeline=169800000, gt=169800000
+
+[60/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign (2024)
+  ✓ Match: pipeline=74400000, gt=74400000
+
+[61/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
+  ✓ Match: pipeline=169800000, gt=169800000
+
+[62/94] VALHI INC /DE/ - EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate (2024)
+  ✓ Match: pipeline=0.21, gt=0.21
+
+[63/94] VALHI INC /DE/ - AdvertisingExpense (2024)
+  ✓ Match: pipeline=2000000, gt=2000000
+
+[64/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
+  ✓ Match: pipeline=169800000, gt=169800000
+
+[65/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  → Using cached data for CIK 72162
+  ✓ Match: pipeline=83318000, gt=83318000
+
+[66/94] NL INDUSTRIES INC - EarningsPerShareDiluted (2024)
+  ✓ Match: pipeline=1.38, gt=1.38
+
+[67/94] NL INDUSTRIES INC - ResearchAndDevelopmentExpense (2024)
+  ✓ Match: pipeline=0, gt=0
+
+[68/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=83318000, gt=83318000
+
+[69/94] NL INDUSTRIES INC - OperatingIncomeLoss (2024)
+  ✓ Match: pipeline=37876000, gt=37876000
+
+[70/94] NL INDUSTRIES INC - IncomeTaxesPaidNet (2024)
+  ✓ Match: pipeline=127000, gt=127000
+
+[71/94] NL INDUSTRIES INC - NetIncomeLoss (2024)
+  ✓ Match: pipeline=67228000, gt=67228000
+
+[72/94] NL INDUSTRIES INC - ResearchAndDevelopmentExpense (2024)
+  ✓ Match: pipeline=0, gt=0
+
+[73/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=83318000, gt=83318000
+
+[74/94] NL INDUSTRIES INC - OperatingIncomeLoss (2024)
+  ✓ Match: pipeline=37876000, gt=37876000
+
+[75/94] NL INDUSTRIES INC - DepreciationDepletionAndAmortization (2024)
+  ✓ Match: pipeline=3691000, gt=3691000
+
+[76/94] NL INDUSTRIES INC - EarningsPerShareBasic (2024)
+  ✓ Match: pipeline=1.38, gt=1.38
+
+[77/94] NL INDUSTRIES INC - EarningsPerShareBasic (2024)
+  ✓ Match: pipeline=1.38, gt=1.38
+
+[78/94] NL INDUSTRIES INC - ComprehensiveIncomeNetOfTax (2024)
+  ✓ Match: pipeline=63493000, gt=63493000
+
+[79/94] NL INDUSTRIES INC - ComprehensiveIncomeNetOfTax (2024)
+  ✓ Match: pipeline=63493000, gt=63493000
+
+[80/94] NL INDUSTRIES INC - DefinedBenefitPlanNetPeriodicBenefitCost (2024)
+  ✓ Match: pipeline=1375000, gt=1375000
+
+[81/94] NL INDUSTRIES INC - PreferredStockNoParValue (2024)
+  ✓ Match: pipeline=0, gt=0
+
+[82/94] NL INDUSTRIES INC - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
+  ✓ Match: pipeline=48842000, gt=48842000
+
+[83/94] NL INDUSTRIES INC - NetIncomeLoss (2024)
+  ✓ Match: pipeline=67228000, gt=67228000
+
+[84/94] NL INDUSTRIES INC - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
+  ✓ Match: pipeline=48842000, gt=48842000
+
+[85/94] NL INDUSTRIES INC - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
+  ✓ Match: pipeline=48842000, gt=48842000
+
+[86/94] NL INDUSTRIES INC - EarningsPerShareBasic (2024)
+  ✓ Match: pipeline=1.38, gt=1.38
+
+[87/94] NL INDUSTRIES INC - EarningsPerShareDiluted (2024)
+  ✓ Match: pipeline=1.38, gt=1.38
+
+[88/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=83318000, gt=83318000
+
+[89/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=83318000, gt=83318000
+
+[90/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=83318000, gt=83318000
+
+[91/94] NL INDUSTRIES INC - EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate (2024)
+  ✓ Match: pipeline=0.21, gt=0.21
+
+[92/94] NL INDUSTRIES INC - DefinedBenefitPlanExpectedReturnOnPlanAssets (2024)
+  ✓ Match: pipeline=1340000, gt=1340000
+
+[93/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+  ✓ Match: pipeline=83318000, gt=83318000
+
+[94/94] NL INDUSTRIES INC - EnvironmentalExpenseAndLiabilities (2024)
+  ✓ Match: pipeline=-21828000, gt=-21828000
+
+[3/4] Computing accuracy metrics
+  Total metrics:  94
+  Matches:        94
+  Mismatches:     0
+  Not found:      0
+  Errors:         0
+  Accuracy:       100.00%
+
+[4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\metrics_validation_results.csv
+  ✓ Results saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\metrics_validation_results.csv
+
+======================================================================
+Validation Complete - Accuracy: 100.00%
+======================================================================

@@ -40,6 +40,9 @@ def parse_metric_entity(entity: Dict, main_company: str = 'the Company') -> Opti
         return None
 
     metric_name = f"{metric} ({year})" if year else metric
+    
+    # citation_id will be assigned during Neo4j building phase
+    # when we have access to a global counter
 
     return {
         'source': {'type': 'Company', 'name': org},
