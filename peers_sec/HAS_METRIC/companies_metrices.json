@@ -3,7 +3,6 @@
     "neo4j_companies": 3,
     "sec_companies": 0,
     "target_metrics_searched": [
-      "Worldwide sales (2024)",
       "Consolidated income from operations (2024)",
       "Net income (2024)",
       "Diluted earnings per share (2024)",
@@ -11,7 +10,6 @@
       "Production margin (2024)",
       "Production margin % (2024)",
       "Marketing and administrative expenses (2024)",
-      "Research and development expenses (2024)",
       "Provision for credit losses (2024)",
       "Income from operations (2024)",
       "Operating margin % (2024)",
@@ -23,7 +21,7 @@
       "Net income attributable to non-controlling interests (2024)",
       "Net income attributable to Minerals Technologies Inc. (MTI) (2024)",
       "U.S. net sales (2024)",
-      "International net sales (2024)",
+      "International sales (2024)",
       "Consumer & Specialties Segment sales (2024)",
       "Engineered Solutions Segment sales (2024)",
       "Consolidated cost of sales (2024)",
@@ -31,72 +29,63 @@
       "Marketing and administrative costs (2024)",
       "Marketing and administrative costs as a percentage of net sales (2024)",
       "Research and development expenses as a percentage of net sales (2024)",
-      "Litigation expenses (2024)",
-      "Net gain on sale of refractories manufacturing assets in China (2024)",
       "Income from operations as a percentage of sales (2024)",
       "Non-operating deductions, net (2024)",
-      "Net interest expense (2024)",
       "Percentage depletion (2024)",
       "GILTI (2024)",
       "Foreign earnings and related foreign rate differentials (2024)",
       "Pension expense (2024)",
-      "Earnings per share: Basic: Income from operations attributable to MTI (2024)",
-      "Earnings per share: Diluted: Income from operations attributable to MTI (2024)",
+      "Basic: Income from operations attributable to MTI (2024)",
+      "Diluted: Income from operations attributable to MTI (2024)",
       "Cash dividends declared per common share (2024)",
-      "Total comprehensive income including non-controlling interests (2024)",
-      "Comprehensive income attributable to non-controlling interests (2024)",
-      "Comprehensive income attributable to Minerals Technologies Inc. (2024)",
       "Total restructuring and other items, net (2023)",
-      "Total severance and other employee costs (2023)",
       "Total asset write-down charges (2023)",
-      "Severance and other employee costs (2023)",
+      "Total severance and other employee costs (2023)",
       "Tax benefit (2024)",
       "Total intrinsic value of stock options exercised (2024)",
       "Aggregate intrinsic value (2024)",
       "Weighted average intrinsic value of the options exercised (2024)",
       "Total unrecognized stock-based compensation expense (2024)",
       "Net income attributable to MTI (2024)",
-      "Weighted average shares outstanding (2024)",
-      "Dilutive effect of stock options and deferred restricted stock units (2024)",
-      "Weighted average shares outstanding, adjusted (2024)",
       "Basic earnings per share attributable to MTI (2024)",
       "Diluted earnings per share attributable to MTI (2024)",
-      "compensation expense amortized (2024)",
-      "reversals (2024)",
+      "Unrecognized stock-based compensation (2024)",
+      "Compensation expense amortized (2024)",
+      "Reversals of compensation expense (2024)",
       "Income (loss) from operations before income taxes and income from affiliates and joint ventures: Domestic (2024)",
       "Income (loss) from operations before income taxes and income from affiliates and joint ventures: Foreign (2024)",
-      "Income (loss) from operations before income taxes and income from affiliates and joint ventures (2024)",
-      "Total tax provision (2024)",
+      "Domestic tax provision (benefit) (2024)",
+      "Foreign tax provision (2024)",
       "U.S. statutory rate (2024)",
       "Consolidated effective tax rate (2024)",
       "Net gain on sale of assets (2024)",
-      "Depreciation and depletion expense (2024)",
-      "Amortization expense (2024)",
       "Bad debt expense (2024)",
-      "average rate of return on assets (2024)",
-      "Company\u2019s contributions (2024)",
       "Segment income from operations (2024)",
       "Net Sales (2022)",
-      "Consolidated net sales (2024)",
+      "Depreciation, Depletion and Amortization (2024)",
       "Household & Personal Care (2024)",
       "Specialty Additives (2024)",
       "High-Temperature Technologies (2024)",
       "Environmental & Infrastructure (2024)",
       "Aggregate commitments under the revolving credit facility (2024)",
+      "Maturities of the revolving credit facility (2024)",
+      "Maturities of the term loan (2024)",
       "Revolving Facility (2024)",
       "Term Loan Facility (2024)",
-      "Term SOFR plus an applicable margin (2024)",
-      "base rate plus an applicable margin (2024)",
-      "adjusted EURIBOR plus an applicable margin (2024)",
-      "SONIA plus an applicable margin (2024)",
-      "commitment fee (2024)",
-      "fronting fee (2024)",
-      "Loans outstanding under the Revolving Facility (2024)",
+      "Loans under the Revolving Facility (2024)",
       "Letters of credit outstanding under the Revolving Facility (2024)",
+      "Amortization rate for Term Loan Facility (2024)",
+      "Original issue discount for Term Loan Facility (2024)",
+      "Applicable margin for Revolving Facility (Term SOFR) (2024)",
+      "Applicable margin for Revolving Facility (Base rate) (2024)",
+      "Applicable margin for Term Loan Facility (Term SOFR) (2024)",
+      "Applicable margin for Term Loan Facility (Base rate) (2024)",
+      "Commitment fee for Revolving Facility (2024)",
+      "Fronting fee for letters of credit (2024)",
+      "Non-cash debt extinguishment expenses (2024)",
       "interest rate (2024)",
       "notional amount (2024)",
       "fair value (2024)",
-      "Purchases of property, plant and equipment (2024)",
       "Long-term debt issuance (2024)",
       "Repayment of long-term debt (2024)",
       "Debt issuance costs (2024)",
@@ -104,41 +93,44 @@
       "Purchase of common stock for treasury (2024)",
       "Proceeds from issuance of stock under option plan (2024)",
       "Cash dividends paid (2024)",
-      "Property, plant and equipment additions related to asset retirement obligations (2024)",
+      "Weighted-average remaining operating lease term (2024)",
       "Weighted-average operating leases discount rate (2024)",
+      "Total future minimum lease payments (2024)",
+      "Less imputed interest (2024)",
+      "Total (2024)",
       "889,000 (2024)",
       "Weighted average grant date fair value for stock options granted (2024)",
       "Weighted average grant date fair value for stock options vested (2024)",
       "Volatility (2024)",
       "Expected dividend yield (2024)",
-      "Mineral rights and reserves (2024)",
-      "Land (2024)",
-      "Buildings (2024)",
-      "Machinery and equipment (2024)",
-      "Furniture and fixtures and other (2024)",
-      "Construction in progress (2024)",
-      "Property, plant and equipment, net (2024)",
-      "Interest rate swap (2024)",
-      "Amended Credit Agreement - Term Loan Facility amortization rate (2024)",
-      "Term Loan Facility original issue discount (2024)",
-      "5.00% Senior Notes due 2028 (2024)",
+      "5.00 % Senior Notes due 2028 (2024)",
+      "commitment fee (2024)",
+      "fronting fee (2024)",
+      "Term SOFR applicable margin (2024)",
+      "base rate applicable margin (2024)",
+      "adjusted EURIBOR applicable margin (2024)",
+      "SONIA applicable margin (2024)",
       "redemption price (2024)",
-      "aggregate principal amount of Notes (2024)",
-      "minimum threshold for guarantee (2024)",
-      "outstanding balance on Japan loan facility (2024)",
-      "long-term debt assumed in Concept Pet acquisition (2024)",
+      "Loans outstanding under the Revolving Facility (2024)",
+      "Outstanding balance on Japan loan (2024)",
+      "Long-term debt assumed in Concept Pet acquisition (2024)",
+      "Aggregate principal amount of Notes (2024)",
+      "Minimum threshold for subsidiary guarantee (2024)",
       "weighted average interest rates on short-term borrowings (2024)",
-      "aggregate maturities of long-term debt (2025)",
+      "long-term debt maturities (2025)",
       "capitalized interest (2024)",
+      "average rate of return on assets (2024)",
       "Capital Expenditures (2024)",
       "Interest expense, net (2024)",
       "Debt extinguishment expenses (2024)",
       "Other non-operating deductions, net (2024)",
+      "Total non-operating deductions, net (2024)",
+      "Net interest expense (2024)",
       "Net Leverage Ratio (2024)",
       "outstanding balance (2024)",
       "long-term debt (2024)",
+      "repurchase authorization (2024)",
       "repurchased (2024)",
-      "authorized (2024)",
       "Net deferred tax liability (2024)",
       "Total actuarial losses recognized in Accumulated other comprehensive loss for pension plans (2024)",
       "Short-term debt (2024)",
@@ -146,28 +138,41 @@
       "Long-term debt, net of unamortized discount and deferred financing costs (2024)",
       "Total liabilities (2024)",
       "Total shareholders\u2019 equity (2024)",
-      "Total assets (2024)",
+      "Common stock (2024)",
+      "Additional paid-in capital (2024)",
+      "Retained earnings (2024)",
+      "Accumulated other comprehensive loss (2024)",
+      "Common stock held in treasury, at cost (2024)",
       "Operating lease cost (2024)",
       "Right-of-use assets obtained in the exchange for operating lease liabilities (2024)",
       "Right-of-use-asset (2024)",
       "Lease liability - current (2024)",
       "Lease liability - non-current (2024)",
-      "Total future minimum lease payments (2024)",
-      "Total (2024)",
+      "Restructuring liability, end of period (2024)",
+      "Additional provisions (2023)",
       "Net deferred tax liability, long-term (2024)",
+      "Net deferred tax asset, long-term (2024)",
       "Deferred tax assets attributable to: Net operating loss carry forwards (2024)",
       "Total unrecognized tax benefits (2024)",
+      "Unrecognized income tax benefits that would affect the Company\u2019s effective tax rate (2024)",
       "Accrued balance of interest and penalties (2024)",
+      "Property, plant and equipment, net (2024)",
       "Goodwill (2024)",
-      "Gross Carrying Amount (2024)",
-      "Accumulated Amortization (2024)",
-      "Total long-term debt (2024)",
-      "Term Loan due 2031, net of unamortized deferred financing cost and original issue discount (2024)",
-      "Senior Notes: 5.00% due 2028, net of unamortized deferred financing costs (2024)",
+      "Gross Carrying Amount of Tradenames (2024)",
+      "Accumulated Amortization of Tradenames (2024)",
+      "Gross Carrying Amount of Technology (2024)",
+      "Accumulated Amortization of Technology (2024)",
+      "Gross Carrying Amount of Patents and trademarks (2024)",
+      "Accumulated Amortization of Patents and trademarks (2024)",
+      "Gross Carrying Amount of Customer relationships (2024)",
+      "Accumulated Amortization of Customer relationships (2024)",
+      "Term Loan due 2031, net of unamortized deferred financing cost and original issue discount of $ 7.3 million and $ \u2014 million (2024)",
+      "Senior Notes: 5.00 % due 2028, net of unamortized deferred financing costs of $ 3.2 million and $ 3.9 million (2024)",
       "Other debt (2024)",
       "Current maturities (2024)",
       "short-term borrowings (2024)",
       "ending projected benefit obligation (2024)",
+      "ending fair value (2024)",
       "funded status (2024)",
       "Non-current asset (2024)",
       "Current liability (2024)",
@@ -185,39 +190,42 @@
       "Expected return on plan assets (2024)",
       "Recognized net actuarial (gain) loss (2024)",
       "Net periodic benefit cost (2024)",
+      "Total assets (2023)",
       "Ending balance at December 31, 2023 (2023)",
       "Ending balance at December 31, 2024 (2024)",
       "Contributions (2025)",
       "provision for credit loss (2024)",
-      "shares outstanding (2024)",
-      "shares available for issuance (2024)",
-      "Cumulative foreign currency translation (2024)",
-      "Unrealized gain on cash flow hedges (net of tax expense (benefit) of $ 0.1 in 2024 and $( 1.2 ) in 2023 ) (2024)",
+      "Shares outstanding (2024)",
+      "Authorized capital stock (2024)",
+      "Shares available for issuance (2024)",
+      "Asset retirement obligation, end of period (2024)",
       "Asset retirement obligations (2024)",
       "Segment Assets (2024)",
       "Consolidated long-lived assets (2024)",
+      "United States (2024)",
+      "Total International (2024)",
+      "Canada/Latin America (2024)",
+      "Europe/Africa (2024)",
+      "Asia (2024)",
       "projected pension benefit obligations (2024)",
-      "uncommitted short-term bank credit lines (2024)",
       "Cash and cash equivalents (2024)",
       "Net cash provided by operating activities (2024)",
-      "Short-term investments (2024)",
       "Allowance for doubtful accounts (2024)",
       "Cash paid for amounts included in the measurement of lease liabilities (2024)",
-      "Restructuring liability, end of period (2024)",
+      "Cash payments (2024)",
       "Net cash paid for income taxes (2024)",
       "Total inventories (2024)",
-      "Deferred compensation plan assets (2024)",
-      "Supplementary pension plan assets (2024)",
-      "uncommitted short-term bank credit lines in use (2024)",
-      "ending fair value (2024)",
-      "Cash dividends (2024)"
+      "Uncommitted short-term bank credit lines in use (2024)",
+      "Company\u2019s contributions (2024)",
+      "Cash dividends (2024)",
+      "interest costs incurred (2024)"
     ],
     "date_range": {
-      "start": "2024-01-01",
-      "end": "2024-12-31"
+      "start": "2024-07-01",
+      "end": "2025-06-30"
     },
     "form_type": "10-K",
-    "analysis_date": "2026-05-19T13:12:52.720650",
+    "analysis_date": "2026-05-21T16:37:28.370580",
     "total_companies": 3,
     "companies_with_metrics": 3,
     "companies_without_metrics": 0,
@@ -231,7 +239,7 @@
         "ticker": "N/A",
         "source": "neo4j"
       },
-      "target_metric_count": 63,
+      "target_metric_count": 65,
       "target_metrics": {
         "Consolidated income from operations": [
           {
@@ -548,13 +556,13 @@
             }
           }
         ],
-        "Earnings per share: Basic: Income from operations attributable to MTI": [
+        "Basic: Income from operations attributable to MTI": [
           {
             "taxonomy": "us-gaap",
             "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
             "label": "Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest",
             "description": "Amount of income (loss) from continuing operations, including income (loss) from equity method investments, before deduction of income tax expense (benefit), and income (loss) attributable to noncontrolling interest.",
-            "metric_type": "Earnings per share: Basic: Income from operations attributable to MTI",
+            "metric_type": "Basic: Income from operations attributable to MTI",
             "target_year": 2024,
             "bm25_score": 8.0337,
             "units": {
@@ -585,89 +593,15 @@
             }
           }
         ],
-        "Earnings per share: Diluted: Income from operations attributable to MTI": [
+        "Diluted: Income from operations attributable to MTI": [
           {
             "taxonomy": "us-gaap",
             "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
             "label": "Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest",
             "description": "Amount of income (loss) from continuing operations, including income (loss) from equity method investments, before deduction of income tax expense (benefit), and income (loss) attributable to noncontrolling interest.",
-            "metric_type": "Earnings per share: Diluted: Income from operations attributable to MTI",
+            "metric_type": "Diluted: Income from operations attributable to MTI",
             "target_year": 2024,
             "bm25_score": 8.0337,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": -300176,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": -130700,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0001817232",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
-            }
-          }
-        ],
-        "Comprehensive income attributable to non-controlling interests": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "NetIncomeLoss",
-            "label": "Net Income (Loss) Attributable to Parent",
-            "description": "The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.",
-            "metric_type": "Comprehensive income attributable to non-controlling interests",
-            "target_year": 2024,
-            "bm25_score": 5.8456,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": -300176,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": -130700,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0001817232",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
-            }
-          }
-        ],
-        "Comprehensive income attributable to Minerals Technologies Inc.": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "NetIncomeLoss",
-            "label": "Net Income (Loss) Attributable to Parent",
-            "description": "The portion of profit or loss for the period, net of income taxes, which is attributable to the parent.",
-            "metric_type": "Comprehensive income attributable to Minerals Technologies Inc.",
-            "target_year": 2024,
-            "bm25_score": 5.8456,
             "units": {
               "USD": [
                 {
@@ -761,29 +695,20 @@
             }
           }
         ],
-        "Weighted average shares outstanding": [
+        "Unrecognized stock-based compensation": [
           {
             "taxonomy": "us-gaap",
-            "tag": "PreferredStockSharesOutstanding",
-            "label": "Preferred Stock, Shares Outstanding",
-            "description": "Aggregate share number for all nonredeemable preferred stock (or preferred stock redeemable solely at the option of the issuer) held by stockholders. Does not include preferred shares that have been repurchased.",
-            "metric_type": "Weighted average shares outstanding",
+            "tag": "DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost",
+            "label": "Deferred Tax Assets, Tax Deferred Expense, Compensation and Benefits, Share-based Compensation Cost",
+            "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences from share-based compensation.",
+            "metric_type": "Unrecognized stock-based compensation",
             "target_year": 2024,
-            "bm25_score": 8.5279,
+            "bm25_score": 5.5174,
             "units": {
-              "shares": [
-                {
-                  "end": "2023-12-31",
-                  "val": 0,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                },
+              "USD": [
                 {
                   "end": "2024-12-31",
-                  "val": 0,
+                  "val": 47661,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -798,13 +723,41 @@
             }
           }
         ],
-        "compensation expense amortized": [
+        "Compensation expense amortized": [
           {
             "taxonomy": "us-gaap",
             "tag": "DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost",
             "label": "Deferred Tax Assets, Tax Deferred Expense, Compensation and Benefits, Share-based Compensation Cost",
             "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences from share-based compensation.",
-            "metric_type": "compensation expense amortized",
+            "metric_type": "Compensation expense amortized",
+            "target_year": 2024,
+            "bm25_score": 3.7476,
+            "units": {
+              "USD": [
+                {
+                  "end": "2024-12-31",
+                  "val": 47661,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0001817232",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+            }
+          }
+        ],
+        "Reversals of compensation expense": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost",
+            "label": "Deferred Tax Assets, Tax Deferred Expense, Compensation and Benefits, Share-based Compensation Cost",
+            "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences from share-based compensation.",
+            "metric_type": "Reversals of compensation expense",
             "target_year": 2024,
             "bm25_score": 3.7476,
             "units": {
@@ -870,43 +823,6 @@
             "label": "Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest",
             "description": "Amount of income (loss) from continuing operations, including income (loss) from equity method investments, before deduction of income tax expense (benefit), and income (loss) attributable to noncontrolling interest.",
             "metric_type": "Income (loss) from operations before income taxes and income from affiliates and joint ventures: Foreign",
-            "target_year": 2024,
-            "bm25_score": 20.7995,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": -300176,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": -130700,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0001817232",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
-            }
-          }
-        ],
-        "Income (loss) from operations before income taxes and income from affiliates and joint ventures": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
-            "label": "Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest",
-            "description": "Amount of income (loss) from continuing operations, including income (loss) from equity method investments, before deduction of income tax expense (benefit), and income (loss) attributable to noncontrolling interest.",
-            "metric_type": "Income (loss) from operations before income taxes and income from affiliates and joint ventures",
             "target_year": 2024,
             "bm25_score": 20.7995,
             "units": {
@@ -1006,43 +922,6 @@
                 {
                   "end": "2024-12-31",
                   "val": 103950,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0001817232",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
-            }
-          }
-        ],
-        "average rate of return on assets": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "Assets",
-            "label": "Assets",
-            "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
-            "metric_type": "average rate of return on assets",
-            "target_year": 2024,
-            "bm25_score": 5.1328,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 1183911,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 264729,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -1215,6 +1094,34 @@
             }
           }
         ],
+        "Total future minimum lease payments": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "PaymentsForRent",
+            "label": "Payments for Rent",
+            "description": "Cash payments to lessor's for use of assets under operating leases.",
+            "metric_type": "Total future minimum lease payments",
+            "target_year": 2024,
+            "bm25_score": 3.7715,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 10000,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0001817232",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+            }
+          }
+        ],
         "Expected dividend yield": [
           {
             "taxonomy": "us-gaap",
@@ -1243,20 +1150,20 @@
             }
           }
         ],
-        "Mineral rights and reserves": [
+        "average rate of return on assets": [
           {
             "taxonomy": "us-gaap",
-            "tag": "WarrantsAndRightsOutstanding",
-            "label": "Warrants and Rights Outstanding",
-            "description": "Value of outstanding derivative securities that permit the holder the right to purchase securities (usually equity) from the issuer at a specified price.",
-            "metric_type": "Mineral rights and reserves",
+            "tag": "Assets",
+            "label": "Assets",
+            "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
+            "metric_type": "average rate of return on assets",
             "target_year": 2024,
-            "bm25_score": 4.9848,
+            "bm25_score": 5.1328,
             "units": {
               "USD": [
                 {
                   "end": "2023-12-31",
-                  "val": 431200,
+                  "val": 1183911,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -1265,35 +1172,7 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 26950,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0001817232",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
-            }
-          }
-        ],
-        "Interest rate swap": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "InvestmentInterestRatePaidInKind",
-            "label": null,
-            "description": null,
-            "metric_type": "Interest rate swap",
-            "target_year": 2024,
-            "bm25_score": 5.519,
-            "units": {
-              "pure": [
-                {
-                  "end": "2024-12-31",
-                  "val": 0.05,
+                  "val": 264729,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -1368,43 +1247,6 @@
                 {
                   "end": "2024-12-31",
                   "val": 0,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0001817232",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
-            }
-          }
-        ],
-        "authorized": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "PreferredStockSharesAuthorized",
-            "label": "Preferred Stock, Shares Authorized",
-            "description": "The maximum number of nonredeemable preferred shares (or preferred stock redeemable solely at the option of the issuer) permitted to be issued by an entity's charter and bylaws.",
-            "metric_type": "authorized",
-            "target_year": 2024,
-            "bm25_score": 5.9931,
-            "units": {
-              "shares": [
-                {
-                  "end": "2023-12-31",
-                  "val": 1000000,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 1000000,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -1530,20 +1372,48 @@
             }
           }
         ],
-        "Total assets": [
+        "Additional paid-in capital": [
           {
             "taxonomy": "us-gaap",
-            "tag": "Assets",
-            "label": "Assets",
-            "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
-            "metric_type": "Total assets",
+            "tag": "AdditionalPaidInCapital",
+            "label": "Additional Paid in Capital",
+            "description": "Excess of issue price over par or stated value of the entity's capital stock and amounts received from other transactions involving the entity's stock or stockholders. Includes adjustments to additional paid in capital. Some examples of such adjustments include recording the issuance of debt with a beneficial conversion feature and certain tax consequences of equity instruments awarded to employees. Use this element for the aggregate amount of additional paid-in capital associated with common and preferred stock. For additional paid-in capital associated with only common stock, use the element additional paid in capital, common stock. For additional paid-in capital associated with only preferred stock, use the element additional paid in capital, preferred stock.",
+            "metric_type": "Additional paid-in capital",
             "target_year": 2024,
-            "bm25_score": 5.1328,
+            "bm25_score": 14.6534,
             "units": {
               "USD": [
                 {
                   "end": "2023-12-31",
-                  "val": 1183911,
+                  "val": 2172674,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0001817232",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+            }
+          }
+        ],
+        "Retained earnings": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "RetainedEarningsAccumulatedDeficit",
+            "label": "Retained Earnings (Accumulated Deficit)",
+            "description": "The cumulative amount of the reporting entity's undistributed earnings or deficit.",
+            "metric_type": "Retained earnings",
+            "target_year": 2024,
+            "bm25_score": 11.3793,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": -300176,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -1552,7 +1422,44 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 264729,
+                  "val": -446808,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0001817232",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+            }
+          }
+        ],
+        "Accumulated other comprehensive loss": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "OperatingLossCarryforwards",
+            "label": "Operating Loss Carryforwards",
+            "description": "Amount of operating loss carryforward, before tax effects, available to reduce future taxable income under enacted tax laws.",
+            "metric_type": "Accumulated other comprehensive loss",
+            "target_year": 2024,
+            "bm25_score": 5.4656,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 407976,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 689292,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -1604,20 +1511,29 @@
             }
           }
         ],
-        "Total future minimum lease payments": [
+        "Net deferred tax asset, long-term": [
           {
             "taxonomy": "us-gaap",
-            "tag": "PaymentsForRent",
-            "label": "Payments for Rent",
-            "description": "Cash payments to lessor's for use of assets under operating leases.",
-            "metric_type": "Total future minimum lease payments",
+            "tag": "ValuationAllowanceDeferredTaxAssetChangeInAmount",
+            "label": "Valuation Allowance, Deferred Tax Asset, Increase (Decrease), Amount",
+            "description": "Amount of increase (decrease) in the valuation allowance for a specified deferred tax asset.",
+            "metric_type": "Net deferred tax asset, long-term",
             "target_year": 2024,
-            "bm25_score": 3.7715,
+            "bm25_score": 8.6704,
             "units": {
               "USD": [
                 {
                   "end": "2023-12-31",
-                  "val": 10000,
+                  "val": 113635,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 275047,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -1669,13 +1585,124 @@
             }
           }
         ],
-        "Gross Carrying Amount": [
+        "Gross Carrying Amount of Tradenames": [
           {
             "taxonomy": "us-gaap",
             "tag": "DeferredTaxAssetsGross",
             "label": "Deferred Tax Assets, Gross",
             "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences and carryforwards.",
-            "metric_type": "Gross Carrying Amount",
+            "metric_type": "Gross Carrying Amount of Tradenames",
+            "target_year": 2024,
+            "bm25_score": 5.9931,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 113635,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 275047,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0001817232",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+            }
+          }
+        ],
+        "Gross Carrying Amount of Technology": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "DeferredTaxAssetsGross",
+            "label": "Deferred Tax Assets, Gross",
+            "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences and carryforwards.",
+            "metric_type": "Gross Carrying Amount of Technology",
+            "target_year": 2024,
+            "bm25_score": 5.9931,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 113635,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 275047,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0001817232",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+            }
+          }
+        ],
+        "Gross Carrying Amount of Patents and trademarks": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "DeferredTaxAssetsGross",
+            "label": "Deferred Tax Assets, Gross",
+            "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences and carryforwards.",
+            "metric_type": "Gross Carrying Amount of Patents and trademarks",
+            "target_year": 2024,
+            "bm25_score": 5.9931,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 113635,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 275047,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0001817232",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+            }
+          }
+        ],
+        "Gross Carrying Amount of Customer relationships": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "DeferredTaxAssetsGross",
+            "label": "Deferred Tax Assets, Gross",
+            "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences and carryforwards.",
+            "metric_type": "Gross Carrying Amount of Customer relationships",
             "target_year": 2024,
             "bm25_score": 5.9931,
             "units": {
@@ -2049,6 +2076,43 @@
             }
           }
         ],
+        "Total assets": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "Assets",
+            "label": "Assets",
+            "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
+            "metric_type": "Total assets",
+            "target_year": 2023,
+            "bm25_score": 5.1328,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 1183911,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 264729,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0001817232",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+            }
+          }
+        ],
         "Ending balance at December 31, 2023": [
           {
             "taxonomy": "us-gaap",
@@ -2160,13 +2224,13 @@
             }
           }
         ],
-        "shares outstanding": [
+        "Shares outstanding": [
           {
             "taxonomy": "us-gaap",
             "tag": "PreferredStockSharesOutstanding",
             "label": "Preferred Stock, Shares Outstanding",
             "description": "Aggregate share number for all nonredeemable preferred stock (or preferred stock redeemable solely at the option of the issuer) held by stockholders. Does not include preferred shares that have been repurchased.",
-            "metric_type": "shares outstanding",
+            "metric_type": "Shares outstanding",
             "target_year": 2024,
             "bm25_score": 8.5279,
             "units": {
@@ -2183,6 +2247,43 @@
                 {
                   "end": "2024-12-31",
                   "val": 0,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0001817232",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+            }
+          }
+        ],
+        "Authorized capital stock": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "PreferredStockSharesAuthorized",
+            "label": "Preferred Stock, Shares Authorized",
+            "description": "The maximum number of nonredeemable preferred shares (or preferred stock redeemable solely at the option of the issuer) permitted to be issued by an entity's charter and bylaws.",
+            "metric_type": "Authorized capital stock",
+            "target_year": 2024,
+            "bm25_score": 5.9931,
+            "units": {
+              "shares": [
+                {
+                  "end": "2023-12-31",
+                  "val": 1000000,
+                  "accn": "0001213900-25-026224",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-31"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 1000000,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -2382,48 +2483,20 @@
             }
           }
         ],
-        "Deferred compensation plan assets": [
+        "Cash payments": [
           {
             "taxonomy": "us-gaap",
-            "tag": "DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost",
-            "label": "Deferred Tax Assets, Tax Deferred Expense, Compensation and Benefits, Share-based Compensation Cost",
-            "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences from share-based compensation.",
-            "metric_type": "Deferred compensation plan assets",
+            "tag": "Cash",
+            "label": "Cash",
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "metric_type": "Cash payments",
             "target_year": 2024,
-            "bm25_score": 6.7029,
-            "units": {
-              "USD": [
-                {
-                  "end": "2024-12-31",
-                  "val": 47661,
-                  "accn": "0001213900-25-026224",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-31"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0001817232",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
-            }
-          }
-        ],
-        "Supplementary pension plan assets": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "Assets",
-            "label": "Assets",
-            "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
-            "metric_type": "Supplementary pension plan assets",
-            "target_year": 2024,
-            "bm25_score": 5.1328,
+            "bm25_score": 4.6728,
             "units": {
               "USD": [
                 {
                   "end": "2023-12-31",
-                  "val": 1183911,
+                  "val": 62362,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -2432,7 +2505,7 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 264729,
+                  "val": 114146,
                   "accn": "0001213900-25-026224",
                   "fy": 2024,
                   "fp": "FY",
@@ -2456,7 +2529,7 @@
         "ticker": "N/A",
         "source": "neo4j"
       },
-      "target_metric_count": 86,
+      "target_metric_count": 91,
       "target_metrics": {
         "Consolidated income from operations": [
           {
@@ -2582,52 +2655,6 @@
                 {
                   "end": "2024-12-31",
                   "val": 1922400000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
-        "Research and development expenses": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "ResearchAndDevelopmentExpense",
-            "label": "Research and Development Expense",
-            "description": "The aggregate costs incurred (1) in a planned search or critical investigation aimed at discovery of new knowledge with the hope that such knowledge will be useful in developing a new product or service, a new process or technique, or in bringing about a significant improvement to an existing product or process; or (2) to translate research findings or other knowledge into a plan or design for a new product or process or for a significant improvement to an existing product or process whether intended for sale or the entity's use, during the reporting period charged to research and development projects, including the costs of developing computer software up to the point in time of achieving technological feasibility, and costs allocated in accounting for a business combination to in-process projects deemed to have no alternative future use.",
-            "metric_type": "Research and development expenses",
-            "target_year": 2024,
-            "bm25_score": 13.3893,
-            "units": {
-              "USD": [
-                {
-                  "end": "2022-12-31",
-                  "val": 16000000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 18000000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 14000000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -3056,52 +3083,6 @@
             }
           }
         ],
-        "Litigation expenses": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "CostsAndExpenses",
-            "label": "Costs and Expenses",
-            "description": "Total costs of sales and operating expenses for the period.",
-            "metric_type": "Litigation expenses",
-            "target_year": 2024,
-            "bm25_score": 7.958,
-            "units": {
-              "USD": [
-                {
-                  "end": "2022-12-31",
-                  "val": 2096300000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 1996600000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 1922400000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
         "Income from operations as a percentage of sales": [
           {
             "taxonomy": "us-gaap",
@@ -3194,52 +3175,6 @@
             }
           }
         ],
-        "Net interest expense": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "InterestExpense",
-            "label": "Interest Expense",
-            "description": "Amount of the cost of borrowed funds accounted for as interest expense.",
-            "metric_type": "Net interest expense",
-            "target_year": 2024,
-            "bm25_score": 8.3148,
-            "units": {
-              "USD": [
-                {
-                  "end": "2022-12-31",
-                  "val": 27900000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 28300000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 49900000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
         "Pension expense": [
           {
             "taxonomy": "us-gaap",
@@ -3277,112 +3212,20 @@
             }
           }
         ],
-        "Earnings per share: Basic: Income from operations attributable to MTI": [
+        "Basic: Income from operations attributable to MTI": [
           {
             "taxonomy": "us-gaap",
-            "tag": "EarningsPerShareBasic",
-            "label": "Earnings Per Share, Basic",
-            "description": "The amount of net income (loss) for the period per each share of common stock or unit outstanding during the reporting period.",
-            "metric_type": "Earnings per share: Basic: Income from operations attributable to MTI",
+            "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic",
+            "label": "Income (Loss) from Continuing Operations before Income Taxes, Domestic",
+            "description": "The portion of earnings or loss from continuing operations before income taxes that is attributable to domestic operations.",
+            "metric_type": "Basic: Income from operations attributable to MTI",
             "target_year": 2024,
-            "bm25_score": 9.7151,
-            "units": {
-              "USD/shares": [
-                {
-                  "end": "2022-12-31",
-                  "val": 3.06,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": -0.35,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 3.79,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
-        "Earnings per share: Diluted: Income from operations attributable to MTI": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "EarningsPerShareBasic",
-            "label": "Earnings Per Share, Basic",
-            "description": "The amount of net income (loss) for the period per each share of common stock or unit outstanding during the reporting period.",
-            "metric_type": "Earnings per share: Diluted: Income from operations attributable to MTI",
-            "target_year": 2024,
-            "bm25_score": 9.7151,
-            "units": {
-              "USD/shares": [
-                {
-                  "end": "2022-12-31",
-                  "val": 3.06,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": -0.35,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 3.79,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
-        "Comprehensive income attributable to non-controlling interests": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "ComprehensiveIncomeNetOfTax",
-            "label": "Comprehensive Income (Loss), Net of Tax, Attributable to Parent",
-            "description": "Amount after tax of increase (decrease) in equity from transactions and other events and circumstances from net income and other comprehensive income, attributable to parent entity. Excludes changes in equity resulting from investments by owners and distributions to owners.",
-            "metric_type": "Comprehensive income attributable to non-controlling interests",
-            "target_year": 2024,
-            "bm25_score": 6.9556,
+            "bm25_score": 6.7783,
             "units": {
               "USD": [
                 {
                   "end": "2022-12-31",
-                  "val": 134600000,
+                  "val": 81400000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -3391,7 +3234,7 @@
                 },
                 {
                   "end": "2023-12-31",
-                  "val": -11500000,
+                  "val": 53200000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -3400,7 +3243,7 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 94300000,
+                  "val": 169800000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -3415,20 +3258,20 @@
             }
           }
         ],
-        "Comprehensive income attributable to Minerals Technologies Inc.": [
+        "Diluted: Income from operations attributable to MTI": [
           {
             "taxonomy": "us-gaap",
-            "tag": "ComprehensiveIncomeNetOfTax",
-            "label": "Comprehensive Income (Loss), Net of Tax, Attributable to Parent",
-            "description": "Amount after tax of increase (decrease) in equity from transactions and other events and circumstances from net income and other comprehensive income, attributable to parent entity. Excludes changes in equity resulting from investments by owners and distributions to owners.",
-            "metric_type": "Comprehensive income attributable to Minerals Technologies Inc.",
+            "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic",
+            "label": "Income (Loss) from Continuing Operations before Income Taxes, Domestic",
+            "description": "The portion of earnings or loss from continuing operations before income taxes that is attributable to domestic operations.",
+            "metric_type": "Diluted: Income from operations attributable to MTI",
             "target_year": 2024,
-            "bm25_score": 6.9556,
+            "bm25_score": 6.7783,
             "units": {
               "USD": [
                 {
                   "end": "2022-12-31",
-                  "val": 134600000,
+                  "val": 81400000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -3437,7 +3280,7 @@
                 },
                 {
                   "end": "2023-12-31",
-                  "val": -11500000,
+                  "val": 53200000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -3446,7 +3289,7 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 94300000,
+                  "val": 169800000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -3683,135 +3526,6 @@
             }
           }
         ],
-        "Weighted average shares outstanding": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
-            "label": "Weighted Average Number of Shares Outstanding, Diluted",
-            "description": "The average number of shares or units issued and outstanding that are used in calculating diluted EPS or earnings per unit (EPU), determined based on the timing of issuance of shares or units in the period.",
-            "metric_type": "Weighted average shares outstanding",
-            "target_year": 2024,
-            "bm25_score": 13.2942,
-            "units": {
-              "shares": [
-                {
-                  "end": "2022-12-31",
-                  "val": 28.5,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 28.5,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 28.5,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
-        "Dilutive effect of stock options and deferred restricted stock units": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "PaymentsForRepurchaseOfCommonStock",
-            "label": "Payments for Repurchase of Common Stock",
-            "description": "The cash outflow to reacquire common stock during the period.",
-            "metric_type": "Dilutive effect of stock options and deferred restricted stock units",
-            "target_year": 2024,
-            "bm25_score": 9.4968,
-            "units": {
-              "USD": [
-                {
-                  "end": "2022-12-31",
-                  "val": 4000000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 2900000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
-        "Weighted average shares outstanding, adjusted": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
-            "label": "Weighted Average Number of Shares Outstanding, Diluted",
-            "description": "The average number of shares or units issued and outstanding that are used in calculating diluted EPS or earnings per unit (EPU), determined based on the timing of issuance of shares or units in the period.",
-            "metric_type": "Weighted average shares outstanding, adjusted",
-            "target_year": 2024,
-            "bm25_score": 18.1172,
-            "units": {
-              "shares": [
-                {
-                  "end": "2022-12-31",
-                  "val": 28.5,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 28.5,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 28.5,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
         "Basic earnings per share attributable to MTI": [
           {
             "taxonomy": "us-gaap",
@@ -3904,13 +3618,105 @@
             }
           }
         ],
-        "compensation expense amortized": [
+        "Unrecognized stock-based compensation": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "UnrecognizedTaxBenefits",
+            "label": "Unrecognized Tax Benefits",
+            "description": "Amount of unrecognized tax benefits.",
+            "metric_type": "Unrecognized stock-based compensation",
+            "target_year": 2024,
+            "bm25_score": 5.1728,
+            "units": {
+              "USD": [
+                {
+                  "end": "2021-12-31",
+                  "val": 6400000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2022-12-31",
+                  "val": 3500000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 2800000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 3200000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Compensation expense amortized": [
           {
             "taxonomy": "us-gaap",
             "tag": "DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsPensions",
             "label": "Deferred Tax Assets, Tax Deferred Expense, Compensation and Benefits, Pensions",
             "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences from pension benefits.",
-            "metric_type": "compensation expense amortized",
+            "metric_type": "Compensation expense amortized",
+            "target_year": 2024,
+            "bm25_score": 4.5547,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 26900000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 14300000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Reversals of compensation expense": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsPensions",
+            "label": "Deferred Tax Assets, Tax Deferred Expense, Compensation and Benefits, Pensions",
+            "description": "Amount before allocation of valuation allowances of deferred tax asset attributable to deductible temporary differences from pension benefits.",
+            "metric_type": "Reversals of compensation expense",
             "target_year": 2024,
             "bm25_score": 4.5547,
             "units": {
@@ -4033,20 +3839,20 @@
             }
           }
         ],
-        "Income (loss) from operations before income taxes and income from affiliates and joint ventures": [
+        "Domestic tax provision (benefit)": [
           {
             "taxonomy": "us-gaap",
-            "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic",
-            "label": "Income (Loss) from Continuing Operations before Income Taxes, Domestic",
-            "description": "The portion of earnings or loss from continuing operations before income taxes that is attributable to domestic operations.",
-            "metric_type": "Income (loss) from operations before income taxes and income from affiliates and joint ventures",
+            "tag": "IncomeTaxExpenseBenefit",
+            "label": "Income Tax Expense (Benefit)",
+            "description": "Amount of current income tax expense (benefit) and deferred income tax expense (benefit) pertaining to continuing operations.",
+            "metric_type": "Domestic tax provision (benefit)",
             "target_year": 2024,
-            "bm25_score": 17.8676,
+            "bm25_score": 6.4806,
             "units": {
               "USD": [
                 {
                   "end": "2022-12-31",
-                  "val": 81400000,
+                  "val": 36800000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4055,7 +3861,7 @@
                 },
                 {
                   "end": "2023-12-31",
-                  "val": 53200000,
+                  "val": -24600000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4064,7 +3870,53 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 169800000,
+                  "val": 82900000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Foreign tax provision": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "CurrentForeignTaxExpenseBenefit",
+            "label": "Current Foreign Tax Expense (Benefit)",
+            "description": "Amount of current foreign income tax expense (benefit) pertaining to income (loss) from continuing operations.",
+            "metric_type": "Foreign tax provision",
+            "target_year": 2024,
+            "bm25_score": 4.9488,
+            "units": {
+              "USD": [
+                {
+                  "end": "2022-12-31",
+                  "val": 20100000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 13500000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 25300000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4217,13 +4069,13 @@
             }
           }
         ],
-        "Term SOFR plus an applicable margin": [
+        "Applicable margin for Revolving Facility (Term SOFR)": [
           {
             "taxonomy": "us-gaap",
             "tag": "UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations",
             "label": "Unrecognized Tax Benefits, Reduction Resulting from Lapse of Applicable Statute of Limitations",
             "description": "Amount of decrease in unrecognized tax benefits resulting from lapses of applicable statutes of limitations.",
-            "metric_type": "Term SOFR plus an applicable margin",
+            "metric_type": "Applicable margin for Revolving Facility (Term SOFR)",
             "target_year": 2024,
             "bm25_score": 4.5098,
             "units": {
@@ -4254,13 +4106,13 @@
             }
           }
         ],
-        "base rate plus an applicable margin": [
+        "Applicable margin for Revolving Facility (Base rate)": [
           {
             "taxonomy": "us-gaap",
             "tag": "UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations",
             "label": "Unrecognized Tax Benefits, Reduction Resulting from Lapse of Applicable Statute of Limitations",
             "description": "Amount of decrease in unrecognized tax benefits resulting from lapses of applicable statutes of limitations.",
-            "metric_type": "base rate plus an applicable margin",
+            "metric_type": "Applicable margin for Revolving Facility (Base rate)",
             "target_year": 2024,
             "bm25_score": 4.5098,
             "units": {
@@ -4291,13 +4143,13 @@
             }
           }
         ],
-        "adjusted EURIBOR plus an applicable margin": [
+        "Applicable margin for Term Loan Facility (Term SOFR)": [
           {
             "taxonomy": "us-gaap",
             "tag": "UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations",
             "label": "Unrecognized Tax Benefits, Reduction Resulting from Lapse of Applicable Statute of Limitations",
             "description": "Amount of decrease in unrecognized tax benefits resulting from lapses of applicable statutes of limitations.",
-            "metric_type": "adjusted EURIBOR plus an applicable margin",
+            "metric_type": "Applicable margin for Term Loan Facility (Term SOFR)",
             "target_year": 2024,
             "bm25_score": 4.5098,
             "units": {
@@ -4328,13 +4180,13 @@
             }
           }
         ],
-        "SONIA plus an applicable margin": [
+        "Applicable margin for Term Loan Facility (Base rate)": [
           {
             "taxonomy": "us-gaap",
             "tag": "UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations",
             "label": "Unrecognized Tax Benefits, Reduction Resulting from Lapse of Applicable Statute of Limitations",
             "description": "Amount of decrease in unrecognized tax benefits resulting from lapses of applicable statutes of limitations.",
-            "metric_type": "SONIA plus an applicable margin",
+            "metric_type": "Applicable margin for Term Loan Facility (Base rate)",
             "target_year": 2024,
             "bm25_score": 4.5098,
             "units": {
@@ -4448,6 +4300,43 @@
             }
           }
         ],
+        "Weighted-average remaining operating lease term": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "OperatingLeaseWeightedAverageDiscountRatePercent",
+            "label": "Operating Lease, Weighted Average Discount Rate, Percent",
+            "description": "Weighted average discount rate for operating lease calculated at point in time.",
+            "metric_type": "Weighted-average remaining operating lease term",
+            "target_year": 2024,
+            "bm25_score": 11.9408,
+            "units": {
+              "pure": [
+                {
+                  "end": "2023-12-31",
+                  "val": 0.05,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 0.06,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
         "Weighted-average operating leases discount rate": [
           {
             "taxonomy": "us-gaap",
@@ -4531,20 +4420,20 @@
             }
           }
         ],
-        "Mineral rights and reserves": [
+        "Term SOFR applicable margin": [
           {
             "taxonomy": "us-gaap",
-            "tag": "InventorySuppliesNetOfReserves",
-            "label": "Inventory, Supplies, Net of Reserves",
-            "description": "Carrying amount, net of valuation reserves and adjustments, as of the balance sheet date of products used directly or indirectly in the manufacturing or production process, which may or may not become part of the final product. May also include items used in the storage, presentation or transportation of physical goods.",
-            "metric_type": "Mineral rights and reserves",
+            "tag": "UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations",
+            "label": "Unrecognized Tax Benefits, Reduction Resulting from Lapse of Applicable Statute of Limitations",
+            "description": "Amount of decrease in unrecognized tax benefits resulting from lapses of applicable statutes of limitations.",
+            "metric_type": "Term SOFR applicable margin",
             "target_year": 2024,
-            "bm25_score": 5.0932,
+            "bm25_score": 4.5098,
             "units": {
               "USD": [
                 {
-                  "end": "2023-12-31",
-                  "val": 95900000,
+                  "end": "2022-12-31",
+                  "val": 3400000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4552,8 +4441,8 @@
                   "filed": "2025-03-06"
                 },
                 {
-                  "end": "2024-12-31",
-                  "val": 119800000,
+                  "end": "2023-12-31",
+                  "val": 1200000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4568,20 +4457,20 @@
             }
           }
         ],
-        "Land": [
+        "base rate applicable margin": [
           {
             "taxonomy": "us-gaap",
-            "tag": "Land",
-            "label": "Land",
-            "description": "Amount before accumulated depletion of real estate held for productive use, excluding land held for sale.",
-            "metric_type": "Land",
+            "tag": "UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations",
+            "label": "Unrecognized Tax Benefits, Reduction Resulting from Lapse of Applicable Statute of Limitations",
+            "description": "Amount of decrease in unrecognized tax benefits resulting from lapses of applicable statutes of limitations.",
+            "metric_type": "base rate applicable margin",
             "target_year": 2024,
-            "bm25_score": 8.7501,
+            "bm25_score": 4.5098,
             "units": {
               "USD": [
                 {
-                  "end": "2023-12-31",
-                  "val": 45100000,
+                  "end": "2022-12-31",
+                  "val": 3400000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4589,8 +4478,8 @@
                   "filed": "2025-03-06"
                 },
                 {
-                  "end": "2024-12-31",
-                  "val": 74700000,
+                  "end": "2023-12-31",
+                  "val": 1200000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4605,20 +4494,20 @@
             }
           }
         ],
-        "Buildings": [
+        "adjusted EURIBOR applicable margin": [
           {
             "taxonomy": "us-gaap",
-            "tag": "BuildingsAndImprovementsGross",
-            "label": "Buildings and Improvements, Gross",
-            "description": "Amount before accumulated depreciation of building structures held for productive use including addition, improvement, or renovation to the structure, including, but not limited to, interior masonry, interior flooring, electrical, and plumbing.",
-            "metric_type": "Buildings",
+            "tag": "UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations",
+            "label": "Unrecognized Tax Benefits, Reduction Resulting from Lapse of Applicable Statute of Limitations",
+            "description": "Amount of decrease in unrecognized tax benefits resulting from lapses of applicable statutes of limitations.",
+            "metric_type": "adjusted EURIBOR applicable margin",
             "target_year": 2024,
-            "bm25_score": 7.3348,
+            "bm25_score": 4.5098,
             "units": {
               "USD": [
                 {
-                  "end": "2023-12-31",
-                  "val": 271200000,
+                  "end": "2022-12-31",
+                  "val": 3400000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4626,8 +4515,8 @@
                   "filed": "2025-03-06"
                 },
                 {
-                  "end": "2024-12-31",
-                  "val": 282600000,
+                  "end": "2023-12-31",
+                  "val": 1200000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4642,20 +4531,20 @@
             }
           }
         ],
-        "Machinery and equipment": [
+        "SONIA applicable margin": [
           {
             "taxonomy": "us-gaap",
-            "tag": "MachineryAndEquipmentGross",
-            "label": "Machinery and Equipment, Gross",
-            "description": "Amount before accumulated depreciation of tangible personal property used to produce goods and services, including, but is not limited to, tools, dies and molds, computer and office equipment.",
-            "metric_type": "Machinery and equipment",
+            "tag": "UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations",
+            "label": "Unrecognized Tax Benefits, Reduction Resulting from Lapse of Applicable Statute of Limitations",
+            "description": "Amount of decrease in unrecognized tax benefits resulting from lapses of applicable statutes of limitations.",
+            "metric_type": "SONIA applicable margin",
             "target_year": 2024,
-            "bm25_score": 7.3348,
+            "bm25_score": 4.5098,
             "units": {
               "USD": [
                 {
-                  "end": "2023-12-31",
-                  "val": 1179400000,
+                  "end": "2022-12-31",
+                  "val": 3400000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4663,8 +4552,8 @@
                   "filed": "2025-03-06"
                 },
                 {
-                  "end": "2024-12-31",
-                  "val": 1312000000,
+                  "end": "2023-12-31",
+                  "val": 1200000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -4679,87 +4568,13 @@
             }
           }
         ],
-        "Construction in progress": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "ConstructionInProgressGross",
-            "label": "Construction in Progress, Gross",
-            "description": "Amount of structure or a modification to a structure under construction. Includes recently completed structures or modifications to structures that have not been placed into service.",
-            "metric_type": "Construction in progress",
-            "target_year": 2024,
-            "bm25_score": 7.3348,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 23600000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 41700000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
-        "Property, plant and equipment, net": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "PropertyPlantAndEquipmentGross",
-            "label": "Property, Plant and Equipment, Gross",
-            "description": "Amount before accumulated depreciation, depletion and amortization of physical assets used in the normal conduct of business and not intended for resale. Examples include, but are not limited to, land, buildings, machinery and equipment, office equipment, and furniture and fixtures.",
-            "metric_type": "Property, plant and equipment, net",
-            "target_year": 2024,
-            "bm25_score": 15.1603,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 1608500000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 1787000000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
-        "outstanding balance on Japan loan facility": [
+        "Outstanding balance on Japan loan": [
           {
             "taxonomy": "us-gaap",
             "tag": "CommonStockSharesOutstanding",
             "label": "Common Stock, Shares, Outstanding",
             "description": "Number of shares of common stock outstanding. Common stock represent the ownership interest in a corporation.",
-            "metric_type": "outstanding balance on Japan loan facility",
+            "metric_type": "Outstanding balance on Japan loan",
             "target_year": 2024,
             "bm25_score": 6.6946,
             "units": {
@@ -4882,6 +4697,98 @@
             }
           }
         ],
+        "Total non-operating deductions, net": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "OperatingIncomeLoss",
+            "label": "Operating Income (Loss)",
+            "description": "The net result for the period of deducting operating expenses from operating revenues.",
+            "metric_type": "Total non-operating deductions, net",
+            "target_year": 2024,
+            "bm25_score": 3.6236,
+            "units": {
+              "USD": [
+                {
+                  "end": "2022-12-31",
+                  "val": 239400000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 34200000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 210700000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Net interest expense": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "InterestExpense",
+            "label": "Interest Expense",
+            "description": "Amount of the cost of borrowed funds accounted for as interest expense.",
+            "metric_type": "Net interest expense",
+            "target_year": 2024,
+            "bm25_score": 8.3148,
+            "units": {
+              "USD": [
+                {
+                  "end": "2022-12-31",
+                  "val": 27900000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 28300000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 49900000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
         "outstanding balance": [
           {
             "taxonomy": "us-gaap",
@@ -4905,43 +4812,6 @@
                 {
                   "end": "2024-12-31",
                   "val": 29600000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
-        "authorized": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "CommonStockSharesAuthorized",
-            "label": "Common Stock, Shares Authorized",
-            "description": "The maximum number of common shares permitted to be issued by an entity's charter and bylaws.",
-            "metric_type": "authorized",
-            "target_year": 2024,
-            "bm25_score": 6.6946,
-            "units": {
-              "shares": [
-                {
-                  "end": "2023-12-31",
-                  "val": 50000000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 50000000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -5095,20 +4965,20 @@
             }
           }
         ],
-        "Total assets": [
+        "Common stock": [
           {
             "taxonomy": "us-gaap",
-            "tag": "Assets",
-            "label": "Assets",
-            "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
-            "metric_type": "Total assets",
+            "tag": "PaymentsForRepurchaseOfCommonStock",
+            "label": "Payments for Repurchase of Common Stock",
+            "description": "The cash outflow to reacquire common stock during the period.",
+            "metric_type": "Common stock",
             "target_year": 2024,
-            "bm25_score": 5.732,
+            "bm25_score": 8.3428,
             "units": {
               "USD": [
                 {
                   "end": "2022-12-31",
-                  "val": 2835700000,
+                  "val": 4000000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -5117,7 +4987,35 @@
                 },
                 {
                   "end": "2023-12-31",
-                  "val": 2737000000,
+                  "val": 2900000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Additional paid-in capital": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "AdditionalPaidInCapital",
+            "label": "Additional Paid in Capital",
+            "description": "Excess of issue price over par or stated value of the entity's capital stock and amounts received from other transactions involving the entity's stock or stockholders. Includes adjustments to additional paid in capital. Some examples of such adjustments include recording the issuance of debt with a beneficial conversion feature and certain tax consequences of equity instruments awarded to employees. Use this element for the aggregate amount of additional paid-in capital associated with common and preferred stock. For additional paid-in capital associated with only common stock, use the element additional paid in capital, common stock. For additional paid-in capital associated with only preferred stock, use the element additional paid in capital, preferred stock.",
+            "metric_type": "Additional paid-in capital",
+            "target_year": 2024,
+            "bm25_score": 16.0077,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 669500000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -5126,7 +5024,118 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 2800200000,
+                  "val": 669900000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Retained earnings": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "RetainedEarningsAccumulatedDeficit",
+            "label": "Retained Earnings (Accumulated Deficit)",
+            "description": "The cumulative amount of the reporting entity's undistributed earnings or deficit.",
+            "metric_type": "Retained earnings",
+            "target_year": 2024,
+            "bm25_score": 12.4872,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 475800000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 574700000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Accumulated other comprehensive loss": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+            "label": "Accumulated Other Comprehensive Income (Loss), Net of Tax",
+            "description": "Accumulated change in equity from transactions and other events and circumstances from non-owner sources, net of tax effect, at period end. Excludes Net Income (Loss), and accumulated changes in equity from transactions resulting from investments by owners and distributions to owners. Includes foreign currency translation items, certain pension adjustments, unrealized gains and losses on certain investments in debt and equity securities, other than temporary impairment (OTTI) losses related to factors other than credit losses on available-for-sale and held-to-maturity debt securities that an entity does not intend to sell and it is not more likely than not that the entity will be required to sell before recovery of the amortized cost basis, as well as changes in the fair value of derivatives related to the effective portion of a designated cash flow hedge.",
+            "metric_type": "Accumulated other comprehensive loss",
+            "target_year": 2024,
+            "bm25_score": 8.8213,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": -145500000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": -159200000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Common stock held in treasury, at cost": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "PaymentsForRepurchaseOfCommonStock",
+            "label": "Payments for Repurchase of Common Stock",
+            "description": "The cash outflow to reacquire common stock during the period.",
+            "metric_type": "Common stock held in treasury, at cost",
+            "target_year": 2024,
+            "bm25_score": 8.3428,
+            "units": {
+              "USD": [
+                {
+                  "end": "2022-12-31",
+                  "val": 4000000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 2900000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -5270,6 +5279,71 @@
             }
           }
         ],
+        "Unrecognized income tax benefits that would affect the Company\u2019s effective tax rate": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "UnrecognizedTaxBenefitsThatWouldImpactEffectiveTaxRate",
+            "label": "Unrecognized Tax Benefits that Would Impact Effective Tax Rate",
+            "description": "The total amount of unrecognized tax benefits that, if recognized, would affect the effective tax rate.",
+            "metric_type": "Unrecognized income tax benefits that would affect the Company\u2019s effective tax rate",
+            "target_year": 2024,
+            "bm25_score": 26.3168,
+            "units": {
+              "USD": [
+                {
+                  "end": "2024-12-31",
+                  "val": 3200000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Property, plant and equipment, net": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "PropertyPlantAndEquipmentGross",
+            "label": "Property, Plant and Equipment, Gross",
+            "description": "Amount before accumulated depreciation, depletion and amortization of physical assets used in the normal conduct of business and not intended for resale. Examples include, but are not limited to, land, buildings, machinery and equipment, office equipment, and furniture and fixtures.",
+            "metric_type": "Property, plant and equipment, net",
+            "target_year": 2024,
+            "bm25_score": 15.1603,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 1608500000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 1787000000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
         "Goodwill": [
           {
             "taxonomy": "us-gaap",
@@ -5307,13 +5381,13 @@
             }
           }
         ],
-        "Gross Carrying Amount": [
+        "Gross Carrying Amount of Tradenames": [
           {
             "taxonomy": "us-gaap",
             "tag": "CashAndCashEquivalentsAtCarryingValue",
             "label": "Cash and Cash Equivalents, at Carrying Value",
             "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
-            "metric_type": "Gross Carrying Amount",
+            "metric_type": "Gross Carrying Amount of Tradenames",
             "target_year": 2024,
             "bm25_score": 5.9396,
             "units": {
@@ -5344,13 +5418,124 @@
             }
           }
         ],
-        "Senior Notes: 5.00% due 2028, net of unamortized deferred financing costs": [
+        "Gross Carrying Amount of Technology": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "metric_type": "Gross Carrying Amount of Technology",
+            "target_year": 2024,
+            "bm25_score": 5.9396,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 407000000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 348300000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Gross Carrying Amount of Patents and trademarks": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "metric_type": "Gross Carrying Amount of Patents and trademarks",
+            "target_year": 2024,
+            "bm25_score": 5.9396,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 407000000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 348300000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Gross Carrying Amount of Customer relationships": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "metric_type": "Gross Carrying Amount of Customer relationships",
+            "target_year": 2024,
+            "bm25_score": 5.9396,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 407000000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 348300000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
+        "Senior Notes: 5.00 % due 2028, net of unamortized deferred financing costs of $ 3.2 million and $ 3.9 million": [
           {
             "taxonomy": "us-gaap",
             "tag": "PaymentsOfFinancingCosts",
             "label": "Payments of Financing Costs",
             "description": "The cash outflow for loan and debt issuance costs.",
-            "metric_type": "Senior Notes: 5.00% due 2028, net of unamortized deferred financing costs",
+            "metric_type": "Senior Notes: 5.00 % due 2028, net of unamortized deferred financing costs of $ 3.2 million and $ 3.9 million",
             "target_year": 2024,
             "bm25_score": 10.622,
             "units": {
@@ -5492,6 +5677,52 @@
             }
           }
         ],
+        "Total assets": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "Assets",
+            "label": "Assets",
+            "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
+            "metric_type": "Total assets",
+            "target_year": 2023,
+            "bm25_score": 5.732,
+            "units": {
+              "USD": [
+                {
+                  "end": "2022-12-31",
+                  "val": 2835700000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 2737000000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 2800200000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
         "Ending balance at December 31, 2023": [
           {
             "taxonomy": "us-gaap",
@@ -5566,13 +5797,13 @@
             }
           }
         ],
-        "shares outstanding": [
+        "Shares outstanding": [
           {
             "taxonomy": "dei",
             "tag": "EntityCommonStockSharesOutstanding",
             "label": "Entity Common Stock, Shares Outstanding",
             "description": "Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.",
-            "metric_type": "shares outstanding",
+            "metric_type": "Shares outstanding",
             "target_year": 2024,
             "bm25_score": 10.8557,
             "units": {
@@ -5594,29 +5825,20 @@
             }
           }
         ],
-        "Unrealized gain on cash flow hedges (net of tax expense (benefit) of $ 0.1 in 2024 and $( 1.2 ) in 2023 )": [
+        "Authorized capital stock": [
           {
             "taxonomy": "us-gaap",
-            "tag": "IncomeTaxExpenseBenefit",
-            "label": "Income Tax Expense (Benefit)",
-            "description": "Amount of current income tax expense (benefit) and deferred income tax expense (benefit) pertaining to continuing operations.",
-            "metric_type": "Unrealized gain on cash flow hedges (net of tax expense (benefit) of $ 0.1 in 2024 and $( 1.2 ) in 2023 )",
+            "tag": "CommonStockSharesAuthorized",
+            "label": "Common Stock, Shares Authorized",
+            "description": "The maximum number of common shares permitted to be issued by an entity's charter and bylaws.",
+            "metric_type": "Authorized capital stock",
             "target_year": 2024,
-            "bm25_score": 10.0738,
+            "bm25_score": 6.6946,
             "units": {
-              "USD": [
-                {
-                  "end": "2022-12-31",
-                  "val": 36800000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
+              "shares": [
                 {
                   "end": "2023-12-31",
-                  "val": -24600000,
+                  "val": 50000000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -5625,7 +5847,7 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 82900000,
+                  "val": 50000000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -5898,6 +6120,34 @@
             }
           }
         ],
+        "Cash payments": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "PaymentsToAcquireBusinessesNetOfCashAcquired",
+            "label": "Payments to Acquire Businesses, Net of Cash Acquired",
+            "description": "The cash outflow associated with the acquisition of a business, net of the cash acquired from the purchase.",
+            "metric_type": "Cash payments",
+            "target_year": 2024,
+            "bm25_score": 5.8365,
+            "units": {
+              "USD": [
+                {
+                  "end": "2024-12-31",
+                  "val": 156800000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000059255",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
+            }
+          }
+        ],
         "Total inventories": [
           {
             "taxonomy": "us-gaap",
@@ -5944,20 +6194,29 @@
             }
           }
         ],
-        "Deferred compensation plan assets": [
+        "interest costs incurred": [
           {
             "taxonomy": "us-gaap",
-            "tag": "DefinedBenefitPlanAssetsForPlanBenefitsNoncurrent",
-            "label": "Assets for Plan Benefits, Defined Benefit Plan",
-            "description": "Amount of asset, recognized in statement of financial position, for overfunded defined benefit pension and other postretirement plans.",
-            "metric_type": "Deferred compensation plan assets",
+            "tag": "InterestCostsCapitalized",
+            "label": "Interest Costs Capitalized",
+            "description": "Amount of interest capitalized during the period.",
+            "metric_type": "interest costs incurred",
             "target_year": 2024,
-            "bm25_score": 11.2711,
+            "bm25_score": 9.4721,
             "units": {
               "USD": [
                 {
+                  "end": "2022-12-31",
+                  "val": 1700000,
+                  "accn": "0001558370-25-002409",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
                   "end": "2023-12-31",
-                  "val": 8100000,
+                  "val": 1900000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -5966,44 +6225,7 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 19800000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000059255",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000059255.json"
-            }
-          }
-        ],
-        "Supplementary pension plan assets": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "DefinedBenefitPlanAssetsForPlanBenefitsNoncurrent",
-            "label": "Assets for Plan Benefits, Defined Benefit Plan",
-            "description": "Amount of asset, recognized in statement of financial position, for overfunded defined benefit pension and other postretirement plans.",
-            "metric_type": "Supplementary pension plan assets",
-            "target_year": 2024,
-            "bm25_score": 11.2711,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 8100000,
-                  "accn": "0001558370-25-002409",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 19800000,
+                  "val": 1000000,
                   "accn": "0001558370-25-002409",
                   "fy": 2024,
                   "fp": "FY",
@@ -6027,7 +6249,7 @@
         "ticker": "N/A",
         "source": "neo4j"
       },
-      "target_metric_count": 80,
+      "target_metric_count": 78,
       "target_metrics": {
         "Consolidated income from operations": [
           {
@@ -6107,52 +6329,6 @@
                 {
                   "end": "2024-12-31",
                   "val": 1.38,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Research and development expenses": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "ResearchAndDevelopmentExpense",
-            "label": "Research and Development Expense",
-            "description": "The aggregate costs incurred (1) in a planned search or critical investigation aimed at discovery of new knowledge with the hope that such knowledge will be useful in developing a new product or service, a new process or technique, or in bringing about a significant improvement to an existing product or process; or (2) to translate research findings or other knowledge into a plan or design for a new product or process or for a significant improvement to an existing product or process whether intended for sale or the entity's use, during the reporting period charged to research and development projects, including the costs of developing computer software up to the point in time of achieving technological feasibility, and costs allocated in accounting for a business combination to in-process projects deemed to have no alternative future use.",
-            "metric_type": "Research and development expenses",
-            "target_year": 2024,
-            "bm25_score": 14.3561,
-            "units": {
-              "USD": [
-                {
-                  "end": "2022-12-31",
-                  "val": 0,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 0,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 0,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -6535,112 +6711,20 @@
             }
           }
         ],
-        "Earnings per share: Basic: Income from operations attributable to MTI": [
+        "Basic: Income from operations attributable to MTI": [
           {
             "taxonomy": "us-gaap",
-            "tag": "EarningsPerShareBasic",
-            "label": "Earnings Per Share, Basic",
-            "description": "The amount of net income (loss) for the period per each share of common stock or unit outstanding during the reporting period.",
-            "metric_type": "Earnings per share: Basic: Income from operations attributable to MTI",
+            "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+            "label": "Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest",
+            "description": "Amount of income (loss) from continuing operations, including income (loss) from equity method investments, before deduction of income tax expense (benefit), and income (loss) attributable to noncontrolling interest.",
+            "metric_type": "Basic: Income from operations attributable to MTI",
             "target_year": 2024,
-            "bm25_score": 9.7654,
-            "units": {
-              "USD/shares": [
-                {
-                  "end": "2022-12-31",
-                  "val": 0.69,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": -0.05,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 1.38,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Earnings per share: Diluted: Income from operations attributable to MTI": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "EarningsPerShareBasic",
-            "label": "Earnings Per Share, Basic",
-            "description": "The amount of net income (loss) for the period per each share of common stock or unit outstanding during the reporting period.",
-            "metric_type": "Earnings per share: Diluted: Income from operations attributable to MTI",
-            "target_year": 2024,
-            "bm25_score": 9.7654,
-            "units": {
-              "USD/shares": [
-                {
-                  "end": "2022-12-31",
-                  "val": 0.69,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": -0.05,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 1.38,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Comprehensive income attributable to non-controlling interests": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "ComprehensiveIncomeNetOfTax",
-            "label": "Comprehensive Income (Loss), Net of Tax, Attributable to Parent",
-            "description": "Amount after tax of increase (decrease) in equity from transactions and other events and circumstances from net income and other comprehensive income, attributable to parent entity. Excludes changes in equity resulting from investments by owners and distributions to owners.",
-            "metric_type": "Comprehensive income attributable to non-controlling interests",
-            "target_year": 2024,
-            "bm25_score": 6.6619,
+            "bm25_score": 6.7477,
             "units": {
               "USD": [
                 {
                   "end": "2022-12-31",
-                  "val": 51609000,
+                  "val": 39241000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -6649,7 +6733,7 @@
                 },
                 {
                   "end": "2023-12-31",
-                  "val": 1062000,
+                  "val": -6419000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -6658,7 +6742,7 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 63493000,
+                  "val": 83318000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -6673,20 +6757,20 @@
             }
           }
         ],
-        "Comprehensive income attributable to Minerals Technologies Inc.": [
+        "Diluted: Income from operations attributable to MTI": [
           {
             "taxonomy": "us-gaap",
-            "tag": "ComprehensiveIncomeNetOfTax",
-            "label": "Comprehensive Income (Loss), Net of Tax, Attributable to Parent",
-            "description": "Amount after tax of increase (decrease) in equity from transactions and other events and circumstances from net income and other comprehensive income, attributable to parent entity. Excludes changes in equity resulting from investments by owners and distributions to owners.",
-            "metric_type": "Comprehensive income attributable to Minerals Technologies Inc.",
+            "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+            "label": "Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest",
+            "description": "Amount of income (loss) from continuing operations, including income (loss) from equity method investments, before deduction of income tax expense (benefit), and income (loss) attributable to noncontrolling interest.",
+            "metric_type": "Diluted: Income from operations attributable to MTI",
             "target_year": 2024,
-            "bm25_score": 6.6619,
+            "bm25_score": 6.7477,
             "units": {
               "USD": [
                 {
                   "end": "2022-12-31",
-                  "val": 51609000,
+                  "val": 39241000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -6695,7 +6779,7 @@
                 },
                 {
                   "end": "2023-12-31",
-                  "val": 1062000,
+                  "val": -6419000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -6704,7 +6788,7 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 63493000,
+                  "val": 83318000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -6894,98 +6978,6 @@
             }
           }
         ],
-        "Weighted average shares outstanding": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
-            "label": "Weighted Average Number of Shares Outstanding, Diluted",
-            "description": "The average number of shares or units issued and outstanding that are used in calculating diluted EPS or earnings per unit (EPU), determined based on the timing of issuance of shares or units in the period.",
-            "metric_type": "Weighted average shares outstanding",
-            "target_year": 2024,
-            "bm25_score": 14.1099,
-            "units": {
-              "shares": [
-                {
-                  "end": "2022-12-31",
-                  "val": 48811000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 48827000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 48842000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Weighted average shares outstanding, adjusted": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
-            "label": "Weighted Average Number of Shares Outstanding, Diluted",
-            "description": "The average number of shares or units issued and outstanding that are used in calculating diluted EPS or earnings per unit (EPU), determined based on the timing of issuance of shares or units in the period.",
-            "metric_type": "Weighted average shares outstanding, adjusted",
-            "target_year": 2024,
-            "bm25_score": 19.0786,
-            "units": {
-              "shares": [
-                {
-                  "end": "2022-12-31",
-                  "val": 48811000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 48827000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 48842000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
         "Basic earnings per share attributable to MTI": [
           {
             "taxonomy": "us-gaap",
@@ -7064,6 +7056,52 @@
                 {
                   "end": "2024-12-31",
                   "val": 1.38,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Reversals of compensation expense": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "AccretionExpense",
+            "label": "Accretion Expense",
+            "description": "Amount recognized for the passage of time, typically for liabilities, that have been discounted to their net present values. Excludes accretion associated with asset retirement obligations.",
+            "metric_type": "Reversals of compensation expense",
+            "target_year": 2024,
+            "bm25_score": 4.4895,
+            "units": {
+              "USD": [
+                {
+                  "end": "2022-12-31",
+                  "val": 908000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 695000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 479000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -7170,20 +7208,20 @@
             }
           }
         ],
-        "Income (loss) from operations before income taxes and income from affiliates and joint ventures": [
+        "Domestic tax provision (benefit)": [
           {
             "taxonomy": "us-gaap",
-            "tag": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
-            "label": "Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest",
-            "description": "Amount of income (loss) from continuing operations, including income (loss) from equity method investments, before deduction of income tax expense (benefit), and income (loss) attributable to noncontrolling interest.",
-            "metric_type": "Income (loss) from operations before income taxes and income from affiliates and joint ventures",
+            "tag": "IncomeTaxExpenseBenefit",
+            "label": "Income Tax Expense (Benefit)",
+            "description": "Amount of current income tax expense (benefit) and deferred income tax expense (benefit) pertaining to continuing operations.",
+            "metric_type": "Domestic tax provision (benefit)",
             "target_year": 2024,
-            "bm25_score": 17.6809,
+            "bm25_score": 6.8327,
             "units": {
               "USD": [
                 {
                   "end": "2022-12-31",
-                  "val": 39241000,
+                  "val": 2785000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -7192,7 +7230,7 @@
                 },
                 {
                   "end": "2023-12-31",
-                  "val": -6419000,
+                  "val": -7001000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -7201,7 +7239,7 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 83318000,
+                  "val": 14057000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -7262,52 +7300,6 @@
             }
           }
         ],
-        "average rate of return on assets": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "DefinedBenefitPlanExpectedReturnOnPlanAssets",
-            "label": "Defined Benefit Plan, Expected Return (Loss) on Plan Assets",
-            "description": "Amount of expected return (loss) recognized in net periodic benefit (cost) credit, calculated based on expected long-term rate of return and market-related value of plan assets of defined benefit plan.",
-            "metric_type": "average rate of return on assets",
-            "target_year": 2024,
-            "bm25_score": 10.363,
-            "units": {
-              "USD": [
-                {
-                  "end": "2022-12-31",
-                  "val": 1552000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2023-12-31",
-                  "val": 1452000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 1340000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
         "Segment income from operations": [
           {
             "taxonomy": "us-gaap",
@@ -7354,6 +7346,52 @@
             }
           }
         ],
+        "Depreciation, Depletion and Amortization": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "DepreciationDepletionAndAmortization",
+            "label": "Depreciation, Depletion and Amortization",
+            "description": "The aggregate expense recognized in the current period that allocates the cost of tangible assets, intangible assets, or depleting assets to periods that benefit from use of the assets.",
+            "metric_type": "Depreciation, Depletion and Amortization",
+            "target_year": 2024,
+            "bm25_score": 18.8336,
+            "units": {
+              "USD": [
+                {
+                  "end": "2022-12-31",
+                  "val": 3977000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 3973000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 3691000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
         "Environmental & Infrastructure": [
           {
             "taxonomy": "us-gaap",
@@ -7386,43 +7424,6 @@
                 {
                   "end": "2024-12-31",
                   "val": -21828000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Loans outstanding under the Revolving Facility": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "CommonStockSharesOutstanding",
-            "label": "Common Stock, Shares, Outstanding",
-            "description": "Number of shares of common stock outstanding. Common stock represent the ownership interest in a corporation.",
-            "metric_type": "Loans outstanding under the Revolving Facility",
-            "target_year": 2024,
-            "bm25_score": 6.528,
-            "units": {
-              "shares": [
-                {
-                  "end": "2023-12-31",
-                  "val": 48833000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 48848000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -7497,6 +7498,52 @@
                 {
                   "end": "2024-12-31",
                   "val": 299099000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Weighted-average remaining operating lease term": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
+            "label": "Weighted Average Number of Shares Outstanding, Diluted",
+            "description": "The average number of shares or units issued and outstanding that are used in calculating diluted EPS or earnings per unit (EPU), determined based on the timing of issuance of shares or units in the period.",
+            "metric_type": "Weighted-average remaining operating lease term",
+            "target_year": 2024,
+            "bm25_score": 9.9374,
+            "units": {
+              "shares": [
+                {
+                  "end": "2022-12-31",
+                  "val": 48811000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 48827000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 48842000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -7649,235 +7696,50 @@
             }
           }
         ],
-        "Mineral rights and reserves": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "InventoryFinishedGoodsNetOfReserves",
-            "label": "Inventory, Finished Goods, Net of Reserves",
-            "description": "Carrying amount, net of valuation reserves and adjustments, as of the balance sheet date of merchandise or goods held by the company that are readily available for sale.",
-            "metric_type": "Mineral rights and reserves",
-            "target_year": 2024,
-            "bm25_score": 4.7935,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 5932000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 5076000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Land": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "Land",
-            "label": "Land",
-            "description": "Amount before accumulated depletion of real estate held for productive use, excluding land held for sale.",
-            "metric_type": "Land",
-            "target_year": 2024,
-            "bm25_score": 7.8945,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 5390000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 5390000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Buildings": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "BuildingsAndImprovementsGross",
-            "label": "Buildings and Improvements, Gross",
-            "description": "Amount before accumulated depreciation of building structures held for productive use including addition, improvement, or renovation to the structure, including, but not limited to, interior masonry, interior flooring, electrical, and plumbing.",
-            "metric_type": "Buildings",
-            "target_year": 2024,
-            "bm25_score": 7.178,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 23239000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 23262000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Machinery and equipment": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "MachineryAndEquipmentGross",
-            "label": "Machinery and Equipment, Gross",
-            "description": "Amount before accumulated depreciation of tangible personal property used to produce goods and services, including, but is not limited to, tools, dies and molds, computer and office equipment.",
-            "metric_type": "Machinery and equipment",
-            "target_year": 2024,
-            "bm25_score": 7.178,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 74315000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 75605000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Construction in progress": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "ConstructionInProgressGross",
-            "label": "Construction in Progress, Gross",
-            "description": "Amount of structure or a modification to a structure under construction. Includes recently completed structures or modifications to structures that have not been placed into service.",
-            "metric_type": "Construction in progress",
-            "target_year": 2024,
-            "bm25_score": 7.178,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 676000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 589000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Property, plant and equipment, net": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "PropertyPlantAndEquipmentGross",
-            "label": "Property, Plant and Equipment, Gross",
-            "description": "Amount before accumulated depreciation, depletion and amortization of physical assets used in the normal conduct of business and not intended for resale. Examples include, but are not limited to, land, buildings, machinery and equipment, office equipment, and furniture and fixtures.",
-            "metric_type": "Property, plant and equipment, net",
-            "target_year": 2024,
-            "bm25_score": 15.1122,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 103620000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 104846000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "outstanding balance on Japan loan facility": [
+        "Loans outstanding under the Revolving Facility": [
           {
             "taxonomy": "us-gaap",
             "tag": "CommonStockSharesOutstanding",
             "label": "Common Stock, Shares, Outstanding",
             "description": "Number of shares of common stock outstanding. Common stock represent the ownership interest in a corporation.",
-            "metric_type": "outstanding balance on Japan loan facility",
+            "metric_type": "Loans outstanding under the Revolving Facility",
+            "target_year": 2024,
+            "bm25_score": 6.528,
+            "units": {
+              "shares": [
+                {
+                  "end": "2023-12-31",
+                  "val": 48833000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 48848000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Outstanding balance on Japan loan": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "CommonStockSharesOutstanding",
+            "label": "Common Stock, Shares, Outstanding",
+            "description": "Number of shares of common stock outstanding. Common stock represent the ownership interest in a corporation.",
+            "metric_type": "Outstanding balance on Japan loan",
             "target_year": 2024,
             "bm25_score": 6.528,
             "units": {
@@ -8000,6 +7862,98 @@
             }
           }
         ],
+        "average rate of return on assets": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "DefinedBenefitPlanExpectedReturnOnPlanAssets",
+            "label": "Defined Benefit Plan, Expected Return (Loss) on Plan Assets",
+            "description": "Amount of expected return (loss) recognized in net periodic benefit (cost) credit, calculated based on expected long-term rate of return and market-related value of plan assets of defined benefit plan.",
+            "metric_type": "average rate of return on assets",
+            "target_year": 2024,
+            "bm25_score": 10.363,
+            "units": {
+              "USD": [
+                {
+                  "end": "2022-12-31",
+                  "val": 1552000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 1452000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 1340000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Total non-operating deductions, net": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "OperatingIncomeLoss",
+            "label": "Operating Income (Loss)",
+            "description": "The net result for the period of deducting operating expenses from operating revenues.",
+            "metric_type": "Total non-operating deductions, net",
+            "target_year": 2024,
+            "bm25_score": 4.5208,
+            "units": {
+              "USD": [
+                {
+                  "end": "2022-12-31",
+                  "val": 13731000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2023-12-31",
+                  "val": 14129000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 37876000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
         "outstanding balance": [
           {
             "taxonomy": "us-gaap",
@@ -8023,43 +7977,6 @@
                 {
                   "end": "2024-12-31",
                   "val": 48848000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "authorized": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "CommonStockSharesAuthorized",
-            "label": "Common Stock, Shares Authorized",
-            "description": "The maximum number of common shares permitted to be issued by an entity's charter and bylaws.",
-            "metric_type": "authorized",
-            "target_year": 2024,
-            "bm25_score": 6.528,
-            "units": {
-              "shares": [
-                {
-                  "end": "2023-12-31",
-                  "val": 150000000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 150000000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -8148,20 +8065,20 @@
             }
           }
         ],
-        "Total assets": [
+        "Common stock": [
           {
             "taxonomy": "us-gaap",
-            "tag": "Assets",
-            "label": "Assets",
-            "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
-            "metric_type": "Total assets",
+            "tag": "AdditionalPaidInCapitalCommonStock",
+            "label": "Additional Paid in Capital, Common Stock",
+            "description": "Value received from shareholders in common stock-related transactions that are in excess of par value or stated value and amounts received from other stock-related transactions. Includes only common stock transactions (excludes preferred stock transactions). May be called contributed capital, capital in excess of par, capital surplus, or paid-in capital.",
+            "metric_type": "Common stock",
             "target_year": 2024,
-            "bm25_score": 4.8481,
+            "bm25_score": 8.5739,
             "units": {
               "USD": [
                 {
                   "end": "2023-12-31",
-                  "val": 576662000,
+                  "val": 298868000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -8170,7 +8087,118 @@
                 },
                 {
                   "end": "2024-12-31",
-                  "val": 578258000,
+                  "val": 299099000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Retained earnings": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "RetainedEarningsAccumulatedDeficit",
+            "label": "Retained Earnings (Accumulated Deficit)",
+            "description": "The cumulative amount of the reporting entity's undistributed earnings or deficit.",
+            "metric_type": "Retained earnings",
+            "target_year": 2024,
+            "bm25_score": 12.4839,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 284462000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 315056000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Accumulated other comprehensive loss": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+            "label": "Accumulated Other Comprehensive Income (Loss), Net of Tax",
+            "description": "Accumulated change in equity from transactions and other events and circumstances from non-owner sources, net of tax effect, at period end. Excludes Net Income (Loss), and accumulated changes in equity from transactions resulting from investments by owners and distributions to owners. Includes foreign currency translation items, certain pension adjustments, unrealized gains and losses on certain investments in debt and equity securities, other than temporary impairment (OTTI) losses related to factors other than credit losses on available-for-sale and held-to-maturity debt securities that an entity does not intend to sell and it is not more likely than not that the entity will be required to sell before recovery of the amortized cost basis, as well as changes in the fair value of derivatives related to the effective portion of a designated cash flow hedge.",
+            "metric_type": "Accumulated other comprehensive loss",
+            "target_year": 2024,
+            "bm25_score": 7.9513,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": -219621000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": -223356000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Common stock held in treasury, at cost": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "AdditionalPaidInCapitalCommonStock",
+            "label": "Additional Paid in Capital, Common Stock",
+            "description": "Value received from shareholders in common stock-related transactions that are in excess of par value or stated value and amounts received from other stock-related transactions. Includes only common stock transactions (excludes preferred stock transactions). May be called contributed capital, capital in excess of par, capital surplus, or paid-in capital.",
+            "metric_type": "Common stock held in treasury, at cost",
+            "target_year": 2024,
+            "bm25_score": 8.5739,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 298868000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 299099000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -8231,6 +8259,34 @@
             }
           }
         ],
+        "Unrecognized income tax benefits that would affect the Company\u2019s effective tax rate": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "UnrecognizedTaxBenefitsThatWouldImpactEffectiveTaxRate",
+            "label": "Unrecognized Tax Benefits that Would Impact Effective Tax Rate",
+            "description": "The total amount of unrecognized tax benefits that, if recognized, would affect the effective tax rate.",
+            "metric_type": "Unrecognized income tax benefits that would affect the Company\u2019s effective tax rate",
+            "target_year": 2024,
+            "bm25_score": 27.202,
+            "units": {
+              "USD": [
+                {
+                  "end": "2024-12-31",
+                  "val": 7300000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
         "Accrued balance of interest and penalties": [
           {
             "taxonomy": "us-gaap",
@@ -8254,6 +8310,43 @@
                 {
                   "end": "2024-12-31",
                   "val": 12032000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Property, plant and equipment, net": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "PropertyPlantAndEquipmentGross",
+            "label": "Property, Plant and Equipment, Gross",
+            "description": "Amount before accumulated depreciation, depletion and amortization of physical assets used in the normal conduct of business and not intended for resale. Examples include, but are not limited to, land, buildings, machinery and equipment, office equipment, and furniture and fixtures.",
+            "metric_type": "Property, plant and equipment, net",
+            "target_year": 2024,
+            "bm25_score": 15.1122,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 103620000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 104846000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -8305,13 +8398,13 @@
             }
           }
         ],
-        "Gross Carrying Amount": [
+        "Gross Carrying Amount of Tradenames": [
           {
             "taxonomy": "us-gaap",
             "tag": "CashAndCashEquivalentsAtCarryingValue",
             "label": "Cash and Cash Equivalents, at Carrying Value",
             "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
-            "metric_type": "Gross Carrying Amount",
+            "metric_type": "Gross Carrying Amount of Tradenames",
             "target_year": 2024,
             "bm25_score": 5.8479,
             "units": {
@@ -8342,13 +8435,124 @@
             }
           }
         ],
-        "Term Loan due 2031, net of unamortized deferred financing cost and original issue discount": [
+        "Gross Carrying Amount of Technology": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "metric_type": "Gross Carrying Amount of Technology",
+            "target_year": 2024,
+            "bm25_score": 5.8479,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 111522000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 163154000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Gross Carrying Amount of Patents and trademarks": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "metric_type": "Gross Carrying Amount of Patents and trademarks",
+            "target_year": 2024,
+            "bm25_score": 5.8479,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 111522000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 163154000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Gross Carrying Amount of Customer relationships": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "CashAndCashEquivalentsAtCarryingValue",
+            "label": "Cash and Cash Equivalents, at Carrying Value",
+            "description": "Amount of currency on hand as well as demand deposits with banks or financial institutions. Includes other kinds of accounts that have the general characteristics of demand deposits. Also includes short-term, highly liquid investments that are both readily convertible to known amounts of cash and so near their maturity that they present insignificant risk of changes in value because of changes in interest rates. Excludes cash and cash equivalents within disposal group and discontinued operation.",
+            "metric_type": "Gross Carrying Amount of Customer relationships",
+            "target_year": 2024,
+            "bm25_score": 5.8479,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 111522000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 163154000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Term Loan due 2031, net of unamortized deferred financing cost and original issue discount of $ 7.3 million and $ \u2014 million": [
           {
             "taxonomy": "us-gaap",
             "tag": "DefinedBenefitPlanRecognizedNetGainLossDueToSettlements1",
             "label": "Defined Benefit Plan, Net Periodic Benefit Cost (Credit), Gain (Loss) Due to Settlement",
             "description": "Amount of gain (loss) recognized in net periodic benefit (cost) credit from irrevocable action relieving primary responsibility for benefit obligation and eliminating risk related to obligation and assets used to effect settlement.",
-            "metric_type": "Term Loan due 2031, net of unamortized deferred financing cost and original issue discount",
+            "metric_type": "Term Loan due 2031, net of unamortized deferred financing cost and original issue discount of $ 7.3 million and $ \u2014 million",
             "target_year": 2024,
             "bm25_score": 5.695,
             "units": {
@@ -8849,6 +9053,43 @@
             }
           }
         ],
+        "Total assets": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "Assets",
+            "label": "Assets",
+            "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are recognized. Assets are probable future economic benefits obtained or controlled by an entity as a result of past transactions or events.",
+            "metric_type": "Total assets",
+            "target_year": 2023,
+            "bm25_score": 4.8481,
+            "units": {
+              "USD": [
+                {
+                  "end": "2023-12-31",
+                  "val": 576662000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 578258000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
         "Ending balance at December 31, 2023": [
           {
             "taxonomy": "us-gaap",
@@ -8960,13 +9201,13 @@
             }
           }
         ],
-        "shares outstanding": [
+        "Shares outstanding": [
           {
             "taxonomy": "dei",
             "tag": "EntityCommonStockSharesOutstanding",
             "label": "Entity Common Stock, Shares Outstanding",
             "description": "Indicate number of shares or other units outstanding of each of registrant's classes of capital or common stock or other ownership interests, if and as stated on cover of related periodic report. Where multiple classes or units exist define each class/interest by adding class of stock items such as Common Class A [Member], Common Class B [Member] or Partnership Interest [Member] onto the Instrument [Domain] of the Entity Listings, Instrument.",
-            "metric_type": "shares outstanding",
+            "metric_type": "Shares outstanding",
             "target_year": 2024,
             "bm25_score": 10.8286,
             "units": {
@@ -8974,6 +9215,43 @@
                 {
                   "end": "2025-02-28",
                   "val": 48847734,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                }
+              ]
+            },
+            "metadata": {
+              "cik": "0000072162",
+              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+            }
+          }
+        ],
+        "Authorized capital stock": [
+          {
+            "taxonomy": "us-gaap",
+            "tag": "CommonStockSharesAuthorized",
+            "label": "Common Stock, Shares Authorized",
+            "description": "The maximum number of common shares permitted to be issued by an entity's charter and bylaws.",
+            "metric_type": "Authorized capital stock",
+            "target_year": 2024,
+            "bm25_score": 6.528,
+            "units": {
+              "shares": [
+                {
+                  "end": "2023-12-31",
+                  "val": 150000000,
+                  "accn": "0001558370-25-002417",
+                  "fy": 2024,
+                  "fp": "FY",
+                  "form": "10-K",
+                  "filed": "2025-03-06"
+                },
+                {
+                  "end": "2024-12-31",
+                  "val": 150000000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -9025,43 +9303,6 @@
             }
           }
         ],
-        "uncommitted short-term bank credit lines": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "ProceedsFromSaleMaturityAndCollectionOfShorttermInvestments",
-            "label": "Proceeds from Sale, Maturity and Collection of Short-term Investments",
-            "description": "The cash inflow from sales, maturities, prepayments, calls and collections of all investments, including securities and other assets, having ready marketability and intended by management to be liquidated, if necessary, within the current operating cycle. Includes cash flows from securities classified as trading securities that were acquired for reasons other than sale in the short-term.",
-            "metric_type": "uncommitted short-term bank credit lines",
-            "target_year": 2024,
-            "bm25_score": 8.2439,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 82000000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 54000000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
         "Net cash provided by operating activities": [
           {
             "taxonomy": "us-gaap",
@@ -9094,43 +9335,6 @@
                 {
                   "end": "2024-12-31",
                   "val": 25574000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Short-term investments": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "ProceedsFromSaleMaturityAndCollectionOfShorttermInvestments",
-            "label": "Proceeds from Sale, Maturity and Collection of Short-term Investments",
-            "description": "The cash inflow from sales, maturities, prepayments, calls and collections of all investments, including securities and other assets, having ready marketability and intended by management to be liquidated, if necessary, within the current operating cycle. Includes cash flows from securities classified as trading securities that were acquired for reasons other than sale in the short-term.",
-            "metric_type": "Short-term investments",
-            "target_year": 2024,
-            "bm25_score": 12.0382,
-            "units": {
-              "USD": [
-                {
-                  "end": "2023-12-31",
-                  "val": 82000000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                },
-                {
-                  "end": "2024-12-31",
-                  "val": 54000000,
                   "accn": "0001558370-25-002417",
                   "fy": 2024,
                   "fp": "FY",
@@ -9283,69 +9487,13 @@
             }
           }
         ],
-        "Deferred compensation plan assets": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "DefinedBenefitPlanAssetsForPlanBenefitsNoncurrent",
-            "label": "Assets for Plan Benefits, Defined Benefit Plan",
-            "description": "Amount of asset, recognized in statement of financial position, for overfunded defined benefit pension and other postretirement plans.",
-            "metric_type": "Deferred compensation plan assets",
-            "target_year": 2024,
-            "bm25_score": 8.6058,
-            "units": {
-              "USD": [
-                {
-                  "end": "2024-12-31",
-                  "val": 354000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "Supplementary pension plan assets": [
-          {
-            "taxonomy": "us-gaap",
-            "tag": "DefinedBenefitPlanAssetsForPlanBenefitsNoncurrent",
-            "label": "Assets for Plan Benefits, Defined Benefit Plan",
-            "description": "Amount of asset, recognized in statement of financial position, for overfunded defined benefit pension and other postretirement plans.",
-            "metric_type": "Supplementary pension plan assets",
-            "target_year": 2024,
-            "bm25_score": 8.6058,
-            "units": {
-              "USD": [
-                {
-                  "end": "2024-12-31",
-                  "val": 354000,
-                  "accn": "0001558370-25-002417",
-                  "fy": 2024,
-                  "fp": "FY",
-                  "form": "10-K",
-                  "filed": "2025-03-06"
-                }
-              ]
-            },
-            "metadata": {
-              "cik": "0000072162",
-              "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
-            }
-          }
-        ],
-        "uncommitted short-term bank credit lines in use": [
+        "Uncommitted short-term bank credit lines in use": [
           {
             "taxonomy": "us-gaap",
             "tag": "ProceedsFromSaleMaturityAndCollectionOfShorttermInvestments",
             "label": "Proceeds from Sale, Maturity and Collection of Short-term Investments",
             "description": "The cash inflow from sales, maturities, prepayments, calls and collections of all investments, including securities and other assets, having ready marketability and intended by management to be liquidated, if necessary, within the current operating cycle. Includes cash flows from securities classified as trading securities that were acquired for reasons other than sale in the short-term.",
-            "metric_type": "uncommitted short-term bank credit lines in use",
+            "metric_type": "Uncommitted short-term bank credit lines in use",
             "target_year": 2024,
             "bm25_score": 8.2439,
             "units": {

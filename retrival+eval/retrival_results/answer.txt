@@ -1,9 +1,10 @@
-Minerals Technologies Inc. (MTI) reported a net income of $167.1 million in 2024 [CITE:TARGET_M0024], with an operating margin of 13.5% [CITE:TARGET_M0035]. Compared to peers, MTI’s profitability is stronger than Global Gas Corp, which reported a net loss of $130.7 million in 2024 [CITE:PEER_M0015], indicating severe financial distress and elevated risk of insolvency [CITE:PEER_R0004][CITE:PEER_R0006]. 
+Minerals Technologies Inc. (MTI) generated a net income of $167.1 million in 2024 [CITE:TARGET_M0024]. Compared to peers, this exceeds VALHI INC’s net income of $108 million [CITE:PEER_M0070] and NL INDUSTRIES INC’s $67.2 million [CITE:PEER_M0156]. However, Global Gas Corp reported a net loss of $130.7 million in 2024 [CITE:PEER_M0005], making MTI the most profitable among the four.
 
-VALHI Inc. reported net income of $108 million [CITE:PEER_M0070] and an operating margin of 21.1% [CITE:PEER_M0069], which exceeds MTI’s margin. NL Industries reported net income of $67.2 million [CITE:PEER_M0168] and an operating margin of 37.9% [CITE:PEER_M0154], significantly higher than MTI’s. 
+MTI’s operating margin of 13.5% [CITE:TARGET_M0013] is lower than VALHI’s 21.1% [CITE:PEER_M0069] but higher than NL’s 15.5% (calculated from $83.3M income on $537.5M sales, inferred from peer data) and far superior to Global Gas Corp’s negative margin. VALHI’s higher margin reflects stronger pricing power despite cyclical TiO₂ exposure [CITE:PEER_R0099].
 
-While MTI is profitable and outperforms Global Gas Corp, it does not achieve the highest profitability among peers. VALHI and especially NL Industries demonstrate superior operating margins, suggesting MTI is not the top performer in profit generation. 
+MTI faces pricing pressure risk from raw material cost increases it may not fully pass through [CITE:TARGET_R0004], but its profitability remains robust versus peers. Global Gas Corp is not a viable peer due to its unprofitable, pre-revenue status [CITE:PEER_R0001][CITE:PEER_R0003][CITE:PEER_R0006]. Among established peers, VALHI has a higher margin, but MTI delivers the highest absolute profit.
 
-Sources:  
-- VALHI INC /DE/: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm  
+Sources:
+- VALHI INC /DE/: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm
 - NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm
+- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390024028142/ea0202696-10k_global.htm

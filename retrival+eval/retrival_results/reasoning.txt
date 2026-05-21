@@ -1,30 +1,52 @@
 ## 1. Understanding the Question
-The question asks whether Minerals Technologies Inc. (MTI) is achieving the best profitability among its peers, requiring a comparison of profitability metrics and risk exposures across the target and its identified peer companies.
+The question asks whether Minerals Technologies Inc. (MTI) is achieving the best profitability among its peers, requiring a comparison of profitability metrics and risk factors across the target company and its identified peers.
 
 ## 2. Data Retrieved
 **Target Company:**
-- Minerals Technologies Inc. — Profitability metrics for 2024: Consolidated income from operations ($286.5M) [CITE:TARGET_M0001], Net income ($167.1M) [CITE:TARGET_M0002], Operating margin % (13.5%) [CITE:TARGET_M0013], Production margin % (25.9%) [CITE:TARGET_M0009]. No document_url available.
+- Minerals Technologies Inc. — Filing: Not specified (no filing_date provided)  
+  - Profitability metrics for 2024:  
+    - Net income attributable to MTI: $167.1 million [CITE:TARGET_M0024]  
+    - Operating margin %: 13.5% [CITE:TARGET_M0035]  
+    - Production margin %: 25.9% [CITE:TARGET_M0031]  
+    - Diluted EPS: $5.17 [CITE:TARGET_M0003]  
+  - Risk: One relevant risk identified — “Pricing pressure and inability to pass on cost increases” [CITE:TARGET_R0004]
 
 **Peer Companies:**
-- Global Gas Corp — Profitability metrics for 2024: Income from operations (-$130.7M) [CITE:PEER_M0002], Net income attributable to MTI (-$130.7M) [CITE:PEER_M0005]. Document URL: https://www.sec.gov/Archives/edgar/data/1817232/000121390024028142/ea0202696-10k_global.htm
-- VALHI INC /DE/ — Profitability metrics for 2024: Income from operations ($169.8M) [CITE:PEER_M0068], Net income attributable to MTI ($108M) [CITE:PEER_M0070], Diluted EPS ($3.79) [CITE:PEER_M0065]. Document URL: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm
-- NL INDUSTRIES INC — Profitability metrics for 2024: Income from operations ($83.3M) [CITE:PEER_M0153], Net income attributable to MTI ($67.2M) [CITE:PEER_M0156], Diluted EPS ($1.38) [CITE:PEER_M0151]. Document URL: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm
+- Global Gas Corp — Filing: Not specified  
+  - Profitability metrics for 2024:  
+    - Net income attributable to MTI: -$130.7 million [CITE:PEER_M0005]  
+    - Income from operations: -$130.7 million [CITE:PEER_M0002]  
+  - Document URL: https://www.sec.gov/Archives/edgar/data/1817232/000121390024028142/ea0202696-10k_global.htm [CITE:PEER_R0001]  
+
+- VALHI INC /DE/ — Filing: Not specified  
+  - Profitability metrics for 2024:  
+    - Net income attributable to MTI: $108 million [CITE:PEER_M0070]  
+    - Diluted EPS: $3.79 [CITE:PEER_M0065]  
+    - Operating margin %: Not available (value provided is for “Operating Income (Loss)” in USD, not a percentage)  
+  - Document URL: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm [CITE:PEER_R0098]  
+
+- NL INDUSTRIES INC — Filing: Not specified  
+  - Profitability metrics for 2024:  
+    - Net income attributable to MTI: $67.2 million [CITE:PEER_M0156]  
+    - Diluted EPS: $1.38 [CITE:PEER_M0151]  
+    - Operating margin %: Not available (value provided is for “Operating Income (Loss)” in USD, not a percentage)  
+  - Document URL: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm [CITE:PEER_R0176]  
 
 ## 3. Reasoning Steps
-Step 1 — MTI reports the highest absolute profitability among all companies: $286.5M income from operations [CITE:TARGET_M0001] and $167.1M net income [CITE:TARGET_M0002], with a 13.5% operating margin [CITE:TARGET_M0013] and 25.9% production margin [CITE:TARGET_M0009].
+Step 1 — The target company, Minerals Technologies Inc., reports a net income of $167.1 million and an operating margin of 13.5% for 2024 [CITE:TARGET_M0024][CITE:TARGET_M0035]. Its production margin is strong at 25.9% [CITE:TARGET_M0031], indicating efficient core operations.
 
-Step 2 — Among peers, VALHI reports $169.8M income from operations [CITE:PEER_M0068] and $108M net income [CITE:PEER_M0070], both lower than MTI. NL Industries reports $83.3M income from operations [CITE:PEER_M0153] and $67.2M net income [CITE:PEER_M0156], also lower. Global Gas Corp reports a loss of $130.7M [CITE:PEER_M0002], indicating negative profitability.
+Step 2 — Among peers, Global Gas Corp reports a net loss of $130.7 million [CITE:PEER_M0005], indicating negative profitability. VALHI INC reports net income of $108 million [CITE:PEER_M0070], and NL INDUSTRIES INC reports $67.2 million [CITE:PEER_M0156]. MTI’s net income is higher than both VALHI and NL. MTI’s diluted EPS of $5.17 [CITE:TARGET_M0003] is also significantly higher than VALHI’s $3.79 [CITE:PEER_M0065] and NL’s $1.38 [CITE:PEER_M0151].
 
-Step 3 — MTI’s profitability is not only higher in absolute terms but also supported by strong production efficiency (25.9% margin) and lower cost structure relative to peers. No peer matches MTI’s scale or margin depth. Global Gas Corp’s losses and high-risk profile (e.g., unproven business model [CITE:PEER_R0003], inability to secure financing [CITE:PEER_R0004]) further highlight MTI’s relative strength.
+Step 3 — MTI’s profitability metrics are superior to all peers. While VALHI and NL face risks tied to TiO₂ pricing cycles and cost pressures [CITE:PEER_R0099][CITE:PEER_R0102], MTI’s only identified risk is pricing pressure [CITE:TARGET_R0004], which appears to be managed effectively given its strong margins. Global Gas Corp’s losses and unproven business model [CITE:PEER_R0003] further highlight MTI’s relative strength.
 
 ## 4. Sources & References
 **Target Company:**
-Minerals Technologies Inc. — Filing: 2024 (no document_url available)
+- Minerals Technologies Inc. — Filing: Not specified
 
 **Peer Companies:**
-Global Gas Corp — URL: https://www.sec.gov/Archives/edgar/data/1817232/000121390024028142/ea0202696-10k_global.htm
-VALHI INC /DE/ — URL: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm
-NL INDUSTRIES INC — URL: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm
+- Global Gas Corp — URL: https://www.sec.gov/Archives/edgar/data/1817232/000121390024028142/ea0202696-10k_global.htm
+- VALHI INC /DE/ — URL: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm
+- NL INDUSTRIES INC — URL: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm
 
 ## 5. Final Answer
-Yes, Minerals Technologies Inc. is achieving the best profitability among its peers. It reports the highest income from operations ($286.5M) [CITE:TARGET_M0001] and net income ($167.1M) [CITE:TARGET_M0002], with a 13.5% operating margin [CITE:TARGET_M0013] and 25.9% production margin [CITE:TARGET_M0009], outperforming VALHI ($169.8M income, $108M net income) [CITE:PEER_M0068][CITE:PEER_M0070], NL Industries ($83.3M income, $67.2M net income) [CITE:PEER_M0153][CITE:PEER_M0156], and significantly surpassing Global Gas Corp, which incurred a $130.7M loss [CITE:PEER_M0002]. MTI’s superior margins reflect efficient cost management and pricing power, while peers face risks such as cyclical pricing [CITE:PEER_R0099], competitive pressure [CITE:PEER_R0102], and unproven business models [CITE:PEER_R0003]. No peer matches MTI’s scale or profitability profile.
+Yes, Minerals Technologies Inc. is achieving the best profitability among its peers. In 2024, MTI reported net income of $167.1 million [CITE:TARGET_M0024], significantly outperforming VALHI ($108M) [CITE:PEER_M0070] and NL Industries ($67.2M) [CITE:PEER_M0156], while Global Gas Corp incurred a $130.7M loss [CITE:PEER_M0005]. MTI’s diluted EPS of $5.17 [CITE:TARGET_M0003] exceeds VALHI’s $3.79 [CITE:PEER_M0065] and NL’s $1.38 [CITE:PEER_M0151], and its operating margin of 13.5% [CITE:TARGET_M0035] and production margin of 25.9% [CITE:TARGET_M0031] reflect strong operational efficiency. While peers face cyclical pricing and cost pass-through risks tied to TiO₂ markets [CITE:PEER_R0099][CITE:PEER_R0102], MTI’s only identified profit-related risk — pricing pressure [CITE:TARGET_R0004] — has not materially impaired its margins, suggesting superior cost management and pricing power.
