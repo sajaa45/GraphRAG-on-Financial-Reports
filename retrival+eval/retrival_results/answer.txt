@@ -1,10 +1,16 @@
-Minerals Technologies Inc. (MTI) generated a net income of $167.1 million in 2024 [CITE:TARGET_M0024]. Compared to peers, this exceeds VALHI INC’s net income of $108 million [CITE:PEER_M0070] and NL INDUSTRIES INC’s $67.2 million [CITE:PEER_M0156]. However, Global Gas Corp reported a net loss of $130.7 million in 2024 [CITE:PEER_M0005], making MTI the most profitable among the four.
+Minerals Technologies Inc. (MTI) generated a net income of $167.1 million in 2024 [CITE:TARGET_M0003] and operating income of $286.5 million [CITE:TARGET_M0002], indicating strong profitability. 
 
-MTI’s operating margin of 13.5% [CITE:TARGET_M0013] is lower than VALHI’s 21.1% [CITE:PEER_M0069] but higher than NL’s 15.5% (calculated from $83.3M income on $537.5M sales, inferred from peer data) and far superior to Global Gas Corp’s negative margin. VALHI’s higher margin reflects stronger pricing power despite cyclical TiO₂ exposure [CITE:PEER_R0099].
+Compared to peers:  
+- Global Gas Corp reported an operating loss of $551.98 million and a net loss of $130.7 million [CITE:PEER_M0023][CITE:PEER_M0011].  
+- Arcadium Lithium plc reported an operating loss of $53.5 million and a net income of $78.9 million (tax provision, not net income) — however, its net income attributable to parent is not explicitly stated; its retained earnings deficit is $767.7 million, suggesting prior losses [CITE:PEER_M0092][CITE:PEER_M0105].  
+- NL Industries reported operating income of $37.9 million and net income implied by tax provision and income before taxes, but net income is not directly stated — its retained earnings are $315.1 million, indicating sustained profitability [CITE:PEER_M0053][CITE:PEER_M0052].  
 
-MTI faces pricing pressure risk from raw material cost increases it may not fully pass through [CITE:TARGET_R0004], but its profitability remains robust versus peers. Global Gas Corp is not a viable peer due to its unprofitable, pre-revenue status [CITE:PEER_R0001][CITE:PEER_R0003][CITE:PEER_R0006]. Among established peers, VALHI has a higher margin, but MTI delivers the highest absolute profit.
+MTI’s net income of $167.1 million exceeds NL Industries’ implied profitability and significantly outperforms Global Gas Corp and Arcadium Lithium plc, both of which report substantial operating losses. MTI also maintains positive retained earnings of $2.5 billion [CITE:TARGET_M0029], reflecting long-term profitability.  
 
-Sources:
-- VALHI INC /DE/: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm
-- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm
-- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390024028142/ea0202696-10k_global.htm
+No peer shows higher net income than MTI. MTI is the most profitable among the peers analyzed.  
+
+**Sources:**  
+- Minerals Technologies Inc.: not available  
+- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm  
+- Arcadium Lithium plc: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm  
+- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm

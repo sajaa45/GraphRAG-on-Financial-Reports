@@ -60,6 +60,7 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
     """
     chunks = []
     seen_citations = set()
+    seen_gaap = set()  # (company, gaap_concept) — dedup same concept from multiple XBRL tags
 
     for row in extraction_data.get('results', []):
         target_name = row.get('target', 'Target')
@@ -99,8 +100,12 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
             cid = m.get('citation_id', '')
             if not cid or cid in seen_citations:
                 continue
+            label = m.get('gaap_concept') or m.get('label') or m.get('name', '')
+            gaap_key = (target_name, label)
+            if gaap_key in seen_gaap:
+                continue
             seen_citations.add(cid)
-            label = m.get('label') or m.get('name', '')
+            seen_gaap.add(gaap_key)
             chunks.append({
                 'citation_id': cid,
                 'type':        'metric',
@@ -114,8 +119,12 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
             cid = m.get('citation_id', '')
             if not cid or cid in seen_citations:
                 continue
+            label = m.get('gaap_concept') or m.get('label') or m.get('name', '')
+            gaap_key = (peer_name, label)
+            if gaap_key in seen_gaap:
+                continue
             seen_citations.add(cid)
-            label = m.get('label') or m.get('name', '')
+            seen_gaap.add(gaap_key)
             chunks.append({
                 'citation_id': cid,
                 'type':        'metric',
@@ -141,6 +150,17 @@ def judge_batch(
     Ask the LLM whether each chunk in the batch is relevant to the question.
     Returns [(is_relevant, explanation), ...] parallel to batch.
     """
+    # Build company context so the LLM knows which names are target vs peers
+    target_names = sorted({c['company'] for c in batch if c['role'] == 'target' and c['company']})
+    peer_names   = sorted({c['company'] for c in batch if c['role'] == 'peer'   and c['company']})
+    company_context = ""
+    if target_names:
+        company_context += f"TARGET company (the one being analyzed): {', '.join(target_names)}\n"
+    if peer_names:
+        company_context += f"PEER companies (competitors): {', '.join(peer_names)}\n"
+    if company_context:
+        company_context = "COMPANY ROLES:\n" + company_context + "\n"
+
     items_block = ""
     for i, chunk in enumerate(batch, 1):
         items_block += (
@@ -150,17 +170,24 @@ def judge_batch(
 
     prompt = (
         "You are evaluating whether retrieved data chunks are relevant to a credit-risk question.\n\n"
+        f"{company_context}"
         f"QUESTION: {question}\n\n"
+        "RELEVANCE RULES:\n"
+        "- TARGET chunks (role=target): mark YES if a credit analyst would use this data\n"
+        "  when answering the question — including direct answers, cost items, tax expense,\n"
+        "  balance sheet items, and prior-year comparisons. When in doubt, mark YES.\n"
+        "- PEER chunks (role=peer): mark YES if this data helps COMPARE the peer against\n"
+        "  the target for the question asked. Peer risks and metrics are always relevant\n"
+        "  context for comparative credit analysis, even if they are not about the target.\n"
+        "  Only mark NO if the chunk is completely unrelated to the question domain.\n\n"
         "DATA CHUNKS:\n"
         f"{items_block}"
-        "For each numbered chunk, output exactly one line:\n"
+        "For each numbered chunk output exactly one line:\n"
         "  <N>: YES | NO — <one-sentence explanation>\n\n"
-        "  YES — this chunk contains information useful for answering the question\n"
-        "  NO  — this chunk is off-topic or irrelevant to the question\n\n"
         "Output ONLY the numbered lines — no extra text."
     )
 
-    max_tokens = max(300, len(batch) * 80)
+    max_tokens = max(500, len(batch) * 120)
     try:
         raw = _llm_call(bedrock_client, model_id, prompt, max_tokens=max_tokens)
     except Exception as e:

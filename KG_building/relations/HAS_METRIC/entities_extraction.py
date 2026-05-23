@@ -7,12 +7,13 @@ from typing import Dict, Optional
 
 
 def parse_metric_entity(entity: Dict, main_company: str = 'the Company') -> Optional[Dict]:
-    metric = str(entity.get('metric', '')).strip()
-    value  = str(entity.get('value',  '')).strip()
-    unit   = str(entity.get('unit',   'ratio')).strip()
-    year   = str(entity.get('year',   '')).strip()
-    org    = str(entity.get('organization', main_company)).strip() or main_company
-    category = str(entity.get('category', '')).strip()
+    metric       = str(entity.get('metric', '')).strip()
+    value        = str(entity.get('value',  '')).strip()
+    unit         = str(entity.get('unit',   'ratio')).strip()
+    year         = str(entity.get('year',   '')).strip()
+    org          = str(entity.get('organization', main_company)).strip() or main_company
+    category     = str(entity.get('category', '')).strip()
+    gaap_concept = str(entity.get('gaap_concept', '') or metric).strip()
 
     if not metric or not value:
         return None
@@ -54,6 +55,7 @@ def parse_metric_entity(entity: Dict, main_company: str = 'the Company') -> Opti
                 'unit': unit,
                 'year': year,
                 'metric_type': metric,
+                'gaap_concept': gaap_concept,
                 'category': category,
             },
         },
@@ -94,12 +96,20 @@ CONFIG = RelationConfig(
             Extract financial metrics explicitly stated in the text.
 
             Rules:
-            - Copy the metric label exactly as written.
+            - Copy the metric label exactly as written into "metric".
             - Extract only metrics with explicit numeric values.
             - Never infer, calculate, combine, or rename metrics.
             - In narrative text, the metric label and value must appear in the same sentence.
             - If multiple years appear, extract only the most recent reported year.
             - Do not extract from unlabeled tables.
+            - If multiple figures map to the same GAAP concept, extract only the one
+              that is the consolidated company-level total — skip subtotals, breakdowns,
+              or partial figures for the same concept.
+            - Add "gaap_concept": the closest standard US GAAP line-item name for this metric
+              (e.g. "Revenue", "Operating Income (Loss)", "Net Income (Loss)", "Total Debt",
+              "Interest Expense", "EBITDA", "Cash and Cash Equivalents").
+              Use the standard GAAP name — not the company's custom phrasing.
+              If no standard GAAP concept exists for this metric, set "gaap_concept": "no gaap".
 
             Important exclusions:
             - Operating cash flow ≠ Free Cash Flow
@@ -123,6 +133,7 @@ CONFIG = RelationConfig(
             [
             {{
                 "metric": "Net sales",
+                "gaap_concept": "Revenue",
                 "value": "2118.5",
                 "unit": "$ million",
                 "year": "2024",

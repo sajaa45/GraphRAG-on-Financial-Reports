@@ -3,298 +3,160 @@ XBRL Metrics Ground Truth Validation
 ======================================================================
 
 [1/4] Loading extraction results from C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\..\retrival_results\extraction_result.json
-  → Found 94 metrics to validate
+  → Found 48 metrics to validate
 
 [2/4] Fetching ground truth from SEC API
 
-[1/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+[1/48] Global Gas Corp - PreferredStockSharesOutstanding (2024)
   → Using cached data for CIK 1817232
+  ✓ Match: pipeline=0, gt=0
+
+[2/48] Global Gas Corp - DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost (2024)
+  ✓ Match: pipeline=47661, gt=47661
+
+[3/48] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
   ✓ Match: pipeline=-130700, gt=-130700
 
-[2/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
-
-[3/94] Global Gas Corp - RetainedEarningsAccumulatedDeficit (2024)
-  ✓ Match: pipeline=-446808, gt=-446808
-
-[4/94] Global Gas Corp - NetIncomeLoss (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
-
-[5/94] Global Gas Corp - NetIncomeLoss (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
-
-[6/94] Global Gas Corp - CostOfRevenue (2024)
+[4/48] Global Gas Corp - CostOfRevenue (2024)
   ✓ Match: pipeline=574, gt=574
 
-[7/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
+[5/48] Global Gas Corp - OperatingIncomeLoss (2024)
+  ✓ Match: pipeline=-551983, gt=-551983
 
-[8/94] Global Gas Corp - DerivativeNetAssetsPercentage (2024)
-  ✓ Match: pipeline=0.9, gt=0.9
+[6/48] Global Gas Corp - DeferredTaxAssetsGross (2024)
+  ✓ Match: pipeline=275047, gt=275047
 
-[9/94] Global Gas Corp - RetainedEarningsAccumulatedDeficit (2024)
+[7/48] Global Gas Corp - RetainedEarningsAccumulatedDeficit (2024)
   ✓ Match: pipeline=-446808, gt=-446808
 
-[10/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+[8/48] Global Gas Corp - NetIncomeLoss (2024)
   ✓ Match: pipeline=-130700, gt=-130700
 
-[11/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
+[9/48] Global Gas Corp - NonoperatingIncomeExpense (2024)
+  ✓ Match: pipeline=421283, gt=421283
 
-[12/94] Global Gas Corp - NetIncomeLoss (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
+[10/48] Global Gas Corp - OperatingLossCarryforwards (2024)
+  ✓ Match: pipeline=689292, gt=689292
 
-[13/94] Global Gas Corp - NetIncomeLoss (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
+[11/48] Arcadium Lithium plc - RestructuringCharges (2024)
+  → Using cached data for CIK 1977303
+  ✓ Match: pipeline=19000000, gt=19000000
 
-[14/94] Global Gas Corp - DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost (2024)
-  ✓ Match: pipeline=47661, gt=47661
+[12/48] Arcadium Lithium plc - IncomeTaxExpenseBenefit (2024)
+  ✓ Match: pipeline=78900000, gt=78900000
 
-[15/94] Global Gas Corp - NetIncomeLoss (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
+[13/48] Arcadium Lithium plc - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
+  ✓ Match: pipeline=1138700000, gt=1138700000
 
-[16/94] Global Gas Corp - PreferredStockSharesOutstanding (2024)
-  ✓ Match: pipeline=0, gt=0
+[14/48] Arcadium Lithium plc - EarningsPerShareBasic (2024)
+  ✓ Match: pipeline=0.1, gt=0.1
 
-[17/94] Global Gas Corp - DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost (2024)
-  ✓ Match: pipeline=47661, gt=47661
+[15/48] Arcadium Lithium plc - ShareBasedCompensation (2024)
+  ✓ Match: pipeline=12200000, gt=12200000
 
-[18/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
+[16/48] Arcadium Lithium plc - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
+  ✓ Match: pipeline=-21500000, gt=-21500000
 
-[19/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
+[17/48] Arcadium Lithium plc - IncomeTaxReceivable (2024)
+  ✓ Match: pipeline=82200000, gt=82200000
 
-[20/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
+[18/48] Arcadium Lithium plc - Depreciation (2024)
+  ✓ Match: pipeline=120200000, gt=120200000
 
-[21/94] Global Gas Corp - EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate (2024)
-  ✓ Match: pipeline=0.21, gt=0.21
+[19/48] Arcadium Lithium plc - DepreciationDepletionAndAmortization (2024)
+  ✓ Match: pipeline=124000000, gt=124000000
 
-[22/94] Global Gas Corp - UnsecuredDebt (2024)
-  ✓ Match: pipeline=103950, gt=103950
+[20/48] Arcadium Lithium plc - CostsAndExpenses (2024)
+  ✓ Match: pipeline=1061300000, gt=1061300000
 
-[23/94] Global Gas Corp - Assets (2024)
-  ✓ Match: pipeline=264729, gt=264729
+[21/48] Arcadium Lithium plc - CostOfRevenue (2024)
+  ✓ Match: pipeline=719200000, gt=719200000
 
-[24/94] Global Gas Corp - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=-130700, gt=-130700
+[22/48] Arcadium Lithium plc - CapitalExpendituresIncurredButNotYetPaid (2024)
+  ✓ Match: pipeline=205400000, gt=205400000
 
-[25/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
-  → Using cached data for CIK 59255
-  ✓ Match: pipeline=169800000, gt=169800000
+[23/48] Arcadium Lithium plc - OperatingIncomeLoss (2024)
+  ✓ Match: pipeline=-53500000, gt=-53500000
 
-[26/94] VALHI INC /DE/ - EarningsPerShareDiluted (2024)
-  ✓ Match: pipeline=3.79, gt=3.79
+[24/48] Arcadium Lithium plc - GrossProfit (2024)
+  ✓ Match: pipeline=288600000, gt=288600000
 
-[27/94] VALHI INC /DE/ - CostsAndExpenses (2024)
-  ✓ Match: pipeline=1922400000, gt=1922400000
+[25/48] Arcadium Lithium plc - SellingGeneralAndAdministrativeExpense (2024)
+  ✓ Match: pipeline=126800000, gt=126800000
 
-[28/94] VALHI INC /DE/ - ResearchAndDevelopmentExpense (2024)
-  ✓ Match: pipeline=14000000, gt=14000000
+[26/48] Arcadium Lithium plc - ResearchAndDevelopmentExpense (2024)
+  ✓ Match: pipeline=6400000, gt=6400000
 
-[29/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
-  ✓ Match: pipeline=169800000, gt=169800000
-
-[30/94] VALHI INC /DE/ - OperatingIncomeLoss (2024)
-  ✓ Match: pipeline=210700000, gt=210700000
-
-[31/94] VALHI INC /DE/ - NetIncomeLoss (2024)
-  ✓ Match: pipeline=108000000, gt=108000000
-
-[32/94] VALHI INC /DE/ - SegmentExpenditureAdditionToLongLivedAssets (2024)
-  ✓ Match: pipeline=30900000, gt=30900000
-
-[33/94] VALHI INC /DE/ - SegmentExpenditureAdditionToLongLivedAssets (2024)
-  ✓ Match: pipeline=30900000, gt=30900000
-
-[34/94] VALHI INC /DE/ - DefinedContributionPlanCostRecognized (2024)
-  ✓ Match: pipeline=7700000, gt=7700000
-
-[35/94] VALHI INC /DE/ - GeneralAndAdministrativeExpense (2024)
+[27/48] Arcadium Lithium plc - EnvironmentalRemediationExpense (2024)
   ✓ Match: pipeline=4300000, gt=4300000
 
-[36/94] VALHI INC /DE/ - GeneralAndAdministrativeExpense (2024)
-  ✓ Match: pipeline=4300000, gt=4300000
+[28/48] Arcadium Lithium plc - ProceedsFromMinorityShareholders (2024)
+  ✓ Match: pipeline=83000000, gt=83000000
 
-[37/94] VALHI INC /DE/ - ResearchAndDevelopmentExpense (2024)
-  ✓ Match: pipeline=14000000, gt=14000000
+[29/48] Arcadium Lithium plc - LeaseCost (2024)
+  ✓ Match: pipeline=16000000, gt=16000000
 
-[38/94] VALHI INC /DE/ - CostsAndExpenses (2024)
-  ✓ Match: pipeline=1922400000, gt=1922400000
+[30/48] Arcadium Lithium plc - OtherNoncashIncomeExpense (2024)
+  ✓ Match: pipeline=300000, gt=300000
 
-[39/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
-  ✓ Match: pipeline=169800000, gt=169800000
+[31/48] Arcadium Lithium plc - RetainedEarningsAccumulatedDeficit (2024)
+  ✓ Match: pipeline=767700000, gt=767700000
 
-[40/94] VALHI INC /DE/ - OperatingIncomeLoss (2024)
-  ✓ Match: pipeline=210700000, gt=210700000
+[32/48] Arcadium Lithium plc - AccumulatedOtherComprehensiveIncomeLossNetOfTax (2024)
+  ✓ Match: pipeline=-90400000, gt=-90400000
 
-[41/94] VALHI INC /DE/ - InterestExpense (2024)
-  ✓ Match: pipeline=49900000, gt=49900000
+[33/48] Arcadium Lithium plc - AssetImpairmentCharges (2024)
+  ✓ Match: pipeline=51700000, gt=51700000
 
-[42/94] VALHI INC /DE/ - DefinedBenefitPensionPlanLiabilitiesNoncurrent (2024)
-  ✓ Match: pipeline=117600000, gt=117600000
-
-[43/94] VALHI INC /DE/ - EarningsPerShareBasic (2024)
-  ✓ Match: pipeline=3.79, gt=3.79
-
-[44/94] VALHI INC /DE/ - EarningsPerShareBasic (2024)
-  ✓ Match: pipeline=3.79, gt=3.79
-
-[45/94] VALHI INC /DE/ - ComprehensiveIncomeNetOfTax (2024)
-  ✓ Match: pipeline=94300000, gt=94300000
-
-[46/94] VALHI INC /DE/ - ComprehensiveIncomeNetOfTax (2024)
-  ✓ Match: pipeline=94300000, gt=94300000
-
-[47/94] VALHI INC /DE/ - RestructuringCosts (2024)
-  ✓ Match: pipeline=2000000, gt=2000000
-
-[48/94] VALHI INC /DE/ - AssetImpairmentCharges (2024)
-  ✓ Match: pipeline=3800000, gt=3800000
-
-[49/94] VALHI INC /DE/ - TreasuryStockValue (2024)
-  ✓ Match: pipeline=49600000, gt=49600000
-
-[50/94] VALHI INC /DE/ - TreasuryStockValue (2024)
-  ✓ Match: pipeline=49600000, gt=49600000
-
-[51/94] VALHI INC /DE/ - OperatingLeaseWeightedAverageDiscountRatePercent (2024)
-  ✓ Match: pipeline=0.06, gt=0.06
-
-[52/94] VALHI INC /DE/ - NetIncomeLoss (2024)
-  ✓ Match: pipeline=108000000, gt=108000000
-
-[53/94] VALHI INC /DE/ - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
-  ✓ Match: pipeline=28.5, gt=28.5
-
-[54/94] VALHI INC /DE/ - PaymentsForRepurchaseOfCommonStock (2024)
-  ✓ Match: pipeline=2900000, gt=2900000
-
-[55/94] VALHI INC /DE/ - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
-  ✓ Match: pipeline=28.5, gt=28.5
-
-[56/94] VALHI INC /DE/ - EarningsPerShareBasic (2024)
-  ✓ Match: pipeline=3.79, gt=3.79
-
-[57/94] VALHI INC /DE/ - EarningsPerShareDiluted (2024)
-  ✓ Match: pipeline=3.79, gt=3.79
-
-[58/94] VALHI INC /DE/ - DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsPensions (2024)
-  ✓ Match: pipeline=14300000, gt=14300000
-
-[59/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
-  ✓ Match: pipeline=169800000, gt=169800000
-
-[60/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign (2024)
-  ✓ Match: pipeline=74400000, gt=74400000
-
-[61/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
-  ✓ Match: pipeline=169800000, gt=169800000
-
-[62/94] VALHI INC /DE/ - EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate (2024)
-  ✓ Match: pipeline=0.21, gt=0.21
-
-[63/94] VALHI INC /DE/ - AdvertisingExpense (2024)
-  ✓ Match: pipeline=2000000, gt=2000000
-
-[64/94] VALHI INC /DE/ - IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic (2024)
-  ✓ Match: pipeline=169800000, gt=169800000
-
-[65/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+[34/48] NL INDUSTRIES INC - IncomeTaxExpenseBenefit (2024)
   → Using cached data for CIK 72162
-  ✓ Match: pipeline=83318000, gt=83318000
+  ✓ Match: pipeline=14057000, gt=14057000
 
-[66/94] NL INDUSTRIES INC - EarningsPerShareDiluted (2024)
+[35/48] NL INDUSTRIES INC - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
+  ✓ Match: pipeline=48842000, gt=48842000
+
+[36/48] NL INDUSTRIES INC - EarningsPerShareBasic (2024)
   ✓ Match: pipeline=1.38, gt=1.38
 
-[67/94] NL INDUSTRIES INC - ResearchAndDevelopmentExpense (2024)
-  ✓ Match: pipeline=0, gt=0
-
-[68/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
+[37/48] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
   ✓ Match: pipeline=83318000, gt=83318000
 
-[69/94] NL INDUSTRIES INC - OperatingIncomeLoss (2024)
-  ✓ Match: pipeline=37876000, gt=37876000
-
-[70/94] NL INDUSTRIES INC - IncomeTaxesPaidNet (2024)
+[38/48] NL INDUSTRIES INC - IncomeTaxesPaidNet (2024)
   ✓ Match: pipeline=127000, gt=127000
 
-[71/94] NL INDUSTRIES INC - NetIncomeLoss (2024)
-  ✓ Match: pipeline=67228000, gt=67228000
+[39/48] NL INDUSTRIES INC - AccruedEmployeeBenefitsCurrent (2024)
+  ✓ Match: pipeline=10302000, gt=10302000
 
-[72/94] NL INDUSTRIES INC - ResearchAndDevelopmentExpense (2024)
-  ✓ Match: pipeline=0, gt=0
-
-[73/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=83318000, gt=83318000
-
-[74/94] NL INDUSTRIES INC - OperatingIncomeLoss (2024)
+[40/48] NL INDUSTRIES INC - OperatingIncomeLoss (2024)
   ✓ Match: pipeline=37876000, gt=37876000
 
-[75/94] NL INDUSTRIES INC - DepreciationDepletionAndAmortization (2024)
-  ✓ Match: pipeline=3691000, gt=3691000
+[41/48] NL INDUSTRIES INC - GrossProfit (2024)
+  ✓ Match: pipeline=41363000, gt=41363000
 
-[76/94] NL INDUSTRIES INC - EarningsPerShareBasic (2024)
-  ✓ Match: pipeline=1.38, gt=1.38
+[42/48] NL INDUSTRIES INC - SellingGeneralAndAdministrativeExpense (2024)
+  ✓ Match: pipeline=24340000, gt=24340000
 
-[77/94] NL INDUSTRIES INC - EarningsPerShareBasic (2024)
-  ✓ Match: pipeline=1.38, gt=1.38
-
-[78/94] NL INDUSTRIES INC - ComprehensiveIncomeNetOfTax (2024)
-  ✓ Match: pipeline=63493000, gt=63493000
-
-[79/94] NL INDUSTRIES INC - ComprehensiveIncomeNetOfTax (2024)
-  ✓ Match: pipeline=63493000, gt=63493000
-
-[80/94] NL INDUSTRIES INC - DefinedBenefitPlanNetPeriodicBenefitCost (2024)
-  ✓ Match: pipeline=1375000, gt=1375000
-
-[81/94] NL INDUSTRIES INC - PreferredStockNoParValue (2024)
+[43/48] NL INDUSTRIES INC - ResearchAndDevelopmentExpense (2024)
   ✓ Match: pipeline=0, gt=0
 
-[82/94] NL INDUSTRIES INC - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
-  ✓ Match: pipeline=48842000, gt=48842000
+[44/48] NL INDUSTRIES INC - IncreaseDecreaseInDueToAffiliates (2024)
+  ✓ Match: pipeline=700000, gt=700000
 
-[83/94] NL INDUSTRIES INC - NetIncomeLoss (2024)
-  ✓ Match: pipeline=67228000, gt=67228000
+[45/48] NL INDUSTRIES INC - CostOfGoodsAndServicesSold (2024)
+  ✓ Match: pipeline=104578000, gt=104578000
 
-[84/94] NL INDUSTRIES INC - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
-  ✓ Match: pipeline=48842000, gt=48842000
+[46/48] NL INDUSTRIES INC - OtherNoncashIncomeExpense (2024)
+  ✓ Match: pipeline=-217000, gt=-217000
 
-[85/94] NL INDUSTRIES INC - WeightedAverageNumberOfDilutedSharesOutstanding (2024)
-  ✓ Match: pipeline=48842000, gt=48842000
+[47/48] NL INDUSTRIES INC - RetainedEarningsAccumulatedDeficit (2024)
+  ✓ Match: pipeline=315056000, gt=315056000
 
-[86/94] NL INDUSTRIES INC - EarningsPerShareBasic (2024)
-  ✓ Match: pipeline=1.38, gt=1.38
-
-[87/94] NL INDUSTRIES INC - EarningsPerShareDiluted (2024)
-  ✓ Match: pipeline=1.38, gt=1.38
-
-[88/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=83318000, gt=83318000
-
-[89/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=83318000, gt=83318000
-
-[90/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=83318000, gt=83318000
-
-[91/94] NL INDUSTRIES INC - EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate (2024)
-  ✓ Match: pipeline=0.21, gt=0.21
-
-[92/94] NL INDUSTRIES INC - DefinedBenefitPlanExpectedReturnOnPlanAssets (2024)
-  ✓ Match: pipeline=1340000, gt=1340000
-
-[93/94] NL INDUSTRIES INC - IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest (2024)
-  ✓ Match: pipeline=83318000, gt=83318000
-
-[94/94] NL INDUSTRIES INC - EnvironmentalExpenseAndLiabilities (2024)
-  ✓ Match: pipeline=-21828000, gt=-21828000
+[48/48] NL INDUSTRIES INC - GoodwillImpairmentLoss (2024)
+  ✓ Match: pipeline=0, gt=0
 
 [3/4] Computing accuracy metrics
-  Total metrics:  94
-  Matches:        94
+  Total metrics:  48
+  Matches:        48
   Mismatches:     0
   Not found:      0
   Errors:         0

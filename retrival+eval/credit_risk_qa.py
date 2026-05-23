@@ -21,9 +21,10 @@ Node labels and key properties:
   - TargetCompany   {name, cik, ticker, is_target:true, filing_date, document_url}
   - Company         {name, cik, ticker, is_peer:true, filing_date, document_url}
   - MetricCategory  {name}
-  - Metric          {citation_id, name, value, unit, year, metric_type, xbrl_tag, label, source_url, cik}
-                    NOTE: name = "{metric_type} ({year})" — use xbrl_tag to identify the exact concept
+  - Metric          {citation_id, name, value, unit, year, metric_type, gaap_concept, xbrl_tag, label, source_url, cik}
+                    NOTE: name = "{metric_type} ({year})" — use gaap_concept to align target vs peer metrics
                     CRITICAL: Always return citation_id for citations
+                    CRITICAL: When comparing target vs peer metrics, match by gaap_concept — not by name or label
   - Risk            {citation_id, risk_id, name, description, why, source_text, document_url, filing_date, section_title, source_page}
                     CRITICAL: Always return citation_id for citations
   - Industry        {name, sector}
@@ -102,10 +103,10 @@ Risks with peer comparison:
 Metrics with peer comparison (fetch independently by category — let the LLM align by label):
     MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
     WHERE mc.name = 'Profitability'
-    WITH tc, mc, collect({{citation_id: m.citation_id, name: m.name, label: m.label, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag}}) AS target_metrics
+    WITH tc, mc, collect({{citation_id: m.citation_id, name: m.name, label: m.label, gaap_concept: m.gaap_concept, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag}}) AS target_metrics
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(pmc:MetricCategory {{name: mc.name}})-[:HAS_METRIC]->(pm:Metric)
-    WITH tc, mc, target_metrics, peer, collect({{citation_id: pm.citation_id, name: pm.name, label: pm.label, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url}}) AS peer_metrics
+    WITH tc, mc, target_metrics, peer, collect({{citation_id: pm.citation_id, name: pm.name, label: pm.label, gaap_concept: pm.gaap_concept, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url}}) AS peer_metrics
     RETURN tc.name AS target, mc.name AS category, target_metrics, peer.name AS peer, peer_metrics
     LIMIT 300
 
@@ -124,6 +125,10 @@ Answer the question using only the graph results below.
 - If a metric is missing for a peer, state "not available" rather than estimating it.
 - Directly answer the question; compare target vs peers where data exists.
 - Flag any elevated risks or concerning metrics.
+- SIGN RULE: Report each metric's sign independently from the data. A negative OperatingIncomeLoss is an operating loss; a positive NetIncomeLoss is net income — these are separate line items and one does NOT override the other. Never use one metric's sign to "correct" another.
+- INDEPENDENCE RULE: Every metric value must be stated exactly as it appears in the data (sign included). Do NOT reconcile or adjust a value to fit a narrative built from other metrics.
+- PROFITABILITY RULE: "Unprofitable" only applies to the specific metric being discussed. A company with negative operating income but positive net income is NOT simply "unprofitable" — state both figures and let the data speak.
+- ATTRIBUTION RULE: Each metric belongs to the company in its surrounding context (target row vs peer row). Do NOT infer company ownership from words embedded in the metric name or label.
 - Plain language suitable for a credit committee; ≤ 300 words unless data requires more.
 - After every claim drawn from a specific data point, append an inline citation using the citation_id from the graph results:
   - Risk claim:   [CITE:<citation_id>]   e.g. [CITE:TARGET_RISK_Competitive_industries] or [CITE:PEER_RISK_1234567_risk_3]
@@ -173,6 +178,10 @@ STRICT RULES — follow these before writing anything:
 - Use ONLY values explicitly present in the graph results. Never infer, calculate, or derive a value that is not directly in the data.
 - If a metric is missing for a company, say "not available" — do not substitute a related value.
 - If a document_url is missing for a company, omit it entirely — do not guess or construct one.
+- SIGN RULE: Report each metric's sign independently from the data. A negative OperatingIncomeLoss is an operating loss; a positive NetIncomeLoss is net income — these are different line items and one does NOT override the other. Never use one metric's sign to "correct" another metric.
+- INDEPENDENCE RULE: State every metric value exactly as it appears in the data. Do NOT adjust or reconcile a value to fit a narrative you built from other metrics.
+- PROFITABILITY RULE: "Unprofitable" only applies to the specific metric under discussion. Negative operating income alongside positive net income is a valid financial state (e.g. driven by non-operating gains or tax items) — report both figures separately, do NOT collapse them into a single "unprofitable" label.
+- ATTRIBUTION RULE: A metric belongs to the company in its surrounding context (target row vs peer row). Do NOT infer company ownership from words embedded in the metric name or label.
 
 ─────────────────────────────────────────
 INSTRUCTIONS — produce the sections below in order:
@@ -456,7 +465,7 @@ class CreditRiskQA:
     @staticmethod
     def _dedup_list_fields(
         rows: list,
-        key_fields: tuple = ("risk_id", "name", "xbrl_tag"),
+        key_fields: tuple = ("risk_id", "gaap_concept", "name", "xbrl_tag"),
     ) -> list:
         """
         Deduplicate items inside list-valued fields across rows.

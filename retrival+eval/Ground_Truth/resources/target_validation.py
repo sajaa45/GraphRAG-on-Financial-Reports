@@ -64,6 +64,14 @@ def collect_target_chunks(extraction_data: dict) -> list[dict]:
             seen.add(cid)
 
             source = (r.get('source_text') or '').strip()
+            source_origin = 'source_text'
+            # Fall back to description + why when source_text is absent
+            if not source:
+                desc = (r.get('description') or '').strip()
+                why  = (r.get('why') or '').strip()
+                source = ' | '.join(filter(None, [desc, why]))
+                source_origin = 'description_fallback'
+
             chunks.append({
                 'citation_id':     cid,
                 'type':            'risk',
@@ -75,6 +83,7 @@ def collect_target_chunks(extraction_data: dict) -> list[dict]:
                 'extracted_unit':  '',
                 'source_text':     source[:MAX_SOURCE_CHARS],
                 'source_length':   len(source),
+                'source_origin':   source_origin,
                 'category':        '',
             })
 
@@ -85,7 +94,17 @@ def collect_target_chunks(extraction_data: dict) -> list[dict]:
                 continue
             seen.add(cid)
 
-            label = m.get('label') or m.get('metric_type') or m.get('name', '')
+            label      = m.get('label') or m.get('metric_type') or m.get('name', '')
+            xbrl_tag   = m.get('xbrl_tag') or ''
+            value      = m.get('value', '')
+            unit       = m.get('unit', '')
+            gaap_concept = m.get('gaap_concept', '')
+            # Build a descriptive source reference from available XBRL metadata
+            if xbrl_tag:
+                metric_source = f"XBRL: {xbrl_tag} = {value} {unit}".strip()
+            else:
+                metric_source = f"XBRL-extracted: {value} {unit}".strip() if value else ''
+
             chunks.append({
                 'citation_id':     cid,
                 'type':            'metric',
@@ -93,10 +112,12 @@ def collect_target_chunks(extraction_data: dict) -> list[dict]:
                 'extracted_name':  label,
                 'extracted_desc':  '',
                 'extracted_why':   '',
-                'extracted_value': m.get('value', ''),
-                'extracted_unit':  m.get('unit', ''),
-                'source_text':     '',   # HTML-parsed — no source_text stored
-                'source_length':   0,
+                'extracted_value': value,
+                'extracted_unit':  unit,
+                'gaap_concept':    gaap_concept,
+                'source_text':     metric_source,
+                'source_length':   len(metric_source),
+                'source_origin':   'xbrl',
                 'category':        category or m.get('metric_type', ''),
             })
 
@@ -114,29 +135,44 @@ def judge_risk_batch(
 ) -> list[tuple[bool, str]]:
     """
     For each risk: does the source_text actually support the extracted name + description?
-    If no source_text, falls back to checking internal consistency of name/description/why.
+    Groups risks by source text so the full text is shown once per chunk, not repeated.
+    Falls back to internal consistency check when source_text is absent.
     """
-    body = ""
+    # Group by source_text so each unique chunk is shown once in full
+    from collections import OrderedDict
+    groups: OrderedDict[str, list] = OrderedDict()
+    no_source: list = []
     for i, c in enumerate(batch, 1):
+        c['_n'] = i
         if c['source_text']:
-            body += (
-                f"{i}. Extracted risk name: \"{c['extracted_name']}\"\n"
-                f"   Extracted description: \"{c['extracted_desc'][:300]}\"\n"
-                f"   Source text: \"{c['source_text'][:500]}\"\n\n"
-            )
+            groups.setdefault(c['source_text'], []).append(c)
         else:
+            no_source.append(c)
+
+    body = ""
+    for src_text, chunks in groups.items():
+        body += f"SOURCE TEXT:\n\"{src_text}\"\n\n"
+        body += "RISKS EXTRACTED FROM THIS TEXT:\n"
+        for c in chunks:
             body += (
-                f"{i}. Extracted risk name: \"{c['extracted_name']}\"\n"
-                f"   Extracted description: \"{c['extracted_desc'][:300]}\"\n"
-                f"   Why relevant: \"{c['extracted_why'][:300]}\"\n"
-                f"   (No source text available — judge internal consistency only)\n\n"
+                f"  {c['_n']}. Risk name: \"{c['extracted_name']}\"\n"
+                f"     Description: \"{c['extracted_desc'][:300]}\"\n"
             )
+        body += "\n"
+
+    for c in no_source:
+        body += (
+            f"{c['_n']}. Risk name: \"{c['extracted_name']}\"\n"
+            f"   Description: \"{c['extracted_desc'][:300]}\"\n"
+            f"   Why relevant: \"{c['extracted_why'][:300]}\"\n"
+            f"   (No source text — judge internal consistency only)\n\n"
+        )
 
     prompt = (
         "You are auditing a pipeline that extracts risk factors from SEC 10-K filings.\n\n"
-        "For each item, judge whether the extracted risk name and description are "
-        "accurately supported by the source text.\n"
-        "If no source text is given, judge whether the name, description, and 'why' "
+        "For risks with a source text: judge whether the extracted risk name and description "
+        "are accurately supported by that source text.\n"
+        "For risks without source text: judge whether the name, description, and 'why' "
         "are internally consistent and plausible for a 10-K risk factor.\n\n"
         "For EACH numbered item output exactly one line:\n"
         "  <N>: YES | NO — <one-sentence explanation>\n\n"
@@ -166,25 +202,24 @@ def judge_metric_batch(
     """
     body = ""
     for i, c in enumerate(batch, 1):
+        gaap = c.get('gaap_concept') or c['extracted_name']
         body += (
-            f"{i}. Metric name : \"{c['extracted_name']}\"\n"
-            f"   Value       : {c['extracted_value']}\n"
-            f"   Unit        : {c['extracted_unit']}\n"
-            f"   Category    : {c['category']}\n\n"
+            f"{i}. GAAP concept : \"{gaap}\"\n"
+            f"   Value        : {c['extracted_value']}\n"
+            f"   Unit         : {c['extracted_unit']}\n\n"
         )
 
     prompt = (
         "You are auditing a pipeline that extracts financial metrics from SEC 10-K annual reports.\n\n"
-        "For each item, judge whether the metric name, value, and unit are "
-        "consistent and plausible for a corporate annual report:\n"
-        "  - Is the unit appropriate for this type of metric "
-        "(e.g. net income in $ millions, ratios as pure numbers, EPS in $)?\n"
-        "  - Is the value in a plausible range for a real company's annual filing?\n"
-        "  - Does the metric name match the category it belongs to?\n\n"
+        "For each item, judge whether the value and unit are consistent and plausible "
+        "for the given GAAP concept in a corporate annual report:\n"
+        "  - Is the unit appropriate for this GAAP concept "
+        "(e.g. Net Income in USD, ratios as pure numbers, EPS in USD per share)?\n"
+        "  - Is the value in a plausible range for a real company's annual filing?\n\n"
         "For EACH numbered item output exactly one line:\n"
         "  <N>: YES | NO — <one-sentence explanation>\n\n"
-        "  YES — name, value, and unit are consistent and plausible\n"
-        "  NO  — there is a clear error (wrong unit, implausible value, mismatched name)\n\n"
+        "  YES — value and unit are consistent and plausible for this GAAP concept\n"
+        "  NO  — there is a clear error (wrong unit, implausible value, mismatched concept)\n\n"
         "Output ONLY the numbered lines — no extra text.\n\n"
         f"{body}"
     )
@@ -321,7 +356,11 @@ def _run(extraction_result_path: str, output_csv_path: str):
             'source_preview':       c['source_text'][:150] if c['source_text'] else '(no source text)',
             'is_correctly_extracted': is_correct,
             'explanation':          expl,
-            'notes':                'no source_text — consistency check only' if c['type'] == 'risk' and not c['source_text'] else '',
+            'notes': {
+                'xbrl':                'XBRL-extracted — no filing source_text',
+                'description_fallback': 'source_text absent — used description/why',
+                'source_text':          '',
+            }.get(c.get('source_origin', ''), ''),
         })
 
     # ── Summary ───────────────────────────────────────────────────────────
