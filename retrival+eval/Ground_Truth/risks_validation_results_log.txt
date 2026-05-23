@@ -4,55 +4,43 @@ Risk Factor Chunks — Semantic Relevance Validation
 
 [1/4] Loading extraction results
   ✓ Bedrock client initialized (region: us-east-1, model: qwen.qwen3-next-80b-a3b)
-  → Found 100 risk chunks to validate
+  → Found 48 risk chunks to validate
 
-[2/4] LLM semantic relevance — 100 chunks → 15 unique texts (85 duplicates skipped), 100 theme evaluations in 13 calls of ≤10 (0 skipped — no usable text)
-  Call [1/13] — 1 chunk(s), 10 evaluations...
+[2/4] LLM semantic relevance — 48 chunks → 17 unique texts (31 duplicates skipped), 48 theme evaluations in 6 calls of ≤10 (0 skipped — no usable text)
+  Call [1/6] — 9 chunk(s), 10 evaluations...
     Parsed 10/10 evaluations successfully
-  Call [2/13] — 1 chunk(s), 8 evaluations...
+  Call [2/6] — 2 chunk(s), 8 evaluations...
     Parsed 8/8 evaluations successfully
-  Call [3/13] — 1 chunk(s), 4 evaluations...
-    Parsed 4/4 evaluations successfully
-  Call [4/13] — 1 chunk(s), 7 evaluations...
-    Parsed 7/7 evaluations successfully
-  Call [5/13] — 1 chunk(s), 9 evaluations...
-    Parsed 9/9 evaluations successfully
-  Call [6/13] — 5 chunk(s), 9 evaluations...
-    Parsed 9/9 evaluations successfully
-  Call [7/13] — 1 chunk(s), 10 evaluations...
+  Call [3/6] — 1 chunk(s), 10 evaluations...
     Parsed 10/10 evaluations successfully
-  Call [8/13] — 1 chunk(s), 1 evaluations...
-  [DEBUG] LLM Response:
-Chunk 1.1: YES — The chunk explicitly states that new competitors could emerge by modifying their existing production facilities to manufacture products that compete with the Component Products Segment’s products.
-    Parsed 1/1 evaluations successfully
-  Call [9/13] — 1 chunk(s), 10 evaluations...
-    Parsed 10/10 evaluations successfully
-  Call [10/13] — 1 chunk(s), 10 evaluations...
-    Parsed 10/10 evaluations successfully
-  Call [11/13] — 1 chunk(s), 5 evaluations...
+  Call [4/6] — 4 chunk(s), 9 evaluations...
+    Parsed 0/9 evaluations successfully
+  Call [5/6] — 1 chunk(s), 6 evaluations...
+    Parsed 6/6 evaluations successfully
+  Call [6/6] — 1 chunk(s), 5 evaluations...
     Parsed 5/5 evaluations successfully
-  Call [12/13] — 1 chunk(s), 10 evaluations...
-    Parsed 10/10 evaluations successfully
-  Call [13/13] — 1 chunk(s), 7 evaluations...
-    Parsed 7/7 evaluations successfully
 
 [3/4] Metrics
-  Total chunks: 100
-  Relevant:   100
-  Irrelevant: 0
-  Precision:  100.00%
+  Total chunks: 48
+  Relevant:   39
+  Irrelevant: 9
+  Precision:  81.25%
 
 [4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\risks_validation_results.csv
   ✓ Saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\risks_validation_results.csv
 
 ======================================================================
 Validation Complete
-Semantic Precision: 100.00%
+Semantic Precision: 81.25%
 
 ----------------------------------------------------------------------
 Chunk Length Analysis
 ----------------------------------------------------------------------
-Relevant chunks (n=100):
-  Avg length: 6,091 chars
-  Min: 5,038 | Max: 8,472
+Relevant chunks (n=39):
+  Avg length: 2,669 chars
+  Min: 139 | Max: 5,424
+
+Irrelevant chunks (n=9):
+  Avg length: 4,029 chars
+  Min: 1,535 | Max: 5,583
 ======================================================================

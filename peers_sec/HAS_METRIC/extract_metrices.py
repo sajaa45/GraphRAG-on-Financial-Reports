@@ -3,8 +3,9 @@ import re
 import requests
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import urllib3
+import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
 from rank_bm25 import BM25Okapi
@@ -166,21 +167,22 @@ def get_target_company_metrics():
                 """
                 MATCH (c)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
                 WHERE c:TargetCompany OR (c:Company AND c.is_target = true)
-                RETURN m.name AS metric_name, m.metric_type AS metric_type, m.year AS year, mc.name AS category
+                RETURN m.name AS metric_name, m.metric_type AS metric_type,
+                       m.gaap_concept AS gaap_concept, m.year AS year, mc.name AS category
                 """
             )
             metrics = []
             seen_types = set()
-            
+
             for record in result:
-                metric_name = record["metric_name"]
-                metric_type = record["metric_type"]
-                year = record.get("year")
-                category = record.get("category", "Uncategorised")
-                
+                metric_name  = record["metric_name"]
+                metric_type  = record["metric_type"]
+                gaap_concept = record.get("gaap_concept") or ''
+                year         = record.get("year")
+                category     = record.get("category", "Uncategorised")
+
                 # If metric_type is not set, try to extract it from the name
                 if not metric_type and metric_name:
-                    # Parse "EBITDA (2024)" -> type: "EBITDA", year: "2024"
                     if '(' in metric_name:
                         metric_type = metric_name.split('(')[0].strip()
                         year_part = metric_name.split('(')[1].split(')')[0].strip()
@@ -188,27 +190,29 @@ def get_target_company_metrics():
                             year = int(year_part)
                     else:
                         metric_type = metric_name
-                
+
                 # Convert year to int if it's a string
                 if year and isinstance(year, str) and year.isdigit():
                     year = int(year)
-                
+
                 # Only add unique metric types (not each year)
                 if metric_type and metric_type not in seen_types:
                     metrics.append({
-                        "name": metric_name,
-                        "type": metric_type,
-                        "year": year,  # Will be None if not found, then use default
-                        "category": category
+                        "name":         metric_name,
+                        "type":         metric_type,
+                        "gaap_concept": gaap_concept or metric_type,
+                        "year":         year,
+                        "category":     category,
                     })
                     seen_types.add(metric_type)
-            
+
             if metrics:
                 print(f"✓ Found {len(metrics)} unique metric types in target company:")
                 for m in metrics:
                     year_str = f" (year: {m['year']})" if m['year'] else " (using default year)"
                     category_str = f" [{m['category']}]" if m.get('category') else ""
-                    print(f"  - {m['type']}{year_str}{category_str}")
+                    gaap_str = f" ← {m['gaap_concept']}" if m['gaap_concept'] != m['type'] else ""
+                    print(f"  - {m['type']}{gaap_str}{year_str}{category_str}")
                 print()
             else:
                 print("⚠ No metrics found in target company\n")
@@ -267,6 +271,14 @@ def fetch_companies_by_sic(sic_codes, start_date, end_date, form_type, size=100)
 BM25_TOP_K = 1
 BM25_MIN_SCORE = 3.0
 
+TAXONOMY_URL = "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-2024-lab.xml"
+TAXONOMY_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".taxonomy_cache.json")
+TAXONOMY_CACHE_DAYS = 30
+GLOBAL_BM25_TOP_K = 5   # candidate tag names to try per metric against company facts
+GLOBAL_BM25_MIN_SCORE = 2.0  # lower threshold since taxonomy labels are authoritative
+
+_global_taxonomy = None  # (tag_list[(name, label)], BM25Okapi) — built once per run
+
 
 def _tokenize_xbrl_tag(tag: str) -> list:
     """Split a PascalCase/camelCase XBRL tag into lowercase tokens, preserving acronyms.
@@ -284,6 +296,137 @@ def _tokenize_xbrl_tag(tag: str) -> list:
 def _tokenize_metric(metric: str) -> list:
     """Tokenize a human-readable metric name into lowercase tokens."""
     return [t.lower() for t in re.split(r'[\s\-_/]+', metric) if len(t) >= 2]
+
+
+def _build_global_taxonomy_index():
+    """Fetch the full US-GAAP label linkbase once, cache to disk, build a BM25 index.
+
+    Returns (tags, bm25) where tags is a list of (tag_name, label) tuples.
+    Falls back to an empty index on any failure so callers can degrade gracefully.
+    """
+    global _global_taxonomy
+    if _global_taxonomy is not None:
+        return _global_taxonomy
+
+    # Load from disk cache if fresh enough
+    if os.path.exists(TAXONOMY_CACHE_FILE):
+        try:
+            with open(TAXONOMY_CACHE_FILE, 'r', encoding='utf-8') as f:
+                cached = json.load(f)
+            cached_at = datetime.fromisoformat(cached.get('cached_at', '2000-01-01'))
+            if datetime.now() - cached_at < timedelta(days=TAXONOMY_CACHE_DAYS):
+                tag_data = cached['tags']
+                tags = [(d['tag'], d['label']) for d in tag_data]
+                tokenized = [
+                    _tokenize_metric(label) if label else _tokenize_xbrl_tag(tag)
+                    for tag, label in tags
+                ]
+                bm25 = BM25Okapi(tokenized)
+                print(f"✓ Global taxonomy loaded from cache ({len(tags)} concepts)")
+                _global_taxonomy = (tags, bm25)
+                return _global_taxonomy
+        except Exception as e:
+            print(f"⚠ Taxonomy cache unreadable ({e}), re-fetching...")
+
+    print("Fetching full US-GAAP taxonomy labels (one-time download, will be cached)...")
+    try:
+        resp = requests.get(TAXONOMY_URL, headers=headers, verify=False, timeout=60)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"⚠ Could not fetch taxonomy ({e}). Global lookup disabled — falling back to per-company BM25.")
+        _global_taxonomy = ([], None)
+        return _global_taxonomy
+
+    XLINK = 'http://www.w3.org/1999/xlink'
+    LINK  = 'http://www.xbrl.org/2003/linkbase'
+
+    try:
+        root = ET.fromstring(resp.content)
+    except ET.ParseError as e:
+        print(f"⚠ Taxonomy XML parse error ({e}). Global lookup disabled.")
+        _global_taxonomy = ([], None)
+        return _global_taxonomy
+
+    tag_label_map = {}  # concept_name -> label text
+
+    for label_link in root.iter(f'{{{LINK}}}labelLink'):
+        # loc xlink:label -> concept name
+        loc_to_concept = {}
+        for loc in label_link.findall(f'{{{LINK}}}loc'):
+            href  = loc.get(f'{{{XLINK}}}href', '')
+            lbl   = loc.get(f'{{{XLINK}}}label', '')
+            if '#' in href and lbl:
+                concept = href.split('#')[-1]
+                # strip namespace prefix: us-gaap_OperatingIncomeLoss -> OperatingIncomeLoss
+                if '_' in concept:
+                    concept = concept.split('_', 1)[1]
+                loc_to_concept[lbl] = concept
+
+        # label xlink:label -> text  (standard label role only)
+        lbl_to_text = {}
+        for lbl_elem in label_link.findall(f'{{{LINK}}}label'):
+            role = lbl_elem.get(f'{{{XLINK}}}role', '')
+            lbl  = lbl_elem.get(f'{{{XLINK}}}label', '')
+            text = (lbl_elem.text or '').strip()
+            if role.endswith('/label') and lbl and text:
+                lbl_to_text[lbl] = text
+
+        # wire together via arcs
+        for arc in label_link.findall(f'{{{LINK}}}labelArc'):
+            arcrole  = arc.get(f'{{{XLINK}}}arcrole', '')
+            from_lbl = arc.get(f'{{{XLINK}}}from', '')
+            to_lbl   = arc.get(f'{{{XLINK}}}to', '')
+            if (arcrole.endswith('/concept-label')
+                    and from_lbl in loc_to_concept
+                    and to_lbl in lbl_to_text):
+                tag_label_map[loc_to_concept[from_lbl]] = lbl_to_text[to_lbl]
+
+    if not tag_label_map:
+        print("⚠ Taxonomy parsed but no concepts found. Global lookup disabled.")
+        _global_taxonomy = ([], None)
+        return _global_taxonomy
+
+    # Persist to disk
+    try:
+        payload = {
+            'cached_at': datetime.now().isoformat(),
+            'tags': [{'tag': t, 'label': l} for t, l in tag_label_map.items()],
+        }
+        with open(TAXONOMY_CACHE_FILE, 'w', encoding='utf-8') as f:
+            json.dump(payload, f)
+    except Exception as e:
+        print(f"⚠ Could not write taxonomy cache ({e})")
+
+    tags = list(tag_label_map.items())
+    tokenized = [
+        _tokenize_metric(label) if label else _tokenize_xbrl_tag(tag)
+        for tag, label in tags
+    ]
+    bm25 = BM25Okapi(tokenized)
+    print(f"✓ Global taxonomy built: {len(tags)} concepts, cached to disk")
+    _global_taxonomy = (tags, bm25)
+    return _global_taxonomy
+
+
+_STOP_WORDS = {'the', 'and', 'or', 'of', 'in', 'to', 'a', 'an', 'for', 'net', 'total'}
+
+
+def _resolve_metric_to_tags(metric_type: str) -> list:
+    """Return up to GLOBAL_BM25_TOP_K XBRL tag names that best match metric_type
+    according to the full US-GAAP taxonomy index.  Returns [] if taxonomy unavailable.
+    """
+    tags, bm25 = _build_global_taxonomy_index()
+    if not tags or bm25 is None:
+        return []
+
+    raw_tokens = _tokenize_metric(metric_type)
+    query_tokens = [t for t in raw_tokens if t not in _STOP_WORDS] or raw_tokens
+    if not query_tokens:
+        return []
+
+    scores = bm25.get_scores(query_tokens)
+    top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:GLOBAL_BM25_TOP_K]
+    return [tags[i][0] for i in top_indices if scores[i] >= GLOBAL_BM25_MIN_SCORE]
 
 
 def analyze_company_covenants(cik, company_name, target_metrics=None, default_fiscal_year=2024):
@@ -309,6 +452,7 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
             return target_metric_results
 
         # Phase 1: collect every (taxonomy, tag_name, tag_content) tuple once
+        #          and build a fast name→(taxonomy, content) lookup
         all_tags = [
             (taxonomy_name, tag_name, tag_content)
             for taxonomy_name, taxonomy_data in facts.items()
@@ -318,75 +462,101 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
         if not all_tags:
             return target_metric_results
 
-        # Phase 2: build BM25 index — prefer human-readable label, fall back to tag name
+        facts_by_tag = {tag_name: (taxonomy_name, tag_content)
+                        for taxonomy_name, tag_name, tag_content in all_tags}
+
+        # Phase 2 (fallback): per-company BM25 index — only used when global lookup misses
         def _tag_tokens(tag_name, tag_content):
             label = tag_content.get('label', '')
             return _tokenize_metric(label) if label else _tokenize_xbrl_tag(tag_name)
 
-        tokenized_tags = [_tag_tokens(tag_name, tag_content) for _, tag_name, tag_content in all_tags]
-        bm25 = BM25Okapi(tokenized_tags)
+        tokenized_tags = [_tag_tokens(tn, tc) for _, tn, tc in all_tags]
+        bm25_fallback = BM25Okapi(tokenized_tags)
 
-        _STOP_WORDS = {'the', 'and', 'or', 'of', 'in', 'to', 'a', 'an', 'for', 'net', 'total'}
+        def _extract_tag_data(taxonomy_name, tag_name, tag_content, metric_type, target_year, score, match_source, gaap_concept=None):
+            units = tag_content.get('units', {})
+            entry = {
+                'taxonomy': taxonomy_name,
+                'tag': tag_name,
+                'label': tag_content.get('label', ''),
+                'description': tag_content.get('description', ''),
+                'metric_type': metric_type,
+                'gaap_concept': gaap_concept or metric_type,
+                'target_year': target_year,
+                'match_source': match_source,
+                'bm25_score': round(float(score), 4),
+                'units': {},
+                'metadata': {'cik': cik, 'source_url': url},
+            }
+            for unit_name, entries in units.items():
+                filtered = [
+                    {
+                        'end': e.get('end'),
+                        'val': e.get('val'),
+                        'accn': e.get('accn'),
+                        'fy': e.get('fy'),
+                        'fp': e.get('fp'),
+                        'form': e.get('form'),
+                        'filed': e.get('filed', ''),
+                    }
+                    for e in entries
+                    if e.get('fp') == 'FY'
+                    and e.get('form') == '10-K'
+                    and e.get('fy') == FISCAL_YEAR
+                ]
+                if filtered:
+                    entry['units'][unit_name] = filtered
+            return entry if entry['units'] else None
 
-        # Phase 3: for each metric, query BM25 and keep top-K above threshold
+        # Phase 3: for each metric, try global taxonomy lookup first; fall back to per-company BM25
         for metric in target_metrics:
             metric_type = metric.get('type', '')
             if not metric_type:
                 continue
 
+            gaap_concept = metric.get('gaap_concept') or metric_type
             target_year = metric.get('year') or default_fiscal_year
-            raw_tokens = _tokenize_metric(metric_type)
-            # Remove stop words so "the related tax benefit" → ["related", "tax", "benefit"]
+            matched = False
+
+            # --- Global taxonomy path ---
+            # Prefer gaap_concept (standardised GAAP name) over the verbatim metric_type
+            # so that "Net income attributable to MTI" is resolved as "Net Income (Loss)"
+            search_term = gaap_concept if gaap_concept != metric_type else metric_type
+            candidate_tags = _resolve_metric_to_tags(search_term)
+            # If gaap_concept search returned nothing, retry with raw metric_type
+            if not candidate_tags and search_term != metric_type:
+                candidate_tags = _resolve_metric_to_tags(metric_type)
+            for tag_name in candidate_tags:
+                if tag_name in facts_by_tag:
+                    taxonomy_name, tag_content = facts_by_tag[tag_name]
+                    entry = _extract_tag_data(taxonomy_name, tag_name, tag_content,
+                                              metric_type, target_year, 0.0, 'global_taxonomy',
+                                              gaap_concept=gaap_concept)
+                    if entry:
+                        target_metric_results.setdefault(metric_type, []).append(entry)
+                        matched = True
+                        break  # first candidate with data wins
+
+            if matched:
+                continue
+
+            # --- Per-company BM25 fallback ---
+            raw_tokens = _tokenize_metric(search_term)
             query_tokens = [t for t in raw_tokens if t not in _STOP_WORDS] or raw_tokens
             if not query_tokens:
                 continue
 
-            scores = bm25.get_scores(query_tokens)
+            scores = bm25_fallback.get_scores(query_tokens)
             top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:BM25_TOP_K]
             top_indices = [i for i in top_indices if scores[i] >= BM25_MIN_SCORE]
 
             for idx in top_indices:
                 taxonomy_name, tag_name, tag_content = all_tags[idx]
-                units = tag_content.get('units', {})
-
-                tag_data = {
-                    'taxonomy': taxonomy_name,
-                    'tag': tag_name,
-                    'label': tag_content.get('label', ''),
-                    'description': tag_content.get('description', ''),
-                    'metric_type': metric_type,
-                    'target_year': target_year,
-                    'bm25_score': round(float(scores[idx]), 4),
-                    'units': {},
-                    'metadata': {
-                        'cik': cik,
-                        'source_url': url,
-                    },
-                }
-
-                for unit_name, entries in units.items():
-                    filtered_entries = [
-                        {
-                            'end': e.get('end'),
-                            'val': e.get('val'),
-                            'accn': e.get('accn'),
-                            'fy': e.get('fy'),
-                            'fp': e.get('fp'),
-                            'form': e.get('form'),
-                            'filed': e.get('filed', ''),
-                        }
-                        for e in entries
-                        if e.get('fp') == 'FY'
-                        and e.get('form') == '10-K'
-                        and e.get('fy') == FISCAL_YEAR
-                    ]
-                    if filtered_entries:
-                        tag_data['units'][unit_name] = filtered_entries
-
-                if tag_data['units']:
-                    if metric_type not in target_metric_results:
-                        target_metric_results[metric_type] = []
-                    target_metric_results[metric_type].append(tag_data)
+                entry = _extract_tag_data(taxonomy_name, tag_name, tag_content,
+                                          metric_type, target_year, scores[idx], 'bm25_fallback',
+                                          gaap_concept=gaap_concept)
+                if entry:
+                    target_metric_results.setdefault(metric_type, []).append(entry)
 
         return target_metric_results
     

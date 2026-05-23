@@ -1,52 +1,60 @@
-## 1. Understanding the Question
-The question asks whether Minerals Technologies Inc. (MTI) is achieving the best profitability among its peers, requiring a comparison of profitability metrics and risk factors across the target company and its identified peers.
+## 1. Understanding the Question  
+The question asks whether Minerals Technologies Inc. (the target company) is achieving the best profitability among its peers, requiring a comparison of profitability metrics and risk factors from the provided graph results.
 
-## 2. Data Retrieved
-**Target Company:**
-- Minerals Technologies Inc. — Filing: Not specified (no filing_date provided)  
-  - Profitability metrics for 2024:  
-    - Net income attributable to MTI: $167.1 million [CITE:TARGET_M0024]  
-    - Operating margin %: 13.5% [CITE:TARGET_M0035]  
-    - Production margin %: 25.9% [CITE:TARGET_M0031]  
-    - Diluted EPS: $5.17 [CITE:TARGET_M0003]  
-  - Risk: One relevant risk identified — “Pricing pressure and inability to pass on cost increases” [CITE:TARGET_R0004]
+## 2. Data Retrieved  
+**Target Company:**  
+- Minerals Technologies Inc. — Filing: Not specified in results  
+  - Risks: 1 risk related to pricing pressure and cost recovery [CITE:TARGET_R0004]  
+  - Profitability Metrics (2024):  
+    - Net income: $167.1 million [CITE:TARGET_M0003]  
+    - Operating income: $286.5 million [CITE:TARGET_M0002]  
+    - Gross profit: $547.7 million [CITE:TARGET_M0004]  
+    - Earnings per share (basic): $5.21 [CITE:TARGET_M0045]  
+    - Earnings per share (diluted): $5.17 [CITE:TARGET_M0046]  
 
-**Peer Companies:**
-- Global Gas Corp — Filing: Not specified  
-  - Profitability metrics for 2024:  
-    - Net income attributable to MTI: -$130.7 million [CITE:PEER_M0005]  
-    - Income from operations: -$130.7 million [CITE:PEER_M0002]  
-  - Document URL: https://www.sec.gov/Archives/edgar/data/1817232/000121390024028142/ea0202696-10k_global.htm [CITE:PEER_R0001]  
+**Peer Companies:**  
+- Global Gas Corp — URL: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm  
+  - Risks: 11 risks including inability to operate profitably [CITE:PEER_R0004], capital-intensive operations [CITE:PEER_R0007], and high speculative risk of total investment loss [CITE:PEER_R0008]  
+  - Profitability Metrics (2024):  
+    - Operating income (loss): -$551,983,000 [CITE:PEER_M0023]  
+    - Net income (loss) attributable to parent: -$130,700,000 [CITE:PEER_M0011]  
+    - Retained earnings (accumulated deficit): -$446,808,000 [CITE:PEER_M0015]  
 
-- VALHI INC /DE/ — Filing: Not specified  
-  - Profitability metrics for 2024:  
-    - Net income attributable to MTI: $108 million [CITE:PEER_M0070]  
-    - Diluted EPS: $3.79 [CITE:PEER_M0065]  
-    - Operating margin %: Not available (value provided is for “Operating Income (Loss)” in USD, not a percentage)  
-  - Document URL: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm [CITE:PEER_R0098]  
+- Arcadium Lithium plc — URL: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm  
+  - Risks: 20 risks including volatile lithium prices [CITE:PEER_R0133], dependence on limited customers [CITE:PEER_R0134], and failure to realize synergies [CITE:PEER_R0125]  
+  - Profitability Metrics (2024):  
+    - Operating income (loss): -$53,500,000 [CITE:PEER_M0092]  
+    - Net income: Not directly reported; net income attributable to non-controlling interests: $83,000,000 [CITE:PEER_M0100]  
+    - Gross profit: $288,600,000 [CITE:PEER_M0093]  
+    - Earnings per share (basic): $0.10 [CITE:PEER_M0099]  
+    - Retained earnings (accumulated deficit): $767,700,000 [CITE:PEER_M0105]  
 
-- NL INDUSTRIES INC — Filing: Not specified  
-  - Profitability metrics for 2024:  
-    - Net income attributable to MTI: $67.2 million [CITE:PEER_M0156]  
-    - Diluted EPS: $1.38 [CITE:PEER_M0151]  
-    - Operating margin %: Not available (value provided is for “Operating Income (Loss)” in USD, not a percentage)  
-  - Document URL: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm [CITE:PEER_R0176]  
+- NL INDUSTRIES INC — URL: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm  
+  - Risks: 20 risks including cyclical TiO2 pricing [CITE:PEER_R0170], litigation from lead pigment [CITE:PEER_R0201], and variable interest rate exposure [CITE:PEER_R0197]  
+  - Profitability Metrics (2024):  
+    - Operating income: $37,876,000 [CITE:PEER_M0053]  
+    - Gross profit: $41,363,000 [CITE:PEER_M0045]  
+    - Earnings per share (basic): $1.38 [CITE:PEER_M0039]  
+    - Net income: Not directly reported; income before taxes: $83,318,000 [CITE:PEER_M0040]  
+    - Retained earnings (accumulated deficit): $315,056,000 [CITE:PEER_M0052]  
 
-## 3. Reasoning Steps
-Step 1 — The target company, Minerals Technologies Inc., reports a net income of $167.1 million and an operating margin of 13.5% for 2024 [CITE:TARGET_M0024][CITE:TARGET_M0035]. Its production margin is strong at 25.9% [CITE:TARGET_M0031], indicating efficient core operations.
+## 3. Reasoning Steps  
+Step 1 — The target company, Minerals Technologies Inc., reports a net income of $167.1 million and operating income of $286.5 million in 2024, indicating strong profitability [CITE:TARGET_M0003][CITE:TARGET_M0002].  
 
-Step 2 — Among peers, Global Gas Corp reports a net loss of $130.7 million [CITE:PEER_M0005], indicating negative profitability. VALHI INC reports net income of $108 million [CITE:PEER_M0070], and NL INDUSTRIES INC reports $67.2 million [CITE:PEER_M0156]. MTI’s net income is higher than both VALHI and NL. MTI’s diluted EPS of $5.17 [CITE:TARGET_M0003] is also significantly higher than VALHI’s $3.79 [CITE:PEER_M0065] and NL’s $1.38 [CITE:PEER_M0151].
+Step 2 — Among peers, Global Gas Corp is unprofitable with an operating loss of $551.98 million and net loss of $130.7 million [CITE:PEER_M0023][CITE:PEER_M0011], and its risk factors explicitly state it may not operate profitably [CITE:PEER_R0004][CITE:PEER_R0007][CITE:PEER_R0008]. Arcadium Lithium has an operating loss of $53.5 million [CITE:PEER_M0092], though it reports $83 million in proceeds from non-controlling interests [CITE:PEER_M0100], suggesting profitability is driven by external equity, not core operations. NL Industries reports operating income of $37.9 million and EPS of $1.38 [CITE:PEER_M0053][CITE:PEER_M0039], but its gross profit ($41.4M) and operating income are significantly lower than MTI’s.  
 
-Step 3 — MTI’s profitability metrics are superior to all peers. While VALHI and NL face risks tied to TiO₂ pricing cycles and cost pressures [CITE:PEER_R0099][CITE:PEER_R0102], MTI’s only identified risk is pricing pressure [CITE:TARGET_R0004], which appears to be managed effectively given its strong margins. Global Gas Corp’s losses and unproven business model [CITE:PEER_R0003] further highlight MTI’s relative strength.
+Step 3 — MTI’s net income ($167.1M) is the highest among all companies. Its operating income ($286.5M) is more than double NL Industries’ ($37.9M) and vastly exceeds the losses of Global Gas Corp and Arcadium Lithium. MTI’s profitability is both operationally and net-driven, while peers either operate at a loss or rely on non-operating items. MTI’s only risk is pricing pressure [CITE:TARGET_R0004], whereas peers face multiple structural profitability risks.  
 
-## 4. Sources & References
-**Target Company:**
-- Minerals Technologies Inc. — Filing: Not specified
+Step 4 — MTI’s profitability is not only superior in magnitude but also more sustainable, as it lacks the speculative, capital-intensive, or litigation-driven risks that plague its peers.  
 
-**Peer Companies:**
-- Global Gas Corp — URL: https://www.sec.gov/Archives/edgar/data/1817232/000121390024028142/ea0202696-10k_global.htm
-- VALHI INC /DE/ — URL: https://www.sec.gov/Archives/edgar/data/59255/000155837024002728/vhl-20231231x10k.htm
-- NL INDUSTRIES INC — URL: https://www.sec.gov/Archives/edgar/data/72162/000155837024002620/nl-20231231x10k.htm
+## 4. Sources & References  
+**Target Company:**  
+Minerals Technologies Inc. — Filing: Not specified in results  
 
-## 5. Final Answer
-Yes, Minerals Technologies Inc. is achieving the best profitability among its peers. In 2024, MTI reported net income of $167.1 million [CITE:TARGET_M0024], significantly outperforming VALHI ($108M) [CITE:PEER_M0070] and NL Industries ($67.2M) [CITE:PEER_M0156], while Global Gas Corp incurred a $130.7M loss [CITE:PEER_M0005]. MTI’s diluted EPS of $5.17 [CITE:TARGET_M0003] exceeds VALHI’s $3.79 [CITE:PEER_M0065] and NL’s $1.38 [CITE:PEER_M0151], and its operating margin of 13.5% [CITE:TARGET_M0035] and production margin of 25.9% [CITE:TARGET_M0031] reflect strong operational efficiency. While peers face cyclical pricing and cost pass-through risks tied to TiO₂ markets [CITE:PEER_R0099][CITE:PEER_R0102], MTI’s only identified profit-related risk — pricing pressure [CITE:TARGET_R0004] — has not materially impaired its margins, suggesting superior cost management and pricing power.
+**Peer Companies:**  
+Global Gas Corp — URL: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm  
+Arcadium Lithium plc — URL: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm  
+NL INDUSTRIES INC — URL: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm  
+
+## 5. Final Answer  
+Yes, Minerals Technologies Inc. is achieving the best profitability among its peers. In 2024, MTI reported net income of $167.1 million [CITE:TARGET_M0003] and operating income of $286.5 million [CITE:TARGET_M0002], both significantly higher than NL Industries’ $37.9 million operating income [CITE:PEER_M0053] and vastly superior to the operating losses of Global Gas Corp ($551.98M loss [CITE:PEER_M0023]) and Arcadium Lithium ($53.5M loss [CITE:PEER_M0092]). MTI’s earnings per share of $5.21 [CITE:TARGET_M0045] also exceeds NL’s $1.38 [CITE:PEER_M0039] and Arcadium’s $0.10 [CITE:PEER_M0099]. While MTI faces pricing pressure [CITE:TARGET_R0004], its peers face far more severe structural risks to profitability, including unprofitable business models [CITE:PEER_R0004], capital intensity [CITE:PEER_R0007], volatile commodity prices [C

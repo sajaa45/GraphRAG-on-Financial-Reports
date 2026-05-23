@@ -95,22 +95,22 @@ def write_metrics_to_neo4j(json_file: str):
                 company_metrics = 0
 
                 def write_metric(metric_type, metric_name, latest, unit_name, year,
-                                 xbrl_tag, taxonomy, label, metadata=None):
+                                 xbrl_tag, taxonomy, label, metadata=None, gaap_concept=None):
                     nonlocal peer_metric_counter
                     category = category_map.get(metric_type, "Other")
-                    
+
                     # Extract metadata fields
                     source_url = ""
                     metric_cik = cik  # fallback to company CIK
                     if metadata:
                         source_url = metadata.get("source_url", "")
                         metric_cik = metadata.get("cik", cik)
-                    
+
                     # Generate citation_id for peer metrics
                     # Format: PEER_M<counter>
                     peer_metric_counter += 1
                     citation_id = f"PEER_M{peer_metric_counter:04d}"
-                    
+
                     session.run(
                         """
                         MATCH (c:Company {name: $company_name})
@@ -122,6 +122,7 @@ def write_metrics_to_neo4j(json_file: str):
                             m.unit = $unit,
                             m.year = $year,
                             m.metric_type = $metric_type,
+                            m.gaap_concept = $gaap_concept,
                             m.category = $category,
                             m.xbrl_tag = $xbrl_tag,
                             m.taxonomy = $taxonomy,
@@ -140,6 +141,7 @@ def write_metrics_to_neo4j(json_file: str):
                             "unit": unit_name,
                             "year": str(year),
                             "metric_type": metric_type,
+                            "gaap_concept": gaap_concept or label or metric_type,
                             "xbrl_tag": xbrl_tag,
                             "taxonomy": taxonomy,
                             "label": label,
@@ -174,11 +176,16 @@ def write_metrics_to_neo4j(json_file: str):
                                 end_date = latest.get('end', '')
                                 year = latest.get('fy', end_date.split('-')[0] if end_date else 'Unknown')
                                 metadata = match.get('metadata', {})
+                                # Use the peer's own XBRL label as the metric name so that
+                                # company-specific labels from the target (e.g. "Net income
+                                # attributable to MTI") are never stamped onto peer nodes.
+                                peer_label = match.get('label', '') or match.get('tag', metric_type)
                                 write_metric(
-                                    metric_type, f"{metric_type} ({year})",
+                                    metric_type, f"{peer_label} ({year})",
                                     latest, unit_name, year,
-                                    match.get('tag', ''), match.get('taxonomy', ''), match.get('label', ''),
-                                    metadata
+                                    match.get('tag', ''), match.get('taxonomy', ''), peer_label,
+                                    metadata,
+                                    gaap_concept=peer_label,
                                 )
                                 company_metrics += 1
 

@@ -245,7 +245,15 @@ class Neo4jBuilder:
                         if item['src']['name'] == self.main_company:
                             self._target_metric_counter += 1
                             tgt_props['citation_id'] = f"TARGET_M{self._target_metric_counter:04d}"
-                        
+
+                        # Ensure gaap_concept is always populated — fall back to metric_type
+                        # so peer comparison always has a canonical GAAP name to align on.
+                        if not tgt_props.get('gaap_concept'):
+                            tgt_props['gaap_concept'] = (
+                                tgt_props.get('metric_type')
+                                or item['tgt'].get('name', '')
+                            )
+
                         # Structure:
                         #   Company -[HAS_METRIC_CATEGORY]-> MetricCategory -[HAS_METRIC]-> Metric
                         category = tgt_props.get('category', None) or 'Uncategorised'
