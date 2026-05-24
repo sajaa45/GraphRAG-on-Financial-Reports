@@ -13,20 +13,20 @@ Answer Relevancy — RAGAS-style Ground Truth Evaluation
   → 5 aspects identified:
     1. Does the answer report at least one profitability metric for the target company?
     2. Does the answer compare the target company’s profitability to at least one peer company using metrics from their 10-K filings?
-    3. Does the answer avoid implying external benchmarks, industry standards, or forecasts not present in the filings?
-    4. Does the answer acknowledge limitations if peer data is insufficient to assess relative profitability?
-    5. Does the answer refrain from recommending actions or claiming “best” profit without comparative evidence from the filings?
+    3. Does the answer avoid implying forward-looking profit trends, market benchmarks, or strategic advice not present in the filings?
+    4. Does the answer acknowledge if peer data is unavailable or insufficient for meaningful comparison?
+    5. Does the answer refrain from concluding the target is “getting the best profit” without direct comparative evidence from the filings?
 
 [4/5] Judging answer coverage per aspect
     [✓] YES      Does the answer report at least one profitability metric for the targe
              The answer reports net income ($167.1 million) and operating income ($286.5 million) for M
     [✓] YES      Does the answer compare the target company’s profitability to at least
              The answer compares MTI’s profitability metrics to at least three peer companies (Global G
-    [✓] YES      Does the answer avoid implying external benchmarks, industry standards
-             The answer relies solely on reported financials from 10-K filings and does not invoke exte
-    [✗] NO       Does the answer acknowledge limitations if peer data is insufficient t
-             The answer does not acknowledge limitations in peer data, such as Arcadium Lithium’s uncle
-    [✓] YES      Does the answer refrain from recommending actions or claiming “best” p
+    [✓] YES      Does the answer avoid implying forward-looking profit trends, market b
+             The answer strictly relies on reported financial results from filings and avoids any forwa
+    [~] PARTIAL  Does the answer acknowledge if peer data is unavailable or insufficien
+             The answer notes that MTI’s sources are “not available,” but does not clearly acknowledge 
+    [✓] YES      Does the answer refrain from concluding the target is “getting the bes
              The answer concludes MTI is “the most profitable among the peers analyzed” based solely on
 
 [5/5] Computing overall relevancy score
@@ -38,14 +38,14 @@ Results
 ──────────────────────────────────────────────────────────────────────
   Aspects total   : 5
   Fully covered   : 4  (YES)
-  Partially covered: 0  (PARTIAL)
-  Not covered     : 1  (NO)
-  Aspect score    : 0.80
+  Partially covered: 1  (PARTIAL)
+  Not covered     : 0  (NO)
+  Aspect score    : 0.90
   Holistic score  : 1.00
-  Combined        : 0.90
+  Combined        : 0.95
   Quality gate    : PASS  (threshold: 0.70)
 
 ✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_relevancy_results.csv
 ======================================================================
-Answer Relevancy Score : 0.90  [PASS]
+Answer Relevancy Score : 0.95  [PASS]
 ======================================================================

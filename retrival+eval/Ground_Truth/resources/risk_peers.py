@@ -74,7 +74,7 @@ def check_chunks_against_themes(
         f"{prompt_body}"
     )
 
-    max_tokens = max(300, total_evaluations * 150)
+    max_tokens = max(512, total_evaluations * 220)
 
     try:
         response = bedrock_client.converse(
@@ -103,17 +103,24 @@ def check_chunks_against_themes(
         line = line.strip()
         # Try multiple patterns to be more flexible
         # Pattern 1: "1.1: YES — explanation" or "Chunk 1.1: YES — explanation"
-        m = re.match(r'^(?:Chunk\s+)?(\d+)\.(\d+)(?:\.\d+)?\s*[:\.\)]\s*(YES|NO)\s*[-—–]?\s*(.*)', line, re.IGNORECASE)
+        m = re.match(r'^(?:Chunk\s*)?(\d+)\.(\d+)(?:\.\d+)?\s*[:\.\)]\s*(YES|NO)\s*[-—–]?\s*(.*)', line, re.IGNORECASE)
         if not m:
             # Pattern 2: "<chunk>.1.1: YES" (angle brackets)
             m = re.match(r'^<chunk>\.(\d+)\.(\d+)(?:\.\d+)?\s*[:\.\)]\s*(YES|NO)\s*[-—–]?\s*(.*)', line, re.IGNORECASE)
         if not m:
             # Pattern 3: "1.1 YES explanation" (no colon or dash)
-            m = re.match(r'^(?:Chunk\s+)?(\d+)\.(\d+)(?:\.\d+)?\s+(YES|NO)\s+(.*)', line, re.IGNORECASE)
+            m = re.match(r'^(?:Chunk\s*)?(\d+)\.(\d+)(?:\.\d+)?\s+(YES|NO)\s+(.*)', line, re.IGNORECASE)
         if not m:
             # Pattern 4: Just look for numbers followed by YES/NO anywhere
-            m = re.match(r'^(?:Chunk\s+)?(\d+)\.(\d+)(?:\.\d+)?.*?(YES|NO)(?:\s*[-—–:]\s*|\s+)(.*)', line, re.IGNORECASE)
+            m = re.match(r'^(?:Chunk\s*)?(\d+)\.(\d+)(?:\.\d+)?.*?(YES|NO)(?:\s*[-—–:]\s*|\s+)(.*)', line, re.IGNORECASE)
         
+        if not m:
+            # Pattern 5: "1-1: YES — explanation" (dash separator between chunk and theme)
+            m = re.match(r'^(?:Chunk\s*)?(\d+)-(\d+)\s*[:\.\)]\s*(YES|NO)\s*[-—–]?\s*(.*)', line, re.IGNORECASE)
+        if not m:
+            # Pattern 6: markdown bold "**1.1**: YES — explanation"
+            m = re.match(r'^\*{0,2}(\d+)\.(\d+)\*{0,2}\s*[:\.\)]\s*(YES|NO)\s*[-—–]?\s*(.*)', line, re.IGNORECASE)
+
         if m:
             ci, ti = int(m.group(1)) - 1, int(m.group(2)) - 1
             if 0 <= ci < len(results) and 0 <= ti < len(results[ci]):
@@ -121,13 +128,17 @@ def check_chunks_against_themes(
                 explanation = m.group(4).strip() if len(m.groups()) >= 4 else "No explanation provided"
                 results[ci][ti] = (verdict, explanation)
 
+    failed_slots = [(ci, ti) for ci in range(len(results)) for ti in range(len(results[ci])) if results[ci][ti] is None]
+    if failed_slots:
+        print(f"  [DEBUG] Parse failures for slots: {failed_slots}")
+        print(f"  [DEBUG] Full LLM response:\n{response_text}\n  [END DEBUG]")
+
     for ci in range(len(results)):
         for ti in range(len(results[ci])):
             if results[ci][ti] is None:
                 results[ci][ti] = (False, "Could not parse LLM response for this item")
-    
-    # Debug: Report parsing success rate
-    parsed_count = sum(1 for ci in range(len(results)) for ti in range(len(results[ci])) 
+
+    parsed_count = sum(1 for ci in range(len(results)) for ti in range(len(results[ci]))
                       if results[ci][ti][1] != "Could not parse LLM response for this item")
     print(f"    Parsed {parsed_count}/{total_evaluations} evaluations successfully")
 
