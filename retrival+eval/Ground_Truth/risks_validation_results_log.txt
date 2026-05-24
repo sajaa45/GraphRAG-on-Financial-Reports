@@ -14,7 +14,7 @@ Risk Factor Chunks — Semantic Relevance Validation
   Call [3/6] — 1 chunk(s), 10 evaluations...
     Parsed 10/10 evaluations successfully
   Call [4/6] — 4 chunk(s), 9 evaluations...
-    Parsed 0/9 evaluations successfully
+    Parsed 9/9 evaluations successfully
   Call [5/6] — 1 chunk(s), 6 evaluations...
     Parsed 6/6 evaluations successfully
   Call [6/6] — 1 chunk(s), 5 evaluations...
@@ -22,25 +22,21 @@ Risk Factor Chunks — Semantic Relevance Validation
 
 [3/4] Metrics
   Total chunks: 48
-  Relevant:   39
-  Irrelevant: 9
-  Precision:  81.25%
+  Relevant:   48
+  Irrelevant: 0
+  Precision:  100.00%
 
 [4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\risks_validation_results.csv
   ✓ Saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\risks_validation_results.csv
 
 ======================================================================
 Validation Complete
-Semantic Precision: 81.25%
+Semantic Precision: 100.00%
 
 ----------------------------------------------------------------------
 Chunk Length Analysis
 ----------------------------------------------------------------------
-Relevant chunks (n=39):
-  Avg length: 2,669 chars
-  Min: 139 | Max: 5,424
-
-Irrelevant chunks (n=9):
-  Avg length: 4,029 chars
-  Min: 1,535 | Max: 5,583
+Relevant chunks (n=48):
+  Avg length: 2,924 chars
+  Min: 139 | Max: 5,583
 ======================================================================
