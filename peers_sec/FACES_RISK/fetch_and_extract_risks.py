@@ -77,6 +77,8 @@ def get_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100
     if isinstance(sic_codes, str):
         sic_codes = [sic_codes]
 
+    fiscal_year = int(fiscal_year)
+
     # Companies file their FY annual report months after the fiscal year ends.
     # Search the second half of the fiscal year through mid-next-year to capture
     # all fiscal year-end dates (e.g. FY2023 ending Jun–Dec 2023 filed Jul 2023–Apr 2024).

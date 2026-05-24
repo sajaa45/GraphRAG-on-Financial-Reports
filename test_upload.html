@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeersGraphRAG - Upload Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        input[type="file"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover:not(:disabled) {
+            background: #5568d3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        .status.show {
+            display: block;
+        }
+        .status.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .status.info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .step {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            background: #f8f9fa;
+            border-left: 4px solid #ddd;
+        }
+        .step.running {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+        }
+        .step.done {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .step-message {
+            font-size: 13px;
+            color: #666;
+        }
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 PeersGraphRAG Pipeline</h1>
+        <p class="subtitle">Upload an annual report and specify the fiscal year</p>
+
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="fileInput">Annual Report (HTML or PDF)</label>
+                <input type="file" id="fileInput" accept=".html,.htm,.pdf" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fiscalYear">Fiscal Year</label>
+                <input type="text" id="fiscalYear" placeholder="e.g., 2024" value="2024" required pattern="\d{4}">
+            </div>
+
+            <button type="submit" id="submitBtn">Start Pipeline</button>
+        </form>
+
+        <div id="status" class="status"></div>
+        <div id="steps"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        const form = document.getElementById('uploadForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusDiv = document.getElementById('status');
+        const stepsDiv = document.getElementById('steps');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('fileInput');
+            const fiscalYear = document.getElementById('fiscalYear').value;
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showStatus('Please select a file', 'error');
+                return;
+            }
+
+            if (!fiscalYear || !/^\d{4}$/.test(fiscalYear)) {
+                showStatus('Please enter a valid 4-digit fiscal year', 'error');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Uploading...';
+            stepsDiv.innerHTML = '';
+
+            try {
+                // Upload file
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('fiscal_year', fiscalYear);
+
+                const response = await fetch(`${API_URL}/pipeline/run`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                const jobId = data.job_id;
+
+                showStatus(`Pipeline started! Job ID: ${jobId}`, 'info');
+                submitBtn.textContent = 'Processing...';
+
+                // Listen to SSE stream
+                const eventSource = new EventSource(`${API_URL}/pipeline/${jobId}/stream`);
+
+                eventSource.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    console.log('Event:', data);
+
+                    if (data.type === 'pipeline_complete') {
+                        showStatus('✅ Pipeline completed successfully!', 'success');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Start Pipeline';
+                        eventSource.close();
+                        return;
+                    }
+
+                    if (data.type === 'pipeline_failed') {
+                        showStatus(`❌ Pipeline failed: ${data.error}`, 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Start Pipeline';
+                        eventSource.close();
+                        return;
+                    }
+
+                    // Update step
+                    if (data.step) {
+                        updateStep(data);
+                    }
+                };
+
+                eventSource.onerror = (error) => {
+                    console.error('SSE Error:', error);
+                    showStatus('Connection error. Check if backend is running.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Start Pipeline';
+                    eventSource.close();
+                };
+
+            } catch (error) {
+                console.error('Error:', error);
+                showStatus(`Error: ${error.message}`, 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Start Pipeline';
+            }
+        });
+
+        function showStatus(message, type) {
+            statusDiv.textContent = message;
+            statusDiv.className = `status show ${type}`;
+        }
+
+        function updateStep(data) {
+            let stepEl = document.getElementById(`step-${data.step}`);
+            
+            if (!stepEl) {
+                stepEl = document.createElement('div');
+                stepEl.id = `step-${data.step}`;
+                stepEl.className = 'step';
+                stepsDiv.appendChild(stepEl);
+            }
+
+            stepEl.className = `step ${data.status}`;
+
+            let content = `<div class="step-title">Step ${data.step}: ${data.label}</div>`;
+            
+            if (data.status === 'running' && data.message) {
+                content += `<div class="step-message"><span class="spinner"></span>${data.message}</div>`;
+            } else if (data.status === 'done' && data.summary) {
+                content += `<div class="step-message">${data.summary}</div>`;
+            } else if (data.status === 'error' && data.error) {
+                content += `<div class="step-message">Error: ${data.error}</div>`;
+            }
+
+            stepEl.innerHTML = content;
+        }
+    </script>
+</body>
+</html>
