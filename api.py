@@ -1,7 +1,8 @@
 """
 PeersGraphRAG Pipeline API
 --------------------------
-POST /pipeline/run          — upload a document and start the pipeline; returns {job_id}
+POST /pipeline/run          — upload a document with fiscal year and start the pipeline; returns {job_id}
+                              Required: file (multipart/form-data), fiscal_year (form field, e.g., "2024")
 GET  /pipeline/{id}/stream  — SSE stream of step events (status + summary per step)
 GET  /pipeline/{id}/status  — polling fallback: current job state
 """
@@ -9,6 +10,7 @@ GET  /pipeline/{id}/status  — polling fallback: current job state
 from __future__ import annotations
 
 import asyncio
+import importlib.util
 import json
 import os
 import sys
@@ -46,6 +48,18 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 _executor = ThreadPoolExecutor(max_workers=4)
+
+_RELATIONS_DIR = os.path.join(ROOT, "KG_building", "relations")
+
+
+def _import_validator(rel_name: str, fn_name: str):
+    """Load a validate_entity.py by relation name and return the named function.
+    Uses importlib because all three files share the same module name."""
+    path = os.path.join(_RELATIONS_DIR, rel_name, "validate_entity.py")
+    spec = importlib.util.spec_from_file_location(f"validator_{rel_name}", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return getattr(mod, fn_name)
 
 # ---------------------------------------------------------------------------
 # App
@@ -131,7 +145,7 @@ def _pipeline_fail(job_id: str, error: str) -> None:
 # Pipeline runner
 # ---------------------------------------------------------------------------
 
-async def _run_pipeline(job_id: str, file_path: str) -> None:
+async def _run_pipeline(job_id: str, file_path: str, fiscal_year: str) -> None:
     loop = asyncio.get_event_loop()
     job_dir = os.path.join(OUTPUT_DIR, job_id)
     os.makedirs(job_dir, exist_ok=True)
@@ -143,7 +157,7 @@ async def _run_pipeline(job_id: str, file_path: str) -> None:
     peer_metrics_path     = os.path.join(job_dir, "peer_metrics.json")
 
     # Mutable state shared between step closures
-    ctx: Dict[str, Any] = {}
+    ctx: Dict[str, Any] = {"fiscal_year": fiscal_year}
 
     try:
         # ------------------------------------------------------------------ Step 1
@@ -176,23 +190,51 @@ async def _run_pipeline(job_id: str, file_path: str) -> None:
             main_company = extractor.main_company
             extractor.close()
 
-            # Write extracted entities into Neo4j
+            # Validate extracted entities before writing to Neo4j
+            _validators = {
+                "FACES_RISK": _import_validator("FACES_RISK", "validate_faces_risk"),
+                "HAS_METRIC": _import_validator("HAS_METRIC", "validate_has_metric"),
+                "OPERATES_IN": _import_validator("OPERATES_IN", "validate_operates_in"),
+            }
+
             neo_uri  = os.getenv("NEO4J_URI",      "bolt://localhost:7687")
             neo_user = os.getenv("NEO4J_USERNAME",  "neo4j")
             neo_pass = os.getenv("NEO4J_PASSWORD",  "")
             builder = Neo4jBuilder(neo_uri, neo_user, neo_pass, main_company=main_company)
             total_written = 0
-            for jp in json_paths:
-                total_written += builder.build_from_json(jp)
-            builder.driver.close()
-
-            # Count entities per relation for the summary message
             counts: Dict[str, int] = {}
+
             for jp in json_paths:
-                with open(jp, "r", encoding="utf-8") as fh:
-                    data = json.load(fh)
-                for rel, items in data.get("relations", {}).items():
-                    counts[rel] = len(items)
+                rel_name = os.path.basename(os.path.dirname(jp))
+                validator = _validators.get(rel_name)
+
+                if validator:
+                    print(f"\n[Validation] Running {rel_name} validator on {jp} ...")
+                    validated = validator(jp)
+                    if validated is None:
+                        print(f"  ⚠ Validator returned None for {rel_name} — skipping")
+                        continue
+                    # OPERATES_IN returns {"validated_relation": {...}}; normalise to standard shape
+                    if "validated_relation" in validated:
+                        item = validated["validated_relation"]
+                        rel_type = item.get("rel", rel_name)
+                        normalised: Dict = {
+                            "main_company": validated.get("main_company", main_company),
+                            "relations": {rel_type: [item]},
+                        }
+                    else:
+                        normalised = validated
+                    total_written += builder._build_from_data(normalised)
+                    for rel, items in normalised.get("relations", {}).items():
+                        counts[rel] = len(items)
+                else:
+                    total_written += builder.build_from_json(jp)
+                    with open(jp, "r", encoding="utf-8") as fh:
+                        data = json.load(fh)
+                    for rel, items in data.get("relations", {}).items():
+                        counts[rel] = len(items)
+
+            builder.driver.close()
 
             return main_company, counts, total_written
 
@@ -231,18 +273,18 @@ async def _run_pipeline(job_id: str, file_path: str) -> None:
             from extract_metrices import (
                 get_target_company_metrics,
                 analyze_company_covenants,
-                FISCAL_YEAR,
                 MAX_COMPANIES,
             )
             target_metrics = get_target_company_metrics()
             companies_to_analyze = peer_companies[:MAX_COMPANIES]
+            fy = ctx["fiscal_year"]
 
             companies_with_metrics = []
             for company in companies_to_analyze:
                 cik    = company["cik"]
                 name   = company["name"]
                 ticker = company.get("ticker", "N/A")
-                metric_results = analyze_company_covenants(cik, name, target_metrics, FISCAL_YEAR)
+                metric_results = analyze_company_covenants(cik, name, target_metrics, fy)
                 if metric_results:
                     total_matches = sum(len(v) for v in metric_results.values())
                     companies_with_metrics.append({
@@ -255,7 +297,7 @@ async def _run_pipeline(job_id: str, file_path: str) -> None:
 
             output = {
                 "companies_with_metrics": companies_with_metrics,
-                "fiscal_year": FISCAL_YEAR,
+                "fiscal_year": fy,
             }
             with open(peer_metrics_path, "w", encoding="utf-8") as fh:
                 json.dump(output, fh, indent=2, ensure_ascii=False)
@@ -274,7 +316,6 @@ async def _run_pipeline(job_id: str, file_path: str) -> None:
             from fetch_and_extract_risks import (
                 get_sic_from_neo4j,
                 process_companies_from_api,
-                FISCAL_YEAR as RISK_FY,
             )
             from process_risks import process_all_risks
 
@@ -282,9 +323,10 @@ async def _run_pipeline(job_id: str, file_path: str) -> None:
             if isinstance(sic, str):
                 sic = [sic]
 
+            fy = ctx["fiscal_year"]
             companies_data = process_companies_from_api(
                 sic_codes=sic,
-                fiscal_year=RISK_FY,
+                fiscal_year=fy,
                 output_file=companies_risks_path,
             )
             n_companies = len(companies_data)
@@ -378,8 +420,14 @@ async def _sse_generator(job_id: str):
 async def run_pipeline(
     background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
+    fiscal_year: str = Form(...),
 ):
-    """Upload an HTML/PDF annual report and start the processing pipeline."""
+    """Upload an HTML/PDF annual report and start the processing pipeline.
+    
+    Args:
+        file: The annual report file (HTML or PDF)
+        fiscal_year: The fiscal year for the report (e.g., "2024")
+    """
     job_id = _new_job()
 
     # Save uploaded file
@@ -389,9 +437,9 @@ async def run_pipeline(
     with open(file_path, "wb") as fh:
         fh.write(content)
 
-    background_tasks.add_task(_run_pipeline, job_id, file_path)
+    background_tasks.add_task(_run_pipeline, job_id, file_path, fiscal_year)
 
-    return {"job_id": job_id, "filename": file.filename, "steps": STEPS}
+    return {"job_id": job_id, "filename": file.filename, "fiscal_year": fiscal_year, "steps": STEPS}
 
 
 @app.get("/pipeline/{job_id}/stream")
