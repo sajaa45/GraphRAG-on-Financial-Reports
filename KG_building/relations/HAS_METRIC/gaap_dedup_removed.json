@@ -39,6 +39,24 @@
     },
     {
       "removed": {
+        "metric_type": "Debt extinguishment expenses",
+        "gaap_concept": "Interest Expense",
+        "value": "1.8",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
         "metric_type": "Consolidated net income",
         "gaap_concept": "Net Income (Loss)",
         "value": "170.9",
@@ -75,7 +93,7 @@
     },
     {
       "removed": {
-        "metric_type": "U.S. sales",
+        "metric_type": "U.S. net sales",
         "gaap_concept": "Revenue",
         "value": "1089.4",
         "unit": "$ million",
@@ -93,7 +111,7 @@
     },
     {
       "removed": {
-        "metric_type": "International sales",
+        "metric_type": "International net sales",
         "gaap_concept": "Revenue",
         "value": "1029.1",
         "unit": "$ million",
@@ -111,7 +129,7 @@
     },
     {
       "removed": {
-        "metric_type": "Consumer & Specialties Segment sales",
+        "metric_type": "Consumer & Specialties Segment net sales",
         "gaap_concept": "Revenue",
         "value": "1140.2",
         "unit": "$ million",
@@ -129,7 +147,7 @@
     },
     {
       "removed": {
-        "metric_type": "Engineered Solutions Segment sales",
+        "metric_type": "Engineered Solutions Segment net sales",
         "gaap_concept": "Revenue",
         "value": "978.3",
         "unit": "$ million",
@@ -147,34 +165,16 @@
     },
     {
       "removed": {
-        "metric_type": "Consolidated cost of sales",
-        "gaap_concept": "Cost of Goods Sold",
-        "value": "1570.8",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Profitability"
-      },
-      "kept": {
-        "metric_type": "Cost of goods sold",
-        "gaap_concept": "Cost of Goods Sold",
-        "value": "1570.8",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Profitability"
-      }
-    },
-    {
-      "removed": {
-        "metric_type": "Marketing and administrative costs",
-        "gaap_concept": "Selling, General and Administrative Expenses",
-        "value": "209.2",
+        "metric_type": "Research and development expenses",
+        "gaap_concept": "Operating Expenses",
+        "value": "23.0",
         "unit": "$ million",
         "year": "2024",
         "category": "Profitability"
       },
       "kept": {
         "metric_type": "Marketing and administrative expenses",
-        "gaap_concept": "Selling, General and Administrative Expenses",
+        "gaap_concept": "Operating Expenses",
         "value": "209.2",
         "unit": "$ million",
         "year": "2024",
@@ -183,17 +183,215 @@
     },
     {
       "removed": {
-        "metric_type": "The amount recorded for the net deferred tax liability was $115.7 million",
-        "gaap_concept": "Deferred Tax Liabilities",
-        "value": "115.7",
+        "metric_type": "Provision for credit losses",
+        "gaap_concept": "Operating Expenses",
+        "value": "30.0",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Marketing and administrative expenses",
+        "gaap_concept": "Operating Expenses",
+        "value": "209.2",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "Litigation expenses",
+        "gaap_concept": "Operating Expenses",
+        "value": "11.3",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Marketing and administrative expenses",
+        "gaap_concept": "Operating Expenses",
+        "value": "209.2",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "Gain on sale of assets, net",
+        "gaap_concept": "Other Income (Expense)",
+        "value": "12.3",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Other non-operating deductions, net",
+        "gaap_concept": "Other Income (Expense)",
+        "value": "4.7",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "Total non-operating deductions, net",
+        "gaap_concept": "Other Income (Expense)",
+        "value": "62.9",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Other non-operating deductions, net",
+        "gaap_concept": "Other Income (Expense)",
+        "value": "4.7",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "Net income attributable to non-controlling interests",
+        "gaap_concept": "Net Income (Loss)",
+        "value": "3.8",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Net income",
+        "gaap_concept": "Net Income (Loss)",
+        "value": "167.1",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "Net interest expense",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
         "unit": "$ million",
         "year": "2024",
         "category": "Leverage"
       },
       "kept": {
-        "metric_type": "Total deferred tax liabilities",
-        "gaap_concept": "Deferred Tax Liabilities",
-        "value": "193.1",
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "Percentage depletion allowances",
+        "gaap_concept": "Income Tax Expense",
+        "value": "10.0",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Provision for taxes on income",
+        "gaap_concept": "Income Tax Expense",
+        "value": "59.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "net charge to the Company for GILTI",
+        "gaap_concept": "Income Tax Expense",
+        "value": "1.5",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Provision for taxes on income",
+        "gaap_concept": "Income Tax Expense",
+        "value": "59.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "effects of foreign earnings and the related foreign rate differentials",
+        "gaap_concept": "Income Tax Expense",
+        "value": "10.5",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Provision for taxes on income",
+        "gaap_concept": "Income Tax Expense",
+        "value": "59.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "there were $4.5 million in loans ... outstanding under the Revolving Facility",
+        "gaap_concept": "Total Debt",
+        "value": "4.5",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "assumed $1.9 million in long-term debt",
+        "gaap_concept": "Total Debt",
+        "value": "1.9",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "outstanding balance of $0.9 million",
+        "gaap_concept": "Total Debt",
+        "value": "0.9",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      },
+      "kept": {
+        "metric_type": "assumed $1.9 million in long-term debt",
+        "gaap_concept": "Total Debt",
+        "value": "1.9",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "$0.6 million of which were in use",
+        "gaap_concept": "Short-term Debt",
+        "value": "0.6",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Liquidity"
+      },
+      "kept": {
+        "metric_type": "Short-term debt",
+        "gaap_concept": "Short-term Debt",
+        "value": "5.1",
         "unit": "$ million",
         "year": "2024",
         "category": "Leverage"
@@ -273,6 +471,24 @@
     },
     {
       "removed": {
+        "metric_type": "Operating lease cost",
+        "gaap_concept": "Operating Expenses",
+        "value": "17.3",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Marketing and administrative expenses",
+        "gaap_concept": "Operating Expenses",
+        "value": "209.2",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
         "metric_type": "Cash paid for amounts included in the measurement of lease liabilities",
         "gaap_concept": "Operating Cash Flow",
         "value": "18.2",
@@ -291,20 +507,38 @@
     },
     {
       "removed": {
-        "metric_type": "Right-of-use-asset",
-        "gaap_concept": "Right-of-Use Assets",
-        "value": "46.9",
+        "metric_type": "Lease liability - current",
+        "gaap_concept": "Total Debt",
+        "value": "14.5",
         "unit": "$ million",
         "year": "2024",
-        "category": "Debt Structure"
+        "category": "Leverage"
       },
       "kept": {
-        "metric_type": "Right-of-use assets obtained in the exchange for operating lease liabilities",
-        "gaap_concept": "Right-of-Use Assets",
-        "value": "17.6",
+        "metric_type": "assumed $1.9 million in long-term debt",
+        "gaap_concept": "Total Debt",
+        "value": "1.9",
         "unit": "$ million",
         "year": "2024",
-        "category": "Debt Structure"
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "Lease liability - non-current",
+        "gaap_concept": "Total Debt",
+        "value": "38.7",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      },
+      "kept": {
+        "metric_type": "assumed $1.9 million in long-term debt",
+        "gaap_concept": "Total Debt",
+        "value": "1.9",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
       }
     },
     {
@@ -322,6 +556,24 @@
         "value": "78.6",
         "unit": "$ million",
         "year": "2023",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "Net income for the years ended 2024, 2023 and 2022 include $ 5.4 million",
+        "gaap_concept": "Net Income (Loss)",
+        "value": "5.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Net income",
+        "gaap_concept": "Net Income (Loss)",
+        "value": "167.1",
+        "unit": "$ million",
+        "year": "2024",
         "category": "Profitability"
       }
     },
@@ -345,6 +597,24 @@
     },
     {
       "removed": {
+        "metric_type": "Weighted average shares outstanding, adjusted",
+        "gaap_concept": "Weighted Average Shares Outstanding",
+        "value": "32.3",
+        "unit": "million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "Weighted average shares outstanding",
+        "gaap_concept": "Weighted Average Shares Outstanding",
+        "value": "32.1",
+        "unit": "million",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
         "metric_type": "Diluted earnings per share attributable to MTI",
         "gaap_concept": "Earnings Per Share",
         "value": "5.17",
@@ -357,6 +627,24 @@
         "gaap_concept": "Earnings Per Share",
         "value": "5.21",
         "unit": "$",
+        "year": "2024",
+        "category": "Profitability"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "reversals ... related mostly to the conversion of units for tax withholding purposes",
+        "gaap_concept": "Compensation Expense",
+        "value": "2.8",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Profitability"
+      },
+      "kept": {
+        "metric_type": "compensation expense amortized with respect to all units",
+        "gaap_concept": "Compensation Expense",
+        "value": "6.5",
+        "unit": "$ million",
         "year": "2024",
         "category": "Profitability"
       }
@@ -399,35 +687,35 @@
     },
     {
       "removed": {
-        "metric_type": "Total tax provision",
-        "gaap_concept": "Provision for Income Taxes",
-        "value": "59.4",
-        "unit": "$ million",
+        "metric_type": "Consolidated effective tax rate",
+        "gaap_concept": "Effective Tax Rate",
+        "value": "26.6",
+        "unit": "%",
         "year": "2024",
         "category": "Profitability"
       },
       "kept": {
-        "metric_type": "Provision for taxes on income",
-        "gaap_concept": "Provision for Income Taxes",
-        "value": "59.4",
-        "unit": "$ million",
+        "metric_type": "Effective tax rate",
+        "gaap_concept": "Effective Tax Rate",
+        "value": "26.6",
+        "unit": "%",
         "year": "2024",
         "category": "Profitability"
       }
     },
     {
       "removed": {
-        "metric_type": "Deferred tax assets arising from tax loss carry forwards",
-        "gaap_concept": "Deferred Tax Assets",
-        "value": "23.2",
+        "metric_type": "Accrued interest and penalties",
+        "gaap_concept": "Income Tax Payable",
+        "value": "0.4",
         "unit": "$ million",
         "year": "2024",
         "category": "Leverage"
       },
       "kept": {
-        "metric_type": "Total deferred tax assets",
-        "gaap_concept": "Deferred Tax Assets",
-        "value": "77.4",
+        "metric_type": "Total unrecognized tax benefits",
+        "gaap_concept": "Income Tax Payable",
+        "value": "1.9",
         "unit": "$ million",
         "year": "2024",
         "category": "Leverage"
@@ -471,81 +759,9 @@
     },
     {
       "removed": {
-        "metric_type": "bad debt expense",
-        "gaap_concept": "Provision for Credit Losses",
-        "value": "1.4",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Profitability"
-      },
-      "kept": {
-        "metric_type": "Provision for credit losses",
-        "gaap_concept": "Provision for Credit Losses",
-        "value": "30.0",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Profitability"
-      }
-    },
-    {
-      "removed": {
-        "metric_type": "interest rate",
-        "gaap_concept": "Interest Expense",
-        "value": "1.375",
-        "unit": "% per annum",
-        "year": "2024",
-        "category": "Debt Structure"
-      },
-      "kept": {
-        "metric_type": "Net interest expense",
-        "gaap_concept": "Interest Expense",
-        "value": "56.4",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Coverage"
-      }
-    },
-    {
-      "removed": {
-        "metric_type": "commitment fee",
-        "gaap_concept": "Interest Expense",
-        "value": "0.175",
-        "unit": "% per annum",
-        "year": "2024",
-        "category": "Debt Structure"
-      },
-      "kept": {
-        "metric_type": "Net interest expense",
-        "gaap_concept": "Interest Expense",
-        "value": "56.4",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Coverage"
-      }
-    },
-    {
-      "removed": {
-        "metric_type": "fronting fee",
-        "gaap_concept": "Interest Expense",
-        "value": "0.125",
-        "unit": "% per annum",
-        "year": "2024",
-        "category": "Debt Structure"
-      },
-      "kept": {
-        "metric_type": "Net interest expense",
-        "gaap_concept": "Interest Expense",
-        "value": "56.4",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Coverage"
-      }
-    },
-    {
-      "removed": {
-        "metric_type": "loans outstanding under the Revolving Facility",
+        "metric_type": "5.00 % due 2028",
         "gaap_concept": "Total Debt",
-        "value": "4.5",
+        "value": "396.8",
         "unit": "$ million",
         "year": "2024",
         "category": "Leverage"
@@ -561,9 +777,9 @@
     },
     {
       "removed": {
-        "metric_type": "letters of credit outstanding under the Revolving Facility",
+        "metric_type": "Term Loan due 2031",
         "gaap_concept": "Total Debt",
-        "value": "9.1",
+        "value": "567.7",
         "unit": "$ million",
         "year": "2024",
         "category": "Leverage"
@@ -579,25 +795,7 @@
     },
     {
       "removed": {
-        "metric_type": "aggregate principal amount of Notes",
-        "gaap_concept": "Total Debt",
-        "value": "400",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Leverage"
-      },
-      "kept": {
-        "metric_type": "assumed $1.9 million in long-term debt",
-        "gaap_concept": "Total Debt",
-        "value": "1.9",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Leverage"
-      }
-    },
-    {
-      "removed": {
-        "metric_type": "outstanding balance on the committed loan facility in Japan",
+        "metric_type": "outstanding balance of $0.9 million on this facility",
         "gaap_concept": "Total Debt",
         "value": "0.9",
         "unit": "$ million",
@@ -615,9 +813,9 @@
     },
     {
       "removed": {
-        "metric_type": "long-term debt assumed in Concept Pet acquisition",
+        "metric_type": "issued $400 million aggregate principal amount of “Notes”",
         "gaap_concept": "Total Debt",
-        "value": "1.9",
+        "value": "400",
         "unit": "$ million",
         "year": "2024",
         "category": "Leverage"
@@ -633,20 +831,200 @@
     },
     {
       "removed": {
-        "metric_type": "non-cash debt extinguishment expenses",
-        "gaap_concept": "Net Income (Loss)",
-        "value": "1.8",
-        "unit": "$ million",
+        "metric_type": "interest rate of 5.0% per annum",
+        "gaap_concept": "Interest Expense",
+        "value": "5.0",
+        "unit": "%",
         "year": "2024",
-        "category": "Profitability"
+        "category": "Debt Structure"
       },
       "kept": {
-        "metric_type": "Net income",
-        "gaap_concept": "Net Income (Loss)",
-        "value": "167.1",
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
         "unit": "$ million",
         "year": "2024",
-        "category": "Profitability"
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "applicable margin equal to 1.375% per annum",
+        "gaap_concept": "Interest Expense",
+        "value": "1.375",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "applicable margin equal to 0.375% per annum",
+        "gaap_concept": "Interest Expense",
+        "value": "0.375",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "applicable margin equal to 2.00% per annum",
+        "gaap_concept": "Interest Expense",
+        "value": "2.00",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "applicable margin equal to 1.00% per annum",
+        "gaap_concept": "Interest Expense",
+        "value": "1.00",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "commitment fee of 0.175% per annum",
+        "gaap_concept": "Interest Expense",
+        "value": "0.175",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "step-ups to 0.300% and 0.250%",
+        "gaap_concept": "Interest Expense",
+        "value": "0.300",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "step-down to 0.150%",
+        "gaap_concept": "Interest Expense",
+        "value": "0.150",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "fronting fee of 0.125% per annum",
+        "gaap_concept": "Interest Expense",
+        "value": "0.125",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "37.5 basis points",
+        "gaap_concept": "Interest Expense",
+        "value": "0.375",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
+      }
+    },
+    {
+      "removed": {
+        "metric_type": "12.5 basis points",
+        "gaap_concept": "Interest Expense",
+        "value": "0.125",
+        "unit": "%",
+        "year": "2024",
+        "category": "Debt Structure"
+      },
+      "kept": {
+        "metric_type": "Interest expense, net",
+        "gaap_concept": "Interest Expense",
+        "value": "56.4",
+        "unit": "$ million",
+        "year": "2024",
+        "category": "Leverage"
       }
     },
     {
@@ -669,56 +1047,38 @@
     },
     {
       "removed": {
-        "metric_type": "weighted average interest rates on short-term borrowings outstanding",
-        "gaap_concept": "Interest Expense",
-        "value": "6.9",
-        "unit": "%",
-        "year": "2024",
-        "category": "Debt Structure"
-      },
-      "kept": {
-        "metric_type": "Net interest expense",
-        "gaap_concept": "Interest Expense",
-        "value": "56.4",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Coverage"
-      }
-    },
-    {
-      "removed": {
-        "metric_type": "interest costs",
+        "metric_type": "interest costs incurred",
         "gaap_concept": "Interest Expense",
         "value": "63.2",
         "unit": "$ million",
         "year": "2024",
-        "category": "Debt Structure"
+        "category": "Coverage"
       },
       "kept": {
-        "metric_type": "Net interest expense",
+        "metric_type": "Interest expense, net",
         "gaap_concept": "Interest Expense",
         "value": "56.4",
         "unit": "$ million",
         "year": "2024",
-        "category": "Coverage"
+        "category": "Leverage"
       }
     },
     {
       "removed": {
-        "metric_type": "Ending balance at December 31, 2024",
-        "gaap_concept": "Cash and Cash Equivalents",
-        "value": "5.5",
+        "metric_type": "ending projected benefit obligation",
+        "gaap_concept": "Total Liabilities",
+        "value": "342.3",
         "unit": "$ million",
         "year": "2024",
-        "category": "Liquidity"
+        "category": "Leverage"
       },
       "kept": {
-        "metric_type": "Cash and cash equivalents",
-        "gaap_concept": "Cash and Cash Equivalents",
-        "value": "333.1",
+        "metric_type": "Total liabilities",
+        "gaap_concept": "Total Liabilities",
+        "value": "1610.7",
         "unit": "$ million",
         "year": "2024",
-        "category": "Liquidity"
+        "category": "Leverage"
       }
     },
     {
@@ -788,42 +1148,6 @@
         "metric_type": "Total assets",
         "gaap_concept": "Total Assets",
         "value": "3393.9",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Leverage"
-      }
-    },
-    {
-      "removed": {
-        "metric_type": "Consolidated net sales",
-        "gaap_concept": "Revenue",
-        "value": "2118.5",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Profitability"
-      },
-      "kept": {
-        "metric_type": "Worldwide sales",
-        "gaap_concept": "Revenue",
-        "value": "2119",
-        "unit": "$ billion",
-        "year": "2024",
-        "category": "Profitability"
-      }
-    },
-    {
-      "removed": {
-        "metric_type": "projected pension benefit obligations",
-        "gaap_concept": "Projected Benefit Obligation",
-        "value": "342.3",
-        "unit": "$ million",
-        "year": "2024",
-        "category": "Leverage"
-      },
-      "kept": {
-        "metric_type": "ending projected benefit obligation",
-        "gaap_concept": "Projected Benefit Obligation",
-        "value": "342.3",
         "unit": "$ million",
         "year": "2024",
         "category": "Leverage"

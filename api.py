@@ -10,19 +10,22 @@ GET  /pipeline/{id}/status  — polling fallback: current job state
 from __future__ import annotations
 
 import asyncio
+import csv
 import importlib.util
 import json
 import os
+import re
 import sys
 import traceback
 import uuid
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from dotenv import load_dotenv
 from fastapi import BackgroundTasks, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
 # ---------------------------------------------------------------------------
 # Bootstrap
@@ -37,10 +40,13 @@ for _subdir in [
     "KG_building",
     os.path.join("peers_sec", "FACES_RISK"),
     os.path.join("peers_sec", "HAS_METRIC"),
+    "retrival+eval",
 ]:
     _path = os.path.join(ROOT, _subdir)
     if _path not in sys.path:
         sys.path.insert(0, _path)
+
+_THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 
 UPLOAD_DIR = os.path.join(ROOT, "uploads")
 OUTPUT_DIR = os.path.join(ROOT, "pipeline_output")
@@ -257,7 +263,7 @@ async def _run_pipeline(job_id: str, file_path: str, fiscal_year: str) -> None:
             sic_codes = get_sic_from_neo4j()
             if isinstance(sic_codes, str):
                 sic_codes = [sic_codes]
-            companies = get_companies_from_api(sic_codes)
+            companies = get_companies_from_api(sic_codes, fiscal_year=ctx["fiscal_year"])
             return sic_codes, companies
 
         sic_codes, peer_companies = await loop.run_in_executor(_executor, _step3)
@@ -288,9 +294,7 @@ async def _run_pipeline(job_id: str, file_path: str, fiscal_year: str) -> None:
                 if metric_results:
                     total_matches = sum(len(v) for v in metric_results.values())
                     companies_with_metrics.append({
-                        "cik":           cik,
-                        "name":          name,
-                        "ticker":        ticker,
+                        "company": {"cik": cik, "name": name, "ticker": ticker},
                         "metrics":       metric_results,
                         "total_matches": total_matches,
                     })
@@ -413,6 +417,200 @@ async def _sse_generator(job_id: str):
 
 
 # ---------------------------------------------------------------------------
+# QA singleton
+# ---------------------------------------------------------------------------
+
+_qa_instance = None
+
+
+def _get_qa():
+    global _qa_instance
+    if _qa_instance is None:
+        from credit_risk_qa import CreditRiskQA
+        _qa_instance = CreditRiskQA()
+    return _qa_instance
+
+
+def _build_citations(results: list) -> Dict[str, Any]:
+    citations: Dict[str, Any] = {}
+    for row in results:
+        target = row.get("target", "")
+        peer = row.get("peer", "")
+        for r in (row.get("target_risks") or []):
+            cid = r.get("citation_id", "")
+            if cid and cid not in citations:
+                citations[cid] = {
+                    "type": "risk", "company": target, "role": "target",
+                    "document_url": r.get("document_url") or None,
+                    "summary": r.get("name", ""),
+                }
+        for r in (row.get("peer_risks") or []):
+            cid = r.get("citation_id", "")
+            if cid and cid not in citations:
+                citations[cid] = {
+                    "type": "risk", "company": peer, "role": "peer",
+                    "document_url": r.get("document_url") or None,
+                    "summary": r.get("name", ""),
+                }
+        for m in (row.get("target_metrics") or []):
+            cid = m.get("citation_id", "")
+            if cid and cid not in citations:
+                citations[cid] = {
+                    "type": "metric", "company": target, "role": "target",
+                    "document_url": None,
+                    "summary": (
+                        f"{m.get('label') or m.get('name', '')} = "
+                        f"{m.get('value', '')} {m.get('unit', '')} ({m.get('year', '')})"
+                    ).strip(),
+                }
+        for m in (row.get("peer_metrics") or []):
+            cid = m.get("citation_id", "")
+            if cid and cid not in citations:
+                citations[cid] = {
+                    "type": "metric", "company": peer, "role": "peer",
+                    "document_url": m.get("source_url") or None,
+                    "summary": (
+                        f"{m.get('label') or m.get('name', '')} = "
+                        f"{m.get('value', '')} {m.get('unit', '')} ({m.get('year', '')})"
+                    ).strip(),
+                }
+    return citations
+
+
+# ---------------------------------------------------------------------------
+# Pydantic request models
+# ---------------------------------------------------------------------------
+
+class QARequest(BaseModel):
+    question: str
+    reasoning: bool = False
+
+
+class EvalRequest(BaseModel):
+    test_type: str  # answer_relevancy | context_precision | answer_source_traceability
+                    # | target_validation | risk_peers_validation | overall_score
+
+
+# ---------------------------------------------------------------------------
+# Eval helpers
+# ---------------------------------------------------------------------------
+
+_RETRIVAL_DIR = os.path.join(ROOT, "retrival+eval", "retrival_results")
+_GROUND_TRUTH_DIR = os.path.join(ROOT, "retrival+eval", "Ground_Truth")
+_RESOURCES_DIR = os.path.join(_GROUND_TRUTH_DIR, "resources")
+
+
+def _load_eval_module(name: str):
+    path = os.path.join(_RESOURCES_DIR, f"{name}.py")
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _read_csv(path: str) -> list:
+    if not os.path.exists(path):
+        return []
+    with open(path, newline='', encoding='utf-8') as f:
+        return list(csv.DictReader(f))
+
+
+def _csv_to_scorecard(rows: list, test_type: str) -> Dict[str, Any]:
+    """Map CSV rows from any eval test into the {rows, weighted} Scorecard shape."""
+    if test_type == "answer_relevancy":
+        summary = next((r for r in rows if r.get("aspect", "").strip() == "** SUMMARY **"), None)
+        weighted = float(summary["combined_score"]) if summary else 0.0
+        items = [
+            {
+                "dimension": r["aspect"],
+                "score": float(r.get("aspect_score") or 0),
+                "note": r.get("explanation", ""),
+            }
+            for r in rows if r.get("aspect", "").strip() != "** SUMMARY **"
+        ]
+        return {"test_type": test_type, "rows": items, "weighted": weighted}
+
+    if test_type == "context_precision":
+        summary = next((r for r in rows if r.get("citation_id", "").strip() == "** SUMMARY **"), None)
+        weighted = float(summary["is_relevant"]) if summary else 0.0
+        items = [
+            {
+                "dimension": r.get("citation_id", ""),
+                "score": 1.0 if str(r.get("is_relevant", "")).lower() == "true" else 0.0,
+                "note": r.get("explanation", ""),
+            }
+            for r in rows if r.get("citation_id", "").strip() != "** SUMMARY **"
+        ]
+        return {"test_type": test_type, "rows": items, "weighted": weighted}
+
+    if test_type == "answer_source_traceability":
+        data_rows = [r for r in rows if r.get("claim_id", "").strip()]
+        correct = sum(1 for r in data_rows if str(r.get("is_correct_source", "")).lower() == "true")
+        weighted = correct / len(data_rows) if data_rows else 0.0
+        items = [
+            {
+                "dimension": r["claim_id"],
+                "score": 1.0 if str(r.get("is_correct_source", "")).lower() == "true" else 0.0,
+                "note": r.get("explanation", ""),
+            }
+            for r in data_rows
+        ]
+        return {"test_type": test_type, "rows": items, "weighted": weighted}
+
+    if test_type == "target_validation":
+        data_rows = [r for r in rows if r.get("citation_id", "").strip()]
+        correct = sum(1 for r in data_rows if str(r.get("is_correctly_extracted", "")).lower() == "true")
+        weighted = correct / len(data_rows) if data_rows else 0.0
+        items = [
+            {
+                "dimension": f"{r.get('type','?')} · {r.get('extracted_name','')}",
+                "score": 1.0 if str(r.get("is_correctly_extracted", "")).lower() == "true" else 0.0,
+                "note": r.get("explanation", ""),
+            }
+            for r in data_rows
+        ]
+        return {"test_type": test_type, "rows": items, "weighted": weighted}
+
+    if test_type == "risk_peers_validation":
+        data_rows = [r for r in rows if r.get("company_name", "").strip()]
+        relevant = sum(1 for r in data_rows if str(r.get("is_semantically_relevant", "")).lower() == "true")
+        weighted = relevant / len(data_rows) if data_rows else 0.0
+        items = [
+            {
+                "dimension": f"{r.get('company_name','')} · {r.get('risk_theme','')}",
+                "score": 1.0 if str(r.get("is_semantically_relevant", "")).lower() == "true" else 0.0,
+                "note": r.get("relevance_explanation", ""),
+            }
+            for r in data_rows
+        ]
+        return {"test_type": test_type, "rows": items, "weighted": weighted}
+
+    if test_type == "overall_score":
+        overall_row = next((r for r in rows if r.get("component", "").strip() == "** OVERALL **"), None)
+        try:
+            weighted = float(overall_row["score"]) if overall_row else 0.0
+        except (TypeError, ValueError):
+            weighted = 0.0
+        items = []
+        for r in rows:
+            comp = r.get("component", "").strip()
+            if comp == "** OVERALL **":
+                continue
+            try:
+                score = float(r.get("score") or 0)
+            except (TypeError, ValueError):
+                score = 0.0
+            items.append({
+                "dimension": comp,
+                "score": score,
+                "note": f"weight {r.get('weight', '')}",
+            })
+        return {"test_type": test_type, "rows": items, "weighted": weighted}
+
+    return {"test_type": test_type, "rows": [], "weighted": 0.0}
+
+
+# ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
 
@@ -475,6 +673,121 @@ async def get_status(job_id: str):
         "error":     job["error"],
         "steps":     job["steps"],
     }
+
+
+@app.post("/qa/run")
+async def run_qa(request: QARequest):
+    """Run a question against the knowledge graph.
+
+    Returns the answer with inline [CITE:id] tags, a citations map for rendering
+    clickable links, the Cypher queries that were executed, and (optionally) a
+    reasoning trace.
+    """
+    loop = asyncio.get_event_loop()
+
+    def _run():
+        qa = _get_qa()
+        data = qa.ask_multi(request.question)
+        answer = _THINK_RE.sub('', data["answer"]).strip()
+        queries = data["queries"]
+        results = data["results"]
+
+        citations = _build_citations(results)
+
+        qa._save_extraction_result(request.question, queries, results)
+        qa._save_answer(answer)
+
+        reasoning_trace: Optional[str] = None
+        if request.reasoning and results:
+            reasoning_trace = qa.generate_reasoning_trace(request.question, queries, results)
+            reasoning_trace = _THINK_RE.sub('', reasoning_trace).strip()
+            qa._save_reasoning(reasoning_trace)
+
+        return {
+            "answer": answer,
+            "reasoning_trace": reasoning_trace,
+            "queries": queries,
+            "citations": citations,
+        }
+
+    try:
+        return await loop.run_in_executor(_executor, _run)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.post("/eval/run")
+async def run_eval(request: EvalRequest):
+    """Run an evaluation test against the last QA answer.
+
+    test_type must be one of:
+      answer_relevancy | context_precision | answer_source_traceability
+      | target_validation | risk_peers_validation | overall_score
+    """
+    valid_types = {
+        "answer_relevancy", "context_precision", "answer_source_traceability",
+        "target_validation", "risk_peers_validation", "overall_score",
+    }
+    if request.test_type not in valid_types:
+        raise HTTPException(status_code=400, detail=f"Unknown test_type: {request.test_type}")
+
+    extraction_path = os.path.join(_RETRIVAL_DIR, "extraction_result.json")
+    answer_path = os.path.join(_RETRIVAL_DIR, "answer.txt")
+
+    if request.test_type != "overall_score":
+        for p in (extraction_path, answer_path):
+            if not os.path.exists(p):
+                raise HTTPException(
+                    status_code=404,
+                    detail="No QA results found — ask a question first.",
+                )
+
+    loop = asyncio.get_event_loop()
+
+    def _run():
+        tt = request.test_type
+
+        if tt == "answer_relevancy":
+            mod = _load_eval_module("answer_relevancy")
+            out = os.path.join(_GROUND_TRUTH_DIR, "answer_relevancy_results.csv")
+            mod.evaluate_relevancy(extraction_path, answer_path, out)
+            return _csv_to_scorecard(_read_csv(out), tt)
+
+        if tt == "context_precision":
+            mod = _load_eval_module("context_precision")
+            out = os.path.join(_GROUND_TRUTH_DIR, "context_precision_results.csv")
+            # context_precision only needs extraction_result.json
+            mod.evaluate_context_precision(extraction_path, out)
+            return _csv_to_scorecard(_read_csv(out), tt)
+
+        if tt == "answer_source_traceability":
+            mod = _load_eval_module("answer_source_traceability")
+            out = os.path.join(_GROUND_TRUTH_DIR, "answer_source_traceability.csv")
+            mod.evaluate_traceability(extraction_path, answer_path, out)
+            return _csv_to_scorecard(_read_csv(out), tt)
+
+        if tt == "target_validation":
+            mod = _load_eval_module("target_validation")
+            out = os.path.join(_GROUND_TRUTH_DIR, "target_validation_results.csv")
+            mod.validate_target(extraction_path, out)
+            return _csv_to_scorecard(_read_csv(out), tt)
+
+        if tt == "risk_peers_validation":
+            mod = _load_eval_module("risk_peers")
+            out = os.path.join(_GROUND_TRUTH_DIR, "risks_validation_results.csv")
+            mod.validate_risk_chunks(extraction_path, out)
+            return _csv_to_scorecard(_read_csv(out), tt)
+
+        if tt == "overall_score":
+            mod = _load_eval_module("overall_score")
+            out = os.path.join(_GROUND_TRUTH_DIR, "overall_score.csv")
+            mod.compute_overall(_GROUND_TRUTH_DIR, out)
+            return _csv_to_scorecard(_read_csv(out), tt)
+
+    try:
+        return await loop.run_in_executor(_executor, _run)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
 
 
 @app.get("/health")

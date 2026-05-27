@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Upload,
@@ -27,19 +27,40 @@ export const Route = createFileRoute("/")({
 
 type PhaseStatus = "idle" | "running" | "complete" | "failed";
 
+interface CitationInfo {
+  type: "risk" | "metric";
+  company: string;
+  role: "target" | "peer";
+  document_url: string | null;
+  summary: string;
+}
+
 interface ChatMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
+  reasoning_trace?: string | null;
+  citations?: Record<string, CitationInfo>;
   trace?: { step: string; status: string }[];
   evaluation?: EvaluationResult | null;
   evaluating?: boolean;
+  evalType?: string;
 }
 
 interface EvaluationResult {
+  test_type: string;
   rows: { dimension: string; score: number; note: string }[];
   weighted: number;
 }
+
+const EVAL_TESTS: { value: string; label: string }[] = [
+  { value: "answer_relevancy",           label: "Answer Relevancy" },
+  { value: "context_precision",          label: "Context Precision" },
+  { value: "answer_source_traceability", label: "Source Traceability" },
+  { value: "target_validation",          label: "Target Extraction" },
+  { value: "risk_peers_validation",      label: "Peer Risk Validation" },
+  { value: "overall_score",              label: "Overall Score" },
+];
 
 function fmtBytes(n: number) {
   if (n < 1024) return `${n} B`;
@@ -83,17 +104,30 @@ function Index() {
   // -------- Phase 1 state --------
   const [file, setFile] = useState<File | null>(null);
   const [fiscalYear, setFiscalYear] = useState("2024");
-  const [phase1Status, setPhase1Status] = useState<PhaseStatus>("idle");
+  const [previousFilename, setPreviousFilename] = useState<string | null>(() => {
+    try { return localStorage.getItem("verdant_filename"); } catch { return null; }
+  });
+
+  // Restore completion from a previous session stored in localStorage
+  const [phase1Status, setPhase1Status] = useState<PhaseStatus>(() => {
+    try {
+      return localStorage.getItem("verdant_phase1_status") === "complete" ? "complete" : "idle";
+    } catch { return "idle"; }
+  });
   const [phase1Error, setPhase1Error] = useState<string | null>(null);
-  const [steps, setSteps] = useState<StepData[]>(() =>
-    PIPELINE_STEPS.map((s) => ({
+  const [steps, setSteps] = useState<StepData[]>(() => {
+    try {
+      const saved = localStorage.getItem("verdant_steps");
+      if (saved) return JSON.parse(saved) as StepData[];
+    } catch { /* ignore */ }
+    return PIPELINE_STEPS.map((s) => ({
       id: s.id,
       label: s.label,
       description: s.description,
       status: "pending" as StepStatus,
       logs: [],
-    })),
-  );
+    }));
+  });
   const stepStartRef = useRef<Record<number, number>>({});
   const eventSourceRef = useRef<EventSource | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -120,6 +154,12 @@ function Index() {
 
   const runPipeline = useCallback(async () => {
     if (!file) return;
+    try {
+      localStorage.removeItem("verdant_phase1_status");
+      localStorage.removeItem("verdant_steps");
+      localStorage.removeItem("verdant_filename");
+    } catch { /* ignore */ }
+    setPreviousFilename(null);
     setPhase1Error(null);
     setPhase1Status("running");
     setMessages([]);
@@ -148,6 +188,14 @@ function Index() {
           const data = JSON.parse(ev.data);
           if (data.type === "pipeline_complete") {
             setPhase1Status("complete");
+            setSteps((prev) => {
+              try { localStorage.setItem("verdant_steps", JSON.stringify(prev)); } catch { /* ignore */ }
+              return prev;
+            });
+            try {
+              localStorage.setItem("verdant_phase1_status", "complete");
+              if (file) localStorage.setItem("verdant_filename", file.name);
+            } catch { /* ignore */ }
             es.close();
             return;
           }
@@ -208,7 +256,7 @@ function Index() {
     }
   }, [phase1Status]);
 
-  // -------- QA submit (graceful local fallback if backend route missing) --------
+  // -------- QA submit --------
   const askQuestion = useCallback(async () => {
     const q = question.trim();
     if (!q || asking) return;
@@ -217,15 +265,17 @@ function Index() {
       id: crypto.randomUUID(),
       role: "assistant",
       content: "",
-      trace: QA_TRACE_STEPS.map((s) => ({ step: s, status: "running" })),
+      trace: QA_TRACE_STEPS.map((s) => ({ step: s, status: "pending" })),
     };
     setMessages((m) => [...m, userMsg, placeholder]);
     setQuestion("");
     setAsking(true);
 
-    // Animate trace steps client-side for smoothness
-    for (let i = 0; i < QA_TRACE_STEPS.length; i++) {
-      await new Promise((r) => setTimeout(r, 420));
+    // Animate trace steps while the real request is in flight
+    let stepIdx = 0;
+    const stepTimer = setInterval(() => {
+      if (stepIdx >= QA_TRACE_STEPS.length) { clearInterval(stepTimer); return; }
+      const current = stepIdx;
       setMessages((m) =>
         m.map((msg) =>
           msg.id === placeholder.id
@@ -233,16 +283,18 @@ function Index() {
                 ...msg,
                 trace: msg.trace?.map((t, idx) => ({
                   ...t,
-                  status: idx < i + 1 ? "done" : idx === i + 1 ? "running" : "pending",
+                  status: idx < current ? "done" : idx === current ? "running" : "pending",
                 })),
               }
             : msg,
         ),
       );
-    }
+      stepIdx++;
+    }, 700);
 
-    // Try real backend, fall back to mock
     let answer = "";
+    let citations: Record<string, CitationInfo> = {};
+    let reasoning_trace: string | null = null;
     try {
       const r = await fetch(`${backendUrl}/qa/run`, {
         method: "POST",
@@ -251,51 +303,53 @@ function Index() {
       });
       if (r.ok) {
         const data = await r.json();
-        answer = data.answer || JSON.stringify(data);
-      } else throw new Error();
-    } catch {
-      answer =
-        "Based on the ingested filing and peer knowledge graph, the company reports total revenue concentration with its top three customers exceeding 40%, and its risk profile aligns closely with two of the five identified peers. Operating margin sits below the peer median by ~180 bps.";
+        answer = data.answer || "";
+        citations = data.citations || {};
+        reasoning_trace = data.reasoning_trace || null;
+      } else {
+        answer = `Error ${r.status}: ${await r.text()}`;
+      }
+    } catch (e: unknown) {
+      answer = e instanceof Error ? e.message : "Request failed";
     }
 
+    clearInterval(stepTimer);
     setMessages((m) =>
       m.map((msg) =>
         msg.id === placeholder.id
-          ? { ...msg, content: answer, trace: msg.trace?.map((t) => ({ ...t, status: "done" })) }
+          ? {
+              ...msg,
+              content: answer,
+              citations,
+              reasoning_trace,
+              trace: msg.trace?.map((t) => ({ ...t, status: "done" })),
+            }
           : msg,
       ),
     );
     setAsking(false);
   }, [question, asking, backendUrl]);
 
-  // -------- Evaluation (optional, per-message) --------
+  // -------- Evaluation (per-message, user-chosen test type) --------
   const runEvaluation = useCallback(
-    async (messageId: string) => {
+    async (messageId: string, testType: string) => {
       setMessages((m) =>
-        m.map((msg) => (msg.id === messageId ? { ...msg, evaluating: true } : msg)),
+        m.map((msg) =>
+          msg.id === messageId ? { ...msg, evaluating: true, evalType: testType } : msg,
+        ),
       );
 
       let result: EvaluationResult | null = null;
       try {
-        const msg = messages.find((x) => x.id === messageId);
         const r = await fetch(`${backendUrl}/eval/run`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ answer: msg?.content }),
+          body: JSON.stringify({ test_type: testType }),
         });
         if (r.ok) result = await r.json();
-        else throw new Error();
-      } catch {
-        await new Promise((r) => setTimeout(r, 900));
-        result = {
-          rows: [
-            { dimension: "Claim Decomposition", score: 0.94, note: "8 atomic claims extracted" },
-            { dimension: "Source Matching", score: 0.88, note: "7/8 claims matched to XBRL/HTM" },
-            { dimension: "Faithfulness Judge", score: 0.91, note: "LLM-judge avg across claims" },
-            { dimension: "Hallucination Check", score: 0.97, note: "No unsupported claims detected" },
-          ],
-          weighted: 0.92,
-        };
+        else throw new Error(`${r.status}: ${await r.text()}`);
+      } catch (e) {
+        console.error("Eval error:", e);
       }
 
       setMessages((m) =>
@@ -304,15 +358,15 @@ function Index() {
         ),
       );
     },
-    [backendUrl, messages],
+    [backendUrl],
   );
 
   const phase1Badge = (() => {
     switch (phase1Status) {
       case "complete":
-        return { text: "Profile Ready", cls: "text-[var(--brand-teal)] bg-[color-mix(in_oklab,var(--brand-teal)_10%,transparent)] ring-[color-mix(in_oklab,var(--brand-teal)_30%,transparent)]" };
+        return { text: "Profile Ready", cls: "text-[var(--accent)] bg-[color-mix(in_oklab,var(--accent)_10%,transparent)] ring-[color-mix(in_oklab,var(--accent)_30%,transparent)]" };
       case "running":
-        return { text: "Ingesting", cls: "text-[var(--brand-orange)] bg-[color-mix(in_oklab,var(--brand-orange)_10%,transparent)] ring-[color-mix(in_oklab,var(--brand-orange)_30%,transparent)]" };
+        return { text: "Ingesting", cls: "text-[var(--warning)] bg-[color-mix(in_oklab,var(--warning)_10%,transparent)] ring-[color-mix(in_oklab,var(--warning)_30%,transparent)]" };
       case "failed":
         return { text: "Failed", cls: "text-destructive bg-destructive/5 ring-destructive/20" };
       default:
@@ -328,16 +382,16 @@ function Index() {
   const phase1Done = phase1Status === "complete";
 
   return (
-    <div className="min-h-screen font-sans text-foreground selection:bg-[color-mix(in_oklab,var(--brand-teal)_25%,transparent)]">
+    <div className="min-h-screen font-sans text-foreground selection:bg-[color-mix(in_oklab,var(--accent)_25%,transparent)]">
       {/* Nav */}
       <nav className="sticky top-0 z-50 border-b border-border bg-background/75 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--brand-deep)] text-[var(--brand-teal)] shadow-[var(--shadow-soft)]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--elevated)] text-[var(--accent)] shadow-[var(--shadow-soft)]">
               <ShieldCheck className="h-5 w-5" strokeWidth={2.25} />
             </div>
             <div className="flex flex-col leading-tight">
-              <span className="font-display text-lg italic tracking-tight text-[var(--brand-deep)]">
+              <span className="font-sans text-lg italic tracking-tight text-foreground">
                 Verdant
               </span>
               <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
@@ -352,7 +406,7 @@ function Index() {
                   connected === null
                     ? "bg-muted-foreground/40"
                     : connected
-                    ? "bg-[var(--brand-teal)]"
+                    ? "bg-[var(--accent)]"
                     : "bg-destructive"
                 }`}
               />
@@ -392,13 +446,13 @@ function Index() {
         {/* Hero */}
         <header className="mb-14 max-w-3xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 mb-5">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-orange)]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]" />
             <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
               Counterparty Due Diligence
             </span>
           </div>
-          <h1 className="font-display text-5xl sm:text-6xl leading-[1.02] tracking-tight text-[var(--brand-deep)]">
-            Know who you're <em className="text-[var(--brand-teal)]">really</em> dealing with.
+          <h1 className="font-sans text-5xl sm:text-6xl leading-[1.02] tracking-tight text-foreground">
+            Know who you're <em className="text-[var(--accent)]">really</em> dealing with.
           </h1>
           <p className="mt-5 text-base text-muted-foreground max-w-xl leading-relaxed">
             Upload a counterparty filing and Verdant maps its financial profile, peers, and risk surface into a queryable knowledge graph — with every answer auditable down to its source.
@@ -418,7 +472,7 @@ function Index() {
             {/* Upload card */}
             <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]">
               <div className="border-b border-border bg-[var(--panel)] px-5 py-3 flex items-center justify-between">
-                <div className="flex items-center gap-2 text-[var(--brand-deep)]">
+                <div className="flex items-center gap-2 text-foreground">
                   <Building2 className="h-3.5 w-3.5" />
                   <span className="font-mono text-[10px] uppercase tracking-widest">Subject Entity</span>
                 </div>
@@ -437,10 +491,10 @@ function Index() {
                     setDragOver(false);
                     handleFiles(e.dataTransfer.files);
                   }}
-                  className={`relative flex h-36 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed transition-all bg-grid ${
+                  className={`relative flex h-36 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed transition-all ${
                     dragOver
-                      ? "border-[var(--brand-teal)] bg-[color-mix(in_oklab,var(--brand-teal)_5%,transparent)]"
-                      : "border-border hover:border-[var(--brand-teal)]/50"
+                      ? "border-[var(--accent)] bg-[color-mix(in_oklab,var(--accent)_5%,transparent)]"
+                      : "border-border hover:border-[var(--accent)]/50"
                   }`}
                 >
                   <input
@@ -450,11 +504,11 @@ function Index() {
                     className="hidden"
                     onChange={(e) => handleFiles(e.target.files)}
                   />
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-deep)] text-[var(--brand-teal)]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--elevated)] text-[var(--accent)]">
                     <Upload className="h-4 w-4" />
                   </div>
-                  <span className="text-sm font-medium text-[var(--brand-deep)]">
-                    Drop a counterparty filing or <span className="text-[var(--brand-teal)] underline-offset-4 hover:underline">browse files</span>
+                  <span className="text-sm font-medium text-foreground">
+                    Drop a counterparty filing or <span className="text-[var(--accent)] underline-offset-4 hover:underline">browse files</span>
                   </span>
                   <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                     SEC 10-K · Annual Report · Registration Doc
@@ -467,11 +521,20 @@ function Index() {
                       <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                     </div>
                     <span className="text-sm font-medium truncate">
-                      {file ? file.name : "No file selected"}
+                      {file
+                        ? file.name
+                        : previousFilename && phase1Status === "complete"
+                        ? previousFilename
+                        : "No file selected"}
                     </span>
                     {file && (
                       <span className="font-mono text-[10px] text-muted-foreground uppercase shrink-0">
                         {fmtBytes(file.size)}
+                      </span>
+                    )}
+                    {!file && previousFilename && phase1Status === "complete" && (
+                      <span className="font-mono text-[10px] text-[var(--accent)] uppercase shrink-0">
+                        restored
                       </span>
                     )}
                   </div>
@@ -484,13 +547,13 @@ function Index() {
                         type="text"
                         value={fiscalYear}
                         onChange={(e) => setFiscalYear(e.target.value)}
-                        className="w-14 bg-transparent text-xs font-mono outline-none text-[var(--brand-deep)]"
+                        className="w-14 bg-transparent text-xs font-mono outline-none text-foreground"
                       />
                     </div>
                     <button
                       onClick={runPipeline}
                       disabled={!file || phase1Status === "running"}
-                      className="group relative flex items-center gap-2 overflow-hidden rounded-md bg-[var(--brand-deep)] text-[var(--brand-teal)] text-xs font-semibold px-4 py-2 transition-all hover:bg-[color-mix(in_oklab,var(--brand-deep)_92%,var(--brand-teal)_8%)] disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
+                      className="group relative flex items-center gap-2 overflow-hidden rounded-md bg-[var(--elevated)] text-[var(--accent)] text-xs font-semibold px-4 py-2 transition-all hover:bg-[var(--elevated)] disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
                     >
                       {phase1Status === "complete" || phase1Status === "failed" ? (
                         <>
@@ -531,6 +594,34 @@ function Index() {
           </div>
         </section>
 
+        {/* Summary panel — visible after pipeline completes */}
+        {phase1Done && (
+          <div
+            className="mt-8 rounded-2xl border border-border bg-card overflow-hidden shadow-[var(--shadow-soft)]"
+            style={{ animation: "fadeReveal 0.6s var(--ease-out-expo) both" }}
+          >
+            <div className="border-b border-border bg-[var(--panel)] px-5 py-3 flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+              <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                Pipeline Summary
+              </span>
+            </div>
+            <div className="divide-y divide-border">
+              {steps.filter((s) => s.summary).map((s) => (
+                <div key={s.id} className="flex items-start gap-4 px-5 py-3">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--accent)] w-4 shrink-0 mt-0.5">
+                    {String(s.id).padStart(2, "0")}
+                  </span>
+                  <span className="font-mono text-[10px] w-36 shrink-0 text-muted-foreground truncate">
+                    {s.label}
+                  </span>
+                  <span className="text-xs text-foreground leading-relaxed">{s.summary}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* PHASE 2 — appears smoothly after Phase 1 complete */}
         {phase1Done && (
           <section
@@ -544,7 +635,7 @@ function Index() {
               subtitle="Query the knowledge graph in natural language. Every answer ships with a process trace and can be audited on demand."
               badge={{
                 text: "Ready",
-                cls: "text-[var(--brand-teal)] bg-[color-mix(in_oklab,var(--brand-teal)_10%,transparent)] ring-[color-mix(in_oklab,var(--brand-teal)_30%,transparent)]",
+                cls: "text-[var(--accent)] bg-[color-mix(in_oklab,var(--accent)_10%,transparent)] ring-[color-mix(in_oklab,var(--accent)_30%,transparent)]",
               }}
             />
 
@@ -553,14 +644,14 @@ function Index() {
               <div className="divide-y divide-border max-h-[520px] overflow-y-auto">
                 {messages.length === 0 && (
                   <div className="p-10 text-center">
-                    <Sparkles className="h-5 w-5 mx-auto text-[var(--brand-teal)] mb-3" />
+                    <Sparkles className="h-5 w-5 mx-auto text-[var(--accent)] mb-3" />
                     <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-                      Try: <span className="text-[var(--brand-deep)] italic">"What are this company's top concentration risks compared to its peers?"</span>
+                      Try: <span className="text-foreground italic">"What are this company's top concentration risks compared to its peers?"</span>
                     </p>
                   </div>
                 )}
                 {messages.map((m) => (
-                  <MessageBubble key={m.id} message={m} onEvaluate={() => runEvaluation(m.id)} />
+                  <MessageBubble key={m.id} message={m} onEvaluate={(testType) => runEvaluation(m.id, testType)} />
                 ))}
               </div>
 
@@ -583,7 +674,7 @@ function Index() {
                 <button
                   type="submit"
                   disabled={!question.trim() || asking}
-                  className="flex items-center gap-1.5 rounded-lg bg-[var(--brand-orange)] text-white text-xs font-semibold px-4 py-2.5 transition-all hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
+                  className="flex items-center gap-1.5 rounded-lg bg-[var(--warning)] text-white text-xs font-semibold px-4 py-2.5 transition-all hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
                 >
                   <Send className="h-3.5 w-3.5" /> Ask
                 </button>
@@ -595,7 +686,7 @@ function Index() {
         {/* Footer */}
         <footer className="mt-24 pt-8 border-t border-border flex flex-wrap justify-between items-center gap-3">
           <div className="flex items-center gap-2 text-muted-foreground">
-            <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-teal)]" />
+            <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)]" />
             <span className="text-[10px] font-mono uppercase tracking-widest">
               Verdant · KYC Engine · Auditable by design
             </span>
@@ -623,10 +714,10 @@ function PhaseHeader({
   return (
     <div className="mb-8 flex items-start justify-between gap-4">
       <div className="max-w-xl">
-        <div className="font-mono text-[10px] font-bold tracking-[0.2em] text-[var(--brand-orange)] uppercase mb-2">
+        <div className="font-mono text-[10px] font-bold tracking-[0.2em] text-[var(--warning)] uppercase mb-2">
           {kicker}
         </div>
-        <h2 className="font-display text-3xl tracking-tight text-[var(--brand-deep)]">{title}</h2>
+        <h2 className="font-sans text-3xl tracking-tight text-foreground">{title}</h2>
         <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{subtitle}</p>
       </div>
       <span
@@ -638,19 +729,179 @@ function PhaseHeader({
   );
 }
 
+// ---------------------------------------------------------------------------
+// CitedText — renders answer text with [CITE:id] as clickable superscripts
+// ---------------------------------------------------------------------------
+
+const _CITE_RE = /\[CITE:([^\]]+)\]/g;
+
+function CitedText({
+  text,
+  citations,
+}: {
+  text: string;
+  citations?: Record<string, CitationInfo>;
+}) {
+  // Build ordered list of unique citation IDs as they appear in the text
+  const citeOrder: string[] = [];
+  const seen = new Set<string>();
+  for (const m of text.matchAll(_CITE_RE)) {
+    if (!seen.has(m[1])) { seen.add(m[1]); citeOrder.push(m[1]); }
+  }
+
+  // Render the Sources section as links too (lines starting with "- [")
+  const renderLine = (line: string, lineIdx: number) => {
+    // Markdown link: [label](url)
+    const mdLink = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
+    const linkParts: React.ReactNode[] = [];
+    let pos = 0;
+    for (const m of line.matchAll(new RegExp(mdLink.source, "g"))) {
+      if (m.index! > pos) linkParts.push(line.slice(pos, m.index));
+      linkParts.push(
+        <a key={m.index} href={m[2]} target="_blank" rel="noopener noreferrer"
+           className="text-[var(--accent)] underline underline-offset-2 hover:opacity-80 break-all">
+          {m[1]}
+        </a>
+      );
+      pos = m.index! + m[0].length;
+    }
+    if (pos < line.length) linkParts.push(line.slice(pos));
+    return <span key={lineIdx}>{linkParts}</span>;
+  };
+
+  // Split answer into lines to handle Sources section markdown
+  const lines = text.split("\n");
+  const lineNodes = lines.map((rawLine, li) => {
+    const isBold = rawLine.startsWith("**") || rawLine.startsWith("## ");
+    const isListItem = rawLine.startsWith("- ") || rawLine.startsWith("* ");
+    // Process [CITE:] within a line
+    const lineSegments: React.ReactNode[] = [];
+    let lpos = 0;
+    for (const m of rawLine.matchAll(new RegExp(_CITE_RE.source, "g"))) {
+      if (m.index! > lpos) lineSegments.push(renderLine(rawLine.slice(lpos, m.index!), lpos));
+      const n = citeOrder.indexOf(m[1]) + 1;
+      const info = citations?.[m[1]];
+      const href = info?.document_url;
+      lineSegments.push(
+        href ? (
+          <a key={m.index} href={href} target="_blank" rel="noopener noreferrer"
+             title={info.summary || m[1]}
+             className="ml-0.5 align-super text-[9px] font-mono text-[var(--accent)] hover:underline">
+            [{n}]
+          </a>
+        ) : (
+          <sup key={m.index} title={info?.summary || m[1]}
+               className="ml-0.5 text-[9px] font-mono text-[var(--accent)]/70">
+            [{n}]
+          </sup>
+        )
+      );
+      lpos = m.index! + m[0].length;
+    }
+    if (lpos < rawLine.length) lineSegments.push(renderLine(rawLine.slice(lpos), lpos));
+
+    const inner = lineSegments.length > 0 ? lineSegments : renderLine(rawLine, li);
+
+    if (isBold) return <p key={li} className="font-semibold text-foreground mt-2">{inner}</p>;
+    if (isListItem) return <li key={li} className="ml-4 list-disc text-muted-foreground">{inner}</li>;
+    return rawLine.trim() === ""
+      ? <div key={li} className="h-2" />
+      : <p key={li} className="text-sm leading-relaxed text-foreground">{inner}</p>;
+  });
+
+  // Footnote list at bottom
+  const footnotes = citeOrder
+    .map((id, idx) => {
+      const info = citations?.[id];
+      if (!info) return null;
+      const href = info.document_url;
+      return (
+        <div key={id} className="flex gap-2 text-[10px] font-mono text-muted-foreground">
+          <span className="shrink-0 text-[var(--accent)]">[{idx + 1}]</span>
+          <span className="truncate">
+            <span className="text-foreground">{info.company}</span>
+            {" · "}
+            <span className={info.role === "target" ? "text-[var(--accent)]" : "text-[var(--warning)]"}>
+              {info.role}
+            </span>
+            {" · "}
+            {info.summary.slice(0, 80)}
+            {href && (
+              <>
+                {" "}
+                <a href={href} target="_blank" rel="noopener noreferrer"
+                   className="text-[var(--accent)] underline underline-offset-2 hover:opacity-80">
+                  source ↗
+                </a>
+              </>
+            )}
+          </span>
+        </div>
+      );
+    })
+    .filter(Boolean);
+
+  return (
+    <div className="space-y-0.5">
+      <div className="space-y-1">{lineNodes}</div>
+      {footnotes.length > 0 && (
+        <div className="mt-4 pt-3 border-t border-border space-y-1.5">
+          <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+            Citations
+          </span>
+          {footnotes}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// ReasoningTrace — collapsible chain-of-thought
+// ---------------------------------------------------------------------------
+
+function ReasoningTrace({ trace }: { trace: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mt-3 rounded-lg border border-border bg-[var(--panel)] overflow-hidden">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-center justify-between px-3 py-2 text-left"
+      >
+        <span className="font-mono text-[10px] uppercase tracking-widest text-foreground">
+          Reasoning trace
+        </span>
+        <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="px-3 pb-3">
+          <pre className="whitespace-pre-wrap text-[10px] font-mono text-muted-foreground leading-relaxed max-h-96 overflow-y-auto">
+            {trace}
+          </pre>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// MessageBubble
+// ---------------------------------------------------------------------------
+
 function MessageBubble({
   message,
   onEvaluate,
 }: {
   message: ChatMessage;
-  onEvaluate: () => void;
+  onEvaluate: (testType: string) => void;
 }) {
   const [traceOpen, setTraceOpen] = useState(false);
+  const [selectedEval, setSelectedEval] = useState(EVAL_TESTS[0].value);
 
   if (message.role === "user") {
     return (
       <div className="p-5 flex justify-end" style={{ animation: "fadeReveal 0.4s var(--ease-out-expo) both" }}>
-        <div className="max-w-[80%] rounded-2xl rounded-tr-sm bg-[var(--brand-deep)] text-[var(--brand-teal)] px-4 py-2.5 text-sm font-medium shadow-[var(--shadow-soft)]">
+        <div className="max-w-[80%] rounded-2xl rounded-tr-sm bg-[var(--elevated)] text-[var(--accent)] px-4 py-2.5 text-sm font-medium shadow-[var(--shadow-soft)]">
           {message.content}
         </div>
       </div>
@@ -663,25 +914,23 @@ function MessageBubble({
   return (
     <div className="p-5" style={{ animation: "fadeReveal 0.4s var(--ease-out-expo) both" }}>
       <div className="flex gap-3">
-        <div className="h-7 w-7 shrink-0 rounded-full bg-[var(--brand-teal)] flex items-center justify-center text-white shadow-[var(--shadow-soft)]">
+        <div className="h-7 w-7 shrink-0 rounded-full bg-[var(--accent)] flex items-center justify-center text-white shadow-[var(--shadow-soft)]">
           <Sparkles className="h-3.5 w-3.5" />
         </div>
         <div className="flex-1 min-w-0">
-          {/* Trace */}
+          {/* Process trace */}
           {message.trace && (
             <div className="mb-3 rounded-lg border border-border bg-[var(--panel)] overflow-hidden">
               <button
                 onClick={() => setTraceOpen((o) => !o)}
                 className="w-full flex items-center justify-between px-3 py-2 text-left"
               >
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--brand-deep)]">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-foreground">
                   {isThinking ? "Reasoning…" : "Process trace"}
                 </span>
                 <div className="flex items-center gap-2">
                   {isThinking && (
-                    <span className="font-mono text-[10px] text-[var(--brand-orange)] animate-pulse">
-                      live
-                    </span>
+                    <span className="font-mono text-[10px] text-[var(--warning)] animate-pulse">live</span>
                   )}
                   <ChevronDown
                     className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${
@@ -701,9 +950,9 @@ function MessageBubble({
                       <span
                         className={
                           t.status === "done"
-                            ? "text-[var(--brand-teal)]"
+                            ? "text-[var(--accent)]"
                             : t.status === "running"
-                            ? "text-[var(--brand-orange)]"
+                            ? "text-[var(--warning)]"
                             : "text-muted-foreground/60"
                         }
                       >
@@ -720,28 +969,41 @@ function MessageBubble({
           {isThinking ? (
             <div className="h-4 w-2/3 rounded shimmer-bg" />
           ) : (
-            <p className="text-sm leading-relaxed text-[var(--brand-deep)]">{message.content}</p>
+            <CitedText text={message.content} citations={message.citations} />
+          )}
+
+          {/* Reasoning trace (LLM chain-of-thought) */}
+          {message.reasoning_trace && (
+            <ReasoningTrace trace={message.reasoning_trace} />
           )}
 
           {/* Evaluation CTA */}
           {!isThinking && traceDone && (
             <div className="mt-4">
               {!message.evaluation && !message.evaluating && (
-                <button
-                  onClick={onEvaluate}
-                  className="inline-flex items-center gap-2 rounded-full border border-[var(--brand-teal)]/40 bg-[color-mix(in_oklab,var(--brand-teal)_6%,transparent)] px-3.5 py-1.5 text-[11px] font-semibold text-[var(--brand-deep)] hover:bg-[color-mix(in_oklab,var(--brand-teal)_12%,transparent)] transition-all"
-                >
-                  <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-teal)]" />
-                  Audit this answer
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
-                    optional
-                  </span>
-                </button>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)] shrink-0" />
+                  <select
+                    value={selectedEval}
+                    onChange={(e) => setSelectedEval(e.target.value)}
+                    className="rounded-md border border-input bg-background px-2 py-1 text-[11px] font-mono outline-none focus:ring-1 focus:ring-ring text-foreground"
+                  >
+                    {EVAL_TESTS.map((t) => (
+                      <option key={t.value} value={t.value}>{t.label}</option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => onEvaluate(selectedEval)}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[var(--accent)]/40 bg-[color-mix(in_oklab,var(--accent)_6%,transparent)] px-3 py-1.5 text-[11px] font-semibold text-foreground hover:bg-[color-mix(in_oklab,var(--accent)_12%,transparent)] transition-all"
+                  >
+                    Run audit
+                  </button>
+                </div>
               )}
               {message.evaluating && (
                 <div className="inline-flex items-center gap-2 text-[11px] text-muted-foreground font-mono uppercase tracking-widest">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-orange)] animate-pulse" />
-                  Auditing claims…
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)] animate-pulse" />
+                  Running {EVAL_TESTS.find((t) => t.value === message.evalType)?.label ?? "audit"}…
                 </div>
               )}
               {message.evaluation && <Scorecard data={message.evaluation} />}
@@ -755,11 +1017,11 @@ function MessageBubble({
 
 function StatusDot({ status }: { status: string }) {
   if (status === "done")
-    return <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand-teal)]" />;
+    return <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />;
   if (status === "running")
     return (
       <span
-        className="h-1.5 w-1.5 rounded-full bg-[var(--brand-orange)]"
+        className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"
         style={{ animation: "pulseSlow 1.2s infinite" }}
       />
     );
@@ -767,6 +1029,7 @@ function StatusDot({ status }: { status: string }) {
 }
 
 function Scorecard({ data }: { data: EvaluationResult }) {
+  const label = EVAL_TESTS.find((t) => t.value === data.test_type)?.label ?? "Audit";
   return (
     <div
       className="mt-2 overflow-hidden rounded-xl border border-border bg-card"
@@ -774,16 +1037,16 @@ function Scorecard({ data }: { data: EvaluationResult }) {
     >
       <div className="flex items-center justify-between px-4 py-3 bg-[var(--panel)] border-b border-border">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="h-3.5 w-3.5 text-[var(--brand-teal)]" />
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--brand-deep)]">
-            Fidelity Audit
+          <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)]" />
+          <span className="font-mono text-[10px] uppercase tracking-widest text-foreground">
+            {label}
           </span>
         </div>
         <div className="flex items-baseline gap-1.5">
           <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            Weighted
+            Score
           </span>
-          <span className="font-display text-2xl text-[var(--brand-teal)]">
+          <span className="font-sans text-2xl text-[var(--accent)]">
             {(data.weighted * 100).toFixed(0)}
           </span>
           <span className="text-xs text-muted-foreground">/100</span>
@@ -791,19 +1054,21 @@ function Scorecard({ data }: { data: EvaluationResult }) {
       </div>
       <table className="w-full text-left">
         <tbody className="divide-y divide-border text-sm">
-          {data.rows.map((r) => (
-            <tr key={r.dimension}>
-              <td className="px-4 py-2.5 font-medium text-[var(--brand-deep)] w-1/3">{r.dimension}</td>
+          {data.rows.map((r, i) => (
+            <tr key={i}>
+              <td className="px-4 py-2.5 font-medium text-foreground w-1/3 truncate max-w-[160px]" title={r.dimension}>
+                {r.dimension}
+              </td>
               <td className="px-4 py-2.5 text-xs text-muted-foreground">{r.note}</td>
               <td className="px-4 py-2.5 w-32">
                 <div className="flex items-center gap-2">
                   <div className="h-1.5 flex-1 rounded-full bg-muted overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-[var(--brand-teal)]"
+                      className="h-full rounded-full bg-[var(--accent)]"
                       style={{ width: `${r.score * 100}%` }}
                     />
                   </div>
-                  <span className="font-mono text-[10px] text-[var(--brand-deep)] w-8 text-right">
+                  <span className="font-mono text-[10px] text-foreground w-8 text-right">
                     {(r.score * 100).toFixed(0)}
                   </span>
                 </div>

@@ -269,9 +269,10 @@ def get_target_name() -> str | None:
     return None
 
 
-def process_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100, delay=0.5, 
+def process_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100, delay=0.5,
                                output_file='peers_sec/FACES_RISK/companies_risks.json'):
     """Process companies from SEC API for given SIC code(s) and fiscal year."""
+    fiscal_year = int(fiscal_year)
     print(f"Filtering for fiscal year: {fiscal_year}")
     companies = get_companies_from_api(sic_codes, fiscal_year, size)
     print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes} [fiscal year {fiscal_year}]")
