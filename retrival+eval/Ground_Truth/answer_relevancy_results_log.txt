@@ -3,35 +3,35 @@ Answer Relevancy — RAGAS-style Ground Truth Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : is my company getting the best profit
-  Answer chars: 1670
+  Question    : How does Minerals Technologies Inc.'s debt level compare to its peers?
+  Answer chars: 1904
 
 [2/5] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
 
 [3/5] Decomposing question into verifiable aspects
   → 5 aspects identified:
-    1. Does the answer report at least one profitability metric for the target company?
-    2. Does the answer compare the target company’s profitability metric(s) to those of at least one peer company?
-    3. Does the answer avoid implying forward-looking profit trends or strategic advice not present in the filings?
-    4. Does the answer refrain from referencing external benchmarks, industry averages, or market data?
-    5. Does the answer clearly indicate whether the target’s profitability is higher, lower, or similar to peers based solely on the 10-K data?
+    1. Does the answer compare the target company’s debt level to at least one peer using financial metrics from their 10-K filings?
+    2. Does the answer include at least one leverage or debt structure metric for the target company?
+    3. Does the answer include at least one leverage or debt structure metric for at least one peer company?
+    4. Does the answer avoid implying external benchmarks, industry averages, or market data not found in the filings?
+    5. Does the answer refrain from offering strategic advice, forecasts, or recommendations about debt levels?
 
 [4/5] Judging answer coverage per aspect
-    [✓] YES      Does the answer report at least one profitability metric for the targe
-             The answer reports operating income ($286.5M) and net income ($167.1M) for Minerals Techno
-    [✓] YES      Does the answer compare the target company’s profitability metric(s) t
-             The answer compares MTI’s profitability metrics to those of three peer companies: Global G
-    [✓] YES      Does the answer avoid implying forward-looking profit trends or strate
-             The answer strictly reports historical financial data from 10-K filings without speculatin
-    [✓] YES      Does the answer refrain from referencing external benchmarks, industry
-             The answer relies solely on peer company financials from 10-K filings and does not referen
-    [✓] YES      Does the answer clearly indicate whether the target’s profitability is
-             The answer clearly concludes that MTI’s profitability is superior to all compared peers ba
+    [✓] YES      Does the answer compare the target company’s debt level to at least on
+             The answer compares MTI’s debt level to three peers (Global Gas Corp, Arcadium Lithium, NL
+    [✓] YES      Does the answer include at least one leverage or debt structure metric
+             The answer includes multiple debt structure metrics for MTI, such as the $575 million term
+    [✓] YES      Does the answer include at least one leverage or debt structure metric
+             The answer includes debt structure metrics for peers, such as Arcadium Lithium’s $1.2495 b
+    [✓] YES      Does the answer avoid implying external benchmarks, industry averages,
+             The answer relies solely on financial data from the cited 10-K filings and does not refere
+    [✓] YES      Does the answer refrain from offering strategic advice, forecasts, or 
+             The answer avoids strategic advice, forecasts, or recommendations, focusing only on factua
 
 [5/5] Computing overall relevancy score
   Overall score : 1.00
-  Reason        : The answer directly compares the target company’s operating and net income against all available peer companies using only data from their 10-K filings, conclusively demonstrating that MTI has superior profitability among peers, which fully addresses the question within the pipeline’s data constraints.
+  Reason        : The answer directly compares MTI’s debt levels to its three peers using only data from their 10-K filings, provides specific debt figures, highlights structural details, and contextualizes relative risk—all within the pipeline’s permitted data scope.
 
 ──────────────────────────────────────────────────────────────────────
 Results

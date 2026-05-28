@@ -40,8 +40,9 @@ def _llm_call(bedrock_client, model_id: str, prompt: str, max_tokens: int = 1024
         messages=[{"role": "user", "content": [{"text": prompt}]}],
         inferenceConfig={"maxTokens": max_tokens, "temperature": 0.0},
     )
-    text = response['output']['message']['content'][0]['text'].strip()
-    return _THINK_RE.sub('', text).strip()
+    # Do NOT strip <think> — for Qwen3 the structured output lives inside
+    # the <think> block; stripping it removes everything the parser needs.
+    return response['output']['message']['content'][0]['text'].strip()
 
 
 # ---------------------------------------------------------------------------

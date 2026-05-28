@@ -1,13 +1,10 @@
-Minerals Technologies Inc. (MTI) generated $286.5 million in operating income and $167.1 million in net income in 2024, with a 13.5% operating margin and 25.9% production margin — indicating strong, sustained profitability [CITE:TARGET_M0002] [CITE:TARGET_M0003] [CITE:TARGET_M0022] [CITE:TARGET_M0019].
+Minerals Technologies Inc. (MTI) had total debt of $533.6 million in 2024 [CITE:TARGET_M0044]. Its peer Global Gas Corp reported unsecured debt of $103.95 million [CITE:PEER_M0029], significantly lower than MTI. Arcadium Lithium plc had long-term debt of $960.6 million and current maturities of long-term debt of $288.9 million, totaling $1.2495 billion in debt [CITE:PEER_M0140][CITE:PEER_M0132], which is higher than MTI’s total debt. NL Industries Inc. did not report a total debt figure, so comparison is not available.
 
-In comparison:
-- Global Gas Corp reported an operating loss of $551.98 million and a net loss of $130.7 million in 2024, reflecting unprofitable operations [CITE:PEER_M0023] [CITE:PEER_M0011].
-- Arcadium Lithium plc reported an operating loss of $53.5 million and a net loss of $78.9 million in 2024, despite $288.6 million in gross profit [CITE:PEER_M0092] [CITE:PEER_M0094].
-- NL Industries Inc. reported $37.9 million in operating income and $59.3 million in net income (calculated from $83.3 million pre-tax income minus $14.1 million tax expense), significantly lower than MTI’s profitability [CITE:PEER_M0053] [CITE:PEER_M0046].
+MTI’s debt structure includes a $575 million term loan facility and $400 million revolving credit commitment, with $9.1 million in letters of credit outstanding [CITE:TARGET_M0025][CITE:TARGET_M0024][CITE:TARGET_M0026]. MTI’s interest expense was $56.4 million in 2024 [CITE:TARGET_M0007], and its net debt position is supported by $1.747 billion in shareholders’ equity [CITE:TARGET_M0041].
 
-MTI’s profitability significantly exceeds all peers. Global Gas Corp and Arcadium Lithium are unprofitable, while NL Industries is profitable but at a fraction of MTI’s scale and margin. MTI is clearly the most profitable among the peers reviewed.
+Global Gas Corp’s operating loss of $551.983 million [CITE:PEER_M0023] and negative cash flows raise concerns about its ability to service debt, despite its lower reported unsecured debt [CITE:PEER_R0050][CITE:PEER_R0091]. Arcadium Lithium plc has negative operating and investing cash flows of $176.0 million and $445.3 million respectively, and its ability to fund operations depends on securing financing under restrictive conditions [CITE:PEER_R0140]. NL Industries Inc. faces high leverage at its subsidiary Kronos, with $507.4 million in consolidated debt as of Dec 31, 2024, which restricts cash flow and financial flexibility [CITE:PEER_R0181].
 
-Sources:
+MTI’s debt level is moderate relative to Arcadium Lithium but higher than Global Gas Corp. However, MTI’s profitability and equity base appear more stable than peers with severe cash flow or leverage risks.
+
+**Sources:**
 - Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm
-- Arcadium Lithium plc: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm
-- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm

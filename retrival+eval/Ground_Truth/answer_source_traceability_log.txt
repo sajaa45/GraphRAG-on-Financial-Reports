@@ -3,42 +3,42 @@ Answer-Source Traceability — Phase 1 Ground Truth Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : is my company getting the best profit
-  Answer chars: 1186
-  Result rows : 6
+  Question    : How does Minerals Technologies Inc.'s debt level compare to its peers?
+  Answer chars: 1904
+  Result rows : 9
 
 [2/5] Building source registry
-  Total sources: 219  (89 risks, 130 metrics)
-    [TARGET_R0004] Pricing pressure and inability to pass on cost increases — The Company may face 
-    [PEER_R0001] Limited operating history and no revenue — Global Gas Corp has no customers, no 
-    [PEER_R0002] Failure to implement business strategy — Global Gas Corp may fail to implement i
-    [PEER_R0003] Unproven business model — Global Gas Corp's business model has not been tested, 
-    [PEER_R0004] Inability to secure financing or generate sufficient revenue — Global Gas Corp m
-    ... and 214 more
+  Total sources: 109  (25 risks, 84 metrics)
+    [TARGET_R0005] Capital market uncertainty impacting pension and postretirement benefit plans — 
+    [PEER_R0050] Inability to raise additional capital when needed — Failure to secure funding fo
+    [PEER_R0078] Warrants may expire worthless, depriving the company of expected cash proceeds —
+    [PEER_R0079] Cashless exercise of warrants reduces cash proceeds to the company — If warrants
+    [PEER_R0080] No cash dividends expected, so investors must rely on stock price appreciation f
+    ... and 104 more
 
 [3/5] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
 
 [4/5] Parsing claims and inline citations from answer
-  → 9 claims  |  9 cited  |  0 unresolved  |  0 uncited
-    C001: Minerals Technologies Inc. (MTI) reported a net income of $167.1 milli  [CITE:TARGET_M0024] ✓
-    C002: , with an operating margin of 13.5%  [CITE:TARGET_M0035] ✓
-    C003: Compared to peers, MTI’s profitability is stronger than Global Gas Cor  [CITE:PEER_M0015] ✓
-    C004: , indicating severe financial distress and elevated risk of insolvency  [CITE:PEER_R0004] ✓
-    C005: , indicating severe financial distress and elevated risk of insolvency  [CITE:PEER_R0006] ✓
-    ... and 4 more
+  → 14 claims  |  14 cited  |  0 unresolved  |  0 uncited
+    C001: Minerals Technologies Inc. (MTI) had total debt of $533.6 million in 2  [CITE:TARGET_M0044] ✓
+    C002: Its peer Global Gas Corp reported unsecured debt of $103.95 million  [CITE:PEER_M0029] ✓
+    C003: , significantly lower than MTI. Arcadium Lithium plc had long-term deb  [CITE:PEER_M0140] ✓
+    C004: , significantly lower than MTI. Arcadium Lithium plc had long-term deb  [CITE:PEER_M0132] ✓
+    C005: MTI’s debt structure includes a $575 million term loan facility and $4  [CITE:TARGET_M0025] ✓
+    ... and 9 more
 
-[5/5] Judging source correctness (9 LLM calls)
+[5/5] Judging source correctness (14 LLM calls)
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
-  Total claims       : 9
-  Correct source     : 9  (100.0%)
-  Wrong source       : 0
+  Total claims       : 14
+  Correct source     : 13  (92.9%)
+  Wrong source       : 1
   Fabricated (no src): 0
 
-✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_source_traceability.csv
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\answer_source_traceability.csv
 ======================================================================
-Source Traceability Score: 100.0%
+Source Traceability Score: 92.9%
 ======================================================================

@@ -12,6 +12,7 @@ Output CSV columns:
 import json
 import os
 import re
+import sys
 import time
 from typing import List, Tuple
 import csv
@@ -170,7 +171,6 @@ def validate_risk_chunks(
         def close(self):
             self.log.close()
     
-    import sys
     original_stdout = sys.stdout
     logger = TeeLogger(log_file_path)
     sys.stdout = logger

@@ -654,7 +654,7 @@ def _csv_to_scorecard(rows: list, test_type: str) -> Dict[str, Any]:
         ]
         return {"test_type": test_type, "rows": items, "weighted": weighted}
 
-    if test_type == "answer_source_traceability":
+    if test_type in ("answer_source_traceability", "faithfulness"):
         data_rows = [r for r in rows if r.get("claim_id", "").strip()]
         correct = sum(1 for r in data_rows if str(r.get("is_correct_source", "")).lower() == "true")
         weighted = correct / len(data_rows) if data_rows else 0.0
@@ -851,8 +851,9 @@ async def run_qa(request: QARequest):
         reasoning_trace: Optional[str] = None
         if request.reasoning and results:
             reasoning_trace = qa.generate_reasoning_trace(request.question, queries, results)
-            reasoning_trace = _THINK_RE.sub('', reasoning_trace).strip()
-            qa._save_reasoning(reasoning_trace)
+            reasoning_trace = reasoning_trace or None
+            if reasoning_trace:
+                qa._save_reasoning(reasoning_trace)
 
         return {
             "answer": answer,
@@ -877,6 +878,7 @@ async def run_eval(request: EvalRequest):
     """
     valid_types = {
         "answer_relevancy", "context_precision", "answer_source_traceability",
+        "faithfulness", "context_recall",
         "target_validation", "risk_peers_validation", "overall_score",
     }
     if request.test_type not in valid_types:
@@ -885,7 +887,8 @@ async def run_eval(request: EvalRequest):
     extraction_path = os.path.join(_RETRIVAL_DIR, "extraction_result.json")
     answer_path = os.path.join(_RETRIVAL_DIR, "answer.txt")
 
-    if request.test_type != "overall_score":
+    no_extraction_needed = {"overall_score", "context_recall"}
+    if request.test_type not in no_extraction_needed:
         for p in (extraction_path, answer_path):
             if not os.path.exists(p):
                 raise HTTPException(
@@ -911,11 +914,32 @@ async def run_eval(request: EvalRequest):
             mod.evaluate_context_precision(extraction_path, out)
             return _csv_to_scorecard(_read_csv(out), tt)
 
-        if tt == "answer_source_traceability":
+        if tt in ("answer_source_traceability", "faithfulness"):
             mod = _load_eval_module("answer_source_traceability")
             out = os.path.join(_GROUND_TRUTH_DIR, "answer_source_traceability.csv")
             mod.evaluate_traceability(extraction_path, answer_path, out)
             return _csv_to_scorecard(_read_csv(out), tt)
+
+        if tt == "context_recall":
+            os_mod = _load_eval_module("overall_score")
+            def _try(fn, path):
+                try:
+                    return fn(path) if os.path.exists(path) else None
+                except Exception:
+                    return None
+            gt = _GROUND_TRUTH_DIR
+            components = {
+                "Target Validation": _try(os_mod.score_target_validation,  os.path.join(gt, "target_validation_results.csv")),
+                "Peer Risk Recall":  _try(os_mod.score_risks_validation,   os.path.join(gt, "risks_validation_results.csv")),
+                "Metric Accuracy":   _try(os_mod.score_metrics_validation, os.path.join(gt, "metrics_validation_results.csv")),
+            }
+            available = {k: v for k, v in components.items() if v is not None}
+            recall = sum(available.values()) / len(available) if available else 0.0
+            items = [{"dimension": k, "score": v, "note": ""} for k, v in available.items()]
+            missing = [k for k, v in components.items() if v is None]
+            if missing:
+                items.append({"dimension": f"⚠ missing: {', '.join(missing)}", "score": 0.0, "note": "run the individual tests first"})
+            return {"test_type": "context_recall", "rows": items, "weighted": recall}
 
         if tt == "target_validation":
             mod = _load_eval_module("target_validation")

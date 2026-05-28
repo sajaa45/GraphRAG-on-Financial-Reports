@@ -3,58 +3,54 @@ Context Precision — RAGAS-style Ground Truth Evaluation
 ======================================================================
 
 [1/4] Loading extraction results
-  Question : is my company getting the best profit
+  Question : How does Minerals Technologies Inc.'s debt level compare to its peers?
 
 [2/4] Collecting retrieved chunks
-  Total chunks : 129  (48 risks, 81 metrics)
-    [TARGET_R0004] Minerals Technologies Inc. (target) — Pricing pressure and inability to pass on cost increases — The Company
-    [PEER_R0004] Global Gas Corp (peer) — Inability to secure future business or customers — The company has no 
-    [PEER_R0007] Global Gas Corp (peer) — Capital-intensive operations with insufficient revenue coverage — The 
-    [PEER_R0008] Global Gas Corp (peer) — High speculative risk of total investment loss — Investing in Global G
-    ... and 125 more
+  Total chunks : 109  (25 risks, 84 metrics)
+    [TARGET_R0005] Minerals Technologies Inc. (target) — Capital market uncertainty impacting pension and postretirement benefi
+    [PEER_R0050] Global Gas Corp (peer) — Inability to raise additional capital when needed — Failure to secure 
+    [PEER_R0078] Global Gas Corp (peer) — Warrants may expire worthless, depriving the company of expected cash 
+    [PEER_R0079] Global Gas Corp (peer) — Cashless exercise of warrants reduces cash proceeds to the company — I
+    ... and 105 more
 
 [3/4] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
 
-[4/4] Judging relevance — 129 chunks in 13 batch(es)
-  Batch [1/13] — 10 chunks ...
+[4/4] Judging relevance — 109 chunks in 11 batch(es)
+  Batch [1/11] — 10 chunks ...
     → parsed 10/10
-  Batch [2/13] — 10 chunks ...
+  Batch [2/11] — 10 chunks ...
     → parsed 10/10
-  Batch [3/13] — 10 chunks ...
+  Batch [3/11] — 10 chunks ...
     → parsed 10/10
-  Batch [4/13] — 10 chunks ...
+  Batch [4/11] — 10 chunks ...
     → parsed 10/10
-  Batch [5/13] — 10 chunks ...
+  Batch [5/11] — 10 chunks ...
     → parsed 10/10
-  Batch [6/13] — 10 chunks ...
+  Batch [6/11] — 10 chunks ...
     → parsed 10/10
-  Batch [7/13] — 10 chunks ...
+  Batch [7/11] — 10 chunks ...
     → parsed 10/10
-  Batch [8/13] — 10 chunks ...
+  Batch [8/11] — 10 chunks ...
+    → parsed 9/10
+  Batch [9/11] — 10 chunks ...
     → parsed 10/10
-  Batch [9/13] — 10 chunks ...
+  Batch [10/11] — 10 chunks ...
     → parsed 10/10
-  Batch [10/13] — 10 chunks ...
-    → parsed 10/10
-  Batch [11/13] — 10 chunks ...
-    → parsed 10/10
-  Batch [12/13] — 10 chunks ...
-    → parsed 10/10
-  Batch [13/13] — 9 chunks ...
+  Batch [11/11] — 9 chunks ...
     → parsed 9/9
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
-  Total chunks     : 129
-  Relevant         : 125  (96.9%)
+  Total chunks     : 109
+  Relevant         : 105  (96.3%)
   Irrelevant       : 4
-  Risk precision   : 45/48
-  Metric precision : 80/81
+  Risk precision   : 22/25
+  Metric precision : 83/84
   Quality gate     : PASS  (threshold: 0.70)
 
-✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\context_precision_results.csv
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\context_precision_results.csv
 ======================================================================
-Context Precision Score : 0.97  [PASS]
+Context Precision Score : 0.96  [PASS]
 ======================================================================

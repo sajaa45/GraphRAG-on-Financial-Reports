@@ -28,8 +28,9 @@ from typing import Any
 import boto3
 from dotenv import load_dotenv
 
-# Fix Windows console encoding
-if sys.platform == 'win32':
+# Fix Windows console encoding — guard against double-wrapping when loaded
+# multiple times from the API (codecs StreamWriter has no .buffer attribute).
+if sys.platform == 'win32' and hasattr(sys.stdout, 'buffer'):
     import codecs
     sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')

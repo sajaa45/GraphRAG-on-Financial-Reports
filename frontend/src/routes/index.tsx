@@ -58,7 +58,8 @@ interface EvaluationResult {
 const EVAL_TESTS: { value: string; label: string }[] = [
   { value: "answer_relevancy",           label: "Answer Relevancy" },
   { value: "context_precision",          label: "Context Precision" },
-  { value: "answer_source_traceability", label: "Source Traceability" },
+  { value: "context_recall",             label: "Context Recall" },
+  { value: "faithfulness",               label: "Faithfulness" },
   { value: "target_validation",          label: "Target Extraction" },
   { value: "risk_peers_validation",      label: "Peer Risk Validation" },
   { value: "overall_score",              label: "Overall Score" },
@@ -1036,6 +1037,7 @@ function SourcesList({ citations }: { citations?: Record<string, CitationInfo> }
 
 function ReasoningTrace({ trace }: { trace: string }) {
   const [open, setOpen] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className="mt-4 rounded-xl overflow-hidden border border-[color-mix(in_oklab,var(--accent)_20%,transparent)] bg-[color-mix(in_oklab,var(--accent)_4%,transparent)]">
       <button
@@ -1052,9 +1054,20 @@ function ReasoningTrace({ trace }: { trace: string }) {
       </button>
       {open && (
         <div className="px-4 pb-4 border-t border-[color-mix(in_oklab,var(--accent)_15%,transparent)]">
-          <pre className="mt-3 whitespace-pre-wrap text-[11px] font-mono text-muted-foreground leading-relaxed max-h-80 overflow-y-auto">
+          <pre
+            className={`mt-3 whitespace-pre-wrap text-[11px] font-mono text-muted-foreground leading-relaxed overflow-y-auto transition-all ${
+              expanded ? "" : "max-h-80"
+            }`}
+          >
             {trace}
           </pre>
+          <button
+            onClick={() => setExpanded((e) => !e)}
+            className="mt-2 flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-[var(--accent)]/60 hover:text-[var(--accent)] transition-colors"
+          >
+            <ChevronDown className={`h-3 w-3 transition-transform ${expanded ? "rotate-180" : ""}`} />
+            {expanded ? "Collapse" : "Expand full trace"}
+          </button>
         </div>
       )}
     </div>
@@ -1223,6 +1236,16 @@ function StatusDot({ status }: { status: string }) {
   return <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />;
 }
 
+const BAR_CHART_TYPES = new Set(["overall_score", "context_recall"]);
+
+function scoreBarColor(score: number) {
+  return score >= 0.75
+    ? "var(--accent)"
+    : score >= 0.5
+    ? "var(--warning)"
+    : "var(--destructive, #ef4444)";
+}
+
 function Scorecard({ data }: { data: EvaluationResult }) {
   const label = EVAL_TESTS.find((t) => t.value === data.test_type)?.label ?? "Audit";
   const pct = Math.round(data.weighted * 100);
@@ -1230,6 +1253,8 @@ function Scorecard({ data }: { data: EvaluationResult }) {
     pct >= 75 ? "text-[var(--accent)]" : pct >= 50 ? "text-[var(--warning)]" : "text-destructive";
   const barColor =
     pct >= 75 ? "bg-[var(--accent)]" : pct >= 50 ? "bg-[var(--warning)]" : "bg-destructive";
+
+  const useBarChart = BAR_CHART_TYPES.has(data.test_type);
 
   return (
     <div style={{ animation: "fadeReveal 0.4s var(--ease-out-expo) both" }}>
@@ -1250,37 +1275,71 @@ function Scorecard({ data }: { data: EvaluationResult }) {
           </div>
         </div>
       </div>
-      {/* Dimension rows */}
+
+      {/* Dimension rows — bar-chart style for overall/recall, table style for others */}
       {data.rows.length > 0 && (
-        <table className="w-full text-left">
-          <tbody className="divide-y divide-border">
-            {data.rows.map((r, i) => (
-              <tr key={i} className="hover:bg-muted/30 transition-colors">
-                <td className="px-4 py-2.5 text-[11px] font-medium text-foreground w-1/3 truncate max-w-[160px]" title={r.dimension}>
-                  {r.dimension}
-                </td>
-                <td className="px-4 py-2.5 text-[11px] text-muted-foreground leading-snug">{r.note}</td>
-                <td className="px-4 py-2.5 w-28">
-                  <div className="flex items-center gap-2">
-                    <div className="h-1 flex-1 rounded-full bg-muted overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${
-                          r.score >= 0.75 ? "bg-[var(--accent)]"
-                          : r.score >= 0.5 ? "bg-[var(--warning)]"
-                          : "bg-destructive"
-                        }`}
-                        style={{ width: `${r.score * 100}%` }}
-                      />
+        useBarChart ? (
+          <div className="px-4 py-3 flex flex-col gap-3">
+            {data.rows.map((r, i) => {
+              const rpct = Math.round(r.score * 100);
+              const color = scoreBarColor(r.score);
+              return (
+                <div key={i}>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-mono text-[11px] text-foreground">{r.dimension}</span>
+                    <div className="flex items-center gap-2">
+                      {r.note && (
+                        <span className="font-mono text-[10px] text-muted-foreground">{r.note}</span>
+                      )}
+                      <span
+                        className="font-mono text-[13px] font-semibold tabular-nums"
+                        style={{ color }}
+                      >
+                        {rpct}%
+                      </span>
                     </div>
-                    <span className="font-mono text-[10px] text-foreground w-7 text-right shrink-0">
-                      {Math.round(r.score * 100)}
-                    </span>
                   </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <div className="h-2.5 w-full rounded-full bg-muted overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-700"
+                      style={{ width: `${rpct}%`, backgroundColor: color }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <table className="w-full text-left">
+            <tbody className="divide-y divide-border">
+              {data.rows.map((r, i) => (
+                <tr key={i} className="hover:bg-muted/30 transition-colors">
+                  <td className="px-4 py-2.5 text-[11px] font-medium text-foreground w-1/3 truncate max-w-[160px]" title={r.dimension}>
+                    {r.dimension}
+                  </td>
+                  <td className="px-4 py-2.5 text-[11px] text-muted-foreground leading-snug">{r.note}</td>
+                  <td className="px-4 py-2.5 w-28">
+                    <div className="flex items-center gap-2">
+                      <div className="h-1 flex-1 rounded-full bg-muted overflow-hidden">
+                        <div
+                          className={`h-full rounded-full ${
+                            r.score >= 0.75 ? "bg-[var(--accent)]"
+                            : r.score >= 0.5 ? "bg-[var(--warning)]"
+                            : "bg-destructive"
+                          }`}
+                          style={{ width: `${r.score * 100}%` }}
+                        />
+                      </div>
+                      <span className="font-mono text-[10px] text-foreground w-7 text-right shrink-0">
+                        {Math.round(r.score * 100)}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )
       )}
     </div>
   );

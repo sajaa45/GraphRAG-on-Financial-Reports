@@ -3,10 +3,10 @@ Target Company — Extraction Accuracy Validation (Risks + Metrics)
 ======================================================================
 
 [1/4] Loading extraction results
-  Question : is my company getting the best profit
+  Question : How does Minerals Technologies Inc.'s debt level compare to its peers?
 
 [2/4] Collecting target chunks
-  Total : 34  (1 risks, 33 metrics)
+  Total : 46  (1 risks, 45 metrics)
 
 [3/4] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
@@ -14,22 +14,23 @@ Target Company — Extraction Accuracy Validation (Risks + Metrics)
 [4/4] Judging extraction accuracy
   Risks — 1 items in 1 batch(es)
     Batch [1/1] ...
-  Metrics — 33 items in 5 batch(es)
-    Batch [1/5] ...
-    Batch [2/5] ...
-    Batch [3/5] ...
-    Batch [4/5] ...
-    Batch [5/5] ...
+  Metrics — 45 items in 6 batch(es)
+    Batch [1/6] ...
+    Batch [2/6] ...
+    Batch [3/6] ...
+    Batch [4/6] ...
+    Batch [5/6] ...
+    Batch [6/6] ...
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
-  Total             : 34
-  Correctly extracted: 33  (97.1%)
+  Total             : 46
+  Correctly extracted: 44  (95.7%)
   Risk accuracy     : 1/1
-  Metric accuracy   : 32/33
+  Metric accuracy   : 43/45
 
-✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\target_validation_results.csv
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\target_validation_results.csv
 ======================================================================
-Extraction Accuracy : 0.97  (risks 1/1, metrics 32/33)
+Extraction Accuracy : 0.96  (risks 1/1, metrics 43/45)
 ======================================================================

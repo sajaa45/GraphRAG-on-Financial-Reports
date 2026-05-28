@@ -85,18 +85,33 @@ Rules:
     Do NOT try to join them row-by-row in Cypher. Collect each side into a list and return them separately.
     The LLM will align target and peer metrics by label/name after retrieval.
 11. When filtering MetricCategory, map the question intent to the closest known category name.
+12. CRITICAL — risk keyword rules:
+    a. NEVER use a company name (target or peer) as a WHERE keyword for risks. Company names do NOT appear
+       in the risk text of a competitor's filing. Using one as a filter will return zero peer risks.
+    b. Only use TOPIC keywords extracted from the question (e.g. 'debt', 'credit', 'liquidity', 'climate').
+    c. If the question asks for ALL risks or MAIN risks without specifying a topic keyword, OMIT the WHERE
+       clause entirely on both target and peer risks — return every risk node matched by the relationship.
 
 Reference patterns:
 
-Risks with peer comparison:
+Risks with peer comparison — topic-filtered (e.g. question mentions "debt"):
     MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
-    WHERE toLower(r.description) CONTAINS 'keyword' OR toLower(r.name) CONTAINS 'keyword'
-           OR toLower(r.why) CONTAINS 'keyword' OR toLower(r.source_text) CONTAINS 'keyword'
+    WHERE toLower(r.description) CONTAINS 'debt' OR toLower(r.name) CONTAINS 'debt'
+           OR toLower(r.why) CONTAINS 'debt' OR toLower(r.source_text) CONTAINS 'debt'
     WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page}}) AS target_risks
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)
-    WHERE toLower(pr.description) CONTAINS 'keyword' OR toLower(pr.name) CONTAINS 'keyword'
-           OR toLower(pr.why) CONTAINS 'keyword' OR toLower(pr.source_text) CONTAINS 'keyword'
+    WHERE toLower(pr.description) CONTAINS 'debt' OR toLower(pr.name) CONTAINS 'debt'
+           OR toLower(pr.why) CONTAINS 'debt' OR toLower(pr.source_text) CONTAINS 'debt'
+    WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page}}) AS peer_risks
+    RETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks
+    LIMIT 300
+
+Risks with peer comparison — ALL risks (e.g. question asks "what are the main risks"):
+    MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
+    WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page}}) AS target_risks
+    OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
+    OPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)
     WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page}}) AS peer_risks
     RETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks
     LIMIT 300
@@ -242,7 +257,12 @@ CRITICAL: The citation_id field is provided in every risk and metric object. Use
 QUERY_STRATEGIES = {
     "risks": (
         "Using ONLY the FACES_RISK relationship, fetch risk nodes for the TargetCompany "
-        "AND its peers (Company {{is_peer:true}}). Filter risks relevant to: {question}. "
+        "AND its peers (Company {{is_peer:true}}). "
+        "If the question asks for specific risk TOPICS (e.g. 'debt risk', 'credit risk', 'liquidity'), "
+        "filter by those topic keywords — but NEVER filter by the company name itself. "
+        "If the question asks for 'all risks', 'main risks', or does not specify a topic, "
+        "return ALL risk nodes with NO WHERE clause. "
+        "Original question: {question}. "
         "CRITICAL: Use TWO separate OPTIONAL MATCHes — first match peers via COMPETES_WITH, "
         "then match each peer's own risks in a second OPTIONAL MATCH from the peer node. "
         "NEVER chain COMPETES_WITH → FACES_RISK in one path (that returns target risks, not peer risks). "
@@ -539,6 +559,11 @@ class CreditRiskQA:
         """
         Run REASONING_PROMPT over already-retrieved graph data.
         Produces a structured chain-of-thought with cited sources.
+
+        Qwen3 (and similar models) emit reasoning inside <think> tags and a
+        short conclusion outside.  We want the DETAILED content, so we prefer
+        the outside text when it is substantive; otherwise we fall back to the
+        <think> block itself.
         """
         queries_text = "\n".join(
             f"[{q.get('strategy', '?')}]\n{q.get('cypher', '')}"
@@ -549,9 +574,21 @@ class CreditRiskQA:
         clean = self._clean_metadata(results[:150])
         context = json.dumps(clean, indent=2, default=str)
 
-        return self._call_llm_raw(
-            REASONING_PROMPT.format(queries=queries_text, context=context, question=question)
-        )
+        prompt = REASONING_PROMPT.format(queries=queries_text, context=context, question=question)
+        response = self.llm.invoke(prompt)
+        raw = response.content if hasattr(response, "content") else str(response)
+
+        # Extract content outside <think> blocks
+        outside = _THINK_RE.sub('', raw).strip()
+
+        # If the model put all the structured reasoning inside <think> (Qwen3
+        # thinking mode), fall back to that content so the trace is not empty.
+        if len(outside) < 100:
+            think_match = re.search(r'<think>(.*?)</think>', raw, re.DOTALL)
+            if think_match:
+                return think_match.group(1).strip()
+
+        return outside
 
     def _save_extraction_result(self, question: str, queries: list, results: list):
         """Save extraction results with question and queries to retrival_results/extraction_result.json"""
