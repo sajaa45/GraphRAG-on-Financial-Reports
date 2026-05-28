@@ -4,7 +4,7 @@ Answer Relevancy — RAGAS-style Ground Truth Evaluation
 
 [1/5] Loading inputs
   Question    : is my company getting the best profit
-  Answer chars: 1765
+  Answer chars: 1670
 
 [2/5] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
@@ -12,40 +12,40 @@ Answer Relevancy — RAGAS-style Ground Truth Evaluation
 [3/5] Decomposing question into verifiable aspects
   → 5 aspects identified:
     1. Does the answer report at least one profitability metric for the target company?
-    2. Does the answer compare the target company’s profitability to at least one peer company using metrics from their 10-K filings?
-    3. Does the answer avoid implying forward-looking profit trends, market benchmarks, or strategic advice not present in the filings?
-    4. Does the answer acknowledge if peer data is unavailable or insufficient for meaningful comparison?
-    5. Does the answer refrain from concluding the target is “getting the best profit” without direct comparative evidence from the filings?
+    2. Does the answer compare the target company’s profitability metric(s) to those of at least one peer company?
+    3. Does the answer avoid implying forward-looking profit trends or strategic advice not present in the filings?
+    4. Does the answer refrain from referencing external benchmarks, industry averages, or market data?
+    5. Does the answer clearly indicate whether the target’s profitability is higher, lower, or similar to peers based solely on the 10-K data?
 
 [4/5] Judging answer coverage per aspect
     [✓] YES      Does the answer report at least one profitability metric for the targe
-             The answer reports net income ($167.1 million) and operating income ($286.5 million) for M
-    [✓] YES      Does the answer compare the target company’s profitability to at least
-             The answer compares MTI’s profitability metrics to at least three peer companies (Global G
-    [✓] YES      Does the answer avoid implying forward-looking profit trends, market b
-             The answer strictly relies on reported financial results from filings and avoids any forwa
-    [~] PARTIAL  Does the answer acknowledge if peer data is unavailable or insufficien
-             The answer notes that MTI’s sources are “not available,” but does not clearly acknowledge 
-    [✓] YES      Does the answer refrain from concluding the target is “getting the bes
-             The answer concludes MTI is “the most profitable among the peers analyzed” based solely on
+             The answer reports operating income ($286.5M) and net income ($167.1M) for Minerals Techno
+    [✓] YES      Does the answer compare the target company’s profitability metric(s) t
+             The answer compares MTI’s profitability metrics to those of three peer companies: Global G
+    [✓] YES      Does the answer avoid implying forward-looking profit trends or strate
+             The answer strictly reports historical financial data from 10-K filings without speculatin
+    [✓] YES      Does the answer refrain from referencing external benchmarks, industry
+             The answer relies solely on peer company financials from 10-K filings and does not referen
+    [✓] YES      Does the answer clearly indicate whether the target’s profitability is
+             The answer clearly concludes that MTI’s profitability is superior to all compared peers ba
 
 [5/5] Computing overall relevancy score
   Overall score : 1.00
-  Reason        : The answer directly compares the target company’s net and operating income against peers using only the available 10-K data, correctly concludes MTI is the most profitable, and cites relevant financial metrics and retained earnings from the permitted sources.
+  Reason        : The answer directly compares the target company’s operating and net income against all available peer companies using only data from their 10-K filings, conclusively demonstrating that MTI has superior profitability among peers, which fully addresses the question within the pipeline’s data constraints.
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
   Aspects total   : 5
-  Fully covered   : 4  (YES)
-  Partially covered: 1  (PARTIAL)
+  Fully covered   : 5  (YES)
+  Partially covered: 0  (PARTIAL)
   Not covered     : 0  (NO)
-  Aspect score    : 0.90
+  Aspect score    : 1.00
   Holistic score  : 1.00
-  Combined        : 0.95
+  Combined        : 1.00
   Quality gate    : PASS  (threshold: 0.70)
 
-✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_relevancy_results.csv
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\answer_relevancy_results.csv
 ======================================================================
-Answer Relevancy Score : 0.95  [PASS]
+Answer Relevancy Score : 1.00  [PASS]
 ======================================================================

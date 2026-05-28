@@ -151,221 +151,265 @@ def _pipeline_fail(job_id: str, error: str) -> None:
 # Pipeline runner
 # ---------------------------------------------------------------------------
 
-async def _run_pipeline(job_id: str, file_path: str, fiscal_year: str) -> None:
+async def _run_pipeline(
+    job_id: str,
+    file_path: str,
+    fiscal_year: str,
+    start_from_step: int = 1,
+    prev_job_id: Optional[str] = None,
+) -> None:
     loop = asyncio.get_event_loop()
-    job_dir = os.path.join(OUTPUT_DIR, job_id)
+
+    # When resuming, reuse the previous job's directory so intermediate files are available.
+    job_dir = os.path.join(
+        OUTPUT_DIR,
+        prev_job_id if (start_from_step > 1 and prev_job_id) else job_id,
+    )
     os.makedirs(job_dir, exist_ok=True)
 
-    # Shared file paths for inter-step data
     parsed_sections_path  = os.path.join(job_dir, "parsed_sections.json")
     companies_risks_path  = os.path.join(job_dir, "companies_risks.json")
     structured_risks_path = os.path.join(job_dir, "structured_risks.json")
     peer_metrics_path     = os.path.join(job_dir, "peer_metrics.json")
+    peer_companies_path   = os.path.join(job_dir, "peer_companies.json")
 
-    # Mutable state shared between step closures
     ctx: Dict[str, Any] = {"fiscal_year": fiscal_year}
 
-    try:
-        # ------------------------------------------------------------------ Step 1
-        _emit(job_id, 1, "running", message="Parsing HTML document…")
+    # Variables referenced by step closures — pre-populated when steps are skipped.
+    main_company: str = ""
+    peer_companies: list = []
 
-        def _step1() -> Dict:
-            from parsing_sections_html import sections_parser_html
-            result = sections_parser_html(file_path, parsed_sections_path)
-            if result is None:
-                raise RuntimeError("Parser returned no sections — check the HTML format")
-            return result
-
-        r1 = await loop.run_in_executor(_executor, _step1)
-        _emit(job_id, 1, "done",
-              summary=f"Extracted {r1['num_sections']} sections across {r1['num_pages']} pages")
-
-        # ------------------------------------------------------------------ Step 2
-        _emit(job_id, 2, "running", message="Extracting entities with LLM and writing target company KG…")
-
-        def _step2() -> tuple:
-            from llm_extractor import LLMExtractor
-            from neo4j_builder import Neo4jBuilder
-
-            extractor = LLMExtractor(
-                parsed_sections_file=parsed_sections_path,
-                output_dir=job_dir,
-                source_file=file_path,
-            )
-            json_paths = extractor.extract_multiple_relations(["HAS_METRIC", "FACES_RISK", "OPERATES_IN"])
-            main_company = extractor.main_company
-            extractor.close()
-
-            # Validate extracted entities before writing to Neo4j
-            _validators = {
-                "FACES_RISK": _import_validator("FACES_RISK", "validate_faces_risk"),
-                "HAS_METRIC": _import_validator("HAS_METRIC", "validate_has_metric"),
-                "OPERATES_IN": _import_validator("OPERATES_IN", "validate_operates_in"),
-            }
-
+    # Reconstruct context from Neo4j for skipped steps (start_from_step > 2 means
+    # steps 1+2 are done and the target company is already in the graph).
+    if start_from_step > 2:
+        def _reconstruct_ctx():
+            from neo4j import GraphDatabase
             neo_uri  = os.getenv("NEO4J_URI",      "bolt://localhost:7687")
             neo_user = os.getenv("NEO4J_USERNAME",  "neo4j")
             neo_pass = os.getenv("NEO4J_PASSWORD",  "")
-            builder = Neo4jBuilder(neo_uri, neo_user, neo_pass, main_company=main_company)
-            total_written = 0
-            counts: Dict[str, int] = {}
-
-            for jp in json_paths:
-                rel_name = os.path.basename(os.path.dirname(jp))
-                validator = _validators.get(rel_name)
-
-                if validator:
-                    print(f"\n[Validation] Running {rel_name} validator on {jp} ...")
-                    validated = validator(jp)
-                    if validated is None:
-                        print(f"  ⚠ Validator returned None for {rel_name} — skipping")
-                        continue
-                    # OPERATES_IN returns {"validated_relation": {...}}; normalise to standard shape
-                    if "validated_relation" in validated:
-                        item = validated["validated_relation"]
-                        rel_type = item.get("rel", rel_name)
-                        normalised: Dict = {
-                            "main_company": validated.get("main_company", main_company),
-                            "relations": {rel_type: [item]},
-                        }
-                    else:
-                        normalised = validated
-                    total_written += builder._build_from_data(normalised)
-                    for rel, items in normalised.get("relations", {}).items():
-                        counts[rel] = len(items)
-                else:
-                    total_written += builder.build_from_json(jp)
-                    with open(jp, "r", encoding="utf-8") as fh:
-                        data = json.load(fh)
-                    for rel, items in data.get("relations", {}).items():
-                        counts[rel] = len(items)
-
-            builder.driver.close()
-
-            return main_company, counts, total_written
-
-        main_company, entity_counts, total_written = await loop.run_in_executor(_executor, _step2)
+            driver   = GraphDatabase.driver(neo_uri, auth=(neo_user, neo_pass))
+            with driver.session() as s:
+                rec = s.run(
+                    "MATCH (c:TargetCompany) RETURN c.name AS name LIMIT 1"
+                ).single()
+            driver.close()
+            return rec["name"] if rec else ""
+        main_company = await loop.run_in_executor(_executor, _reconstruct_ctx)
         ctx["main_company"] = main_company
-        parts = [f"{v} {k.replace('_', ' ').lower()}" for k, v in entity_counts.items()]
-        _emit(job_id, 2, "done",
-              summary=f"Extracted {', '.join(parts)} for {main_company}. "
-                      f"{total_written} nodes written to Neo4j.")
+
+    # Load peer companies saved by step 3 so step 4's closure can reference them.
+    if start_from_step > 3 and os.path.exists(peer_companies_path):
+        with open(peer_companies_path, "r", encoding="utf-8") as fh:
+            peer_companies = json.load(fh)
+        ctx["peer_companies"] = peer_companies
+
+    try:
+        # ------------------------------------------------------------------ Step 1
+        if start_from_step <= 1:
+            _emit(job_id, 1, "running", message="Parsing HTML document…")
+
+            def _step1() -> Dict:
+                from parsing_sections_html import sections_parser_html
+                result = sections_parser_html(file_path, parsed_sections_path)
+                if result is None:
+                    raise RuntimeError("Parser returned no sections — check the HTML format")
+                return result
+
+            r1 = await loop.run_in_executor(_executor, _step1)
+            _emit(job_id, 1, "done",
+                  summary=f"Extracted {r1['num_sections']} sections across {r1['num_pages']} pages")
+
+        # ------------------------------------------------------------------ Step 2
+        if start_from_step <= 2:
+            _emit(job_id, 2, "running", message="Extracting entities with LLM and writing target company KG…")
+
+            def _step2() -> tuple:
+                from llm_extractor import LLMExtractor
+                from neo4j_builder import Neo4jBuilder
+
+                extractor = LLMExtractor(
+                    parsed_sections_file=parsed_sections_path,
+                    output_dir=job_dir,
+                    source_file=file_path,
+                )
+                json_paths = extractor.extract_multiple_relations(["HAS_METRIC", "FACES_RISK", "OPERATES_IN"])
+                _mc = extractor.main_company
+                extractor.close()
+
+                _validators = {
+                    "FACES_RISK": _import_validator("FACES_RISK", "validate_faces_risk"),
+                    "HAS_METRIC": _import_validator("HAS_METRIC", "validate_has_metric"),
+                    "OPERATES_IN": _import_validator("OPERATES_IN", "validate_operates_in"),
+                }
+
+                neo_uri  = os.getenv("NEO4J_URI",      "bolt://localhost:7687")
+                neo_user = os.getenv("NEO4J_USERNAME",  "neo4j")
+                neo_pass = os.getenv("NEO4J_PASSWORD",  "")
+                builder  = Neo4jBuilder(neo_uri, neo_user, neo_pass, main_company=_mc)
+                total_written = 0
+                counts: Dict[str, int] = {}
+
+                # Accumulate all items per relation type across every extracted file
+                # before writing to Neo4j — mirrors build_from_validated_dirs so that
+                # the HAS_METRIC cleanup runs exactly once, not once per chunk file.
+                combined_relations: Dict[str, list] = {}
+                for jp in json_paths:
+                    rel_name  = os.path.basename(os.path.dirname(jp))
+                    validator = _validators.get(rel_name)
+                    if validator:
+                        print(f"\n[Validation] Running {rel_name} validator on {jp} ...")
+                        validated = validator(jp)
+                        if validated is None:
+                            print(f"  ⚠ Validator returned None for {rel_name} — skipping")
+                            continue
+                        if "validated_relation" in validated:
+                            item     = validated["validated_relation"]
+                            rel_type = item.get("rel", rel_name)
+                            combined_relations.setdefault(rel_type, []).append(item)
+                        else:
+                            for rel_type, items in validated.get("relations", {}).items():
+                                combined_relations.setdefault(rel_type, []).extend(items)
+                    else:
+                        with open(jp, "r", encoding="utf-8") as fh:
+                            data = json.load(fh)
+                        for rel_type, items in data.get("relations", {}).items():
+                            combined_relations.setdefault(rel_type, []).extend(items)
+
+                if combined_relations:
+                    normalised_all: Dict = {
+                        "main_company": _mc,
+                        "relations": combined_relations,
+                    }
+                    total_written = builder._build_from_data(normalised_all)
+                    counts = {rel: len(items) for rel, items in combined_relations.items()}
+
+                builder.driver.close()
+                return _mc, counts, total_written
+
+            _mc, entity_counts, total_written = await loop.run_in_executor(_executor, _step2)
+            main_company = _mc
+            ctx["main_company"] = main_company
+            parts = [f"{v} {k.replace('_', ' ').lower()}" for k, v in entity_counts.items()]
+            _emit(job_id, 2, "done",
+                  summary=f"Extracted {', '.join(parts)} for {main_company}. "
+                          f"{total_written} nodes written to Neo4j.")
 
         # ------------------------------------------------------------------ Step 3
-        _emit(job_id, 3, "running", message="Reading SIC code from Neo4j and querying EDGAR for peer companies…")
+        if start_from_step <= 3:
+            _emit(job_id, 3, "running", message="Reading SIC code from Neo4j and querying EDGAR for peer companies…")
 
-        def _step3() -> tuple:
-            # Import from the FACES_RISK module (has both get_sic and get_companies_from_api)
-            from fetch_and_extract_risks import (
-                get_sic_from_neo4j,
-                get_companies_from_api,
-            )
-            sic_codes = get_sic_from_neo4j()
-            if isinstance(sic_codes, str):
-                sic_codes = [sic_codes]
-            companies = get_companies_from_api(sic_codes, fiscal_year=ctx["fiscal_year"])
-            return sic_codes, companies
+            def _step3() -> tuple:
+                from fetch_and_extract_risks import get_sic_from_neo4j, get_companies_from_api
+                sic = get_sic_from_neo4j()
+                if isinstance(sic, str):
+                    sic = [sic]
+                companies = get_companies_from_api(sic, fiscal_year=ctx["fiscal_year"])
+                return sic, companies
 
-        sic_codes, peer_companies = await loop.run_in_executor(_executor, _step3)
-        ctx["sic_codes"]     = sic_codes
-        ctx["peer_companies"] = peer_companies
-        _emit(job_id, 3, "done",
-              summary=f"SIC {', '.join(sic_codes)} → Found {len(peer_companies)} peers in EDGAR")
+            _sic, _peers = await loop.run_in_executor(_executor, _step3)
+            peer_companies = _peers
+            ctx["sic_codes"]      = _sic
+            ctx["peer_companies"] = peer_companies
+            # Persist so a future resume can reload peer_companies without re-querying EDGAR.
+            with open(peer_companies_path, "w", encoding="utf-8") as fh:
+                json.dump(peer_companies, fh, ensure_ascii=False)
+            _emit(job_id, 3, "done",
+                  summary=f"SIC {', '.join(_sic)} → Found {len(peer_companies)} peers in EDGAR")
 
         # ------------------------------------------------------------------ Step 4
-        _emit(job_id, 4, "running", message="Fetching peer financial metrics via XBRL…")
+        if start_from_step <= 4:
+            _emit(job_id, 4, "running", message="Fetching peer financial metrics via XBRL…")
 
-        def _step4() -> tuple:
-            from extract_metrices import (
-                get_target_company_metrics,
-                analyze_company_covenants,
-                MAX_COMPANIES,
-            )
-            target_metrics = get_target_company_metrics()
-            companies_to_analyze = peer_companies[:MAX_COMPANIES]
-            fy = ctx["fiscal_year"]
+            def _step4() -> tuple:
+                from extract_metrices import (
+                    get_target_company_metrics,
+                    analyze_company_covenants,
+                    MAX_COMPANIES,
+                )
+                target_metrics       = get_target_company_metrics()
+                # Exclude the target company itself from peer analysis
+                companies_to_analyze = [
+                    c for c in peer_companies[:MAX_COMPANIES]
+                    if c.get("name") != main_company
+                ]
+                fy = ctx["fiscal_year"]
 
-            companies_with_metrics = []
-            for company in companies_to_analyze:
-                cik    = company["cik"]
-                name   = company["name"]
-                ticker = company.get("ticker", "N/A")
-                metric_results = analyze_company_covenants(cik, name, target_metrics, fy)
-                if metric_results:
-                    total_matches = sum(len(v) for v in metric_results.values())
-                    companies_with_metrics.append({
-                        "company": {"cik": cik, "name": name, "ticker": ticker},
-                        "metrics":       metric_results,
-                        "total_matches": total_matches,
-                    })
+                companies_with_metrics = []
+                for company in companies_to_analyze:
+                    cik    = company["cik"]
+                    name   = company["name"]
+                    ticker = company.get("ticker", "N/A")
+                    metric_results = analyze_company_covenants(cik, name, target_metrics, fy)
+                    if metric_results:
+                        total_matches = sum(len(v) for v in metric_results.values())
+                        companies_with_metrics.append({
+                            "company":       {"cik": cik, "name": name, "ticker": ticker},
+                            "metrics":       metric_results,
+                            "total_matches": total_matches,
+                        })
 
-            output = {
-                "companies_with_metrics": companies_with_metrics,
-                "fiscal_year": fy,
-            }
-            with open(peer_metrics_path, "w", encoding="utf-8") as fh:
-                json.dump(output, fh, indent=2, ensure_ascii=False)
+                output = {"companies_with_metrics": companies_with_metrics, "fiscal_year": fy}
+                with open(peer_metrics_path, "w", encoding="utf-8") as fh:
+                    json.dump(output, fh, indent=2, ensure_ascii=False)
 
-            return len(companies_with_metrics), len(target_metrics)
+                return len(companies_with_metrics), len(target_metrics)
 
-        n_metric_cos, n_metric_types = await loop.run_in_executor(_executor, _step4)
-        _emit(job_id, 4, "done",
-              summary=f"Retrieved metrics for {n_metric_cos} peers across {n_metric_types} metric types")
+            n_metric_cos, n_metric_types = await loop.run_in_executor(_executor, _step4)
+            _emit(job_id, 4, "done",
+                  summary=f"Retrieved metrics for {n_metric_cos} peers across {n_metric_types} metric types")
 
         # ------------------------------------------------------------------ Step 5
-        _emit(job_id, 5, "running",
-              message="Downloading HTM filings for each peer and extracting risks with LLM…")
+        if start_from_step <= 5:
+            _emit(job_id, 5, "running",
+                  message="Downloading HTM filings for each peer and extracting risks with LLM…")
 
-        def _step5() -> tuple:
-            from fetch_and_extract_risks import (
-                get_sic_from_neo4j,
-                process_companies_from_api,
-            )
-            from process_risks import process_all_risks
+            def _step5() -> tuple:
+                from fetch_and_extract_risks import get_sic_from_neo4j, process_companies_from_api
+                from process_risks import process_all_risks
 
-            sic = get_sic_from_neo4j()
-            if isinstance(sic, str):
-                sic = [sic]
+                sic = get_sic_from_neo4j()
+                if isinstance(sic, str):
+                    sic = [sic]
 
-            fy = ctx["fiscal_year"]
-            companies_data = process_companies_from_api(
-                sic_codes=sic,
-                fiscal_year=fy,
-                output_file=companies_risks_path,
-            )
-            n_companies = len(companies_data)
-
-            if n_companies > 0:
-                structured = process_all_risks(
-                    input_file=companies_risks_path,
-                    output_file=structured_risks_path,
+                fy = ctx["fiscal_year"]
+                companies_data = process_companies_from_api(
+                    sic_codes=sic,
+                    fiscal_year=fy,
+                    output_file=companies_risks_path,
                 )
-                total_risks = sum(c.get("total_risks", 0) for c in structured)
-            else:
-                total_risks = 0
+                n_companies = len(companies_data)
 
-            return n_companies, total_risks
+                if n_companies > 0:
+                    structured  = process_all_risks(
+                        input_file=companies_risks_path,
+                        output_file=structured_risks_path,
+                    )
+                    total_risks = sum(c.get("total_risks", 0) for c in structured)
+                else:
+                    total_risks = 0
 
-        n_risk_cos, n_total_risks = await loop.run_in_executor(_executor, _step5)
-        _emit(job_id, 5, "done",
-              summary=f"Extracted {n_total_risks} structured risks from {n_risk_cos} peer filings")
+                return n_companies, total_risks
+
+            n_risk_cos, n_total_risks = await loop.run_in_executor(_executor, _step5)
+            _emit(job_id, 5, "done",
+                  summary=f"Extracted {n_total_risks} structured risks from {n_risk_cos} peer filings")
 
         # ------------------------------------------------------------------ Step 6
         _emit(job_id, 6, "running",
               message="Writing peer risks and metrics into the Neo4j knowledge graph…")
 
-        def _step6() -> tuple:
+        def _step6() -> int:
             neo_uri  = os.getenv("NEO4J_URI",      "bolt://localhost:7687")
             neo_user = os.getenv("NEO4J_USERNAME",  "neo4j")
             neo_pass = os.getenv("NEO4J_PASSWORD",  "")
 
-            from risks_kg_builder import RisksKGBuilder
+            from risks_kg_builder   import RisksKGBuilder
             from metrices_kg_builder import write_metrics_to_neo4j
 
             n_risks = 0
             if os.path.exists(structured_risks_path):
                 risk_builder = RisksKGBuilder(neo_uri, neo_user, neo_pass)
-                n_risks = risk_builder.build_from_structured_risks(structured_risks_path)
+                n_risks      = risk_builder.build_from_structured_risks(structured_risks_path)
                 risk_builder.driver.close()
 
             if os.path.exists(peer_metrics_path):
@@ -484,6 +528,12 @@ def _build_citations(results: list) -> Dict[str, Any]:
 class QARequest(BaseModel):
     question: str
     reasoning: bool = False
+
+
+class ResumeRequest(BaseModel):
+    prev_job_id: str
+    start_from_step: int   # 3–6 (steps 1-2 require the original uploaded file)
+    fiscal_year: str
 
 
 class EvalRequest(BaseModel):
@@ -640,6 +690,39 @@ async def run_pipeline(
     return {"job_id": job_id, "filename": file.filename, "fiscal_year": fiscal_year, "steps": STEPS}
 
 
+@app.post("/pipeline/resume")
+async def resume_pipeline(request: ResumeRequest, background_tasks: BackgroundTasks):
+    """Resume a previously failed pipeline from a specific step (3–6).
+
+    The previous job's intermediate files (peer_companies.json, peer_metrics.json,
+    structured_risks.json) are reused from its output directory, so only the
+    failed step(s) are re-executed.
+    """
+    if not (3 <= request.start_from_step <= 6):
+        raise HTTPException(
+            status_code=400,
+            detail="start_from_step must be between 3 and 6 "
+                   "(steps 1-2 require the original file — start a fresh run instead)",
+        )
+    prev_job_dir = os.path.join(OUTPUT_DIR, request.prev_job_id)
+    if not os.path.isdir(prev_job_dir):
+        raise HTTPException(
+            status_code=404,
+            detail=f"Previous job directory not found: {request.prev_job_id}",
+        )
+
+    job_id = _new_job()
+    background_tasks.add_task(
+        _run_pipeline,
+        job_id,
+        "",                        # file_path unused when start_from_step >= 3
+        request.fiscal_year,
+        request.start_from_step,
+        request.prev_job_id,
+    )
+    return {"job_id": job_id, "steps": STEPS, "start_from_step": request.start_from_step}
+
+
 @app.get("/pipeline/{job_id}/stream")
 async def stream_pipeline(job_id: str):
     """Server-Sent Events stream.  Each event is a JSON object with:
@@ -788,6 +871,33 @@ async def run_eval(request: EvalRequest):
         return await loop.run_in_executor(_executor, _run)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/qa/ready")
+async def qa_ready():
+    """Return {ready: bool} — true if Neo4j already contains TargetCompany or Company nodes.
+    The frontend calls this on startup so the QA section unlocks even when the pipeline
+    was run outside the UI (e.g. via the CLI)."""
+    loop = asyncio.get_event_loop()
+
+    def _check():
+        try:
+            from neo4j import GraphDatabase
+            neo_uri  = os.getenv("NEO4J_URI",      "bolt://localhost:7687")
+            neo_user = os.getenv("NEO4J_USERNAME",  "neo4j")
+            neo_pass = os.getenv("NEO4J_PASSWORD",  "")
+            driver = GraphDatabase.driver(neo_uri, auth=(neo_user, neo_pass))
+            with driver.session() as s:
+                cnt = s.run(
+                    "MATCH (n) WHERE n:TargetCompany OR n:Company "
+                    "RETURN count(n) AS cnt LIMIT 1"
+                ).single()["cnt"]
+            driver.close()
+            return {"ready": cnt > 0, "node_count": cnt}
+        except Exception as exc:
+            return {"ready": False, "error": str(exc)}
+
+    return await loop.run_in_executor(_executor, _check)
 
 
 @app.get("/health")

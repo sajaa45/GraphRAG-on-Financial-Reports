@@ -13,7 +13,7 @@ def write_metrics_to_neo4j(json_file: str):
     password = os.getenv("NEO4J_PASSWORD", "")
     
     # Load the JSON file
-    with open(json_file, 'r') as f:
+    with open(json_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
     
     companies_with_covenants = data.get('companies_with_metrics', data.get('companies_with_covenants', []))
@@ -69,6 +69,11 @@ def write_metrics_to_neo4j(json_file: str):
                 company_name = company['name']
                 cik = company['cik']
                 ticker = company['ticker']
+
+                # Never write peer-scoped nodes for the target company itself
+                if target_company_name and company_name.lower() == target_company_name.lower():
+                    print(f"  Skipped — this is the target company: {company_name}")
+                    continue
 
                 # Create or update Company node
                 session.run(

@@ -1,94 +1,76 @@
 {
-  "total_count": 14,
+  "total_count": 11,
   "companies": [
     {
-      "name": "Loop Industries, Inc.  (LOOP)  (CIK 0001504678)",
-      "cik": "0001504678",
-      "ticker": "N/A",
-      "filing_date": "2025-05-30"
-    },
-    {
-      "name": "GULF RESOURCES, INC.  (GURE)  (CIK 0000885462)",
-      "cik": "0000885462",
-      "ticker": "N/A",
-      "filing_date": "2025-04-11"
-    },
-    {
-      "name": "BIOLARGO, INC.  (BLGO)  (CIK 0000880242)",
-      "cik": "0000880242",
+      "name": "Global Gas Corp  (HGAS, HGASW)",
+      "cik": "0001817232",
       "ticker": "N/A",
       "filing_date": "2025-03-31"
     },
     {
-      "name": "General Enterprise Ventures, Inc.  (GEVI)  (CIK 0000894556)",
-      "cik": "0000894556",
+      "name": "Arcadium Lithium plc",
+      "cik": "0001977303",
       "ticker": "N/A",
-      "filing_date": "2025-03-31"
+      "filing_date": "2025-03-17"
     },
     {
-      "name": "LIQUIDMETAL TECHNOLOGIES INC  (LQMT)  (CIK 0001141240)",
-      "cik": "0001141240",
+      "name": "NL INDUSTRIES INC  (NL)",
+      "cik": "0000072162",
       "ticker": "N/A",
-      "filing_date": "2025-03-13"
+      "filing_date": "2025-03-06"
     },
     {
-      "name": "Ecovyst Inc.  (ECVT)  (CIK 0001708035)",
-      "cik": "0001708035",
+      "name": "KRONOS WORLDWIDE INC  (KRO)",
+      "cik": "0001257640",
       "ticker": "N/A",
-      "filing_date": "2025-02-28"
+      "filing_date": "2025-03-06"
     },
     {
-      "name": "FMC CORP  (FMC)  (CIK 0000037785)",
-      "cik": "0000037785",
+      "name": "VALHI INC /DE/  (VHI)",
+      "cik": "0000059255",
       "ticker": "N/A",
-      "filing_date": "2025-02-28"
+      "filing_date": "2025-03-06"
     },
     {
-      "name": "BALCHEM CORP  (BCPC)  (CIK 0000009326)",
-      "cik": "0000009326",
+      "name": "LSB INDUSTRIES, INC.  (LXU)",
+      "cik": "0000060714",
+      "ticker": "N/A",
+      "filing_date": "2025-02-27"
+    },
+    {
+      "name": "LINDE PLC  (LIN)",
+      "cik": "0001707925",
+      "ticker": "N/A",
+      "filing_date": "2025-02-26"
+    },
+    {
+      "name": "LUXFER HOLDINGS PLC  (LXFR)",
+      "cik": "0001096056",
+      "ticker": "N/A",
+      "filing_date": "2025-02-25"
+    },
+    {
+      "name": "MINERALS TECHNOLOGIES INC  (MTX)",
+      "cik": "0000891014",
       "ticker": "N/A",
       "filing_date": "2025-02-21"
     },
     {
-      "name": "Perimeter Solutions, Inc.  (PRM)  (CIK 0001880319)",
-      "cik": "0001880319",
-      "ticker": "N/A",
-      "filing_date": "2025-02-20"
-    },
-    {
-      "name": "OLIN Corp  (OLN)  (CIK 0000074303)",
-      "cik": "0000074303",
-      "ticker": "N/A",
-      "filing_date": "2025-02-20"
-    },
-    {
-      "name": "Ingevity Corp  (NGVT)  (CIK 0001653477)",
-      "cik": "0001653477",
+      "name": "Tronox Holdings plc  (TROX)",
+      "cik": "0001530804",
       "ticker": "N/A",
       "filing_date": "2025-02-19"
     },
     {
-      "name": "INNOSPEC INC.  (IOSP)  (CIK 0001054905)",
-      "cik": "0001054905",
+      "name": "Air Products & Chemicals, Inc.  (APD)",
+      "cik": "0000002969",
       "ticker": "N/A",
-      "filing_date": "2025-02-19"
-    },
-    {
-      "name": "Chemours Co  (CC)  (CIK 0001627223)",
-      "cik": "0001627223",
-      "ticker": "N/A",
-      "filing_date": "2025-02-18"
-    },
-    {
-      "name": "Huntsman CORP  (HUN)  (CIK 0001307954)",
-      "cik": "0001307954",
-      "ticker": "N/A",
-      "filing_date": "2025-02-18"
+      "filing_date": "2024-11-21"
     }
   ],
   "sic_codes": [
-    "2810",
-    "2800"
+    "2800",
+    "2810"
   ],
   "fiscal_year": 2024
 }

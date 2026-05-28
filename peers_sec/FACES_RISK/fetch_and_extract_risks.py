@@ -118,6 +118,10 @@ def get_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100
                 continue
             seen_ciks.add(cik)
             name = source.get("display_names", ["Unknown"])[0]
+            # EDGAR appends " (CIK XXXXXXXXXX)" to display_names — strip it so the
+            # company name matches the clean name stored by risks_kg_builder and
+            # metrices_kg_builder (which use the name from the SEC submissions API).
+            name = re.sub(r'\s*\(CIK\s+\d+\)\s*$', '', name).strip()
             ticker = source.get("tickers", ["N/A"])[0] if source.get("tickers") else "N/A"
             companies.append({
                 "name": name,

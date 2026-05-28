@@ -96,9 +96,25 @@ function Index() {
         if (!cancelled) setConnected(false);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
+  }, [backendUrl]);
+
+  // On startup, ask the backend if Neo4j already has data.
+  // This unlocks QA even when the pipeline was run outside the UI (e.g. via CLI).
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const r = await fetch(`${backendUrl}/qa/ready`);
+        if (!cancelled && r.ok) {
+          const data = await r.json();
+          if (data.ready) {
+            setPhase1Status((prev) => (prev === "idle" ? "complete" : prev));
+          }
+        }
+      } catch { /* backend may not be up yet — ignore */ }
+    })();
+    return () => { cancelled = true; };
   }, [backendUrl]);
 
   // -------- Phase 1 state --------
@@ -106,6 +122,9 @@ function Index() {
   const [fiscalYear, setFiscalYear] = useState("2024");
   const [previousFilename, setPreviousFilename] = useState<string | null>(() => {
     try { return localStorage.getItem("verdant_filename"); } catch { return null; }
+  });
+  const [savedJobId, setSavedJobId] = useState<string | null>(() => {
+    try { return localStorage.getItem("verdant_job_id"); } catch { return null; }
   });
 
   // Restore completion from a previous session stored in localStorage
@@ -152,14 +171,76 @@ function Index() {
     stepStartRef.current = {};
   }, []);
 
+  // Attach SSE listener for a running job — shared by runPipeline and resumePipeline
+  const startListening = useCallback((jobId: string, currentFile: File | null) => {
+    const es = new EventSource(`${backendUrl}/pipeline/${jobId}/stream`);
+    eventSourceRef.current = es;
+
+    es.onmessage = (ev) => {
+      try {
+        const data = JSON.parse(ev.data);
+        if (data.type === "pipeline_complete") {
+          setPhase1Status("complete");
+          setSteps((prev) => {
+            try { localStorage.setItem("verdant_steps", JSON.stringify(prev)); } catch { /* ignore */ }
+            return prev;
+          });
+          try {
+            localStorage.setItem("verdant_phase1_status", "complete");
+            if (currentFile) localStorage.setItem("verdant_filename", currentFile.name);
+          } catch { /* ignore */ }
+          es.close();
+          return;
+        }
+        if (data.type === "pipeline_failed") {
+          setPhase1Status("failed");
+          setPhase1Error(data.error || "Pipeline failed");
+          es.close();
+          return;
+        }
+        const stepId = data.step as number;
+        if (!stepId) return;
+        setSteps((prev) =>
+          prev.map((s) => {
+            if (s.id !== stepId) return s;
+            const next: StepData = { ...s };
+            if (data.status === "running") {
+              next.status = "running";
+              if (!stepStartRef.current[stepId]) stepStartRef.current[stepId] = Date.now();
+              if (data.message) next.logs = [...(s.logs || []), data.message];
+            } else if (data.status === "done") {
+              next.status = "done";
+              next.summary = data.summary || data.message;
+              const start = stepStartRef.current[stepId];
+              if (start) next.durationMs = Date.now() - start;
+            } else if (data.status === "failed") {
+              next.status = "failed";
+              next.summary = data.error || data.message || "Step failed";
+            }
+            return next;
+          }),
+        );
+      } catch (e) {
+        console.error("Failed to parse SSE event", e);
+      }
+    };
+
+    es.onerror = () => {
+      es.close();
+      setPhase1Status((prev) => (prev === "running" ? "failed" : prev));
+    };
+  }, [backendUrl]);
+
   const runPipeline = useCallback(async () => {
     if (!file) return;
     try {
       localStorage.removeItem("verdant_phase1_status");
       localStorage.removeItem("verdant_steps");
       localStorage.removeItem("verdant_filename");
+      localStorage.removeItem("verdant_job_id");
     } catch { /* ignore */ }
     setPreviousFilename(null);
+    setSavedJobId(null);
     setPhase1Error(null);
     setPhase1Status("running");
     setMessages([]);
@@ -170,78 +251,68 @@ function Index() {
       fd.append("file", file);
       fd.append("fiscal_year", fiscalYear);
 
-      const r = await fetch(`${backendUrl}/pipeline/run`, {
-        method: "POST",
-        body: fd,
-      });
+      const r = await fetch(`${backendUrl}/pipeline/run`, { method: "POST", body: fd });
       if (!r.ok) {
         const t = await r.text();
         throw new Error(`Upload failed (${r.status}): ${t}`);
       }
       const { job_id } = (await r.json()) as { job_id: string };
-
-      const es = new EventSource(`${backendUrl}/pipeline/${job_id}/stream`);
-      eventSourceRef.current = es;
-
-      es.onmessage = (ev) => {
-        try {
-          const data = JSON.parse(ev.data);
-          if (data.type === "pipeline_complete") {
-            setPhase1Status("complete");
-            setSteps((prev) => {
-              try { localStorage.setItem("verdant_steps", JSON.stringify(prev)); } catch { /* ignore */ }
-              return prev;
-            });
-            try {
-              localStorage.setItem("verdant_phase1_status", "complete");
-              if (file) localStorage.setItem("verdant_filename", file.name);
-            } catch { /* ignore */ }
-            es.close();
-            return;
-          }
-          if (data.type === "pipeline_failed") {
-            setPhase1Status("failed");
-            setPhase1Error(data.error || "Pipeline failed");
-            es.close();
-            return;
-          }
-          const stepId = data.step as number;
-          if (!stepId) return;
-          setSteps((prev) =>
-            prev.map((s) => {
-              if (s.id !== stepId) return s;
-              const next: StepData = { ...s };
-              if (data.status === "running") {
-                next.status = "running";
-                if (!stepStartRef.current[stepId]) stepStartRef.current[stepId] = Date.now();
-                if (data.message) next.logs = [...(s.logs || []), data.message];
-              } else if (data.status === "done") {
-                next.status = "done";
-                next.summary = data.summary || data.message;
-                const start = stepStartRef.current[stepId];
-                if (start) next.durationMs = Date.now() - start;
-              } else if (data.status === "failed") {
-                next.status = "failed";
-                next.summary = data.error || data.message || "Step failed";
-              }
-              return next;
-            }),
-          );
-        } catch (e) {
-          console.error("Failed to parse SSE event", e);
-        }
-      };
-
-      es.onerror = () => {
-        es.close();
-        setPhase1Status((prev) => (prev === "running" ? "failed" : prev));
-      };
+      try { localStorage.setItem("verdant_job_id", job_id); } catch { /* ignore */ }
+      setSavedJobId(job_id);
+      startListening(job_id, file);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Unknown error";
       setPhase1Error(msg);
       setPhase1Status("failed");
     }
-  }, [file, fiscalYear, backendUrl, resetSteps]);
+  }, [file, fiscalYear, backendUrl, resetSteps, startListening]);
+
+  const resumePipeline = useCallback(async () => {
+    // Find the first step that isn't done — that's where we resume from.
+    const firstIncompleteIdx = steps.findIndex((s) => s.status !== "done");
+    const startFromStep = firstIncompleteIdx + 1; // convert 0-indexed → 1-indexed step ID
+
+    // Resume is only possible from step 3+ (steps 1-2 require the original file).
+    if (!savedJobId || firstIncompleteIdx <= 0 || startFromStep < 3) {
+      runPipeline();
+      return;
+    }
+
+    // Keep done steps as-is; reset incomplete steps to pending.
+    setSteps((prev) =>
+      prev.map((s) => ({
+        ...s,
+        status:     s.id < startFromStep ? s.status     : ("pending" as StepStatus),
+        logs:       s.id < startFromStep ? s.logs       : [],
+        summary:    s.id < startFromStep ? s.summary    : undefined,
+        durationMs: s.id < startFromStep ? s.durationMs : undefined,
+      })),
+    );
+    stepStartRef.current = {};
+    setPhase1Error(null);
+    setPhase1Status("running");
+
+    try {
+      const r = await fetch(`${backendUrl}/pipeline/resume`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prev_job_id:     savedJobId,
+          start_from_step: startFromStep,
+          fiscal_year:     fiscalYear,
+        }),
+      });
+      if (!r.ok) throw new Error(`Resume failed (${r.status}): ${await r.text()}`);
+      const { job_id } = (await r.json()) as { job_id: string };
+      try { localStorage.setItem("verdant_job_id", job_id); } catch { /* ignore */ }
+      setSavedJobId(job_id);
+      startListening(job_id, file);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Unknown error";
+      setPhase1Error(msg);
+      setPhase1Status("failed");
+    }
+  }, [steps, savedJobId, fiscalYear, backendUrl, file, runPipeline, startListening]);
 
   useEffect(() => {
     return () => {
@@ -380,6 +451,16 @@ function Index() {
   };
 
   const phase1Done = phase1Status === "complete";
+
+  // Resume is available when the pipeline failed partway through and we have
+  // a saved job_id with at least one completed step at step 3 or later.
+  const firstIncompleteIdx = steps.findIndex((s) => s.status !== "done");
+  const resumeFromStep     = firstIncompleteIdx + 1; // 1-indexed
+  const canResume =
+    phase1Status === "failed" &&
+    !!savedJobId &&
+    steps.some((s) => s.status === "done") &&
+    resumeFromStep >= 3;
 
   return (
     <div className="min-h-screen font-sans text-foreground selection:bg-[color-mix(in_oklab,var(--accent)_25%,transparent)]">
@@ -551,11 +632,15 @@ function Index() {
                       />
                     </div>
                     <button
-                      onClick={runPipeline}
-                      disabled={!file || phase1Status === "running"}
+                      onClick={canResume ? resumePipeline : runPipeline}
+                      disabled={(canResume ? false : !file) || phase1Status === "running"}
                       className="group relative flex items-center gap-2 overflow-hidden rounded-md bg-[var(--elevated)] text-[var(--accent)] text-xs font-semibold px-4 py-2 transition-all hover:bg-[var(--elevated)] disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
                     >
-                      {phase1Status === "complete" || phase1Status === "failed" ? (
+                      {canResume ? (
+                        <>
+                          <RotateCcw className="h-3.5 w-3.5" /> Resume from step {resumeFromStep}
+                        </>
+                      ) : phase1Status === "complete" || phase1Status === "failed" ? (
                         <>
                           <RotateCcw className="h-3.5 w-3.5" /> Re-ingest
                         </>

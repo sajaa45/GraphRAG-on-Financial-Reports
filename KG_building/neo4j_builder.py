@@ -134,8 +134,40 @@ class Neo4jBuilder:
             node_type = "TargetCompany"
             properties = properties or {}
             properties['is_target'] = True
-        
+
         props = properties or {}
+
+        # Target MetricCategory and Metric nodes have no `company` property.
+        # Peer versions of these nodes carry `company: peer_name`.
+        # A plain MERGE on {name} would match peer nodes on re-runs (Neo4j MERGE
+        # matches any node whose *specified* properties match, ignoring extras).
+        # Use OPTIONAL MATCH + FOREACH to create only when a target-scoped node is absent,
+        # then MATCH + SET to update properties.
+        if node_type in ("MetricCategory", "Metric") and not props.get("company"):
+            session.run(
+                f"""
+                OPTIONAL MATCH (existing:{node_type} {{name: $name}})
+                WHERE existing.company IS NULL
+                WITH existing
+                FOREACH (_ IN CASE WHEN existing IS NULL THEN [1] ELSE [] END |
+                    CREATE (:{node_type} {{name: $name, created_at: datetime()}})
+                )
+                """,
+                {"name": name},
+            )
+            # Set any additional properties (e.g. metric_type, value, year, citation_id)
+            extra = {k: v for k, v in props.items() if k != "name"}
+            if extra:
+                extra_str = ", ".join(f"n.{k} = ${k}" for k in extra)
+                session.run(
+                    f"""
+                    MATCH (n:{node_type} {{name: $name}}) WHERE n.company IS NULL
+                    SET {extra_str}
+                    """,
+                    {"name": name, **extra},
+                )
+            return
+
         props_str = ", ".join([f"n.{k} = ${k}" for k in props.keys()])
         query = f"""
         MERGE (n:{node_type} {{name: $name}})
@@ -168,9 +200,23 @@ class Neo4jBuilder:
         on_create = f"r.created_at = datetime(){', ' + props_set if props_set else ''}"
         on_match  = f"r.updated_at = datetime(){', ' + props_set if props_set else ''}"
 
+        # Peer MetricCategory and Metric nodes carry a `company` property; target ones do not.
+        # Guard both ends so target-side queries never touch peer-scoped nodes.
+        _TARGET_SCOPED = ("MetricCategory", "Metric")
+
+        if source_type in _TARGET_SCOPED:
+            match_s = f"MATCH (s:{source_type} {{name: $source_name}}) WHERE s.company IS NULL"
+        else:
+            match_s = f"MATCH (s:{source_type} {{name: $source_name}})"
+
+        if target_type in _TARGET_SCOPED:
+            match_t = f"MATCH (t:{target_type} {{name: $target_name}}) WHERE t.company IS NULL"
+        else:
+            match_t = f"MATCH (t:{target_type} {{name: $target_name}})"
+
         query = f"""
-        MATCH (s:{source_type} {{name: $source_name}})
-        MATCH (t:{target_type} {{name: $target_name}})
+        {match_s}
+        {match_t}
         MERGE (s)-[r:{rel_type}]->(t)
         ON CREATE SET {on_create}
         ON MATCH SET {on_match}
@@ -211,12 +257,55 @@ class Neo4jBuilder:
         relations = data.get("relations", {})
         total_written = 0
 
+        # Only keep peers that actually have risks or metrics — skip bare OPERATES_IN-only peers.
+        valid_peers: set = set()
+        for rel_name in ("FACES_RISK", "HAS_METRIC"):
+            for item in relations.get(rel_name, []):
+                src_name = item["src"]["name"]
+                if src_name != self.main_company:
+                    valid_peers.add(src_name)
+
         for relation_name, items in relations.items():
             if not items:
                 continue
+
+            # Drop items whose source is a peer company not in valid_peers
+            filtered = []
+            for item in items:
+                src_name = item["src"]["name"]
+                src_type = item["src"]["type"]
+                if src_type == "Company" and src_name != self.main_company and src_name not in valid_peers:
+                    continue
+                filtered.append(item)
+
+            if not filtered:
+                print(f"  ⚠ All {relation_name} items filtered out (no qualifying peers) — skipping")
+                continue
+            skipped = len(items) - len(filtered)
+            if skipped:
+                print(f"  ↳ Skipped {skipped} {relation_name} item(s) from peers with no risks/metrics")
+            items = filtered
             print(f"\n{'='*60}")
             print(f"Building Neo4j graph for: {relation_name} ({len(items)} items)")
             print(f"{'='*60}")
+
+            # For HAS_METRIC: wipe all target-scoped MetricCategory nodes before rebuilding.
+            # This guarantees no duplicate categories or stale HAS_METRIC / HAS_METRIC_CATEGORY
+            # edges from previous runs. Peer MetricCategory nodes (company IS NOT NULL) are untouched.
+            # Also collapse any duplicate target Metric nodes (same name, no company) into one.
+            if relation_name == "HAS_METRIC":
+                with self.driver.session() as _cleanup_session:
+                    _cleanup_session.run(
+                        "MATCH (mc:MetricCategory) WHERE mc.company IS NULL DETACH DELETE mc"
+                    )
+                    _cleanup_session.run(
+                        """
+                        MATCH (m:Metric) WHERE m.company IS NULL
+                        WITH m.name AS nm, collect(m) AS dupes
+                        WHERE size(dupes) > 1
+                        FOREACH (d IN tail(dupes) | DETACH DELETE d)
+                        """
+                    )
 
             def _write_batch(tx, batch=items):
                 for item in batch:

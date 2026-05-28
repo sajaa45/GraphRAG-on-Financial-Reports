@@ -1,13 +1,13 @@
-Minerals Technologies Inc. (MTI) generated a net income of $167.1 million in 2024 [CITE:TARGET_M0003] and operating income of $286.5 million [CITE:TARGET_M0002], indicating strong profitability. 
+Minerals Technologies Inc. (MTI) generated $286.5 million in operating income and $167.1 million in net income in 2024, with a 13.5% operating margin and 25.9% gross profit margin [CITE:TARGET_M0002] [CITE:TARGET_M0003] [CITE:TARGET_M0022] [CITE:TARGET_M0019]. 
 
 Compared to peers:  
-- Global Gas Corp reported an operating loss of $551.98 million and a net loss of $130.7 million [CITE:PEER_M0023][CITE:PEER_M0011].  
-- Arcadium Lithium plc reported an operating loss of $53.5 million and a net income of $78.9 million (tax provision, not net income) — however, its net income attributable to parent is not explicitly stated; its retained earnings deficit is $767.7 million, suggesting prior losses [CITE:PEER_M0092][CITE:PEER_M0105].  
-- NL Industries reported operating income of $37.9 million and net income implied by tax provision and income before taxes, but net income is not directly stated — its retained earnings are $315.1 million, indicating sustained profitability [CITE:PEER_M0053][CITE:PEER_M0052].  
+- Global Gas Corp had an operating loss of $551.98 million and a net loss of $130.7 million [CITE:PEER_M0023] [CITE:PEER_M0011].  
+- Arcadium Lithium plc had an operating loss of $53.5 million and a net income of $78.9 million (after $78.9 million in income tax expense) [CITE:PEER_M0092] [CITE:PEER_M0094].  
+- NL Industries Inc. had operating income of $37.9 million and net income of $69.3 million (calculated as $83.3 million pre-tax income minus $14.1 million tax expense) [CITE:PEER_M0053] [CITE:PEER_M0046] [CITE:PEER_M0040].  
 
-MTI’s net income of $167.1 million exceeds NL Industries’ implied profitability and significantly outperforms Global Gas Corp and Arcadium Lithium plc, both of which report substantial operating losses. MTI also maintains positive retained earnings of $2.5 billion [CITE:TARGET_M0029], reflecting long-term profitability.  
+MTI’s operating and net income significantly exceed those of NL Industries and Arcadium Lithium, and vastly outperform Global Gas Corp’s losses. MTI is the only peer with both strong operating profitability and positive net income at scale.  
 
-No peer shows higher net income than MTI. MTI is the most profitable among the peers analyzed.  
+No peer matches MTI’s level of operating profitability. MTI’s profit performance is superior among all compared peers. [CITE:TARGET_M0002] [CITE:TARGET_M0003] [CITE:PEER_M0023] [CITE:PEER_M0092] [CITE:PEER_M0053]  
 
 **Sources:**  
 - Minerals Technologies Inc.: not available  
