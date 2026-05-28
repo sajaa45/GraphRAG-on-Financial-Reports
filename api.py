@@ -475,6 +475,60 @@ def _get_qa():
     return _qa_instance
 
 
+def _enrich_metric_source_info(citations: Dict[str, Any]) -> None:
+    """Stamp source_page / section_title onto target-metric citations that are missing them.
+
+    Existing Metric nodes store these values inside a JSON metadata blob (m.metadata)
+    rather than as flat properties.  We query by citation_id and parse the blob so this
+    works without requiring a re-ingest.  New nodes (after the neo4j_builder fix) expose
+    them as flat properties — both paths are handled by the single query below.
+    """
+    target_metric_ids = [
+        cid for cid, info in citations.items()
+        if info.get("type") == "metric" and info.get("role") == "target"
+        and (info.get("source_page") is None and info.get("section_title") is None)
+    ]
+    if not target_metric_ids:
+        return
+
+    neo_uri  = os.getenv("NEO4J_URI",      "bolt://localhost:7687")
+    neo_user = os.getenv("NEO4J_USERNAME",  "neo4j")
+    neo_pass = os.getenv("NEO4J_PASSWORD",  "")
+    try:
+        from neo4j import GraphDatabase as _GD
+        driver = _GD.driver(neo_uri, auth=(neo_user, neo_pass))
+        with driver.session() as session:
+            rows = session.run(
+                """
+                MATCH (m:Metric)
+                WHERE m.company IS NULL AND m.citation_id IN $ids
+                RETURN m.citation_id AS cid,
+                       m.source_page   AS source_page,
+                       m.section_title AS section_title,
+                       m.metadata      AS metadata
+                """,
+                {"ids": target_metric_ids},
+            )
+            for row in rows:
+                cid          = row["cid"]
+                source_page  = row["source_page"]
+                section_title = row["section_title"]
+                # Fall back to the metadata JSON blob for nodes ingested before the fix
+                if (source_page is None or not section_title) and row["metadata"]:
+                    try:
+                        meta = json.loads(row["metadata"])
+                        source_page   = source_page   or meta.get("source_page")
+                        section_title = section_title or meta.get("section_title", "")
+                    except (json.JSONDecodeError, TypeError):
+                        pass
+                if cid in citations:
+                    citations[cid]["source_page"]   = source_page
+                    citations[cid]["section_title"]  = section_title or None
+        driver.close()
+    except Exception:
+        pass  # enrichment is best-effort — don't break the QA response
+
+
 def _build_citations(results: list) -> Dict[str, Any]:
     citations: Dict[str, Any] = {}
     for row in results:
@@ -486,6 +540,8 @@ def _build_citations(results: list) -> Dict[str, Any]:
                 citations[cid] = {
                     "type": "risk", "company": target, "role": "target",
                     "document_url": r.get("document_url") or None,
+                    "source_page": r.get("source_page") or None,
+                    "section_title": r.get("section_title") or None,
                     "summary": r.get("name", ""),
                 }
         for r in (row.get("peer_risks") or []):
@@ -494,6 +550,9 @@ def _build_citations(results: list) -> Dict[str, Any]:
                 citations[cid] = {
                     "type": "risk", "company": peer, "role": "peer",
                     "document_url": r.get("document_url") or None,
+                    "source_page": r.get("source_page") or None,
+                    # section_title isn't stored in Neo4j for peer risks — it's always this
+                    "section_title": r.get("section_title") or "Item 1A – Risk Factors",
                     "summary": r.get("name", ""),
                 }
         for m in (row.get("target_metrics") or []):
@@ -502,6 +561,8 @@ def _build_citations(results: list) -> Dict[str, Any]:
                 citations[cid] = {
                     "type": "metric", "company": target, "role": "target",
                     "document_url": None,
+                    "source_page": m.get("source_page") or None,
+                    "section_title": m.get("section_title") or None,
                     "summary": (
                         f"{m.get('label') or m.get('name', '')} = "
                         f"{m.get('value', '')} {m.get('unit', '')} ({m.get('year', '')})"
@@ -776,6 +837,13 @@ async def run_qa(request: QARequest):
         results = data["results"]
 
         citations = _build_citations(results)
+
+        # Enrich target-metric citations with source_page / section_title.
+        # The LLM-generated Cypher may not request these fields, and existing
+        # Metric nodes store them inside a JSON metadata blob rather than as
+        # flat properties. Query Neo4j directly by citation_id so this works
+        # with all existing data without requiring a re-ingest.
+        _enrich_metric_source_info(citations)
 
         qa._save_extraction_result(request.question, queries, results)
         qa._save_answer(answer)

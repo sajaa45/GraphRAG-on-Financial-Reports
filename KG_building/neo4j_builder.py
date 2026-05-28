@@ -343,6 +343,13 @@ class Neo4jBuilder:
                                 or item['tgt'].get('name', '')
                             )
 
+                        # Store source_page and section_title as flat properties so the
+                        # QA Cypher query can return them directly (not buried in metadata JSON).
+                        if item.get('source_page') is not None:
+                            tgt_props['source_page'] = item['source_page']
+                        if item.get('section_title'):
+                            tgt_props['section_title'] = item['section_title']
+
                         # Structure:
                         #   Company -[HAS_METRIC_CATEGORY]-> MetricCategory -[HAS_METRIC]-> Metric
                         category = tgt_props.get('category', None) or 'Uncategorised'

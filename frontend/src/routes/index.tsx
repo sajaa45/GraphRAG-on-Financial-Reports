@@ -32,6 +32,8 @@ interface CitationInfo {
   company: string;
   role: "target" | "peer";
   document_url: string | null;
+  source_page?: number | string | null;
+  section_title?: string | null;
   summary: string;
 }
 
@@ -156,6 +158,7 @@ function Index() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [question, setQuestion] = useState("");
   const [asking, setAsking] = useState(false);
+  const [reasoningEnabled, setReasoningEnabled] = useState(false);
   const phase2Ref = useRef<HTMLDivElement>(null);
 
   const resetSteps = useCallback(() => {
@@ -370,7 +373,7 @@ function Index() {
       const r = await fetch(`${backendUrl}/qa/run`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q }),
+        body: JSON.stringify({ question: q, reasoning: reasoningEnabled }),
       });
       if (r.ok) {
         const data = await r.json();
@@ -399,7 +402,7 @@ function Index() {
       ),
     );
     setAsking(false);
-  }, [question, asking, backendUrl]);
+  }, [question, asking, backendUrl, reasoningEnabled]);
 
   // -------- Evaluation (per-message, user-chosen test type) --------
   const runEvaluation = useCallback(
@@ -746,23 +749,42 @@ function Index() {
                   e.preventDefault();
                   askQuestion();
                 }}
-                className="border-t border-border bg-[var(--panel)] p-3 flex items-center gap-2"
+                className="border-t border-border bg-[var(--panel)] p-3 flex flex-col gap-2"
               >
-                <input
-                  type="text"
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="Ask about risks, financials, peer comparisons…"
-                  disabled={asking}
-                  className="flex-1 rounded-lg bg-card border border-input px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring transition-all placeholder:text-muted-foreground"
-                />
-                <button
-                  type="submit"
-                  disabled={!question.trim() || asking}
-                  className="flex items-center gap-1.5 rounded-lg bg-[var(--warning)] text-white text-xs font-semibold px-4 py-2.5 transition-all hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
-                >
-                  <Send className="h-3.5 w-3.5" /> Ask
-                </button>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    placeholder="Ask about risks, financials, peer comparisons…"
+                    disabled={asking}
+                    className="flex-1 rounded-lg bg-card border border-input px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring transition-all placeholder:text-muted-foreground"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!question.trim() || asking}
+                    className="flex items-center gap-1.5 rounded-lg bg-[var(--warning)] text-white text-xs font-semibold px-4 py-2.5 transition-all hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
+                  >
+                    <Send className="h-3.5 w-3.5" /> Ask
+                  </button>
+                </div>
+                <div className="flex items-center gap-2 px-1">
+                  <button
+                    type="button"
+                    onClick={() => setReasoningEnabled((v) => !v)}
+                    className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest transition-all ${
+                      reasoningEnabled
+                        ? "border-[var(--accent)]/50 bg-[color-mix(in_oklab,var(--accent)_8%,transparent)] text-[var(--accent)]"
+                        : "border-border text-muted-foreground hover:border-muted-foreground"
+                    }`}
+                  >
+                    <Sparkles className="h-3 w-3" />
+                    {reasoningEnabled ? "Reasoning on" : "Reasoning off"}
+                  </button>
+                  <span className="text-[10px] text-muted-foreground font-mono">
+                    {reasoningEnabled ? "Chain-of-thought will appear below the answer" : "Enable to see step-by-step reasoning"}
+                  </span>
+                </div>
               </form>
             </div>
           </section>
@@ -909,6 +931,12 @@ function CitedText({
             <span className={info.role === "target" ? "text-[var(--accent)]" : "text-[var(--warning)]"}>
               {info.role}
             </span>
+            {info.section_title && (
+              <> · <span className="text-muted-foreground">{info.section_title}</span></>
+            )}
+            {info.source_page != null && (
+              <> · <span className="text-foreground">p.{info.source_page}</span></>
+            )}
             {" · "}
             {info.summary.slice(0, 80)}
             {href && (
@@ -942,25 +970,89 @@ function CitedText({
 }
 
 // ---------------------------------------------------------------------------
-// ReasoningTrace — collapsible chain-of-thought
+// SourcesList — always-visible citations panel
+// ---------------------------------------------------------------------------
+
+function SourcesList({ citations }: { citations?: Record<string, CitationInfo> }) {
+  if (!citations || Object.keys(citations).length === 0) return null;
+  const entries = Object.entries(citations);
+  return (
+    <div className="mt-4 rounded-xl border border-border overflow-hidden">
+      <div className="px-3 py-2 bg-[var(--panel)] border-b border-border flex items-center gap-2">
+        <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+        <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
+          Sources · {entries.length}
+        </span>
+      </div>
+      <div className="divide-y divide-border">
+        {entries.map(([id, info], idx) => {
+          const href = info.document_url || null;
+          return (
+            <div key={id} className="flex gap-3 px-3 py-2.5 text-[11px]">
+              <span className="shrink-0 font-mono text-[var(--accent)] w-5 pt-px">[{idx + 1}]</span>
+              <div className="flex-1 min-w-0 space-y-0.5">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                  <span className="font-medium text-foreground">{info.company}</span>
+                  <span className={`font-mono text-[9px] uppercase tracking-widest px-1.5 py-0.5 rounded-full ${
+                    info.role === "target"
+                      ? "bg-[color-mix(in_oklab,var(--accent)_10%,transparent)] text-[var(--accent)]"
+                      : "bg-[color-mix(in_oklab,var(--warning)_10%,transparent)] text-[var(--warning)]"
+                  }`}>
+                    {info.role}
+                  </span>
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground/60">
+                    {info.type}
+                  </span>
+                  {info.section_title && (
+                    <span className="text-[10px] text-muted-foreground truncate max-w-[200px]">
+                      {info.section_title}
+                    </span>
+                  )}
+                  {info.source_page != null && (
+                    <span className="font-mono text-[9px] text-foreground bg-muted px-1.5 py-0.5 rounded">
+                      p.{info.source_page}
+                    </span>
+                  )}
+                </div>
+                <p className="text-muted-foreground leading-relaxed line-clamp-2">{info.summary}</p>
+                {href && (
+                  <a href={href} target="_blank" rel="noopener noreferrer"
+                     className="inline-flex items-center gap-1 text-[10px] font-mono text-[var(--accent)] hover:underline underline-offset-2">
+                    Open filing ↗
+                  </a>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// ReasoningTrace — Claude-style shaded chain-of-thought
 // ---------------------------------------------------------------------------
 
 function ReasoningTrace({ trace }: { trace: string }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   return (
-    <div className="mt-3 rounded-lg border border-border bg-[var(--panel)] overflow-hidden">
+    <div className="mt-4 rounded-xl overflow-hidden border border-[color-mix(in_oklab,var(--accent)_20%,transparent)] bg-[color-mix(in_oklab,var(--accent)_4%,transparent)]">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between px-3 py-2 text-left"
+        className="w-full flex items-center justify-between px-4 py-2.5 text-left"
       >
-        <span className="font-mono text-[10px] uppercase tracking-widest text-foreground">
-          Reasoning trace
-        </span>
-        <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-3 w-3 text-[var(--accent)]/60" />
+          <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--accent)]/70">
+            Reasoning trace
+          </span>
+        </div>
+        <ChevronDown className={`h-3.5 w-3.5 text-[var(--accent)]/50 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="px-3 pb-3">
-          <pre className="whitespace-pre-wrap text-[10px] font-mono text-muted-foreground leading-relaxed max-h-96 overflow-y-auto">
+        <div className="px-4 pb-4 border-t border-[color-mix(in_oklab,var(--accent)_15%,transparent)]">
+          <pre className="mt-3 whitespace-pre-wrap text-[11px] font-mono text-muted-foreground leading-relaxed max-h-80 overflow-y-auto">
             {trace}
           </pre>
         </div>
@@ -981,7 +1073,7 @@ function MessageBubble({
   onEvaluate: (testType: string) => void;
 }) {
   const [traceOpen, setTraceOpen] = useState(false);
-  const [selectedEval, setSelectedEval] = useState(EVAL_TESTS[0].value);
+  const [selectedEval, setSelectedEval] = useState("overall_score");
 
   if (message.role === "user") {
     return (
@@ -995,6 +1087,7 @@ function MessageBubble({
 
   const isThinking = !message.content;
   const traceDone = message.trace?.every((t) => t.status === "done");
+  const hasCitations = message.citations && Object.keys(message.citations).length > 0;
 
   return (
     <div className="p-5" style={{ animation: "fadeReveal 0.4s var(--ease-out-expo) both" }}>
@@ -1003,9 +1096,10 @@ function MessageBubble({
           <Sparkles className="h-3.5 w-3.5" />
         </div>
         <div className="flex-1 min-w-0">
-          {/* Process trace */}
+
+          {/* Process trace — collapsible, auto-open while thinking */}
           {message.trace && (
-            <div className="mb-3 rounded-lg border border-border bg-[var(--panel)] overflow-hidden">
+            <div className="mb-4 rounded-lg border border-border bg-[var(--panel)] overflow-hidden">
               <button
                 onClick={() => setTraceOpen((o) => !o)}
                 className="w-full flex items-center justify-between px-3 py-2 text-left"
@@ -1032,15 +1126,11 @@ function MessageBubble({
                         <StatusDot status={t.status} />
                         {t.step}
                       </span>
-                      <span
-                        className={
-                          t.status === "done"
-                            ? "text-[var(--accent)]"
-                            : t.status === "running"
-                            ? "text-[var(--warning)]"
-                            : "text-muted-foreground/60"
-                        }
-                      >
+                      <span className={
+                        t.status === "done" ? "text-[var(--accent)]"
+                        : t.status === "running" ? "text-[var(--warning)]"
+                        : "text-muted-foreground/60"
+                      }>
                         {t.status.toUpperCase()}
                       </span>
                     </div>
@@ -1057,17 +1147,27 @@ function MessageBubble({
             <CitedText text={message.content} citations={message.citations} />
           )}
 
-          {/* Reasoning trace (LLM chain-of-thought) */}
+          {/* Reasoning trace — shaded, shown below answer */}
           {message.reasoning_trace && (
             <ReasoningTrace trace={message.reasoning_trace} />
           )}
 
-          {/* Evaluation CTA */}
+          {/* Sources — always visible if any citations exist */}
+          {!isThinking && hasCitations && (
+            <SourcesList citations={message.citations} />
+          )}
+
+          {/* Evaluation */}
           {!isThinking && traceDone && (
-            <div className="mt-4">
-              {!message.evaluation && !message.evaluating && (
-                <div className="flex items-center gap-2 flex-wrap">
-                  <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)] shrink-0" />
+            <div className="mt-4 rounded-xl border border-border overflow-hidden">
+              <div className="px-4 py-3 bg-[var(--panel)] border-b border-border flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)]" />
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                    Audit
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
                   <select
                     value={selectedEval}
                     onChange={(e) => setSelectedEval(e.target.value)}
@@ -1079,21 +1179,31 @@ function MessageBubble({
                   </select>
                   <button
                     onClick={() => onEvaluate(selectedEval)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[var(--accent)]/40 bg-[color-mix(in_oklab,var(--accent)_6%,transparent)] px-3 py-1.5 text-[11px] font-semibold text-foreground hover:bg-[color-mix(in_oklab,var(--accent)_12%,transparent)] transition-all"
+                    disabled={message.evaluating}
+                    className="inline-flex items-center gap-1.5 rounded-md bg-[var(--elevated)] border border-[var(--accent)]/30 px-3 py-1.5 text-[11px] font-semibold text-[var(--accent)] hover:bg-[color-mix(in_oklab,var(--accent)_8%,transparent)] transition-all disabled:opacity-50"
                   >
-                    Run audit
+                    {message.evaluating ? (
+                      <>
+                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)] animate-pulse" />
+                        Running…
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck className="h-3 w-3" /> Run
+                      </>
+                    )}
                   </button>
                 </div>
-              )}
-              {message.evaluating && (
-                <div className="inline-flex items-center gap-2 text-[11px] text-muted-foreground font-mono uppercase tracking-widest">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)] animate-pulse" />
-                  Running {EVAL_TESTS.find((t) => t.value === message.evalType)?.label ?? "audit"}…
+              </div>
+              {message.evaluation && <Scorecard data={message.evaluation} />}
+              {!message.evaluation && !message.evaluating && (
+                <div className="px-4 py-3 text-[11px] text-muted-foreground font-mono">
+                  Select a test and click Run to audit this answer.
                 </div>
               )}
-              {message.evaluation && <Scorecard data={message.evaluation} />}
             </div>
           )}
+
         </div>
       </div>
     </div>
@@ -1115,53 +1225,63 @@ function StatusDot({ status }: { status: string }) {
 
 function Scorecard({ data }: { data: EvaluationResult }) {
   const label = EVAL_TESTS.find((t) => t.value === data.test_type)?.label ?? "Audit";
+  const pct = Math.round(data.weighted * 100);
+  const scoreColor =
+    pct >= 75 ? "text-[var(--accent)]" : pct >= 50 ? "text-[var(--warning)]" : "text-destructive";
+  const barColor =
+    pct >= 75 ? "bg-[var(--accent)]" : pct >= 50 ? "bg-[var(--warning)]" : "bg-destructive";
+
   return (
-    <div
-      className="mt-2 overflow-hidden rounded-xl border border-border bg-card"
-      style={{ animation: "fadeReveal 0.5s var(--ease-out-expo) both" }}
-    >
-      <div className="flex items-center justify-between px-4 py-3 bg-[var(--panel)] border-b border-border">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)]" />
-          <span className="font-mono text-[10px] uppercase tracking-widest text-foreground">
-            {label}
-          </span>
-        </div>
-        <div className="flex items-baseline gap-1.5">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            Score
-          </span>
-          <span className="font-sans text-2xl text-[var(--accent)]">
-            {(data.weighted * 100).toFixed(0)}
-          </span>
-          <span className="text-xs text-muted-foreground">/100</span>
+    <div style={{ animation: "fadeReveal 0.4s var(--ease-out-expo) both" }}>
+      {/* Overall score banner */}
+      <div className="flex items-center gap-4 px-4 py-3 border-b border-border">
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</span>
+            <span className={`font-sans text-xl font-semibold ${scoreColor}`}>
+              {pct}<span className="text-xs text-muted-foreground font-mono">/100</span>
+            </span>
+          </div>
+          <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+            <div
+              className={`h-full rounded-full ${barColor} transition-all`}
+              style={{ width: `${pct}%` }}
+            />
+          </div>
         </div>
       </div>
-      <table className="w-full text-left">
-        <tbody className="divide-y divide-border text-sm">
-          {data.rows.map((r, i) => (
-            <tr key={i}>
-              <td className="px-4 py-2.5 font-medium text-foreground w-1/3 truncate max-w-[160px]" title={r.dimension}>
-                {r.dimension}
-              </td>
-              <td className="px-4 py-2.5 text-xs text-muted-foreground">{r.note}</td>
-              <td className="px-4 py-2.5 w-32">
-                <div className="flex items-center gap-2">
-                  <div className="h-1.5 flex-1 rounded-full bg-muted overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-[var(--accent)]"
-                      style={{ width: `${r.score * 100}%` }}
-                    />
+      {/* Dimension rows */}
+      {data.rows.length > 0 && (
+        <table className="w-full text-left">
+          <tbody className="divide-y divide-border">
+            {data.rows.map((r, i) => (
+              <tr key={i} className="hover:bg-muted/30 transition-colors">
+                <td className="px-4 py-2.5 text-[11px] font-medium text-foreground w-1/3 truncate max-w-[160px]" title={r.dimension}>
+                  {r.dimension}
+                </td>
+                <td className="px-4 py-2.5 text-[11px] text-muted-foreground leading-snug">{r.note}</td>
+                <td className="px-4 py-2.5 w-28">
+                  <div className="flex items-center gap-2">
+                    <div className="h-1 flex-1 rounded-full bg-muted overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${
+                          r.score >= 0.75 ? "bg-[var(--accent)]"
+                          : r.score >= 0.5 ? "bg-[var(--warning)]"
+                          : "bg-destructive"
+                        }`}
+                        style={{ width: `${r.score * 100}%` }}
+                      />
+                    </div>
+                    <span className="font-mono text-[10px] text-foreground w-7 text-right shrink-0">
+                      {Math.round(r.score * 100)}
+                    </span>
                   </div>
-                  <span className="font-mono text-[10px] text-foreground w-8 text-right">
-                    {(r.score * 100).toFixed(0)}
-                  </span>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

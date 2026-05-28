@@ -21,10 +21,11 @@ Node labels and key properties:
   - TargetCompany   {name, cik, ticker, is_target:true, filing_date, document_url}
   - Company         {name, cik, ticker, is_peer:true, filing_date, document_url}
   - MetricCategory  {name}
-  - Metric          {citation_id, name, value, unit, year, metric_type, gaap_concept, xbrl_tag, label, source_url, cik}
+  - Metric          {citation_id, name, value, unit, year, metric_type, gaap_concept, xbrl_tag, label, source_url, cik, source_page, section_title}
                     NOTE: name = "{metric_type} ({year})" — use gaap_concept to align target vs peer metrics
                     CRITICAL: Always return citation_id for citations
                     CRITICAL: When comparing target vs peer metrics, match by gaap_concept — not by name or label
+                    CRITICAL: Always include source_page and section_title in collect() for target_metrics
   - Risk            {citation_id, risk_id, name, description, why, source_text, document_url, filing_date, section_title, source_page}
                     CRITICAL: Always return citation_id for citations
   - Industry        {name, sector}
@@ -103,7 +104,7 @@ Risks with peer comparison:
 Metrics with peer comparison (fetch independently by category — let the LLM align by label):
     MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
     WHERE mc.name = 'Profitability'
-    WITH tc, mc, collect({{citation_id: m.citation_id, name: m.name, label: m.label, gaap_concept: m.gaap_concept, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag}}) AS target_metrics
+    WITH tc, mc, collect({{citation_id: m.citation_id, name: m.name, label: m.label, gaap_concept: m.gaap_concept, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag, source_page: m.source_page, section_title: m.section_title}}) AS target_metrics
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(pmc:MetricCategory {{name: mc.name}})-[:HAS_METRIC]->(pm:Metric)
     WITH tc, mc, target_metrics, peer, collect({{citation_id: pm.citation_id, name: pm.name, label: pm.label, gaap_concept: pm.gaap_concept, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url}}) AS peer_metrics
