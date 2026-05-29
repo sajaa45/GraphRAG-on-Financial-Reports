@@ -45,31 +45,45 @@ def table_to_text(table) -> str:
     return '[TABLE START]\n' + '\n'.join(formatted_rows) + '\n[TABLE END]'
 
 
+def _is_page_break_hr(tag) -> bool:
+    """Return True if tag is an <hr> that acts as a page break."""
+    if not hasattr(tag, 'name') or tag.name != 'hr':
+        return False
+    style = tag.get('style', '')
+    return 'page-break-after' in style or 'page-break-before' in style
+
+
 def extract_text_with_markers(html_path: str) -> Dict:
     """
-    Extract text content from HTML using actual page breaks (BRPFPageHeader divs).
+    Extract text content from HTML using actual page breaks (BRPFPageHeader divs
+    or <hr page-break-after:always> elements in newer HTML formats).
     """
-    
+
     with open(html_path, 'r', encoding='utf-8') as f:
         html_content = f.read()
-    
+
     soup = BeautifulSoup(html_content, 'html.parser')
-    
+
     # Remove hidden XBRL data
     for hidden in soup.find_all(id='DSPFiXBRLHidden'):
         hidden.decompose()
-    
-    # Get the main content div
+
+    # Get the main content div (older BRPF format)
     main_div = soup.find('div', style=lambda x: x and 'line-height: initial' in x)
-    
+
+    if not main_div:
+        # Newer format: content is directly in body
+        main_div = soup.find('body')
+
     if not main_div:
         print("No main content div found")
         return {"pages": [], "total_pages": 0}
     
-    # Find all page break markers (BRPFPageHeader divs)
+    # Find all page break markers — BRPF format or hr-based format
     page_markers = main_div.find_all('div', class_='BRPFPageHeader')
-    
-    if not page_markers:
+    hr_page_breaks = main_div.find_all('hr', style=lambda x: x and 'page-break-after' in x) if not page_markers else []
+
+    if not page_markers and not hr_page_breaks:
         print("No page markers found, falling back to word-based pagination")
         chunks = []
         processed_tables: set = set()
@@ -113,8 +127,64 @@ def extract_text_with_markers(html_path: str) -> Dict:
             "total_pages": len(pages),
             "pages": pages
         }
-    
-    
+
+    if hr_page_breaks:
+        # Newer format: <hr page-break-after:always> separates pages
+        pages = []
+        current_page = 1
+        page_chunks = []
+        processed_tables: set = set()
+
+        for element in main_div.descendants:
+            if _is_page_break_hr(element):
+                page_text = re.sub(r'\n{3,}', '\n\n', '\n\n'.join(page_chunks)).strip()
+                if page_text:
+                    pages.append({
+                        'page': current_page,
+                        'text': page_text,
+                        'text_length': len(page_text),
+                        'word_count': len(page_text.split()),
+                    })
+                current_page += 1
+                page_chunks = []
+                processed_tables = set()
+            elif hasattr(element, 'name') and element.name == 'table':
+                table_id = id(element)
+                if table_id not in processed_tables and element.parent.name != 'table':
+                    table_text = table_to_text(element)
+                    if table_text:
+                        page_chunks.append('\n' + table_text + '\n')
+                    processed_tables.add(table_id)
+                    for desc in element.descendants:
+                        if hasattr(desc, 'name'):
+                            processed_tables.add(id(desc))
+            elif isinstance(element, NavigableString):
+                parent_table = element.find_parent('table')
+                if parent_table and id(parent_table) in processed_tables:
+                    continue
+                text = str(element).strip()
+                if text and text != '\xa0':
+                    page_chunks.append(re.sub(r'\s+', ' ', text))
+
+        # Add last page
+        if page_chunks:
+            page_text = re.sub(r'\n{3,}', '\n\n', '\n\n'.join(page_chunks)).strip()
+            if page_text:
+                pages.append({
+                    'page': current_page,
+                    'text': page_text,
+                    'text_length': len(page_text),
+                    'word_count': len(page_text.split()),
+                })
+
+        print(f"Extracted {len(pages)} pages with content (hr-based)")
+        return {
+            "source_html": html_path,
+            "total_pages": len(pages),
+            "pages": pages
+        }
+
+
     pages = []
     current_page = 0
     page_chunks = []
@@ -185,25 +255,78 @@ def detect_sections_from_html(html_path: str, pages_data: Dict) -> List[Dict]:
     for hidden in soup.find_all(id='DSPFiXBRLHidden'):
         hidden.decompose()
     
-    # Get the main content div
+    # Get the main content div (older BRPF format), fall back to body for newer format
     main_div = soup.find('div', style=lambda x: x and 'line-height: initial' in x)
     if not main_div:
+        main_div = soup.find('body')
+    if not main_div:
         return []
-    
+
     sections = []
-    
+
     # Patterns for section headers
     part_pattern = re.compile(r'^PART\s+([IVX]+)', re.IGNORECASE)
     item_pattern = re.compile(r'^Item\s+(\d+[A-Z]?)\.?\s*(.*)', re.IGNORECASE)
-    
+
     # Find all page markers to track which page we're on
     page_markers = main_div.find_all('div', class_='BRPFPageHeader')
-    
-    if not page_markers:
+    hr_page_breaks = main_div.find_all('hr', style=lambda x: x and 'page-break-after' in x) if not page_markers else []
+
+    if not page_markers and hr_page_breaks:
+        # Newer format: build element→page map using <hr page-break-after> as separators
+        element_to_page = {}
+        current_page = 1
+        for element in main_div.descendants:
+            element_to_page[id(element)] = current_page
+            if _is_page_break_hr(element):
+                current_page += 1
+
+        # Skip elements on the Table of Contents page
+        toc_page = None
+        toc_pattern = re.compile(r'table\s+of\s+contents', re.IGNORECASE)
+        for tag in main_div.find_all(['div', 'p']):
+            if toc_pattern.search(tag.get_text(strip=True)):
+                toc_page = element_to_page.get(id(tag))
+                if toc_page:
+                    break
+
+        # Find elements with id="part_*" or id="item_*" — these are the actual section headers
+        id_part = re.compile(r'^part_', re.IGNORECASE)
+        id_item = re.compile(r'^item_', re.IGNORECASE)
+
+        for tag in main_div.find_all(True):
+            tag_id = tag.get('id', '')
+            if not tag_id:
+                continue
+            page_num = element_to_page.get(id(tag), 1)
+            if toc_page and page_num == toc_page:
+                continue
+
+            text = tag.get_text(separator='', strip=True)
+            text = re.sub(r'\s+', ' ', text).strip()
+            if not text:
+                continue
+
+            if id_part.match(tag_id) and part_pattern.match(text):
+                sections.append({
+                    'title': text,
+                    'level': 1,
+                    'start_page': page_num,
+                    'end_page': page_num,
+                })
+            elif id_item.match(tag_id) and item_pattern.match(text):
+                sections.append({
+                    'title': text,
+                    'level': 2,
+                    'start_page': page_num,
+                    'end_page': page_num,
+                })
+
+    elif not page_markers:
         # Fallback to word-based page tracking
         cumulative_words = 0
         WORDS_PER_PAGE = 3000
-        
+
         for tag in soup.find_all(['div', 'p']):
             text = tag.get_text(strip=True)
             tag_words = len(text.split())

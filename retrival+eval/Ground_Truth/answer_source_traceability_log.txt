@@ -3,29 +3,29 @@ Answer-Source Traceability — Phase 1 Ground Truth Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : How does Minerals Technologies Inc.'s debt level compare to its peers?
-  Answer chars: 1904
-  Result rows : 9
+  Question    : What are the main risks facing kimco and how do they compare to its peers?
+  Answer chars: 2579
+  Result rows : 18
 
 [2/5] Building source registry
-  Total sources: 109  (25 risks, 84 metrics)
-    [TARGET_R0005] Capital market uncertainty impacting pension and postretirement benefit plans — 
-    [PEER_R0050] Inability to raise additional capital when needed — Failure to secure funding fo
-    [PEER_R0078] Warrants may expire worthless, depriving the company of expected cash proceeds —
-    [PEER_R0079] Cashless exercise of warrants reduces cash proceeds to the company — If warrants
-    [PEER_R0080] No cash dividends expected, so investors must rely on stock price appreciation f
-    ... and 104 more
+  Total sources: 670  (554 risks, 116 metrics)
+    [TARGET_R0001] Adverse global market and economic conditions — Adverse global market and econom
+    [PEER_R0291] Uninsured losses or losses in excess of our insurance coverage — Losses not cove
+    [PEER_R0292] Cybersecurity risks and incidents — Cybersecurity incidents may disrupt operatio
+    [PEER_R0293] Non-terminable Master Services Agreement and assignable without consent — The Ma
+    [PEER_R0294] Fees paid to Administrator and Operator regardless of performance — The Administ
+    ... and 665 more
 
 [3/5] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
 
 [4/5] Parsing claims and inline citations from answer
   → 14 claims  |  14 cited  |  0 unresolved  |  0 uncited
-    C001: Minerals Technologies Inc. (MTI) had total debt of $533.6 million in 2  [CITE:TARGET_M0044] ✓
-    C002: Its peer Global Gas Corp reported unsecured debt of $103.95 million  [CITE:PEER_M0029] ✓
-    C003: , significantly lower than MTI. Arcadium Lithium plc had long-term deb  [CITE:PEER_M0140] ✓
-    C004: , significantly lower than MTI. Arcadium Lithium plc had long-term deb  [CITE:PEER_M0132] ✓
-    C005: MTI’s debt structure includes a $575 million term loan facility and $4  [CITE:TARGET_M0025] ✓
+    C001: Kimco Realty Corporation faces one primary risk: adverse global market  [CITE:TARGET_R0001] ✓
+    C002: In comparison, its peers face significantly more numerous and complex   [CITE:PEER_R0347] ✓
+    C003: , geographic concentration in California  [CITE:PEER_R0344] ✓
+    C004: , and severe governance risks including non-terminable service agreeme  [CITE:PEER_R0291] ✓
+    C005: It also has material exposure to lending operations and REIT complianc  [CITE:PEER_R0322] ✓
     ... and 9 more
 
 [5/5] Judging source correctness (14 LLM calls)
@@ -34,11 +34,11 @@ Answer-Source Traceability — Phase 1 Ground Truth Evaluation
 Results
 ──────────────────────────────────────────────────────────────────────
   Total claims       : 14
-  Correct source     : 13  (92.9%)
-  Wrong source       : 1
+  Correct source     : 8  (57.1%)
+  Wrong source       : 6
   Fabricated (no src): 0
 
 ✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\answer_source_traceability.csv
 ======================================================================
-Source Traceability Score: 92.9%
+Source Traceability Score: 57.1%
 ======================================================================

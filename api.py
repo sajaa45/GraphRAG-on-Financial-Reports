@@ -280,6 +280,8 @@ async def _run_pipeline(
                         "main_company": _mc,
                         "relations": combined_relations,
                     }
+                    builder.clear_database()
+                    builder.stamp_target_company(_mc)
                     total_written = builder._build_from_data(normalised_all)
                     counts = {rel: len(items) for rel, items in combined_relations.items()}
 

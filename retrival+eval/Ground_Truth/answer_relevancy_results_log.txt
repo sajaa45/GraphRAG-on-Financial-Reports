@@ -3,49 +3,49 @@ Answer Relevancy — RAGAS-style Ground Truth Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : How does Minerals Technologies Inc.'s debt level compare to its peers?
-  Answer chars: 1904
+  Question    : What are the main risks facing kimco and how do they compare to its peers?
+  Answer chars: 2579
 
 [2/5] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
 
 [3/5] Decomposing question into verifiable aspects
   → 5 aspects identified:
-    1. Does the answer compare the target company’s debt level to at least one peer using financial metrics from their 10-K filings?
-    2. Does the answer include at least one leverage or debt structure metric for the target company?
-    3. Does the answer include at least one leverage or debt structure metric for at least one peer company?
-    4. Does the answer avoid implying external benchmarks, industry averages, or market data not found in the filings?
-    5. Does the answer refrain from offering strategic advice, forecasts, or recommendations about debt levels?
+    1. Does the answer identify at least one key risk factor explicitly stated in Kimco’s 10-K filing?
+    2. Does the answer compare at least one risk factor from Kimco’s 10-K to a similar risk factor in at least one peer’s 10-K?
+    3. Does the answer reference at least one financial metric (e.g., leverage, liquidity, coverage) from Kimco’s 10-K that relates to its risk profile?
+    4. Does the answer contrast Kimco’s financial risk metrics with those of at least one peer, using data from their respective 10-Ks?
+    5. Does the answer avoid making claims about market conditions, industry trends, or future projections not found in the filings?
 
 [4/5] Judging answer coverage per aspect
-    [✓] YES      Does the answer compare the target company’s debt level to at least on
-             The answer compares MTI’s debt level to three peers (Global Gas Corp, Arcadium Lithium, NL
-    [✓] YES      Does the answer include at least one leverage or debt structure metric
-             The answer includes multiple debt structure metrics for MTI, such as the $575 million term
-    [✓] YES      Does the answer include at least one leverage or debt structure metric
-             The answer includes debt structure metrics for peers, such as Arcadium Lithium’s $1.2495 b
-    [✓] YES      Does the answer avoid implying external benchmarks, industry averages,
-             The answer relies solely on financial data from the cited 10-K filings and does not refere
-    [✓] YES      Does the answer refrain from offering strategic advice, forecasts, or 
-             The answer avoids strategic advice, forecasts, or recommendations, focusing only on factua
+    [✓] YES      Does the answer identify at least one key risk factor explicitly state
+             The answer identifies adverse global market and economic conditions, exposure to retail sp
+    [✓] YES      Does the answer compare at least one risk factor from Kimco’s 10-K to 
+             The answer compares Kimco’s macroeconomic risk to Creative Media’s tenant concentration an
+    [✗] NO       Does the answer reference at least one financial metric (e.g., leverag
+             The answer does not reference any specific financial metric (e.g., leverage ratio, debt-to
+    [✓] YES      Does the answer contrast Kimco’s financial risk metrics with those of 
+             The answer contrasts Kimco’s general macroeconomic risk with peers’ concrete financial met
+    [✓] YES      Does the answer avoid making claims about market conditions, industry 
+             The answer avoids speculative claims about future market conditions or trends; all referen
 
 [5/5] Computing overall relevancy score
   Overall score : 1.00
-  Reason        : The answer directly compares MTI’s debt levels to its three peers using only data from their 10-K filings, provides specific debt figures, highlights structural details, and contextualizes relative risk—all within the pipeline’s permitted data scope.
+  Reason        : The answer accurately identifies Kimco’s primary risk from its 10-K and contrasts it with specific, filing-based risks from three peers, including quantified exposures and cited sections, fully aligning with the pipeline’s data scope.
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
   Aspects total   : 5
-  Fully covered   : 5  (YES)
+  Fully covered   : 4  (YES)
   Partially covered: 0  (PARTIAL)
-  Not covered     : 0  (NO)
-  Aspect score    : 1.00
+  Not covered     : 1  (NO)
+  Aspect score    : 0.80
   Holistic score  : 1.00
-  Combined        : 1.00
+  Combined        : 0.90
   Quality gate    : PASS  (threshold: 0.70)
 
 ✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\answer_relevancy_results.csv
 ======================================================================
-Answer Relevancy Score : 1.00  [PASS]
+Answer Relevancy Score : 0.90  [PASS]
 ======================================================================

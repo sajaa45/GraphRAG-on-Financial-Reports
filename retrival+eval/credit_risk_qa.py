@@ -61,7 +61,7 @@ Key rules:
 KNOWN_CATEGORIES = {"Leverage", "Coverage", "Liquidity", "Profitability", "Debt Structure"}
 
 CYPHER_GENERATION_PROMPT = PromptTemplate(
-    input_variables=["schema", "categories", "question"],
+    input_variables=["schema", "categories", "target_company", "question"],
     template="""You are a Neo4j Cypher expert for a credit-risk knowledge graph.
 Generate a single valid Cypher query that retrieves all data needed to answer the question.
 
@@ -70,6 +70,10 @@ Schema:
 
 Known MetricCategory names (use EXACT spelling):
 {categories}
+
+Target company in this graph: {target_company}
+CRITICAL: Never filter TargetCompany by name. The graph contains exactly ONE TargetCompany node.
+Always match it as (tc:TargetCompany) — no {{name: ...}} or other property filter.
 
 Rules:
 1. Output ONLY the Cypher query — no markdown, no comments, no explanation.
@@ -132,9 +136,12 @@ Cypher query:""",
 )
 
 QA_PROMPT = PromptTemplate(
-    input_variables=["context", "question"],
+    input_variables=["context", "question", "target_company"],
     template="""You are a senior credit-risk analyst providing KYC assessments.
 Answer the question using only the graph results below.
+
+The TargetCompany in this knowledge graph is: {target_company}
+CRITICAL: If the question mentions a different company name, treat it as referring to {target_company} — that is the subject of the analysis.
 
 - Lead with a **Sources** section listing one document URL per company — only include URLs that appear in the graph results. Omit any company with no URL.
 - Use ONLY values present in the graph results. Never infer or derive a metric that is not explicitly returned.
@@ -149,7 +156,7 @@ Answer the question using only the graph results below.
 - After every claim drawn from a specific data point, append an inline citation using the citation_id from the graph results:
   - Risk claim:   [CITE:<citation_id>]   e.g. [CITE:TARGET_RISK_Competitive_industries] or [CITE:PEER_RISK_1234567_risk_3]
   - Metric claim: [CITE:<citation_id>]   e.g. [CITE:TARGET_METRIC_Net_income_2024] or [CITE:PEER_METRIC_891014_NetIncome_2024]
-  
+
 CRITICAL: The citation_id field is provided in every risk and metric object in the graph results. Use it EXACTLY as shown — do not construct or modify it.
 
 **Sources:**
@@ -167,8 +174,10 @@ Answer:""",
 
 # name what it found, and cite every source document it draws from.
 REASONING_PROMPT = PromptTemplate(
-    input_variables=["context", "question", "queries"],
+    input_variables=["context", "question", "queries", "target_company"],
     template="""You are a senior credit-risk analyst with access to structured 10-K filing data.
+The TargetCompany in this knowledge graph is: {target_company}
+CRITICAL: If the question mentions a different company name, treat it as referring to {target_company}.
 A set of graph queries has been executed and the raw results are provided below.
 Your task is to produce a transparent, step-by-step reasoning trace that shows exactly
 how you arrived at your conclusions, and to cite every source you rely on.
@@ -322,8 +331,16 @@ class CreditRiskQA:
             temperature=0.1,
         )
 
+        # Resolve the actual TargetCompany name from the graph once at startup
+        try:
+            rows = self.graph.query("MATCH (tc:TargetCompany) RETURN tc.name AS name LIMIT 1")
+            self._target_company = rows[0]["name"] if rows and rows[0]["name"] else "unknown"
+        except Exception:
+            self._target_company = "unknown"
+
         print(f"✓ Neo4j connected  : {neo4j_uri}")
         print(f"✓ LLM model        : {os.getenv('BEDROCK_MODEL', 'qwen.qwen3-next-80b-a3b')}")
+        print(f"✓ Target company   : {self._target_company}")
 
     # ------------------------------------------------------------------
     # Core pipeline: NL → Cypher (LLM) → execute → answer (LLM)
@@ -337,6 +354,7 @@ class CreditRiskQA:
         base_prompt = CYPHER_GENERATION_PROMPT.format(
             schema=GRAPH_SCHEMA,
             categories=", ".join(sorted(KNOWN_CATEGORIES)),
+            target_company=self._target_company,
             question=question,
         )
         if error_context:
@@ -378,7 +396,7 @@ class CreditRiskQA:
         # QA answer — strip source_text so it doesn't bloat the prompt
         clean = self._clean_metadata(results[:50])
         context = json.dumps(self._truncate(clean), indent=2, default=str)
-        answer = self._call_llm_raw(QA_PROMPT.format(context=context, question=question))
+        answer = self._call_llm_raw(QA_PROMPT.format(context=context, question=question, target_company=self._target_company))
 
         return {"answer": answer, "cypher": cypher, "results": results}
 
@@ -424,7 +442,7 @@ class CreditRiskQA:
         # Generate unified answer from combined results using the QA prompt
         clean = self._clean_metadata(unique[:100])
         context = json.dumps(self._truncate(clean), indent=2, default=str)
-        answer_msg = QA_PROMPT.format(context=context, question=question)
+        answer_msg = QA_PROMPT.format(context=context, question=question, target_company=self._target_company)
         unified_answer = self._call_llm_raw(answer_msg)
 
         return {
@@ -437,11 +455,41 @@ class CreditRiskQA:
     # Main entry point — choose single or multi strategy
     # ------------------------------------------------------------------
 
+    def _normalize_question(self, question: str) -> str:
+        """Rewrite the question to be company-agnostic.
+
+        1. Replace the known target company name with 'the target company'.
+        2. Ask the LLM to replace any remaining company-specific names so
+           the saved question and eval prompts work for any target company.
+        """
+        # Step 1: replace the known target name
+        if self._target_company and self._target_company.lower() != "unknown":
+            question = re.sub(re.escape(self._target_company), "the target company", question, flags=re.IGNORECASE)
+
+        # Step 2: LLM rewrite to catch other company names in the question
+        rewrite_prompt = (
+            "Rewrite the following question to be company-agnostic by replacing any specific "
+            "company name with 'the target company'. "
+            "If the question already uses 'the target company' or contains no company name, "
+            "return it unchanged.\n"
+            "Output ONLY the rewritten question — no explanation, no quotes.\n\n"
+            f"Question: {question}"
+        )
+        try:
+            rewritten = self._call_llm_raw(rewrite_prompt).strip()
+            # Sanity check: must not be empty or too different in length
+            if rewritten and 0.4 <= len(rewritten) / max(len(question), 1) <= 2.5:
+                return rewritten
+        except Exception:
+            pass
+        return question
+
     def ask(self, question: str, verbose: bool = False, reasoning: bool = False) -> str:
         """
         Runs one pipeline call per strategy, then generates a unified answer.
         reasoning=True  → also run REASONING_PROMPT for a cited chain-of-thought trace.
         """
+        question = self._normalize_question(question)
         print(f"\n{'='*70}")
         print(f"Question : {question}")
         print(f"Mode     : multi{'  +reasoning' if reasoning else ''}")
@@ -574,7 +622,7 @@ class CreditRiskQA:
         clean = self._clean_metadata(results[:150])
         context = json.dumps(clean, indent=2, default=str)
 
-        prompt = REASONING_PROMPT.format(queries=queries_text, context=context, question=question)
+        prompt = REASONING_PROMPT.format(queries=queries_text, context=context, question=question, target_company=self._target_company)
         response = self.llm.invoke(prompt)
         raw = response.content if hasattr(response, "content") else str(response)
 

@@ -271,7 +271,7 @@ def fetch_companies_by_sic(sic_codes, start_date, end_date, form_type, size=100)
 BM25_TOP_K = 1
 BM25_MIN_SCORE = 3.0
 
-TAXONOMY_URL = "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-2024-lab.xml"
+TAXONOMY_URL = "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-lab-2024.xml"
 TAXONOMY_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".taxonomy_cache.json")
 TAXONOMY_CACHE_DAYS = 30
 GLOBAL_BM25_TOP_K = 5   # candidate tag names to try per metric against company facts
@@ -502,7 +502,7 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                     for e in entries
                     if e.get('fp') == 'FY'
                     and e.get('form') == '10-K'
-                    and e.get('fy') == FISCAL_YEAR
+                    and START_DATE <= (e.get('end') or '') <= END_DATE
                 ]
                 if filtered:
                     entry['units'][unit_name] = filtered
