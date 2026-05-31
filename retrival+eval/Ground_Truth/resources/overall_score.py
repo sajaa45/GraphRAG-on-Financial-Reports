@@ -2,13 +2,21 @@
 Overall RAG Pipeline Performance Score
 
 Aggregates the five individual evaluation CSVs into a single weighted score.
+This is NOT a standard RAGAS score — it is a custom pipeline quality metric.
 
 Weights:
-  Faithfulness      (answer_source_traceability) : 30%
-  Context Precision (context_precision_results)  : 25%
-  Answer Relevancy  (answer_relevancy_results)   : 25%
-  Context Recall    (avg of risks + metrics +
-                     target validation)           : 20%
+  Faithfulness        (answer_source_traceability) : 30%
+  Context Precision   (context_precision_results)  : 25%
+  Answer Relevancy    (answer_relevancy_results)   : 25%
+  Extraction Quality  (avg of risks + metrics +
+                       target validation)           : 20%
+   
+Faithfulness scoring:
+  correct source      → 1.0
+  wrong-but-real source → 0.5  (pipeline used a real source, just the wrong one)
+  fabricated citation → 0.0  (no source in the graph supports the claim)
+
+Missing components score 0.0 (not excluded) to avoid silent score inflation.
 
 Output: prints a dashboard and writes overall_score.csv
 """
@@ -23,15 +31,17 @@ import sys
 # ---------------------------------------------------------------------------
 
 def _read_csv(path: str) -> list[dict]:
+    import sys
+    csv.field_size_limit(min(sys.maxsize, 10_000_000))
     with open(path, newline='', encoding='utf-8') as f:
         return list(csv.DictReader(f))
 
 
 def score_answer_relevancy(path: str) -> float:
     for row in _read_csv(path):
-        if row.get('aspect', '').strip() == '** SUMMARY **':
-            return float(row['combined_score'])
-    raise ValueError(f"No ** SUMMARY ** row found in {path}")
+        if row.get('generated_question', '').strip() == '** MEAN **':
+            return float(row['answer_relevancy_score'])
+    raise ValueError(f"No ** MEAN ** summary row found in {path}")
 
 
 def score_context_precision(path: str) -> float:
@@ -45,8 +55,15 @@ def score_faithfulness(path: str) -> float:
     rows = [r for r in _read_csv(path) if r.get('claim_id', '').strip()]
     if not rows:
         raise ValueError(f"No claim rows found in {path}")
-    correct = sum(1 for r in rows if r['is_correct_source'].strip().lower() == 'true')
-    return correct / len(rows)
+    total = 0.0
+    for r in rows:
+        if r['is_correct_source'].strip().lower() == 'true':
+            total += 1.0
+        elif r.get('correct_source', '').strip().upper() == 'FABRICATED':
+            total += 0.0  # no source in graph supports this claim
+        else:
+            total += 0.5  # wrong-but-real source cited
+    return total / len(rows)
 
 
 def score_risks_validation(path: str) -> float:
@@ -113,41 +130,44 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
             errors[name] = str(e)
             print(f"  {'✗':<3} {name:<22} — ERROR: {e}")
 
-    # ── Context Recall = average of the three validators ─────────────────
-    recall_components = ["Risks Validation", "Metrics Validation", "Target Validation"]
-    recall_scores = [scores[k] for k in recall_components if k in scores]
-    context_recall = sum(recall_scores) / len(recall_scores) if recall_scores else None
+    # ── Extraction Quality = average of the three validators ─────────────
+    # NOTE: this is NOT RAGAS Context Recall — it measures extraction accuracy
+    # and data integrity, not retrieval completeness vs a ground-truth answer.
+    eq_components = ["Risks Validation", "Metrics Validation", "Target Validation"]
+    # Missing components score 0.0 to avoid silently inflating the average
+    eq_scores = [scores.get(k, 0.0) for k in eq_components]
+    extraction_quality = sum(eq_scores) / len(eq_components)
 
-    if context_recall is not None:
-        bar = "█" * int(context_recall * 20) + "░" * (20 - int(context_recall * 20))
-        print(f"\n  {'~':<3} {'Context Recall (avg)':<22}  {bar}  {context_recall:.1%}")
-        print(f"       (avg of: Risks {scores.get('Risks Validation', 0):.1%}  "
-              f"Metrics {scores.get('Metrics Validation', 0):.1%}  "
-              f"Target {scores.get('Target Validation', 0):.1%})")
+    bar = "█" * int(extraction_quality * 20) + "░" * (20 - int(extraction_quality * 20))
+    print(f"\n  {'~':<3} {'Extraction Quality':<22}  {bar}  {extraction_quality:.1%}")
+    print(f"       (avg of: Risks {scores.get('Risks Validation', 0):.1%}  "
+          f"Metrics {scores.get('Metrics Validation', 0):.1%}  "
+          f"Target {scores.get('Target Validation', 0):.1%})")
 
     # ── Weighted overall ──────────────────────────────────────────────────
     weights = {
-        "Faithfulness":     0.30,
-        "Context Precision": 0.25,
-        "Answer Relevancy": 0.25,
-        "Context Recall":   0.20,
+        "Faithfulness":        0.30,
+        "Context Precision":   0.25,
+        "Answer Relevancy":    0.25,
+        "Extraction Quality":  0.20,
     }
 
+    # Missing components score 0.0 — weights are NOT renormalised to prevent
+    # a missing file from silently inflating the overall score.
     component_scores = {
-        "Faithfulness":      scores.get("Faithfulness"),
-        "Context Precision": scores.get("Context Precision"),
-        "Answer Relevancy":  scores.get("Answer Relevancy"),
-        "Context Recall":    context_recall,
+        "Faithfulness":       scores.get("Faithfulness", 0.0),
+        "Context Precision":  scores.get("Context Precision", 0.0),
+        "Answer Relevancy":   scores.get("Answer Relevancy", 0.0),
+        "Extraction Quality": extraction_quality,
     }
 
-    available = {k: v for k, v in component_scores.items() if v is not None}
-    if not available:
+    if not any(k in scores for k in ("Faithfulness", "Context Precision", "Answer Relevancy")) \
+            and not any(scores.get(k) for k in eq_components):
         print("\n✗ No scores computed — cannot produce overall score")
         return
 
-    # Re-normalise weights if any component is missing
-    total_weight = sum(weights[k] for k in available)
-    overall = sum(weights[k] * v / total_weight for k, v in available.items())
+    total_weight = sum(weights.values())  # always 1.0
+    overall = sum(weights[k] * v for k, v in component_scores.items())
 
     quality = "PASS" if overall >= 0.80 else ("WARNING" if overall >= 0.65 else "FAIL")
     bar = "█" * int(overall * 20) + "░" * (20 - int(overall * 20))
@@ -169,8 +189,8 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
         rows.append({
             "component":   name,
             "weight":      f"{weights[name]:.0%}",
-            "score":       f"{score:.4f}" if score is not None else "N/A",
-            "weighted_contribution": f"{weights[name] * score / total_weight:.4f}" if score is not None else "N/A",
+            "score":       f"{score:.4f}",
+            "weighted_contribution": f"{weights[name] * score:.4f}",
         })
     rows.append({
         "component":   "** OVERALL **",

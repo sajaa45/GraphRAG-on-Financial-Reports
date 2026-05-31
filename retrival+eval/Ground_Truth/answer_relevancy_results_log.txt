@@ -1,51 +1,43 @@
 ======================================================================
-Answer Relevancy — RAGAS-style Ground Truth Evaluation
+Answer Relevancy — True RAGAS Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : What are the main risks facing kimco and how do they compare to its peers?
-  Answer chars: 2579
+  Question    : Is SolarWinds Corporation achieving the best profitability among its peers?
+  Answer chars: 2242
 
-[2/5] Initialising LLM (AWS Bedrock)
-  Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
 
-[3/5] Decomposing question into verifiable aspects
-  → 5 aspects identified:
-    1. Does the answer identify at least one key risk factor explicitly stated in Kimco’s 10-K filing?
-    2. Does the answer compare at least one risk factor from Kimco’s 10-K to a similar risk factor in at least one peer’s 10-K?
-    3. Does the answer reference at least one financial metric (e.g., leverage, liquidity, coverage) from Kimco’s 10-K that relates to its risk profile?
-    4. Does the answer contrast Kimco’s financial risk metrics with those of at least one peer, using data from their respective 10-Ks?
-    5. Does the answer avoid making claims about market conditions, industry trends, or future projections not found in the filings?
+[3/5] Checking for non-committal answer
+  Non-committal: False
 
-[4/5] Judging answer coverage per aspect
-    [✓] YES      Does the answer identify at least one key risk factor explicitly state
-             The answer identifies adverse global market and economic conditions, exposure to retail sp
-    [✓] YES      Does the answer compare at least one risk factor from Kimco’s 10-K to 
-             The answer compares Kimco’s macroeconomic risk to Creative Media’s tenant concentration an
-    [✗] NO       Does the answer reference at least one financial metric (e.g., leverag
-             The answer does not reference any specific financial metric (e.g., leverage ratio, debt-to
-    [✓] YES      Does the answer contrast Kimco’s financial risk metrics with those of 
-             The answer contrasts Kimco’s general macroeconomic risk with peers’ concrete financial met
-    [✓] YES      Does the answer avoid making claims about market conditions, industry 
-             The answer avoids speculative claims about future market conditions or trends; all referen
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. How does SolarWinds Corporation's profitability compare to that of its peers based on the provided financial metrics?
+    2. Which company stands out in terms of sustained profitability among the ones analyzed?
+    3. What is the overall financial health of SolarWinds' peers, considering their reported losses and risks?
+    4. Is SolarWinds the only company among its peers that demonstrates substantial and positive profitability?
+    5. How does SolarWinds' financial performance differentiate it from its peers in the industry?
 
-[5/5] Computing overall relevancy score
-  Overall score : 1.00
-  Reason        : The answer accurately identifies Kimco’s primary risk from its 10-K and contrasts it with specific, filing-based risks from three peers, including quantified exposures and cited sections, fully aligning with the pipeline’s data scope.
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.8827  |  How does SolarWinds Corporation's profitability compare to that of its
+    Q2 similarity: 0.6550  |  Which company stands out in terms of sustained profitability among the
+    Q3 similarity: 0.7555  |  What is the overall financial health of SolarWinds' peers, considering
+    Q4 similarity: 0.9426  |  Is SolarWinds the only company among its peers that demonstrates subst
+    Q5 similarity: 0.8048  |  How does SolarWinds' financial performance differentiate it from its p
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\answer_relevancy_results.csv
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
-  Aspects total   : 5
-  Fully covered   : 4  (YES)
-  Partially covered: 0  (PARTIAL)
-  Not covered     : 1  (NO)
-  Aspect score    : 0.80
-  Holistic score  : 1.00
-  Combined        : 0.90
-  Quality gate    : PASS  (threshold: 0.70)
-
-✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\answer_relevancy_results.csv
+  Individual similarities : [0.8827, 0.655, 0.7555, 0.9426, 0.8048]
+  Mean similarity         : 0.8081
+  Answer Relevancy Score  : 0.8081
+  Quality gate            : PASS  (threshold: 0.70)
 ======================================================================
-Answer Relevancy Score : 0.90  [PASS]
+Answer Relevancy Score : 0.8081  [PASS]
 ======================================================================

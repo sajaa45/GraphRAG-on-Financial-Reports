@@ -3,42 +3,44 @@ Answer-Source Traceability — Phase 1 Ground Truth Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : What are the main risks facing kimco and how do they compare to its peers?
-  Answer chars: 2579
-  Result rows : 18
+  Question    : Is SolarWinds Corporation achieving the best profitability among its peers?
+  Answer chars: 2242
+  Result rows : 6
 
 [2/5] Building source registry
-  Total sources: 670  (554 risks, 116 metrics)
-    [TARGET_R0001] Adverse global market and economic conditions — Adverse global market and econom
-    [PEER_R0291] Uninsured losses or losses in excess of our insurance coverage — Losses not cove
-    [PEER_R0292] Cybersecurity risks and incidents — Cybersecurity incidents may disrupt operatio
-    [PEER_R0293] Non-terminable Master Services Agreement and assignable without consent — The Ma
-    [PEER_R0294] Fees paid to Administrator and Operator regardless of performance — The Administ
-    ... and 665 more
+  Total sources: 429  (367 risks, 62 metrics)
+    [TARGET_R0001] Risks Related to the Pending Merger — The Merger may not be completed within the
+    [PEER_R0184] Inability to obtain additional capital — The company may not be able to secure s
+    [PEER_R0185] Failure to keep pace with technological advancements — Inability to timely devel
+    [PEER_R0186] Related-party arrangements with non-arm’s-length terms — Historical arrangements
+    [PEER_R0187] Reliance on a small number of customers for revenue — Loss of any major customer
+    ... and 424 more
 
 [3/5] Initialising LLM (AWS Bedrock)
-  Region: us-east-1  |  Model: qwen.qwen3-next-80b-a3b
+  Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
 
 [4/5] Parsing claims and inline citations from answer
-  → 14 claims  |  14 cited  |  0 unresolved  |  0 uncited
-    C001: Kimco Realty Corporation faces one primary risk: adverse global market  [CITE:TARGET_R0001] ✓
-    C002: In comparison, its peers face significantly more numerous and complex   [CITE:PEER_R0347] ✓
-    C003: , geographic concentration in California  [CITE:PEER_R0344] ✓
-    C004: , and severe governance risks including non-terminable service agreeme  [CITE:PEER_R0291] ✓
-    C005: It also has material exposure to lending operations and REIT complianc  [CITE:PEER_R0322] ✓
-    ... and 9 more
+  → 17 claims  |  17 cited  |  0 unresolved  |  0 uncited
+    C001: For 2024, SolarWinds reported:
+- GAAP operating income of $208,419 tho  [CITE:TARGET_M0010] ✓
+    C002: - Net income of $111,903 thousand  [CITE:TARGET_M0012] ✓
+    C003: - Gross profit of $713,588 thousand  [CITE:TARGET_M0031] ✓
+    C004: - GAAP operating margin of 26.2%  [CITE:TARGET_M0011] ✓
+    C005: In contrast:
+- Nixxy, Inc. reported an operating loss of $14,954,307 t  [CITE:PEER_M0103] ✓
+    ... and 12 more
 
-[5/5] Judging source correctness (14 LLM calls)
+[5/5] Judging source correctness (17 LLM calls)
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
-  Total claims       : 14
-  Correct source     : 8  (57.1%)
-  Wrong source       : 6
+  Total claims       : 17
+  Correct source     : 13  (76.5%)
+  Wrong source       : 4
   Fabricated (no src): 0
 
-✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\answer_source_traceability.csv
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_source_traceability.csv
 ======================================================================
-Source Traceability Score: 57.1%
+Source Traceability Score: 76.5%
 ======================================================================

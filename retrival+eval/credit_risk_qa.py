@@ -21,11 +21,11 @@ Node labels and key properties:
   - TargetCompany   {name, cik, ticker, is_target:true, filing_date, document_url}
   - Company         {name, cik, ticker, is_peer:true, filing_date, document_url}
   - MetricCategory  {name}
-  - Metric          {citation_id, name, value, unit, year, metric_type, gaap_concept, xbrl_tag, label, source_url, cik, source_page, section_title}
+  - Metric          {citation_id, name, value, unit, year, metric_type, gaap_concept, xbrl_tag, label, source_url, cik, source_page, section_title, source_text}
                     NOTE: name = "{metric_type} ({year})" — use gaap_concept to align target vs peer metrics
                     CRITICAL: Always return citation_id for citations
                     CRITICAL: When comparing target vs peer metrics, match by gaap_concept — not by name or label
-                    CRITICAL: Always include source_page and section_title in collect() for target_metrics
+                    CRITICAL: Always include source_page, section_title, and source_text in collect() for target_metrics
   - Risk            {citation_id, risk_id, name, description, why, source_text, document_url, filing_date, section_title, source_page}
                     CRITICAL: Always return citation_id for citations
   - Industry        {name, sector}
@@ -56,8 +56,6 @@ Key rules:
 # Prompts — tune these to change how the LLM generates and answers queries
 # ---------------------------------------------------------------------------
 
-# Exact MetricCategory.name values in the graph — injected into every Cypher prompt
-# so the LLM uses correct spellings instead of guessing.
 KNOWN_CATEGORIES = {"Leverage", "Coverage", "Liquidity", "Profitability", "Debt Structure"}
 
 CYPHER_GENERATION_PROMPT = PromptTemplate(
@@ -123,7 +121,7 @@ Risks with peer comparison — ALL risks (e.g. question asks "what are the main 
 Metrics with peer comparison (fetch independently by category — let the LLM align by label):
     MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
     WHERE mc.name = 'Profitability'
-    WITH tc, mc, collect({{citation_id: m.citation_id, name: m.name, label: m.label, gaap_concept: m.gaap_concept, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag, source_page: m.source_page, section_title: m.section_title}}) AS target_metrics
+    WITH tc, mc, collect({{citation_id: m.citation_id, name: m.name, label: m.label, gaap_concept: m.gaap_concept, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag, source_page: m.source_page, section_title: m.section_title, source_text: m.source_text}}) AS target_metrics
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(pmc:MetricCategory {{name: mc.name}})-[:HAS_METRIC]->(pm:Metric)
     WITH tc, mc, target_metrics, peer, collect({{citation_id: pm.citation_id, name: pm.name, label: pm.label, gaap_concept: pm.gaap_concept, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url}}) AS peer_metrics
@@ -170,9 +168,6 @@ Question: {question}
 Answer:""",
 )
 
-# Shown when --reasoning is enabled.  The LLM must think step-by-step,
-
-# name what it found, and cite every source document it draws from.
 REASONING_PROMPT = PromptTemplate(
     input_variables=["context", "question", "queries", "target_company"],
     template="""You are a senior credit-risk analyst with access to structured 10-K filing data.
@@ -254,12 +249,6 @@ CRITICAL: The citation_id field is provided in every risk and metric object. Use
 """,
 )
 
-# ---------------------------------------------------------------------------
-# Query strategies — each focuses the chain on a different aspect.
-# The user can add / remove / rename strategies, or adjust the sub-question
-# templates below, to change what gets queried.
-# ---------------------------------------------------------------------------
-
 # Each strategy instructs the LLM to fetch a DIFFERENT type of data so queries
 # don't overlap. "risks" → FACES_RISK only. "metrics" → HAS_METRIC only.
 # Add or remove strategies here to control what gets queried.
@@ -287,7 +276,7 @@ QUERY_STRATEGIES = {
         "Leverage, Coverage, Liquidity, Profitability, Debt Structure. "
         "Fetch target metrics and peer metrics independently — both filtered by the same MetricCategory. "
         "Do NOT join them row-by-row in Cypher. "
-        "Collect target metrics into a list (including xbrl_tag for validation), "
+        "Collect target metrics into a list (including xbrl_tag, source_page, section_title, source_text for validation), "
         "collect each peer's metrics into a separate list (including xbrl_tag for validation), "
         "and return them side by side. Include ALL peers even if they have no data. "
         "Do NOT fetch any Risk nodes in this query."
@@ -341,11 +330,6 @@ class CreditRiskQA:
         print(f"✓ Neo4j connected  : {neo4j_uri}")
         print(f"✓ LLM model        : {os.getenv('BEDROCK_MODEL', 'qwen.qwen3-next-80b-a3b')}")
         print(f"✓ Target company   : {self._target_company}")
-
-    # ------------------------------------------------------------------
-    # Core pipeline: NL → Cypher (LLM) → execute → answer (LLM)
-    # Replaces GraphCypherQAChain with a direct two-step call.
-    # ------------------------------------------------------------------
 
     _CYPHER_FENCE_RE = re.compile(r'```(?:cypher)?\s*(.*?)```', re.DOTALL | re.IGNORECASE)
 
@@ -423,7 +407,6 @@ class CreditRiskQA:
 
         
 
-        # Row-level dedup — catches identical rows across strategies.
         seen = set()
         unique = []
         for row in all_results:
@@ -434,9 +417,6 @@ class CreditRiskQA:
                 seen.add(key)
                 unique.append(row)
 
-        # List-field dedup — target_* lists are deduplicated globally (same
-        # risk appears in every peer row); peer_* lists are deduplicated per
-        # peer so two peers can share the same risk name without one being dropped.
         unique = self._dedup_list_fields(unique)
 
         # Generate unified answer from combined results using the QA prompt

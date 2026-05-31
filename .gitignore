@@ -5,3 +5,16 @@ qdrant_storage
 .env
 .Env
 *.env
+pipeline_output
+sec_cache
+*.csv
+input
+KG_building/relations/**/*.json
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+retrival+eval/Ground_Truth/*.csv
+retrival+eval/Ground_Truth/*.txt
+retrival+eval\retrival_results
+uploads

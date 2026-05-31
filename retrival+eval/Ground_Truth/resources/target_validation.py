@@ -31,17 +31,12 @@ load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..',
 MAX_SOURCE_CHARS   = 6000
 MAX_EVALS_PER_CALL = 8
 
-_THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
-
-
 def _llm_call(bedrock_client, model_id: str, prompt: str, max_tokens: int = 1024) -> str:
     response = bedrock_client.converse(
         modelId=model_id,
         messages=[{"role": "user", "content": [{"text": prompt}]}],
         inferenceConfig={"maxTokens": max_tokens, "temperature": 0.0},
     )
-    # Do NOT strip <think> — for Qwen3 the structured output lives inside
-    # the <think> block; stripping it removes everything the parser needs.
     return response['output']['message']['content'][0]['text'].strip()
 
 
@@ -66,8 +61,9 @@ def collect_target_chunks(extraction_data: dict) -> list[dict]:
 
             source = (r.get('source_text') or '').strip()
             source_origin = 'source_text'
-            # Fall back to description + why when source_text is absent
-            if not source:
+            # Reject TOC-like or too-short source_text and fall back to description+why
+            _toc_hints = ('table of content', 'table of content', 'contents')
+            if not source or len(source) < 80 or source.lower().startswith(_toc_hints):
                 desc = (r.get('description') or '').strip()
                 why  = (r.get('why') or '').strip()
                 source = ' | '.join(filter(None, [desc, why]))
@@ -95,16 +91,24 @@ def collect_target_chunks(extraction_data: dict) -> list[dict]:
                 continue
             seen.add(cid)
 
-            label      = m.get('label') or m.get('metric_type') or m.get('name', '')
-            xbrl_tag   = m.get('xbrl_tag') or ''
-            value      = m.get('value', '')
-            unit       = m.get('unit', '')
+            label        = m.get('label') or m.get('metric_type') or m.get('name', '')
+            xbrl_tag     = m.get('xbrl_tag') or ''
+            value        = m.get('value', '')
+            unit         = m.get('unit', '')
             gaap_concept = m.get('gaap_concept', '')
-            # Build a descriptive source reference from available XBRL metadata
-            if xbrl_tag:
-                metric_source = f"XBRL: {xbrl_tag} = {value} {unit}".strip()
-            else:
-                metric_source = f"XBRL-extracted: {value} {unit}".strip() if value else ''
+            # Use source_text stored as a flat property (same as risks)
+            metric_source = (m.get('source_text') or '').strip()
+            if not metric_source:
+                section     = m.get('section_title', '')
+                source_page = m.get('source_page', '')
+                parts = []
+                if section:
+                    parts.append(f"Section: {section}")
+                if source_page:
+                    parts.append(f"Page: {source_page}")
+                if xbrl_tag:
+                    parts.append(f"XBRL tag: {xbrl_tag}")
+                metric_source = " | ".join(parts) if parts else (f"XBRL-extracted: {value} {unit}".strip() if value else '')
 
             chunks.append({
                 'citation_id':     cid,
@@ -157,15 +161,15 @@ def judge_risk_batch(
         for c in chunks:
             body += (
                 f"  {c['_n']}. Risk name: \"{c['extracted_name']}\"\n"
-                f"     Description: \"{c['extracted_desc'][:300]}\"\n"
+                f"     Description: \"{c['extracted_desc']}\"\n"
             )
         body += "\n"
 
     for c in no_source:
         body += (
             f"{c['_n']}. Risk name: \"{c['extracted_name']}\"\n"
-            f"   Description: \"{c['extracted_desc'][:300]}\"\n"
-            f"   Why relevant: \"{c['extracted_why'][:300]}\"\n"
+            f"   Description: \"{c['extracted_desc']}\"\n"
+            f"   Why relevant: \"{c['extracted_why']}\"\n"
             f"   (No source text — judge internal consistency only)\n\n"
         )
 
@@ -212,15 +216,19 @@ def judge_metric_batch(
 
     prompt = (
         "You are auditing a pipeline that extracts financial metrics from SEC 10-K annual reports.\n\n"
-        "For each item, judge whether the value and unit are consistent and plausible "
-        "for the given GAAP concept in a corporate annual report:\n"
-        "  - Is the unit appropriate for this GAAP concept "
-        "(e.g. Net Income in USD, ratios as pure numbers, EPS in USD per share)?\n"
-        "  - Is the value in a plausible range for a real company's annual filing?\n\n"
+        "For each item, judge whether the (value, unit) PAIR is correct and plausible "
+        "for the given GAAP concept. Evaluate them together, not separately:\n"
+        "  - Does the unit match the GAAP concept? "
+        "(e.g. monetary amounts in USD/thousands/millions, ratios as pure numbers or %, "
+        "EPS in USD per share, share counts in shares)\n"
+        "  - Given the unit, is the numeric value in a plausible range for a real company's annual filing? "
+        "(e.g. Revenue reported as 1.2 billion USD is plausible; Revenue as 1.2 % is not)\n"
+        "  - Do the value and unit together represent the same scale? "
+        "(e.g. value=1500000 unit=USD is fine; value=1500000 unit=USD millions would mean $1.5 quadrillion — flag that)\n\n"
         "For EACH numbered item output exactly one line:\n"
-        "  <N>: YES | NO — <one-sentence explanation>\n\n"
-        "  YES — value and unit are consistent and plausible for this GAAP concept\n"
-        "  NO  — there is a clear error (wrong unit, implausible value, mismatched concept)\n\n"
+        "  <N>: YES | NO — <one-sentence explanation citing both value and unit>\n\n"
+        "  YES — the (value, unit) pair is correct and plausible for this GAAP concept\n"
+        "  NO  — there is a clear error in the pair (wrong unit for this concept, implausible magnitude, scale mismatch)\n\n"
         "Output ONLY the numbered lines — no extra text.\n\n"
         f"{body}"
     )
@@ -308,7 +316,7 @@ def _run(extraction_result_path: str, output_csv_path: str):
 
     print(f"\n[3/4] Initialising LLM (AWS Bedrock)")
     aws_region = os.getenv("AWS_REGION", "us-east-1")
-    model_id   = os.getenv("BEDROCK_MODEL", "us.meta.llama3-2-90b-instruct-v1:0")
+    model_id   = os.getenv("BEDROCK_MODEL_EVAL", "us.meta.llama3-3-70b-instruct-v1:0")
     bedrock_client = boto3.client(
         service_name='bedrock-runtime',
         region_name=aws_region,
@@ -355,6 +363,7 @@ def _run(extraction_result_path: str, output_csv_path: str):
             'extracted_value':      c['extracted_value'],
             'extracted_unit':       c['extracted_unit'],
             'source_preview':       c['source_text'][:150] if c['source_text'] else '(no source text)',
+            'source_text':          c['source_text'] if c['source_text'] else '(no source text)',
             'is_correctly_extracted': is_correct,
             'explanation':          expl,
             'notes': {
@@ -382,7 +391,7 @@ def _run(extraction_result_path: str, output_csv_path: str):
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
     fieldnames = [
         'citation_id', 'type', 'extracted_name', 'extracted_value', 'extracted_unit',
-        'source_preview', 'is_correctly_extracted', 'explanation', 'notes',
+        'source_preview', 'source_text', 'is_correctly_extracted', 'explanation', 'notes',
     ]
     with open(output_csv_path, 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)

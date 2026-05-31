@@ -38,14 +38,6 @@ if sys.platform == 'win32' and hasattr(sys.stdout, 'buffer'):
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '.env'))
 
 # ---------------------------------------------------------------------------
-# Target company document URL
-# Set this to the local HTML file path or remote URL for the target company's
-# 10-K filing. Used as the source reference for target metrics (which have
-# no source_url in the graph since they come from HTML parsing, not XBRL).
-# ---------------------------------------------------------------------------
-TARGET_DOCUMENT_URL = "https://www.sec.gov/Archives/edgar/data/891014/000089101425000018/form10k.htm"  # e.g. "file:///C:/path/to/filing.htm" or "https://..."
-
-# ---------------------------------------------------------------------------
 # Source registry builder
 # ---------------------------------------------------------------------------
 
@@ -136,7 +128,6 @@ def build_source_registry(extraction_data: dict) -> dict[str, dict]:
                     'unit':        m.get('unit', ''),
                     'year':        year,
                     'metric_type': m.get('metric_type', ''),
-                    'source_url':  TARGET_DOCUMENT_URL,
                 },
             }
 
@@ -163,7 +154,6 @@ def build_source_registry(extraction_data: dict) -> dict[str, dict]:
                         'unit':        m.get('unit', ''),
                         'year':        m.get('year', ''),
                         'metric_type': m.get('metric_type', ''),
-                        'source_url':  m.get('source_url', ''),
                     },
                 }
 
@@ -377,14 +367,11 @@ def _source_content(src: dict) -> str:
         value = full.get('value', '')
         unit  = full.get('unit', '')
         year  = full.get('year', '')
-        url   = full.get('source_url', '')
         lines = [
             f"  Metric: {label}",
             f"  Company: {src['company']} ({src['role']})",
             f"  Value: {value} {unit} ({year})",
         ]
-        if url:
-            lines.append(f"  Source URL: {url}")
     return "\n".join(lines)
 
 
@@ -405,8 +392,7 @@ def _resolve_to_content(citation_id: str, registry: dict[str, dict]) -> str:
         value = full.get('value', '')
         unit  = full.get('unit', '')
         year  = full.get('year', '')
-        url   = full.get('source_url', '')
-        return f"[{citation_id}] {src['company']} — {label} = {value} {unit} ({year}) | {url}"
+        return f"[{citation_id}] {src['company']} — {label} = {value} {unit} ({year})"
 
 
 def _build_source_listing(registry: dict[str, dict]) -> str:
@@ -639,7 +625,7 @@ def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
     # ── Init Bedrock ──────────────────────────────────────────────────────
     print(f"\n[3/5] Initialising LLM (AWS Bedrock)")
     aws_region  = os.getenv("AWS_REGION", "us-east-1")
-    model_id    = os.getenv("BEDROCK_MODEL", "us.meta.llama3-2-90b-instruct-v1:0")
+    model_id   = os.getenv("BEDROCK_MODEL_EVAL", "us.meta.llama3-3-70b-instruct-v1:0")
     bedrock_client = boto3.client(
         service_name='bedrock-runtime',
         region_name=aws_region,

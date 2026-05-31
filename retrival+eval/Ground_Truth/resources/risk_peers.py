@@ -202,10 +202,10 @@ def _run_validation(
     if use_llm_judge:
         try:
             aws_region = os.getenv("AWS_REGION", "us-east-1")
-            bedrock_model = os.getenv("BEDROCK_MODEL", "us.meta.llama3-2-90b-instruct-v1:0")
+            bedrock_model = os.getenv("BEDROCK_MODEL_EVAL", "us.meta.llama3-3-70b-instruct-v1:0")
             bedrock_client = boto3.client(
                 service_name='bedrock-runtime',
-                region_name=aws_region
+                region_name=aws_region,
             )
             print(f"  ✓ Bedrock client initialized (region: {aws_region}, model: {bedrock_model})")
         except Exception as e:

@@ -1,67 +1,14 @@
-## 1. Understanding the Question  
-The question asks for a comparison of Minerals Technologies Inc.’s debt level against its peers, requiring analysis of **debt-related metrics** (e.g., long-term debt, short-term debt, total debt) and **debt-related risks** from structured 10-K data.
+## 1. Understanding the Question
+The question asks whether SolarWinds Corporation is considered a risky credit client, requiring an assessment of its financial risk profile using disclosed risks and key credit metrics (leverage, coverage, liquidity, debt structure) compared to peers.
 
----
+## 2. Data Retrieved
+**Target Company:**
+- SolarWinds Corporation — Risk: “Risks Related to the Pending Merger” [CITE:TARGET_R0001]
+- SolarWinds Corporation — Debt Structure: Annual rate on borrowings (2024): 7.11% [CITE:TARGET_M0001]; Debt issuance costs (2024): $5.7 million [CITE:TARGET_M0022]; Proceeds from credit agreement (2024): $10,001 thousand [CITE:TARGET_M0050]; Repayments from credit agreement (2024): -$10,001 thousand [CITE:TARGET_M0051]; Payment of debt discount and issuance costs (2024): -$5,657 thousand [CITE:TARGET_M0052]
+- SolarWinds Corporation — Coverage: Interest expense (2024): $112,435 thousand [CITE:TARGET_M0005]
+- SolarWinds Corporation — Liquidity: Net cash provided by operating activities (2024): $188,298 thousand [CITE:TARGET_M0015]; Net cash used in financing activities (2024): -$197,007 thousand [CITE:TARGET_M0017]; Total cash and cash equivalents (2024): $251,850 thousand [CITE:TARGET_M0058]; Special Cash Dividend (2024): $168.2 million [CITE:TARGET_M0049]; Outstanding purchase obligations (2024): $65.7 million [CITE:TARGET_M0023]; Total current assets (2024): $403,506 thousand [CITE:TARGET_M0025]
+- SolarWinds Corporation — Leverage: First lien net leverage ratio (2024): 4.75 to 1.00 [CITE:TARGET_M0020]; Total debt (2024): $1,206,586 thousand [CITE:TARGET_M0067]; Total liabilities (2024): $1,767,574 thousand [CITE:TARGET_M0028]; Total stockholders’ equity (2024): $1,400,714 thousand [CITE:TARGET_M0031]; Long-term debt, net of current portion (2024): $1,194,229 thousand [CITE:TARGET_M0029]; Net operating loss carryforwards (2024): $23.9 million [CITE:TARGET_M0072]; Net deferred tax asset (2024): $173,460 thousand [CITE:TARGET_M0071]
 
-## 2. Data Retrieved  
-
-### Risks Query Results:  
-- **Minerals Technologies Inc. (Target)** — Risk: “Capital market uncertainty impacting pension and postretirement benefit plans” [CITE:TARGET_R0005]  
-- **Global Gas Corp (Peer)** — Risks include: “Inability to raise additional capital when needed” [CITE:PEER_R0050], “Future debt incurrence may reduce financial flexibility” [CITE:PEER_R0090], “Inability to generate sufficient cash flow to service debt” [CITE:PEER_R0091]  
-- **Arcadium Lithium plc (Peer)** — Risk: “Inability to secure sufficient financing may threaten going concern status” [CITE:PEER_R0140]  
-- **NL INDUSTRIES INC (Peer)** — Risks include: “High leverage of Kronos impairing financial condition” [CITE:PEER_R0181], “Insufficient cash flow to meet debt and liquidity needs” [CITE:PEER_R0183], “Inability to refinance debt on favorable terms” [CITE:PEER_R0185]  
-
-### Metrics Query Results (Leverage & Debt Structure):  
-- **Minerals Technologies Inc. (Target)** —  
-  - Long-term debt: $1.9 million [CITE:TARGET_M0031]  
-  - Short-term debt: $5.1 million [CITE:TARGET_M0037]  
-  - Current maturities of long-term debt: $6.5 million [CITE:TARGET_M0038]  
-  - Total debt (Repayment of long-term debt): $533.6 million [CITE:TARGET_M0044]  
-  - Debt issuance costs: $6.7 million [CITE:TARGET_M0045]  
-  - Revolving credit facility commitments: $400 million [CITE:TARGET_M0024]  
-  - Term loan facility commitments: $575 million [CITE:TARGET_M0025]  
-- **Global Gas Corp (Peer)** —  
-  - Unsecured debt: $103.95 million [CITE:PEER_M0029]  
-- **Arcadium Lithium plc (Peer)** —  
-  - Long-term debt: $960.6 million [CITE:PEER_M0140]  
-  - Current maturities of long-term debt: $288.9 million [CITE:PEER_M0132]  
-- **NL INDUSTRIES INC (Peer)** —  
-  - Long-term debt: **not available**  
-  - Current maturities of long-term debt: **not available**  
-  - Total debt: **not available**  
-
-*Note: Filing dates are not provided in the raw results and cannot be inferred.*
-
----
-
-## 3. Reasoning Steps  
-
-**Step 1 — Target Company Debt Metrics Are Explicitly Reported**  
-Minerals Technologies Inc. reports precise debt figures: $1.9 million in long-term debt [CITE:TARGET_M0031], $5.1 million in short-term debt [CITE:TARGET_M0037], and $6.5 million in current maturities [CITE:TARGET_M0038]. However, its total debt is reported as $533.6 million under “Repayment of long-term debt” [CITE:TARGET_M0044], which is likely a mislabeling — the value is consistent with aggregate debt obligations, not repayment. The company also has $400 million in revolving credit commitments [CITE:TARGET_M0024] and $575 million in term loan commitments [CITE:TARGET_M0025], indicating substantial committed but undrawn capacity.  
-
-**Step 2 — Peer Debt Levels Are Partially Available**  
-Global Gas Corp reports $103.95 million in unsecured debt [CITE:PEER_M0029], which is significantly lower than MTI’s $533.6 million [CITE:TARGET_M0044]. Arcadium Lithium reports $960.6 million in long-term debt [CITE:PEER_M0140] and $288.9 million in current maturities [CITE:PEER_M0132], indicating total debt likely exceeds $1.2 billion — higher than MTI. NL Industries’ debt metrics are not available in the results.  
-
-**Step 3 — Risk Patterns Reveal Relative Vulnerability**  
-MTI has no direct debt-related risk disclosures [CITE:TARGET_R0005] — its only risk concerns pension assumptions, not liquidity or leverage. In contrast, all three peers explicitly cite debt servicing, refinancing, or capital access risks [CITE:PEER_R0091], [CITE:PEER_R0140], [CITE:PEER_R0185]. Arcadium’s risk of “threatened going concern status” due to negative cash flows [CITE:PEER_R0140] and NL’s “high leverage of Kronos” [CITE:PEER_R0181] suggest higher structural risk than MTI, despite MTI’s larger total debt.  
-
-**Step 4 — Data Gaps Limit Full Comparison**  
-NL Industries’ debt metrics are entirely absent, and Global Gas Corp’s unsecured debt figure is incomplete (no total debt or short-term debt reported). MTI’s total debt of $533.6 million [CITE:TARGET_M0044] is lower than Arcadium’s $960.6 million [CITE:PEER_M0140] but higher than Global Gas’s $103.95 million [CITE:PEER_M0029].  
-
----
-
-## 4. Sources & References  
-
-**Target Company:**  
-Minerals Technologies Inc. — Filing: [no filing date provided]  
-
-**Peer Companies:**  
-Global Gas Corp — URL: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm  
-Arcadium Lithium plc — URL: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm  
-NL INDUSTRIES INC — URL: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm  
-
----
-
-## 5. Final Answer  
-
-Minerals Technologies Inc. reports total debt of $533.6 million [CITE:TARGET_M0044], which exceeds Global Gas Corp’s unsecured debt of $103.95 million [CITE:PEER_M0029] but is lower than Arcadium Lithium’s $960.6 million in long-term debt [CITE:PEER_M0140]. MTI has no direct debt-related risk disclosures [CITE:TARGET_R0005], while all peers explicitly cite debt servicing, refinancing, or liquidity risks [CITE:PEER_R0091], [CITE:PEER_R0140], [CITE:PEER_R0185]. NL Industries’ debt metrics are not available. MTI’s debt structure is well-defined with $400M revolving and $575M term loan commitments [CITE:TARGET_M0024][CITE:TARGET_M0025], suggesting strong access to capital despite higher absolute debt than one peer. However, Arcadium’s significantly higher debt and going-concern risk [CITE:PEER_R0140] indicate greater financial vulnerability. MTI’s debt profile appears more stable than peers’ but lacks transparency on total debt composition.
+**Peer Companies:**
+- Nixxy, Inc. — Risks: Multiple severe risks including “Continued losses and going concern uncertainty” [CITE:PEER_R0191], “Need for additional capital to fund growth and operations” [CITE:PEER_R0203], “Continued net losses and inability to achieve profitability” [CITE:PEER_R0205], “Inability to obtain additional capital” [CITE:PEER_R0185], “Dependence on a small number of customers” [CITE:PEER_R0188], “Data breaches and cybersecurity incidents from AI use” [CITE:PEER_R0194], “Evolving and inconsistent AI regulations” [CITE:PEER_R0196], “Lack of rights to train AI on underlying data” [CITE:PEER_R0197], “AI-generated content may not be copyrightable” [CITE:PEER_R0198], “Unpredictable legal, operational, or technological risks from AI complexity” [CITE:PEER_R0199], “Shortage of qualified candidates for staffing services” [CITE:PEER_R0200], “Liability for workplace claims involving temporary employees” [CITE:PEER_R0201], “Inability to obtain affordable or sufficient insurance coverage” [CITE:PEER_R0202], “Dilution or restrictive covenants from future equity or debt financing” [CITE:PEER_R0204], “Failure to keep pace with technological advancements” [CITE:PEER_R0186], “Failure of new or enhanced services to gain market acceptance” [CITE:PEER_R0208], “Platform performance failures or defects” [CITE:PEER_R0209], “Reliance on third-party hosting providers” [CITE:PEER_R0210], “Vulnerability of third-party data centers” [CITE:PEER_R0211], “Inability to renew or replace hosting agreements” [CITE:PEER_R0212], “Increased hosting costs leading to lost clients or reduced profitability” [CITE:PEER_R0213], “Related party arrangements may not reflect arms-length terms” [CITE:PEER_R0214], “Related party transactions may lead to conflicts of interest” [CITE:PEER_R0215], “Non-compliance with open-source licenses” [CITE:PEER_R0216], “Failure to maintain strategic partnerships” [CITE:PEER_R0217], “Loss of licensed third-party software” [CITE:PEER_R0218], “Termination or reduction in business from key customers” [CITE:PEER_R0220], “Infringement or misappropriation of proprietary technology” [CITE:PEER_R0219], “Inability to enforce intellectual property rights globally” [CITE:PEER_R0222], “Loss or failure to attract key personnel” [CITE:PEER_R0223], “Impairment of goodwill and long-lived intangible assets” [CITE:PEER_R0224], “Failure to maintain effective disclosure controls and internal control over financial reporting” [CITE:PEER_R0225], “Failure to develop or maintain effective controls” [CITE:PEER_R0226], “Risks from complex strategic transactions with limited resources” [CITE:PEER_R0227], “Uncertainty of benefits from strategic transactions” [CITE:PEER_R0228], “Liability or reputational damage from discriminatory use of predictive technologies” [CITE:PEER_R0229], “Recruiters classified as employees rather than independent contractors” [CITE:PEER_R0230], “Increased costs and operational burden from employee reclassification” [CITE:PEER_R0231], “Non-compliance with evolving privacy and data protection laws” [CITE:PEER_R0232], “Compliance costs and operational changes from privacy laws like CCPA and Nevada law” [CITE:PEER_R0233], “Failure to comply with privacy and data protection policies” [CITE:PEER_R0234], “Adverse impact from unstable economic and political conditions” [CITE:PEER_R0235], “Volatility and disruption in global credit and financial markets” [CITE:PEER_R0236], “Inflationary pressures and bank failures affecting costs and credit access” [CITE:PEER_R0237], “Changes in government regulations or private litigation” [CITE:PEER_R0238], “Adverse telecommunications regulations” [CITE:PEER_R0239], “New privacy laws limiting data collection” [CITE:PEER_R0240], “Intensified competition and market saturation” [CITE:PEER_R0241], “Board can issue preferred stock without stockholder approval” [CITE:PEER_R0242], “Concentration of voting power among ten stockholders” [CITE:PEER_R0243]
+- Cycurion, Inc. — Risks: “Continued potential for net losses” [CITE:PEER_R0245], “Uncertainty of achieving sustainable profitability” [CITE:PEER_R0246], “Debt service obligations reducing available cash flow” [CITE:PEER_R0247], “Risk of debt covenant default” [CITE:PEER_R0248], “Substantial doubt about ability to continue as a going concern” [CITE:PEER_R0249], “Inability to obtain additional financing” [CITE:PEER_R0250], “Risk of asset liquidation at less than book value” [CITE:PEER_R0251], “We will require substantial additional funding in the future” [CITE:PEER_R0252], “Our ability to raise additional funds may

@@ -32,8 +32,6 @@ if sys.platform == 'win32' and hasattr(sys.stdout, 'buffer'):
 
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '.env'))
 
-_THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
-
 # Max items per LLM call — keeps prompts manageable
 MAX_EVALS_PER_CALL = 10
 
@@ -44,8 +42,6 @@ def _llm_call(bedrock_client, model_id: str, prompt: str, max_tokens: int = 1024
         messages=[{"role": "user", "content": [{"text": prompt}]}],
         inferenceConfig={"maxTokens": max_tokens, "temperature": 0.0},
     )
-    # Do NOT strip <think> — for Qwen3 the structured numbered output lives
-    # inside the <think> block; stripping it removes everything the parser needs.
     return response['output']['message']['content'][0]['text'].strip()
 
 
@@ -79,7 +75,7 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
                 'type':        'risk',
                 'role':        'target',
                 'company':     target_name,
-                'summary':     f"{r.get('name', '')} — {(r.get('description') or r.get('why') or '')[:200]}",
+                'summary':     f"{r.get('name', '')} — {(r.get('description') or r.get('why') or '')}",
             })
 
         # ── peer risks ───────────────────────────────────────────────────
@@ -93,7 +89,7 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
                 'type':        'risk',
                 'role':        'peer',
                 'company':     peer_name,
-                'summary':     f"{r.get('name', '')} — {(r.get('description') or r.get('why') or '')[:200]}",
+                'summary':     f"{r.get('name', '')} — {(r.get('description') or r.get('why') or '')}",
             })
 
         # ── target metrics ───────────────────────────────────────────────
@@ -143,7 +139,7 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
 
 def judge_batch(
     question: str,
-    batch: list[dict],   # list of chunk dicts
+    batch: list[dict],   
     bedrock_client,
     model_id: str,
 ) -> list[tuple[bool, str]]:
@@ -262,7 +258,7 @@ def _run(extraction_result_path: str, output_csv_path: str):
     if not question:
         print("✗ No question found in extraction_result.json — aborting")
         return
-    print(f"  Question : {question[:120]}")
+    print(f"  Question : {question}")
 
     # ── Collect chunks ────────────────────────────────────────────────────
     print(f"\n[2/4] Collecting retrieved chunks")
@@ -272,7 +268,7 @@ def _run(extraction_result_path: str, output_csv_path: str):
     metric_count = sum(1 for c in chunks if c['type'] == 'metric')
     print(f"  Total chunks : {len(chunks)}  ({risk_count} risks, {metric_count} metrics)")
     for c in chunks[:4]:
-        print(f"    [{c['citation_id']}] {c['company']} ({c['role']}) — {c['summary'][:70]}")
+        print(f"    [{c['citation_id']}] {c['company']} ({c['role']}) — {c['summary']}")
     if len(chunks) > 4:
         print(f"    ... and {len(chunks) - 4} more")
 
@@ -283,7 +279,7 @@ def _run(extraction_result_path: str, output_csv_path: str):
     # ── Init Bedrock ──────────────────────────────────────────────────────
     print(f"\n[3/4] Initialising LLM (AWS Bedrock)")
     aws_region = os.getenv("AWS_REGION", "us-east-1")
-    model_id   = os.getenv("BEDROCK_MODEL", "us.meta.llama3-2-90b-instruct-v1:0")
+    model_id   = os.getenv("BEDROCK_MODEL_EVAL", "us.meta.llama3-3-70b-instruct-v1:0")
     bedrock_client = boto3.client(
         service_name='bedrock-runtime',
         region_name=aws_region,

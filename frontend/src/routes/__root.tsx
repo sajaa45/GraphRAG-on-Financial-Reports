@@ -72,10 +72,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Verdant — KYC Intelligence for Banks & Enterprises" },
+      { title: "KYC Intelligence for Banks & Enterprises" },
       { name: "description", content: "Automated counterparty due diligence: ingest filings, extract entities, query a knowledge graph, and audit answers — built for KYC teams." },
-      { name: "author", content: "Verdant KYC" },
-      { property: "og:title", content: "Verdant — KYC Intelligence" },
+      { name: "author", content: "Performane Analysis KYC" },
+      { property: "og:title", content: " KYC Performane Analysis" },
       { property: "og:description", content: "Automated counterparty due diligence powered by GraphRAG." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

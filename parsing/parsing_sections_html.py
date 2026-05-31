@@ -290,37 +290,49 @@ def detect_sections_from_html(html_path: str, pages_data: Dict) -> List[Dict]:
                 if toc_page:
                     break
 
-        # Find elements with id="part_*" or id="item_*" — these are the actual section headers
-        id_part = re.compile(r'^part_', re.IGNORECASE)
-        id_item = re.compile(r'^item_', re.IGNORECASE)
-
-        for tag in main_div.find_all(True):
-            tag_id = tag.get('id', '')
-            if not tag_id:
+        # Find section headers by text pattern (not just by ID)
+        # Look for div/p/span tags outside of tables
+        seen_sections = set()  # Track to avoid duplicates
+        
+        for tag in main_div.find_all(['div', 'p', 'span']):
+            # Skip if inside a table (likely TOC)
+            if tag.find_parent('table'):
                 continue
-            page_num = element_to_page.get(id(tag), 1)
-            if toc_page and page_num == toc_page:
-                continue
-
-            text = tag.get_text(separator='', strip=True)
+            
+            text = tag.get_text(separator=' ', strip=True)
             text = re.sub(r'\s+', ' ', text).strip()
             if not text:
                 continue
-
-            if id_part.match(tag_id) and part_pattern.match(text):
-                sections.append({
-                    'title': text,
-                    'level': 1,
-                    'start_page': page_num,
-                    'end_page': page_num,
-                })
-            elif id_item.match(tag_id) and item_pattern.match(text):
-                sections.append({
-                    'title': text,
-                    'level': 2,
-                    'start_page': page_num,
-                    'end_page': page_num,
-                })
+            
+            page_num = element_to_page.get(id(tag), 1)
+            if toc_page and page_num == toc_page:
+                continue
+            
+            # Check for PART headers
+            if part_pattern.match(text):
+                # Avoid duplicate entries (div and span both match)
+                section_key = (text, page_num, 1)
+                if section_key not in seen_sections:
+                    sections.append({
+                        'title': text,
+                        'level': 1,
+                        'start_page': page_num,
+                        'end_page': page_num,
+                    })
+                    seen_sections.add(section_key)
+            
+            # Check for Item headers
+            elif item_pattern.match(text) and len(text) < 200:
+                # Avoid duplicate entries
+                section_key = (text, page_num, 2)
+                if section_key not in seen_sections:
+                    sections.append({
+                        'title': text,
+                        'level': 2,
+                        'start_page': page_num,
+                        'end_page': page_num,
+                    })
+                    seen_sections.add(section_key)
 
     elif not page_markers:
         # Fallback to word-based page tracking
