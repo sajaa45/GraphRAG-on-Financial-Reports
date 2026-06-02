@@ -3,8 +3,8 @@ Answer Relevancy — True RAGAS Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : Is SolarWinds Corporation achieving the best profitability among its peers?
-  Answer chars: 2242
+  Question    : What are the main risks facing the target company and how do they compare to its peers?
+  Answer chars: 2730
 
 [2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
   Region      : us-east-1
@@ -16,28 +16,28 @@ Answer Relevancy — True RAGAS Evaluation
 
 [4/5] Generating 5 questions from the answer
   Generated 5 question(s):
-    1. How does SolarWinds Corporation's profitability compare to that of its peers based on the provided financial metrics?
-    2. Which company stands out in terms of sustained profitability among the ones analyzed?
-    3. What is the overall financial health of SolarWinds' peers, considering their reported losses and risks?
-    4. Is SolarWinds the only company among its peers that demonstrates substantial and positive profitability?
-    5. How does SolarWinds' financial performance differentiate it from its peers in the industry?
+    1. What are the primary risks facing SolarWinds Corporation, and how do they compare to those of its peers?
+    2. How does SolarWinds' financial situation differ from that of its peers in terms of profitability and liquidity challenges?
+    3. What types of risks do SolarWinds' peers face, and are they similar to or distinct from those faced by SolarWinds?
+    4. How does the nature of SolarWinds' risks, such as indebtedness and merger-related uncertainty, impact its financial flexibility and stability?
+    5. In what ways do the risk profiles of SolarWinds and its peers reflect different underlying structural and operational challenges?
 
 [5/5] Embedding questions and computing cosine similarities
-    Q1 similarity: 0.8827  |  How does SolarWinds Corporation's profitability compare to that of its
-    Q2 similarity: 0.6550  |  Which company stands out in terms of sustained profitability among the
-    Q3 similarity: 0.7555  |  What is the overall financial health of SolarWinds' peers, considering
-    Q4 similarity: 0.9426  |  Is SolarWinds the only company among its peers that demonstrates subst
-    Q5 similarity: 0.8048  |  How does SolarWinds' financial performance differentiate it from its p
+    Q1 similarity: 0.9897  |  What are the primary risks facing SolarWinds Corporation, and how do t
+    Q2 similarity: 0.3784  |  How does SolarWinds' financial situation differ from that of its peers
+    Q3 similarity: 0.4025  |  What types of risks do SolarWinds' peers face, and are they similar to
+    Q4 similarity: 0.3813  |  How does the nature of SolarWinds' risks, such as indebtedness and mer
+    Q5 similarity: 0.4037  |  In what ways do the risk profiles of SolarWinds and its peers reflect 
 
-✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\answer_relevancy_results.csv
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_relevancy_results.csv
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
-  Individual similarities : [0.8827, 0.655, 0.7555, 0.9426, 0.8048]
-  Mean similarity         : 0.8081
-  Answer Relevancy Score  : 0.8081
-  Quality gate            : PASS  (threshold: 0.70)
+  Individual similarities : [0.9897, 0.3784, 0.4025, 0.3813, 0.4037]
+  Mean similarity         : 0.5111
+  Answer Relevancy Score  : 0.5111
+  Quality gate            : WARNING  (threshold: 0.70)
 ======================================================================
-Answer Relevancy Score : 0.8081  [PASS]
+Answer Relevancy Score : 0.5111  [WARNING]
 ======================================================================

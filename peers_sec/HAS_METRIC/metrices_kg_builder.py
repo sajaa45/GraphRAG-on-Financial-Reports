@@ -102,7 +102,9 @@ def write_metrics_to_neo4j(json_file: str):
                 def write_metric(metric_type, metric_name, latest, unit_name, year,
                                  xbrl_tag, taxonomy, label, metadata=None, gaap_concept=None):
                     nonlocal peer_metric_counter
-                    category = category_map.get(metric_type, "Other")
+                    _KNOWN = {'Leverage', 'Coverage', 'Liquidity', 'Profitability', 'Debt Structure'}
+                    _raw_cat = category_map.get(metric_type, "Other")
+                    category = _raw_cat if _raw_cat in _KNOWN else "Other"
 
                     # Extract metadata fields
                     source_url = ""
@@ -110,6 +112,21 @@ def write_metrics_to_neo4j(json_file: str):
                     if metadata:
                         source_url = metadata.get("source_url", "")
                         metric_cik = metadata.get("cik", cik)
+
+                    # Normalize raw XBRL USD values to $ million so the LLM sees
+                    # consistent units alongside target metrics ($ thousand / $ million).
+                    # "pure" and "shares" units are left unchanged.
+                    raw_val = latest.get('val', '')
+                    if unit_name == "USD" and raw_val != '':
+                        try:
+                            stored_value = str(round(float(raw_val) / 1_000_000, 4))
+                            stored_unit = "$ million"
+                        except (ValueError, TypeError):
+                            stored_value = str(raw_val)
+                            stored_unit = unit_name
+                    else:
+                        stored_value = str(raw_val)
+                        stored_unit = unit_name
 
                     # Generate citation_id for peer metrics
                     # Format: PEER_M<counter>
@@ -142,8 +159,8 @@ def write_metrics_to_neo4j(json_file: str):
                             "category": category,
                             "metric_name": metric_name,
                             "citation_id": citation_id,
-                            "value": str(latest.get('val', '')),
-                            "unit": unit_name,
+                            "value": stored_value,
+                            "unit": stored_unit,
                             "year": str(year),
                             "metric_type": metric_type,
                             "gaap_concept": gaap_concept or label or metric_type,

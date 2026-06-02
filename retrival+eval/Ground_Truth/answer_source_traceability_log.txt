@@ -3,44 +3,42 @@ Answer-Source Traceability — Phase 1 Ground Truth Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : Is SolarWinds Corporation achieving the best profitability among its peers?
-  Answer chars: 2242
-  Result rows : 6
+  Question    : What are the main risks facing the target company and how do they compare to its peers?
+  Answer chars: 2730
+  Result rows : 18
 
 [2/5] Building source registry
-  Total sources: 429  (367 risks, 62 metrics)
+  Total sources: 807  (637 risks, 170 metrics)
     [TARGET_R0001] Risks Related to the Pending Merger — The Merger may not be completed within the
-    [PEER_R0184] Inability to obtain additional capital — The company may not be able to secure s
-    [PEER_R0185] Failure to keep pace with technological advancements — Inability to timely devel
-    [PEER_R0186] Related-party arrangements with non-arm’s-length terms — Historical arrangements
-    [PEER_R0187] Reliance on a small number of customers for revenue — Loss of any major customer
-    ... and 424 more
+    [TARGET_R0002] Risks Related to Our Technology and Cybersecurity — Cyberattacks and other secur
+    [TARGET_R0003] Risks Related to Our Business and Industry — Our quarterly revenue and operating
+    [TARGET_R0004] Risks Related to Regulatory, Compliance and Legal Matters — We are subject to va
+    [TARGET_R0005] Risks Related to Our Intellectual Property — The success of our business depends
+    ... and 802 more
 
 [3/5] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
 
 [4/5] Parsing claims and inline citations from answer
-  → 17 claims  |  17 cited  |  0 unresolved  |  0 uncited
-    C001: For 2024, SolarWinds reported:
-- GAAP operating income of $208,419 tho  [CITE:TARGET_M0010] ✓
-    C002: - Net income of $111,903 thousand  [CITE:TARGET_M0012] ✓
-    C003: - Gross profit of $713,588 thousand  [CITE:TARGET_M0031] ✓
-    C004: - GAAP operating margin of 26.2%  [CITE:TARGET_M0011] ✓
-    C005: In contrast:
-- Nixxy, Inc. reported an operating loss of $14,954,307 t  [CITE:PEER_M0103] ✓
-    ... and 12 more
+  → 18 claims  |  18 cited  |  0 unresolved  |  0 uncited
+    C001: Its total debt as of 2024 was $1.2 billion, with a first lien net leve  [CITE:TARGET_R0196] ✓
+    C002: Its total debt as of 2024 was $1.2 billion, with a first lien net leve  [CITE:TARGET_R0207] ✓
+    C003: Its total debt as of 2024 was $1.2 billion, with a first lien net leve  [CITE:TARGET_M0018] ✓
+    C004: The company also faces significant cybersecurity risks, including expo  [CITE:TARGET_R0032] ✓
+    C005: The company also faces significant cybersecurity risks, including expo  [CITE:TARGET_R0038] ✓
+    ... and 13 more
 
-[5/5] Judging source correctness (17 LLM calls)
+[5/5] Judging source correctness (18 claims — 1 batched LLM call)
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
-  Total claims       : 17
-  Correct source     : 13  (76.5%)
-  Wrong source       : 4
+  Total claims       : 18
+  Correct source     : 18  (100.0%)
+  Wrong source       : 0
   Fabricated (no src): 0
 
 ✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_source_traceability.csv
 ======================================================================
-Source Traceability Score: 76.5%
+Source Traceability Score: 100.0%
 ======================================================================

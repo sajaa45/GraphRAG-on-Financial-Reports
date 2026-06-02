@@ -29,22 +29,19 @@ headers = {"User-Agent": "User (your_email@example.com)"}
 
 
 def get_companies_from_neo4j():
-    """Get peer companies already in the Neo4j graph (excluding target company)."""
+    """Get peer companies from the Neo4j graph via COMPETES_WITH → TargetCompany edges only."""
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     user = os.getenv("NEO4J_USERNAME", "neo4j")
     password = os.getenv("NEO4J_PASSWORD", "")
-    
+
     driver = GraphDatabase.driver(uri, auth=(user, password))
     try:
         with driver.session() as session:
             result = session.run(
                 """
-                MATCH (c:Company)-[:FACES_RISK]->(r:Risk)
-                WHERE c.is_peer = true OR (NOT c:TargetCompany AND NOT c.is_target = true)
-                WITH c, count(r) AS risk_count
-                WHERE risk_count >= 10
-                RETURN c.name AS name, c.cik AS cik, c.ticker AS ticker, risk_count
-                ORDER BY risk_count DESC
+                MATCH (c:Company {is_peer: true})-[:COMPETES_WITH]->(tc:TargetCompany)
+                RETURN c.name AS name, c.cik AS cik, c.ticker AS ticker
+                ORDER BY c.name
                 """
             )
             companies = []
@@ -52,16 +49,15 @@ def get_companies_from_neo4j():
                 name = record.get("name")
                 cik = record.get("cik")
                 ticker = record.get("ticker", "N/A")
-                
+
                 if name:
-                    # If CIK is not stored, we'll need to look it up or skip
                     companies.append({
                         'name': name,
                         'cik': str(cik).zfill(10) if cik else None,
                         'ticker': ticker or 'N/A',
                         'source': 'neo4j'
                     })
-            
+
             if companies:
                 print(f"✓ Found {len(companies)} peer companies in Neo4j graph:")
                 for c in companies:
@@ -70,7 +66,7 @@ def get_companies_from_neo4j():
                 print()
             else:
                 print("⚠ No peer companies found in Neo4j graph\n")
-            
+
             return companies
     except Exception as e:
         print(f"⚠ Error querying Neo4j for companies: {e}\n")
@@ -274,7 +270,7 @@ BM25_MIN_SCORE = 3.0
 TAXONOMY_URL = "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-lab-2024.xml"
 TAXONOMY_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".taxonomy_cache.json")
 TAXONOMY_CACHE_DAYS = 30
-GLOBAL_BM25_TOP_K = 5   # candidate tag names to try per metric against company facts
+GLOBAL_BM25_TOP_K = 15  # candidate tag names to try per metric against company facts
 GLOBAL_BM25_MIN_SCORE = 2.0  # lower threshold since taxonomy labels are authoritative
 
 _global_taxonomy = None  # (tag_list[(name, label)], BM25Okapi) — built once per run
@@ -293,9 +289,17 @@ def _tokenize_xbrl_tag(tag: str) -> list:
     return [t.lower() for t in s.split() if len(t) >= 2]
 
 
+def _stem(token: str) -> str:
+    """Minimal suffix-stripping so 'revenues'=='revenue', 'earnings'=='earning', etc."""
+    for suffix in ('ings', 'ing', 'ies', 'es', 's'):
+        if token.endswith(suffix) and len(token) - len(suffix) >= 3:
+            return token[: -len(suffix)]
+    return token
+
+
 def _tokenize_metric(metric: str) -> list:
-    """Tokenize a human-readable metric name into lowercase tokens."""
-    return [t.lower() for t in re.split(r'[\s\-_/]+', metric) if len(t) >= 2]
+    """Tokenize a human-readable metric name into lowercase, stemmed tokens."""
+    return [_stem(t.lower()) for t in re.split(r'[\s\-_/]+', metric) if len(t) >= 2]
 
 
 def _build_global_taxonomy_index():
@@ -408,7 +412,117 @@ def _build_global_taxonomy_index():
     return _global_taxonomy
 
 
-_STOP_WORDS = {'the', 'and', 'or', 'of', 'in', 'to', 'a', 'an', 'for', 'net', 'total'}
+_STOP_WORDS = {'the', 'and', 'or', 'of', 'in', 'to', 'a', 'an', 'for'}
+
+_CONCEPT_TAG_MAP: dict[str, list[str]] = {
+    # Revenue
+    "revenue":                          ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"],
+    "net sales":                        ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"],
+    "net revenue":                      ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"],
+    # Cost of goods sold
+    "cost of goods sold":               ["CostOfGoodsAndServicesSold", "CostOfRevenue", "CostOfGoodsSold"],
+    "cost of sales":                    ["CostOfGoodsAndServicesSold", "CostOfRevenue", "CostOfGoodsSold"],
+    # Gross profit
+    "gross profit":                     ["GrossProfit"],
+    # Operating income
+    "operating income":                 ["OperatingIncomeLoss"],
+    "operating income (loss)":          ["OperatingIncomeLoss"],
+    "income from operations":           ["OperatingIncomeLoss"],
+    # Net income
+    "net income":                       ["NetIncomeLoss"],
+    "net income (loss)":                ["NetIncomeLoss"],
+    # NCI
+    "net income attributable to non-controlling interests": ["NetIncomeLossAttributableToNoncontrollingInterest"],
+    "net income attributable to noncontrolling interests":  ["NetIncomeLossAttributableToNoncontrollingInterest"],
+    # Equity method
+    "equity in earnings of affiliates": ["IncomeLossFromEquityMethodInvestments"],
+    "equity in earnings":               ["IncomeLossFromEquityMethodInvestments"],
+    # SG&A
+    "selling general and administrative expenses": ["SellingGeneralAndAdministrativeExpense"],
+    "marketing and administrative expenses":       ["SellingGeneralAndAdministrativeExpense"],
+    # R&D
+    "research and development expenses": ["ResearchAndDevelopmentExpense"],
+    "research and development":          ["ResearchAndDevelopmentExpense"],
+    # Taxes
+    "income tax expense":               ["IncomeTaxExpenseBenefit"],
+    "income tax expense (benefit)":     ["IncomeTaxExpenseBenefit"],
+    "provision for income taxes":       ["IncomeTaxExpenseBenefit"],
+    "provision for taxes on income":    ["IncomeTaxExpenseBenefit"],
+    "total tax provision":              ["IncomeTaxExpenseBenefit"],
+    # Interest
+    "interest expense":                 ["InterestExpense", "InterestAndDebtExpense"],
+    "interest expense net":             ["InterestExpense", "InterestAndDebtExpense"],
+    # D&A
+    "depreciation and amortization":    ["DepreciationDepletionAndAmortization", "DepreciationAndAmortization"],
+    "depreciation and depletion":       ["DepreciationDepletionAndAmortization", "Depreciation"],
+    "amortization expense":             ["AmortizationOfIntangibleAssets", "DepreciationDepletionAndAmortization"],
+    # EPS
+    "earnings per share (basic)":       ["EarningsPerShareBasic"],
+    "earnings per share (diluted)":     ["EarningsPerShareDiluted"],
+    "basic earnings per share":         ["EarningsPerShareBasic"],
+    "diluted earnings per share":       ["EarningsPerShareDiluted"],
+    # Shares
+    "weighted average shares outstanding":           ["WeightedAverageNumberOfSharesOutstandingBasic", "WeightedAverageNumberOfDilutedSharesOutstanding"],
+    "weighted average shares outstanding (diluted)": ["WeightedAverageNumberOfDilutedSharesOutstanding"],
+    # Debt
+    "long-term debt":                   ["LongTermDebt", "LongTermDebtNoncurrent"],
+    "short-term debt":                  ["ShortTermBorrowings", "NotesPayableCurrent"],
+    "current maturities of long-term debt": ["LongTermDebtCurrent"],
+    "debt extinguishment costs":        ["GainsLossesOnExtinguishmentOfDebt"],
+    # Balance sheet
+    "total assets":                     ["Assets"],
+    "total liabilities":                ["Liabilities"],
+    "total equity":                     ["StockholdersEquity", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"],
+    "total shareholders equity":        ["StockholdersEquity", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"],
+    "stockholders equity":              ["StockholdersEquity"],
+    "retained earnings":                ["RetainedEarningsAccumulatedDeficit"],
+    "comprehensive income":             ["ComprehensiveIncomeNetOfTax", "ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest"],
+    "goodwill":                         ["Goodwill"],
+    "intangible assets":                ["IntangibleAssetsNetExcludingGoodwill", "FiniteLivedIntangibleAssetsNet"],
+    "property plant and equipment net": ["PropertyPlantAndEquipmentNet"],
+    "property plant and equipment":     ["PropertyPlantAndEquipmentNet", "PropertyPlantAndEquipmentGross"],
+    "cash and cash equivalents":        ["CashAndCashEquivalentsAtCarryingValue", "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"],
+    "total inventories":                ["InventoryNet"],
+    # Cash flow
+    "capital expenditures":             ["PaymentsToAcquirePropertyPlantAndEquipment"],
+    "capital expenditure":              ["PaymentsToAcquirePropertyPlantAndEquipment"],
+    "net cash provided by operating activities": ["NetCashProvidedByUsedInOperatingActivities"],
+    "cash dividends paid":              ["PaymentsOfDividends", "PaymentsOfDividendsCommonStock"],
+    "dividends paid":                   ["PaymentsOfDividends", "PaymentsOfDividendsCommonStock"],
+    # Deferred taxes
+    "deferred tax assets":              ["DeferredTaxAssetsGross", "DeferredTaxAssetsNet"],
+    "deferred tax liabilities":         ["DeferredTaxLiabilities", "DeferredIncomeTaxLiabilitiesNet"],
+    "net deferred tax liability":       ["DeferredIncomeTaxLiabilitiesNet", "DeferredTaxLiabilities"],
+    "unrecognized tax benefits":        ["UnrecognizedTaxBenefits"],
+    # Restructuring / leases / other
+    "restructuring charges":            ["RestructuringCharges"],
+    "operating lease cost":             ["OperatingLeaseCost", "LeaseCost"],
+    "operating lease liability":        ["OperatingLeaseLiability"],
+    "stock based compensation expense": ["ShareBasedCompensation", "AllocatedShareBasedCompensationExpense"],
+    "pension expense":                  ["DefinedBenefitPlanNetPeriodicBenefitCost"],
+    "projected benefit obligation":     ["DefinedBenefitPlanBenefitObligation"],
+    "plan assets":                      ["DefinedBenefitPlanFairValueOfPlanAssets"],
+    "impairment loss":                  ["AssetImpairmentCharges", "GoodwillImpairmentLoss"],
+    "accumulated other comprehensive loss": ["AccumulatedOtherComprehensiveIncomeLossNetOfTax"],
+}
+
+
+def _lookup_hardcoded(concept: str) -> list[str]:
+    """Return canonical XBRL tags from the hardcoded map, or [] if not found.
+    Normalises case, collapses whitespace, and strips trailing 's' to handle
+    minor pluralisation differences before looking up.
+    """
+    key = re.sub(r'\s+', ' ', concept.lower().strip())
+    if key in _CONCEPT_TAG_MAP:
+        return _CONCEPT_TAG_MAP[key]
+    # strip parenthetical suffixes like "(loss)", "(benefit)"
+    key2 = re.sub(r'\s*\(.*?\)', '', key).strip()
+    if key2 in _CONCEPT_TAG_MAP:
+        return _CONCEPT_TAG_MAP[key2]
+    # try without trailing 's'
+    if key.endswith('s') and key[:-1] in _CONCEPT_TAG_MAP:
+        return _CONCEPT_TAG_MAP[key[:-1]]
+    return []
 
 
 def _resolve_metric_to_tags(metric_type: str) -> list:
@@ -518,14 +632,19 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
             target_year = metric.get('year') or default_fiscal_year
             matched = False
 
-            # --- Global taxonomy path ---
-            # Prefer gaap_concept (standardised GAAP name) over the verbatim metric_type
-            # so that "Net income attributable to MTI" is resolved as "Net Income (Loss)"
             search_term = gaap_concept if gaap_concept != metric_type else metric_type
-            candidate_tags = _resolve_metric_to_tags(search_term)
-            # If gaap_concept search returned nothing, retry with raw metric_type
+
+            # 1. Hardcoded map — highest precision for standard financial concepts
+            candidate_tags = _lookup_hardcoded(search_term)
             if not candidate_tags and search_term != metric_type:
-                candidate_tags = _resolve_metric_to_tags(metric_type)
+                candidate_tags = _lookup_hardcoded(metric_type)
+
+            # 2. Global taxonomy BM25 — fallback for non-standard / long-tail metrics
+            if not candidate_tags:
+                candidate_tags = _resolve_metric_to_tags(search_term)
+                if not candidate_tags and search_term != metric_type:
+                    candidate_tags = _resolve_metric_to_tags(metric_type)
+
             for tag_name in candidate_tags:
                 if tag_name in facts_by_tag:
                     taxonomy_name, tag_content = facts_by_tag[tag_name]
@@ -593,45 +712,14 @@ def main():
     
     companies_with_cik = [c for c in companies if c.get('cik')]
     companies_without_cik = [c for c in companies if not c.get('cik')]
-    
+
     if companies_without_cik:
         print(f"⚠ Skipping {len(companies_without_cik)} companies without CIK:")
         for c in companies_without_cik:
             print(f"  - {c['name']}")
         print()
-    
-    if len(companies_with_cik) < MAX_COMPANIES:
-        needed = MAX_COMPANIES - len(companies_with_cik)
-        print("=" * 80)
-        print(f"STEP 2: FETCHING ADDITIONAL COMPANIES FROM SEC (need {needed} more)")
-        print("=" * 80)
-        print()
-        
-        try:
-            sic_code = get_sic_from_neo4j()
-            print(f"✓ Using SIC code: {sic_code}\n")
-            sic_codes = [sic_code]
-        except Exception as e:
-            print(f"Error getting SIC from Neo4j: {e}")
-            print("Falling back to default SIC code: 1311\n")
-            sic_codes = ['1311']
-        
-        sec_companies = fetch_companies_by_sic(sic_codes, START_DATE, END_DATE, FORM_TYPE, needed)
-        
-        for c in sec_companies:
-            c['source'] = 'sec'
-        
-        existing_ciks = {c['cik'] for c in companies_with_cik}
-        new_companies = [c for c in sec_companies if c['cik'] not in existing_ciks]
-        
-        companies_with_cik.extend(new_companies[:needed])
-        
-        print(f"✓ Added {len(new_companies[:needed])} companies from SEC")
-        print(f"✓ Total companies to analyze: {len(companies_with_cik)}\n")
-    else:
-        print(f"✓ Using {len(companies_with_cik)} companies from Neo4j graph (limit: {MAX_COMPANIES})\n")
-        companies_with_cik = companies_with_cik[:MAX_COMPANIES]
-    
+
+    print(f"✓ Processing {len(companies_with_cik)} peer companies from Neo4j graph\n")
     companies = companies_with_cik
     
     if not companies:

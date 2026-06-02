@@ -76,7 +76,12 @@ Always match it as (tc:TargetCompany) — no {{name: ...}} or other property fil
 Rules:
 1. Output ONLY the Cypher query — no markdown, no comments, no explanation.
 2. No write operations (CREATE, MERGE, SET, DELETE).
-3. Always LIMIT 300.
+3. Choose LIMIT based on what the query returns:
+   - Queries that use COLLECT to aggregate (one row per company): LIMIT 20
+   - Queries returning individual metric rows (no COLLECT): LIMIT 50
+   - Queries returning individual risk rows (no COLLECT): LIMIT 100
+   - Broad "list all" questions explicitly asking for everything: LIMIT 200
+   Never omit LIMIT — always include it at the end of the query.
 4. Use OPTIONAL MATCH for peer data so the query works even with no peers.
 5. Use TWO separate OPTIONAL MATCHes for peers: first find the peer via COMPETES_WITH, then find its data in a second OPTIONAL MATCH.
 6. NEVER chain COMPETES_WITH and FACES_RISK in one path — that returns target risks, not peer risks.
@@ -107,7 +112,7 @@ Risks with peer comparison — topic-filtered (e.g. question mentions "debt"):
            OR toLower(pr.why) CONTAINS 'debt' OR toLower(pr.source_text) CONTAINS 'debt'
     WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page}}) AS peer_risks
     RETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks
-    LIMIT 300
+    LIMIT 20
 
 Risks with peer comparison — ALL risks (e.g. question asks "what are the main risks"):
     MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
@@ -116,7 +121,7 @@ Risks with peer comparison — ALL risks (e.g. question asks "what are the main 
     OPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)
     WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page}}) AS peer_risks
     RETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks
-    LIMIT 300
+    LIMIT 20
 
 Metrics with peer comparison (fetch independently by category — let the LLM align by label):
     MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
@@ -126,7 +131,7 @@ Metrics with peer comparison (fetch independently by category — let the LLM al
     OPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(pmc:MetricCategory {{name: mc.name}})-[:HAS_METRIC]->(pm:Metric)
     WITH tc, mc, target_metrics, peer, collect({{citation_id: pm.citation_id, name: pm.name, label: pm.label, gaap_concept: pm.gaap_concept, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url}}) AS peer_metrics
     RETURN tc.name AS target, mc.name AS category, target_metrics, peer.name AS peer, peer_metrics
-    LIMIT 300
+    LIMIT 20
 
 Question: {question}
 
@@ -141,7 +146,10 @@ Answer the question using only the graph results below.
 The TargetCompany in this knowledge graph is: {target_company}
 CRITICAL: If the question mentions a different company name, treat it as referring to {target_company} — that is the subject of the analysis.
 
-- Lead with a **Sources** section listing one document URL per company — only include URLs that appear in the graph results. Omit any company with no URL.
+- Structure your response in this EXACT order:
+  1. **Sources** — list one document URL per company, taken verbatim from the graph results. Omit any company with no URL. This section comes FIRST, before any analysis.
+  2. The analysis body.
+  Do NOT repeat or reference URLs anywhere in the analysis body or conclusion — URLs belong only in the Sources section at the top.
 - Use ONLY values present in the graph results. Never infer or derive a metric that is not explicitly returned.
 - If a metric is missing for a peer, state "not available" rather than estimating it.
 - Directly answer the question; compare target vs peers where data exists.
@@ -151,7 +159,9 @@ CRITICAL: If the question mentions a different company name, treat it as referri
 - PROFITABILITY RULE: "Unprofitable" only applies to the specific metric being discussed. A company with negative operating income but positive net income is NOT simply "unprofitable" — state both figures and let the data speak.
 - ATTRIBUTION RULE: Each metric belongs to the company in its surrounding context (target row vs peer row). Do NOT infer company ownership from words embedded in the metric name or label.
 - Plain language suitable for a credit committee; ≤ 300 words unless data requires more.
-- After every claim drawn from a specific data point, append an inline citation using the citation_id from the graph results:
+- Place a citation IMMEDIATELY after each individual claim — never group multiple citations at the end of a sentence.
+  WRONG: "Company X faces risk A and risk B [CITE:ID1][CITE:ID2]"
+  RIGHT:  "Company X faces risk A [CITE:ID1] and risk B [CITE:ID2]"
   - Risk claim:   [CITE:<citation_id>]   e.g. [CITE:TARGET_RISK_Competitive_industries] or [CITE:PEER_RISK_1234567_risk_3]
   - Metric claim: [CITE:<citation_id>]   e.g. [CITE:TARGET_METRIC_Net_income_2024] or [CITE:PEER_METRIC_891014_NetIncome_2024]
 
@@ -351,7 +361,9 @@ class CreditRiskQA:
         cypher = m.group(1).strip() if m else raw.strip()
         # Safety net: prevent full-graph scans if LLM forgets LIMIT
         if 'LIMIT' not in cypher.upper():
-            cypher = cypher.rstrip(';').rstrip() + '\nLIMIT 300'
+            # Aggregated queries (COLLECT) produce few rows; bare node queries need more headroom
+            fallback = 20 if 'COLLECT' in cypher.upper() else 100
+            cypher = cypher.rstrip(';').rstrip() + f'\nLIMIT {fallback}'
         return cypher
 
     def _run_pipeline(self, question: str, max_retries: int = 2) -> dict:
@@ -388,11 +400,49 @@ class CreditRiskQA:
     # Multi-strategy mode: one pipeline call per strategy, unified answer.
     # ------------------------------------------------------------------
 
+    @staticmethod
+    def _select_strategies(question: str) -> list[str]:
+        """
+        Return which strategy keys to run based on question intent.
+        Avoids fetching hundreds of irrelevant risk/metric nodes when the
+        question clearly targets only one type of data.
+        """
+        q = question.lower()
+
+        # Signals that only metrics/financials are needed
+        metric_keywords = {
+            "performance", "revenue", "income", "profit", "margin", "ebitda",
+            "cash flow", "liquidity", "leverage", "debt", "coverage", "financial",
+            "balance sheet", "earnings", "return", "ratio", "metric", "compare",
+            "benchmark", "kpi",
+        }
+        # Signals that only risks are needed
+        risk_keywords = {
+            "risk", "threat", "concern", "going concern", "uncertainty",
+            "exposure", "vulnerable", "challenge", "headwind",
+        }
+
+        has_metric = any(kw in q for kw in metric_keywords)
+        has_risk = any(kw in q for kw in risk_keywords)
+
+        if has_metric and not has_risk:
+            return ["metrics"]
+        if has_risk and not has_metric:
+            return ["risks"]
+        # Ambiguous or both — run all strategies
+        return list(QUERY_STRATEGIES.keys())
+
     def ask_multi(self, question: str, verbose: bool = False) -> dict:
         all_results = []
         queries_run = []
 
+        active_strategies = self._select_strategies(question)
+        print(f"      [strategy routing] selected: {active_strategies}")
+
         for strategy, template in QUERY_STRATEGIES.items():
+            if strategy not in active_strategies:
+                print(f"      [{strategy}] skipped (not needed for this question)")
+                continue
             sub_question = template.format(question=question)
             print(f"      [{strategy}] {sub_question[:80]}")
             data = self._run_pipeline(sub_question)
@@ -540,7 +590,7 @@ class CreditRiskQA:
                         deduped.append(item)
                         continue
                     item_key = next(
-                        (str(item[k]) for k in key_fields if k in item), None
+                        (str(item[k]) for k in key_fields if k in item and item[k] is not None), None
                     )
                     if item_key is None or item_key not in seen[ns]:
                         deduped.append(item)

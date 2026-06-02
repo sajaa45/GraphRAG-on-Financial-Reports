@@ -234,10 +234,22 @@ def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
     # ── Embed and compute similarities ────────────────────────────────────
     print(f"\n[5/5] Embedding questions and computing cosine similarities")
 
+    # Extract company name from extraction data to normalize generated questions.
+    # The stored question uses "the target company" (normalized), but the answer
+    # still contains the real company name, so reverse-generated questions do too.
+    # Replacing the real name with "the target company" removes this spurious
+    # vocabulary gap before embedding.
+    target_name = extraction_data.get('results', [{}])[0].get('target', '') if extraction_data.get('results') else ''
+
+    def _normalize_q(text: str) -> str:
+        if target_name:
+            return re.sub(re.escape(target_name), 'the target company', text, flags=re.IGNORECASE)
+        return text
+
     orig_emb = get_embedding(question)
     similarities = []
     for i, gq in enumerate(generated_qs, 1):
-        gen_emb = get_embedding(gq)
+        gen_emb = get_embedding(_normalize_q(gq))
         sim = cosine_similarity(orig_emb, gen_emb)
         similarities.append(sim)
         print(f"    Q{i} similarity: {sim:.4f}  |  {gq[:70]}")

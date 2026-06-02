@@ -22,7 +22,6 @@ import json
 import os
 import re
 import sys
-import time
 from typing import Any
 
 import boto3
@@ -403,6 +402,67 @@ def _build_source_listing(registry: dict[str, dict]) -> str:
     return "\n\n".join(blocks)
 
 
+def _parse_batch_response(
+    raw: str,
+    claims: list[dict],
+    registry: dict[str, dict],
+    valid_ids: set[str],
+) -> dict[str, dict]:
+    """
+    Parse a batched LLM response into a dict keyed by claim_id.
+    Expected format per claim block:
+        CLAIM_ID: Cxxx
+        USED_SOURCE: <id or NONE>
+        CORRECT_SOURCE: YES | NO:<better_id> | FABRICATED
+        EXPLANATION: ...
+        ---
+    """
+    parsed: dict[str, dict] = {}
+    current: dict = {}
+
+    for line in raw.splitlines():
+        line  = line.strip()
+        upper = line.upper()
+
+        if upper.startswith('CLAIM_ID:'):
+            if current.get('claim_id'):
+                parsed[current['claim_id']] = current
+            current = {'claim_id': line.split(':', 1)[1].strip()}
+
+        elif upper.startswith('USED_SOURCE:') and current:
+            val = line.split(':', 1)[1].strip().upper()
+            current['used_sid'] = val if val in valid_ids else ('NONE' if val == 'NONE' else f'?{val}')
+
+        elif upper.startswith('CORRECT_SOURCE:') and current:
+            val = line.split(':', 1)[1].strip()
+            if val.upper() == 'YES':
+                current['is_correct']  = True
+                current['correct_sid'] = current.get('used_sid', 'UNKNOWN')
+            elif val.upper() == 'FABRICATED':
+                current['is_correct']  = False
+                current['correct_sid'] = 'FABRICATED'
+            elif val.upper().startswith('NO:'):
+                better = val[3:].strip().upper()
+                current['is_correct']  = False
+                current['correct_sid'] = better if better in valid_ids else f'?{better}'
+            else:
+                candidate = val.strip().upper()
+                current['is_correct']  = False
+                current['correct_sid'] = candidate if candidate in valid_ids else f'?{candidate}'
+
+        elif upper.startswith('EXPLANATION:') and current:
+            current['explanation'] = line.split(':', 1)[1].strip()
+
+        elif line == '---' and current.get('claim_id'):
+            parsed[current['claim_id']] = current
+            current = {}
+
+    if current.get('claim_id'):
+        parsed[current['claim_id']] = current
+
+    return parsed
+
+
 def attribute_claims(
     claims: list[dict],
     registry: dict[str, dict],
@@ -411,12 +471,10 @@ def attribute_claims(
     model_id: str,
 ) -> list[dict]:
     """
-    For each claim judge whether the pipeline used the correct source.
-    - Resolved citation  → show the actual source text; ask only whether it's correct.
-    - Unresolved citation → pipeline fabricated a source; ask LLM for the right one.
-    - No citation        → full inference against source content.
+    Judge whether the pipeline used the correct source for every claim in one
+    batched LLM call (all claims + all sources in a single prompt).
 
-    CSV output stores actual source content, not registry IDs.
+    Falls back to an error record per claim if the LLM call fails.
     """
     if not registry:
         for c in claims:
@@ -431,125 +489,133 @@ def attribute_claims(
     source_listing = _build_source_listing(registry)
     valid_ids = set(registry.keys())
 
-    results = []
+    # ── Build per-claim sections ──────────────────────────────────────────
+    claim_sections: list[str] = []
     for claim in claims:
-        cid           = claim['claim_id']
-        ctext         = claim['claim_text']
-        cited_id      = claim['resolved_citation']  # citation_id, '?<raw>', or 'NONE'
+        cid      = claim['claim_id']
+        ctext    = claim['claim_text']
+        cited_id = claim['resolved_citation']
         is_resolved   = cited_id != 'NONE' and not cited_id.startswith('?')
         is_unresolved = cited_id.startswith('?')
 
         if is_resolved:
-            cited_block   = _source_content(registry[cited_id])
-            sentence_ctx  = claim.get('sentence_context', ctext)
-            co_cites      = claim.get('co_citations', [])
+            cited_block  = _source_content(registry[cited_id])
+            sentence_ctx = claim.get('sentence_context', ctext)
+            co_cites     = claim.get('co_citations', [])
             co_note = ''
             if co_cites:
                 co_ids = ', '.join(co_cites)
                 co_note = (
-                    f"\nNOTE: The pipeline also co-cited [{co_ids}] for this same fact. "
-                    f"Each co-citation only needs to partially support the claim. "
-                    f"Answer YES if [{cited_id}] validly contributes to supporting the fact, "
-                    f"even if a co-citation covers a different aspect of it.\n"
+                    f"  CO-CITATIONS: {co_ids} (co-cited for the same fact; "
+                    f"answer YES if [{cited_id}] partially supports it)\n"
                 )
-            prompt = (
-                f"You are auditing an AI pipeline that answered a credit-risk question.\n\n"
-                f"QUESTION: {question}\n\n"
-                f"FULL SENTENCE (for context): {sentence_ctx}\n\n"
-                f"SPECIFIC FACT BEING CITED: {ctext}\n"
-                f"(The citation tag annotates only this specific fact, not the full sentence.){co_note}\n\n"
-                f"The pipeline cited this source [{cited_id}]:\n{cited_block}\n\n"
-                f"ALL RETRIEVED SOURCES:\n{source_listing}\n\n"
-                "Judge: does the cited source support the SPECIFIC FACT above?\n"
-                "   - YES if the source text contains the value, figure, or statement in the specific fact.\n"
-                "   - NO:<better_id> if a DIFFERENT source in the list is a clearly better match and the cited source is irrelevant.\n"
-                "   - FABRICATED if no source in the list supports this specific fact.\n\n"
-                "Output EXACTLY two lines:\n"
-                "CORRECT_SOURCE: YES | NO:<better_id> | FABRICATED\n"
-                "EXPLANATION: <one sentence referencing the source text>\n"
+            claim_sections.append(
+                f"[{cid}] TYPE: resolved  CITED: {cited_id}\n"
+                f"  FACT: {ctext}\n"
+                f"  SENTENCE CONTEXT: {sentence_ctx}\n"
+                f"{co_note}"
+                f"  CITED SOURCE CONTENT:\n{cited_block}"
             )
         elif is_unresolved:
             raw_citation = cited_id[1:]
-            prompt = (
-                f"You are auditing an AI pipeline that answered a credit-risk question.\n\n"
-                f"QUESTION: {question}\n\n"
-                f"CLAIM: {ctext}\n\n"
-                f"The pipeline cited \"{raw_citation}\" but this does not match any retrieved source.\n\n"
-                f"ALL RETRIEVED SOURCES:\n{source_listing}\n\n"
-                "Read the sources above. Which one actually supports this claim?\n"
-                "   - Output the source ID (e.g. M005) if a source supports it.\n"
-                "   - FABRICATED if no source in the list supports this claim.\n\n"
-                "Output EXACTLY two lines:\n"
-                "CORRECT_SOURCE: <ID> | FABRICATED\n"
-                "EXPLANATION: <one sentence referencing the source text>\n"
+            claim_sections.append(
+                f"[{cid}] TYPE: unresolved  CITED: \"{raw_citation}\" (not found in sources)\n"
+                f"  FACT: {ctext}"
             )
         else:
-            prompt = (
-                f"You are auditing an AI pipeline that answered a credit-risk question.\n\n"
-                f"QUESTION: {question}\n\n"
-                f"CLAIM: {ctext}\n"
-                f"(No inline citation was provided.)\n\n"
-                f"ALL RETRIEVED SOURCES:\n{source_listing}\n\n"
-                "Read the sources above.\n"
-                "1. USED_SOURCE: Which source did the pipeline most likely draw on? "
-                "Output the ID or NONE.\n"
-                "2. CORRECT_SOURCE: Is that the correct/best source?\n"
-                "   - YES | NO:<better_id> | FABRICATED\n\n"
-                "Output EXACTLY three lines:\n"
-                "USED_SOURCE: <ID or NONE>\n"
-                "CORRECT_SOURCE: YES | NO:<better_id> | FABRICATED\n"
-                "EXPLANATION: <one sentence referencing the source text>\n"
+            claim_sections.append(
+                f"[{cid}] TYPE: uncited\n"
+                f"  FACT: {ctext}"
             )
 
-        try:
-            raw = _llm_call(bedrock_client, model_id, prompt, max_tokens=300)
-        except Exception as e:
-            print(f"    ✗ LLM error for {cid}: {e}")
-            results.append({**claim,
-                'pipeline_used_source': _resolve_to_content(cited_id, registry),
+    claims_block = "\n\n".join(claim_sections)
+
+    prompt = (
+        f"You are auditing an AI pipeline that answered a credit-risk question.\n\n"
+        f"QUESTION: {question}\n\n"
+        f"ALL RETRIEVED SOURCES:\n{source_listing}\n\n"
+        f"CLAIMS TO EVALUATE:\n{claims_block}\n\n"
+        "For EACH claim output EXACTLY this block (no extra text between blocks):\n"
+        "CLAIM_ID: <id>\n"
+        "USED_SOURCE: <source_id or NONE>\n"
+        "CORRECT_SOURCE: YES | NO:<better_id> | FABRICATED\n"
+        "EXPLANATION: <one sentence referencing the source text>\n"
+        "---\n\n"
+        "Rules:\n"
+        "  - resolved:   USED_SOURCE = the CITED id; judge YES / NO:<id> / FABRICATED\n"
+        "  - unresolved: USED_SOURCE = best matching source id (or NONE); "
+        "CORRECT_SOURCE = that id or FABRICATED\n"
+        "  - uncited:    infer the most likely USED_SOURCE; then judge CORRECT_SOURCE\n"
+        "  - YES means the used source directly supports the specific fact\n"
+        "  - NO:<better_id> means a different source is clearly better and the used source is irrelevant\n"
+        "  - FABRICATED means no source in the list supports this fact\n"
+    )
+
+    # ── Single LLM call ───────────────────────────────────────────────────
+    max_tokens = max(300, len(claims) * 80)
+    try:
+        raw = _llm_call(bedrock_client, model_id, prompt, max_tokens=max_tokens)
+    except Exception as e:
+        print(f"    ✗ Batch LLM call failed: {e}")
+        return [
+            {
+                **c,
+                'pipeline_used_source': _resolve_to_content(c['resolved_citation'], registry),
                 'correct_source':       'ERROR',
                 'is_correct_source':    False,
                 'explanation':          str(e),
+            }
+            for c in claims
+        ]
+
+    parsed = _parse_batch_response(raw, claims, registry, valid_ids)
+
+    # ── Assemble results, falling back gracefully for missing claim blocks ──
+    results = []
+    for claim in claims:
+        cid      = claim['claim_id']
+        cited_id = claim['resolved_citation']
+        is_resolved   = cited_id != 'NONE' and not cited_id.startswith('?')
+        is_unresolved = cited_id.startswith('?')
+
+        block = parsed.get(cid)
+        if not block:
+            print(f"    ✗ No response block for {cid} — marking ERROR")
+            results.append({
+                **claim,
+                'pipeline_used_source': _resolve_to_content(cited_id, registry),
+                'correct_source':       'ERROR',
+                'is_correct_source':    False,
+                'explanation':          'Missing from batch LLM response',
             })
-            time.sleep(1)
             continue
 
-        # Parse IDs from response, then resolve to content for CSV
-        used_sid    = cited_id if is_resolved else (cited_id[1:] if is_unresolved else 'NONE')
-        correct_sid = 'UNKNOWN'
-        is_correct  = False
-        explanation = ''
+        # For resolved/unresolved, the used source is already known
+        if is_resolved:
+            used_sid = cited_id
+        elif is_unresolved:
+            used_sid = block.get('used_sid', cited_id[1:])
+        else:
+            used_sid = block.get('used_sid', 'NONE')
 
-        for line in raw.splitlines():
-            line  = line.strip()
-            upper = line.upper()
-            if upper.startswith('USED_SOURCE:') and not (is_resolved or is_unresolved):
-                val = line.split(':', 1)[1].strip().upper()
-                used_sid = val if val in valid_ids else ('NONE' if val == 'NONE' else f'?{val}')
-            elif upper.startswith('CORRECT_SOURCE:'):
-                val = line.split(':', 1)[1].strip()
-                if val.upper() == 'YES' and not is_unresolved:
-                    is_correct  = True
-                    correct_sid = used_sid
-                elif val.upper() == 'FABRICATED':
-                    correct_sid = 'FABRICATED'
-                elif val.upper().startswith('NO:'):
-                    better = val[3:].strip().upper()
-                    correct_sid = better if better in valid_ids else f'?{better}'
-                else:
-                    candidate = val.strip().upper()
-                    correct_sid = candidate if candidate in valid_ids else f'?{candidate}'
-            elif upper.startswith('EXPLANATION:'):
-                explanation = line.split(':', 1)[1].strip()
+        correct_sid = block.get('correct_sid', 'UNKNOWN')
+        is_correct  = block.get('is_correct', False)
+
+        # For resolved YES, correct_sid should point to the used (cited) source
+        if is_correct and correct_sid == 'UNKNOWN':
+            correct_sid = used_sid
+
+        # Unresolved: is_correct is true only if LLM found the cited source itself
+        if is_unresolved and is_correct:
+            is_correct = False
 
         results.append({
             **claim,
             'pipeline_used_source': _resolve_to_content(used_sid, registry),
             'correct_source':       _resolve_to_content(correct_sid, registry),
             'is_correct_source':    is_correct,
-            'explanation':          explanation,
+            'explanation':          block.get('explanation', ''),
         })
-        time.sleep(0.3)
 
     return results
 
@@ -658,7 +724,7 @@ def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
         return
 
     # ── Judge source correctness (LLM) ────────────────────────────────────
-    print(f"\n[5/5] Judging source correctness ({len(claims)} LLM calls)")
+    print(f"\n[5/5] Judging source correctness ({len(claims)} claims — 1 batched LLM call)")
     records = attribute_claims(claims, registry, question, bedrock_client, model_id)
 
     # ── Metrics ───────────────────────────────────────────────────────────

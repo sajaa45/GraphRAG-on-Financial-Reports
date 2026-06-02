@@ -260,7 +260,15 @@ def _run_validation(
     print(f"  → Found {len(chunks_to_validate)} risk chunks to validate")
 
     if not chunks_to_validate:
-        print("\n✗ No risk chunks found in extraction results")
+        print("\n✗ No risk chunks found — writing empty CSV and skipping validation")
+        os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
+        with open(output_csv_path, 'w', newline='', encoding='utf-8') as f:
+            fieldnames = [
+                'company_name', 'cik', 'risk_theme', 'chunk_length', 'chunk_text',
+                'is_semantically_relevant', 'relevance_explanation',
+                'document_url', 'source', 'notes',
+            ]
+            csv.DictWriter(f, fieldnames=fieldnames).writeheader()
         return
 
     results_table = [

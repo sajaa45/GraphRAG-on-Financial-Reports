@@ -152,11 +152,16 @@ def find_ground_truth_value(
         if not unit_values:
             return None
         
-        # Filter by form: "10-K" and fiscal year
-        # Collect all 10-K entries for the fiscal year
+        # Filter by form: "10-K" (or amended 10-K/A) and fiscal year.
+        # SEC XBRL entries sometimes lack the 'fy' field, so fall back to
+        # matching by the year embedded in the 'end' date (e.g. "2024-12-31").
         candidates = []
         for entry in unit_values:
-            if entry.get('form') == '10-K' and str(entry.get('fy')) == str(fiscal_year):
+            if entry.get('form') not in ('10-K', '10-K/A'):
+                continue
+            fy = entry.get('fy')
+            end_year = (entry.get('end') or '')[:4]
+            if str(fy) == str(fiscal_year) or end_year == str(fiscal_year):
                 candidates.append(entry)
         
         if not candidates:
@@ -267,6 +272,24 @@ def _run_validation(extraction_result_path: str, output_csv_path: str, debug: bo
     # Collect all metrics to validate
     metrics_to_validate = []
     
+    def _normalise_metric(raw_unit: str, raw_value: str) -> tuple:
+        """Convert pipeline-stored units back to SEC API units + raw value.
+        metrices_kg_builder.py stores USD amounts in millions with unit "$ million"
+        and thousands with "$ thousand". SEC API always uses "USD" with raw values.
+        """
+        u = (raw_unit or '').strip().lower()
+        if u == '$ million':
+            try:
+                return 'USD', str(round(float(raw_value) * 1_000_000))
+            except (ValueError, TypeError):
+                pass
+        elif u == '$ thousand':
+            try:
+                return 'USD', str(round(float(raw_value) * 1_000))
+            except (ValueError, TypeError):
+                pass
+        return raw_unit or 'USD', raw_value
+
     for result in data.get('results', []):
         # Check for peer_metrics
         if 'peer_metrics' in result and result['peer_metrics']:
@@ -275,15 +298,18 @@ def _run_validation(extraction_result_path: str, output_csv_path: str, debug: bo
                 if metric.get('xbrl_tag') and metric.get('source_url'):
                     cik = extract_cik_from_source_url(metric['source_url'])
                     if cik:
+                        unit, value = _normalise_metric(
+                            metric.get('unit', 'USD'), metric.get('value', '')
+                        )
                         metrics_to_validate.append({
                             'company_name': peer_name,
                             'cik': cik,
                             'xbrl_tag': metric.get('xbrl_tag'),
                             'fiscal_year': metric.get('year'),
-                            'pipeline_value': metric.get('value'),
-                            'unit': metric.get('unit', 'USD')
+                            'pipeline_value': value,
+                            'unit': unit,
                         })
-        
+
         # Check for target_metrics
         if 'target_metrics' in result and result['target_metrics']:
             target_name = result.get('target', 'Unknown')
@@ -291,13 +317,16 @@ def _run_validation(extraction_result_path: str, output_csv_path: str, debug: bo
                 if metric.get('xbrl_tag') and metric.get('source_url'):
                     cik = extract_cik_from_source_url(metric.get('source_url', ''))
                     if cik:
+                        unit, value = _normalise_metric(
+                            metric.get('unit', 'USD'), metric.get('value', '')
+                        )
                         metrics_to_validate.append({
                             'company_name': target_name,
                             'cik': cik,
                             'xbrl_tag': metric.get('xbrl_tag'),
                             'fiscal_year': metric.get('year'),
-                            'pipeline_value': metric.get('value'),
-                            'unit': metric.get('unit', 'USD')
+                            'pipeline_value': value,
+                            'unit': unit,
                         })
     
     print(f"  → Found {len(metrics_to_validate)} metrics to validate")

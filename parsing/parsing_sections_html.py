@@ -604,7 +604,7 @@ def main():
         "html_path",
         nargs='?',
         help="Path to the HTML file to parse",
-        default="input/NYSE_MTX_2024.htm"
+        default="input/swi.html"
     )
     parser.add_argument(
         "--output", "-o",

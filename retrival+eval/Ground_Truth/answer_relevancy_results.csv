@@ -1,7 +1,7 @@
 question,generated_question,cosine_similarity,noncommittal,answer_relevancy_score,quality_gate
-Is SolarWinds Corporation achieving the best profitability among its peers?,How does SolarWinds Corporation's profitability compare to that of its peers based on the provided financial metrics?,0.882683,False,,
-Is SolarWinds Corporation achieving the best profitability among its peers?,Which company stands out in terms of sustained profitability among the ones analyzed?,0.655027,False,,
-Is SolarWinds Corporation achieving the best profitability among its peers?,"What is the overall financial health of SolarWinds' peers, considering their reported losses and risks?",0.755517,False,,
-Is SolarWinds Corporation achieving the best profitability among its peers?,Is SolarWinds the only company among its peers that demonstrates substantial and positive profitability?,0.942638,False,,
-Is SolarWinds Corporation achieving the best profitability among its peers?,How does SolarWinds' financial performance differentiate it from its peers in the industry?,0.804838,False,,
-Is SolarWinds Corporation achieving the best profitability among its peers?,** MEAN **,,False,0.808141,PASS
+What are the main risks facing the target company and how do they compare to its peers?,"What are the primary risks facing SolarWinds Corporation, and how do they compare to those of its peers?",0.989715,False,,
+What are the main risks facing the target company and how do they compare to its peers?,How does SolarWinds' financial situation differ from that of its peers in terms of profitability and liquidity challenges?,0.37836,False,,
+What are the main risks facing the target company and how do they compare to its peers?,"What types of risks do SolarWinds' peers face, and are they similar to or distinct from those faced by SolarWinds?",0.402527,False,,
+What are the main risks facing the target company and how do they compare to its peers?,"How does the nature of SolarWinds' risks, such as indebtedness and merger-related uncertainty, impact its financial flexibility and stability?",0.381315,False,,
+What are the main risks facing the target company and how do they compare to its peers?,In what ways do the risk profiles of SolarWinds and its peers reflect different underlying structural and operational challenges?,0.403714,False,,
+What are the main risks facing the target company and how do they compare to its peers?,** MEAN **,,False,0.511126,WARNING

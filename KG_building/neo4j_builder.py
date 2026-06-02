@@ -143,7 +143,7 @@ class Neo4jBuilder:
         # matches any node whose *specified* properties match, ignoring extras).
         # Use OPTIONAL MATCH + FOREACH to create only when a target-scoped node is absent,
         # then MATCH + SET to update properties.
-        if node_type in ("MetricCategory", "Metric") and not props.get("company"):
+        if node_type in ("MetricCategory", "Metric", "Risk") and not props.get("company"):
             session.run(
                 f"""
                 OPTIONAL MATCH (existing:{node_type} {{name: $name}})
@@ -202,7 +202,7 @@ class Neo4jBuilder:
 
         # Peer MetricCategory and Metric nodes carry a `company` property; target ones do not.
         # Guard both ends so target-side queries never touch peer-scoped nodes.
-        _TARGET_SCOPED = ("MetricCategory", "Metric")
+        _TARGET_SCOPED = ("MetricCategory", "Metric", "Risk")
 
         if source_type in _TARGET_SCOPED:
             match_s = f"MATCH (s:{source_type} {{name: $source_name}}) WHERE s.company IS NULL"
@@ -293,6 +293,14 @@ class Neo4jBuilder:
             # This guarantees no duplicate categories or stale HAS_METRIC / HAS_METRIC_CATEGORY
             # edges from previous runs. Peer MetricCategory nodes (company IS NOT NULL) are untouched.
             # Also collapse any duplicate target Metric nodes (same name, no company) into one.
+            if relation_name == "FACES_RISK":
+                with self.driver.session() as _cleanup_session:
+                    # Delete target-scoped Risk nodes (no company property) before rebuilding
+                    # so stale risks from a previous partial build are fully replaced.
+                    _cleanup_session.run(
+                        "MATCH (r:Risk) WHERE r.company IS NULL DETACH DELETE r"
+                    )
+
             if relation_name == "HAS_METRIC":
                 with self.driver.session() as _cleanup_session:
                     _cleanup_session.run(
@@ -354,7 +362,9 @@ class Neo4jBuilder:
 
                         # Structure:
                         #   Company -[HAS_METRIC_CATEGORY]-> MetricCategory -[HAS_METRIC]-> Metric
-                        category = tgt_props.get('category', None) or 'Uncategorised'
+                        _raw_cat = (tgt_props.get('category') or '').strip()
+                        _KNOWN = {'Leverage', 'Coverage', 'Liquidity', 'Profitability', 'Debt Structure'}
+                        category = _raw_cat if _raw_cat in _KNOWN else 'Other'
 
                         self.create_node(tx, 'MetricCategory', category, {'name': category})
                         self.create_relationship(
@@ -373,10 +383,13 @@ class Neo4jBuilder:
                             item.get('section_title'), item.get('source_page'),
                         )
                     elif item.get('rel') == 'FACES_RISK':
-                        # Assign citation_id for target company risks
                         if item['src']['name'] == self.main_company:
+                            # Target risk: no company property (scoped by absence, like Metric)
                             self._target_risk_counter += 1
                             tgt_props['citation_id'] = f"TARGET_R{self._target_risk_counter:04d}"
+                        else:
+                            # Peer risk: tag with company so it never merges with target risks
+                            tgt_props['company'] = item['src']['name']
 
                         # Store source metadata as flat properties (not nested JSON string)
                         # so Cypher can access r.source_page, r.section_title, r.source_text directly

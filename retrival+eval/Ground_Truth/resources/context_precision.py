@@ -33,7 +33,7 @@ if sys.platform == 'win32' and hasattr(sys.stdout, 'buffer'):
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '.env'))
 
 # Max items per LLM call — keeps prompts manageable
-MAX_EVALS_PER_CALL = 10
+MAX_EVALS_PER_CALL = 20
 
 
 def _llm_call(bedrock_client, model_id: str, prompt: str, max_tokens: int = 1024) -> str:

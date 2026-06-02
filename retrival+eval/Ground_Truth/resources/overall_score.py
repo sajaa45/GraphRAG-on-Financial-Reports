@@ -130,19 +130,28 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
             errors[name] = str(e)
             print(f"  {'✗':<3} {name:<22} — ERROR: {e}")
 
-    # ── Extraction Quality = average of the three validators ─────────────
+    # ── Extraction Quality = average of available validators ─────────────
     # NOTE: this is NOT RAGAS Context Recall — it measures extraction accuracy
     # and data integrity, not retrieval completeness vs a ground-truth answer.
+    # Components that errored or have no data are SKIPPED (not scored as 0.0)
+    # so that e.g. having no peer risks doesn't silently deflate the score.
     eq_components = ["Risks Validation", "Metrics Validation", "Target Validation"]
-    # Missing components score 0.0 to avoid silently inflating the average
-    eq_scores = [scores.get(k, 0.0) for k in eq_components]
-    extraction_quality = sum(eq_scores) / len(eq_components)
+    eq_available = {k: scores[k] for k in eq_components if k in scores}
+    if eq_available:
+        extraction_quality = sum(eq_available.values()) / len(eq_available)
+    else:
+        extraction_quality = 0.0
 
+    skipped = [k for k in eq_components if k not in scores]
     bar = "█" * int(extraction_quality * 20) + "░" * (20 - int(extraction_quality * 20))
     print(f"\n  {'~':<3} {'Extraction Quality':<22}  {bar}  {extraction_quality:.1%}")
-    print(f"       (avg of: Risks {scores.get('Risks Validation', 0):.1%}  "
-          f"Metrics {scores.get('Metrics Validation', 0):.1%}  "
-          f"Target {scores.get('Target Validation', 0):.1%})")
+    detail = "  ".join(
+        f"{k.split()[0]} {scores[k]:.1%}" for k in eq_components if k in scores
+    )
+    print(f"       (avg of: {detail})", end="")
+    if skipped:
+        print(f"  — skipped: {', '.join(skipped)} (no data)", end="")
+    print()
 
     # ── Weighted overall ──────────────────────────────────────────────────
     weights = {
