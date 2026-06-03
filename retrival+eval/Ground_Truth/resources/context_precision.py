@@ -364,10 +364,15 @@ def _run(extraction_result_path: str, output_csv_path: str):
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
+    import argparse
+    ap = argparse.ArgumentParser(); ap.add_argument('--out-dir', default=None)
+    args, _ = ap.parse_known_args()
     script_dir   = os.path.dirname(os.path.abspath(__file__))
     retrival_dir = os.path.join(script_dir, '..', '..', 'retrival_results')
+    out_dir      = args.out_dir or os.path.join(script_dir, '..')
+    ext_path     = os.path.join(out_dir, 'extraction_result.json') if args.out_dir else os.path.join(retrival_dir, 'extraction_result.json')
 
     evaluate_context_precision(
-        extraction_result_path=os.path.join(retrival_dir, 'extraction_result.json'),
-        output_csv_path=os.path.join(script_dir, '..', 'context_precision_results.csv'),
+        extraction_result_path=ext_path,
+        output_csv_path=os.path.join(out_dir, 'context_precision_results.csv'),
     )

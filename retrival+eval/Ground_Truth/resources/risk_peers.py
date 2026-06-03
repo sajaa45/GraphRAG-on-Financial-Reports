@@ -445,16 +445,16 @@ def _run_validation(
 
 
 if __name__ == "__main__":
+    import argparse
+    ap = argparse.ArgumentParser(); ap.add_argument('--out-dir', default=None)
+    args, _ = ap.parse_known_args()
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    extraction_result_path = os.path.join(
-        script_dir, '..', '..', 'retrival_results', 'extraction_result.json'
-    )
-    output_csv_path = os.path.join(
-        script_dir, '..', 'risks_validation_results.csv'
-    )
+    out_dir      = args.out_dir or os.path.join(script_dir, '..')
+    retrival_dir = os.path.join(script_dir, '..', '..', 'retrival_results')
+    ext_path     = os.path.join(out_dir, 'extraction_result.json') if args.out_dir else os.path.join(retrival_dir, 'extraction_result.json')
 
     validate_risk_chunks(
-        extraction_result_path,
-        output_csv_path,
+        ext_path,
+        os.path.join(out_dir, 'risks_validation_results.csv'),
         use_llm_judge=True
     )

@@ -9,6 +9,8 @@ pipeline_output
 sec_cache
 *.csv
 input
+retrival+eval/Ground_Truth/results_swi
+retrival+eval/Ground_Truth/results
 KG_building/relations/**/*.json
 __pycache__/
 *.pyc

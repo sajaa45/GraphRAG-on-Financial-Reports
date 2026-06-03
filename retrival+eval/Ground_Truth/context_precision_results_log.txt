@@ -3,26 +3,42 @@ Context Precision — RAGAS-style Ground Truth Evaluation
 ======================================================================
 
 [1/4] Loading extraction results
-  Question : What are the main risks facing the target company and how do they compare to its peers?
+  Question : What leverage and debt structure risks does the target company face?
 
 [2/4] Collecting retrieved chunks
-  Total chunks : 807  (637 risks, 170 metrics)
-    [TARGET_R0001] SolarWinds Corporation (target) — Risks Related to the Pending Merger — The Merger may not be completed within the expected timeframe, or at all, which could adversely affect our business, results of operations, financial condition, and the market price of our common stock.
-    [TARGET_R0002] SolarWinds Corporation (target) — Risks Related to Our Technology and Cybersecurity — Cyberattacks and other security incidents may result in breaches of our and our customers’ systems, theft of proprietary information, and reputational harm.
-    [TARGET_R0003] SolarWinds Corporation (target) — Risks Related to Our Business and Industry — Our quarterly revenue and operating results may fluctuate from time to time.
-    [TARGET_R0004] SolarWinds Corporation (target) — Risks Related to Regulatory, Compliance and Legal Matters — We are subject to various global data privacy and security regulations that have and could continue to result in additional costs and liabilities.
-    ... and 803 more
+  Total chunks : 82  (16 risks, 66 metrics)
+    [TARGET_R0008] SolarWinds Corporation (target) — We may be able to incur substantially more indebtedness — We may be able to incur substantially more indebtedness, which could further exacerbate the risks associated with our substantial indebtedness.
+    [TARGET_R0155] SolarWinds Corporation (target) — Acquisitions present many risks that could have an adverse effect on our business and results of operations — Acquisitions are inherently risky and may not be successful, involving difficulties in integration, management distraction, and failure to maintain key relationships or enter new markets.
+    [TARGET_R0156] SolarWinds Corporation (target) — Our inability to increase revenue from an acquisition — We may fail to increase revenue from acquisitions due to inability to drive demand among existing customers or secure maintenance, subscription renewals, upgrades, or new product sales from acquired customers.
+    [TARGET_R0157] SolarWinds Corporation (target) — Increased costs related to acquired operations — Acquired operations and continued support and development of acquired products may lead to increased costs that negatively impact financial performance.
+    ... and 78 more
 
 [3/4] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
 
-[4/4] Judging relevance — 807 chunks in 41 batch(es)
-  Batch [1/41] — 20 chunks ...
+[4/4] Judging relevance — 82 chunks in 5 batch(es)
+  Batch [1/5] — 20 chunks ...
     → parsed 20/20
-  Batch [2/41] — 20 chunks ...
+  Batch [2/5] — 20 chunks ...
     → parsed 20/20
-  Batch [3/41] — 20 chunks ...
+  Batch [3/5] — 20 chunks ...
     → parsed 20/20
-  Batch [4/41] — 20 chunks ...
+  Batch [4/5] — 20 chunks ...
     → parsed 20/20
-  Batch [5/41] — 20 chunks ...
+  Batch [5/5] — 2 chunks ...
+    → parsed 2/2
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Total chunks     : 82
+  Relevant         : 71  (86.6%)
+  Irrelevant       : 11
+  Risk precision   : 5/16
+  Metric precision : 66/66
+  Quality gate     : PASS  (threshold: 0.70)
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\context_precision_results.csv
+======================================================================
+Context Precision Score : 0.87  [PASS]
+======================================================================

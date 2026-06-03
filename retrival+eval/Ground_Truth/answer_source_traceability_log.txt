@@ -3,42 +3,42 @@ Answer-Source Traceability — Phase 1 Ground Truth Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : What are the main risks facing the target company and how do they compare to its peers?
-  Answer chars: 2730
-  Result rows : 18
+  Question    : What leverage and debt structure risks does the target company face?
+  Answer chars: 1608
+  Result rows : 9
 
 [2/5] Building source registry
-  Total sources: 807  (637 risks, 170 metrics)
-    [TARGET_R0001] Risks Related to the Pending Merger — The Merger may not be completed within the
-    [TARGET_R0002] Risks Related to Our Technology and Cybersecurity — Cyberattacks and other secur
-    [TARGET_R0003] Risks Related to Our Business and Industry — Our quarterly revenue and operating
-    [TARGET_R0004] Risks Related to Regulatory, Compliance and Legal Matters — We are subject to va
-    [TARGET_R0005] Risks Related to Our Intellectual Property — The success of our business depends
-    ... and 802 more
+  Total sources: 82  (16 risks, 66 metrics)
+    [TARGET_R0008] We may be able to incur substantially more indebtedness — We may be able to incu
+    [TARGET_R0155] Acquisitions present many risks that could have an adverse effect on our busines
+    [TARGET_R0156] Our inability to increase revenue from an acquisition — We may fail to increase 
+    [TARGET_R0157] Increased costs related to acquired operations — Acquired operations and continu
+    [TARGET_R0158] Our responsibility for the liabilities of the businesses we acquire — We assume 
+    ... and 77 more
 
 [3/5] Initialising LLM (AWS Bedrock)
   Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
 
 [4/5] Parsing claims and inline citations from answer
-  → 18 claims  |  18 cited  |  0 unresolved  |  0 uncited
-    C001: Its total debt as of 2024 was $1.2 billion, with a first lien net leve  [CITE:TARGET_R0196] ✓
-    C002: Its total debt as of 2024 was $1.2 billion, with a first lien net leve  [CITE:TARGET_R0207] ✓
-    C003: Its total debt as of 2024 was $1.2 billion, with a first lien net leve  [CITE:TARGET_M0018] ✓
-    C004: The company also faces significant cybersecurity risks, including expo  [CITE:TARGET_R0032] ✓
-    C005: The company also faces significant cybersecurity risks, including expo  [CITE:TARGET_R0038] ✓
-    ... and 13 more
+  → 11 claims  |  11 cited  |  0 unresolved  |  0 uncited
+    C001: The company also has $68.4 million in outstanding long-term purchase c  [CITE:TARGET_M0022] ✓
+    C002: and $10.0 million in deemed gross borrowings and repayments in 2024  [CITE:TARGET_M0019] ✓
+    C003: Its total liabilities exceed $1.76 billion, while total stockholders’   [CITE:TARGET_M0035] ✓
+    C004: Its total liabilities exceed $1.76 billion, while total stockholders’   [CITE:TARGET_M0040] ✓
+    C005: The company has documented risks of incurring substantially more indeb  [CITE:TARGET_R0008] ✓
+    ... and 6 more
 
-[5/5] Judging source correctness (18 claims — 1 batched LLM call)
+[5/5] Judging source correctness (11 claims — 1 batched LLM call)
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
-  Total claims       : 18
-  Correct source     : 18  (100.0%)
-  Wrong source       : 0
+  Total claims       : 11
+  Correct source     : 9  (81.8%)
+  Wrong source       : 2
   Fabricated (no src): 0
 
 ✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_source_traceability.csv
 ======================================================================
-Source Traceability Score: 100.0%
+Source Traceability Score: 81.8%
 ======================================================================

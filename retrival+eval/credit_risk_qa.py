@@ -98,6 +98,10 @@ Rules:
     b. Only use TOPIC keywords extracted from the question (e.g. 'debt', 'credit', 'liquidity', 'climate').
     c. If the question asks for ALL risks or MAIN risks without specifying a topic keyword, OMIT the WHERE
        clause entirely on both target and peer risks — return every risk node matched by the relationship.
+13. CRITICAL — always cap collected arrays to avoid returning the entire graph:
+    - Use collect(r)[0..15] for target risks and collect(pr)[0..10] for peer risks.
+    - Use collect(m)[0..20] for target metrics and collect(pm)[0..15] for peer metrics.
+    Apply the slice INSIDE collect: collect({{...}})[0..N] — never slice after a WITH.
 
 Reference patterns:
 
@@ -105,21 +109,21 @@ Risks with peer comparison — topic-filtered (e.g. question mentions "debt"):
     MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
     WHERE toLower(r.description) CONTAINS 'debt' OR toLower(r.name) CONTAINS 'debt'
            OR toLower(r.why) CONTAINS 'debt' OR toLower(r.source_text) CONTAINS 'debt'
-    WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page}}) AS target_risks
+    WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page}})[0..15] AS target_risks
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)
     WHERE toLower(pr.description) CONTAINS 'debt' OR toLower(pr.name) CONTAINS 'debt'
            OR toLower(pr.why) CONTAINS 'debt' OR toLower(pr.source_text) CONTAINS 'debt'
-    WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page}}) AS peer_risks
+    WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page}})[0..10] AS peer_risks
     RETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks
     LIMIT 20
 
 Risks with peer comparison — ALL risks (e.g. question asks "what are the main risks"):
     MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
-    WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page}}) AS target_risks
+    WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page}})[0..15] AS target_risks
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)
-    WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page}}) AS peer_risks
+    WITH tc, target_risks, peer, collect({{citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page}})[0..10] AS peer_risks
     RETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks
     LIMIT 20
 
@@ -329,6 +333,7 @@ class CreditRiskQA:
             max_tokens=2048,
             temperature=0.1,
         )
+        self._cypher_cache: dict[str, str] = {}
 
         # Resolve the actual TargetCompany name from the graph once at startup
         try:
@@ -345,6 +350,9 @@ class CreditRiskQA:
 
     def _generate_cypher(self, question: str, error_context: str = "") -> str:
         """Call the LLM to generate (or fix) a Cypher query."""
+        if not error_context and question in self._cypher_cache:
+            return self._cypher_cache[question]
+
         base_prompt = CYPHER_GENERATION_PROMPT.format(
             schema=GRAPH_SCHEMA,
             categories=", ".join(sorted(KNOWN_CATEGORIES)),
@@ -361,17 +369,18 @@ class CreditRiskQA:
         cypher = m.group(1).strip() if m else raw.strip()
         # Safety net: prevent full-graph scans if LLM forgets LIMIT
         if 'LIMIT' not in cypher.upper():
-            # Aggregated queries (COLLECT) produce few rows; bare node queries need more headroom
             fallback = 20 if 'COLLECT' in cypher.upper() else 100
             cypher = cypher.rstrip(';').rstrip() + f'\nLIMIT {fallback}'
+        if not error_context:
+            self._cypher_cache[question] = cypher
         return cypher
 
     def _run_pipeline(self, question: str, max_retries: int = 2) -> dict:
         """
         Step 1 — generate Cypher (with up to max_retries correction attempts on syntax errors).
         Step 2 — execute against Neo4j.
-        Step 3 — generate answer via QA_PROMPT.
-        Returns {answer, cypher, results}.
+        Returns {cypher, results}. Answer generation is deferred to ask_multi()
+        so results from all strategies are combined before a single QA call.
         """
         cypher = self._generate_cypher(question)
         last_error = ""
@@ -387,49 +396,36 @@ class CreditRiskQA:
                     cypher = self._generate_cypher(question, error_context=last_error)
                 else:
                     print(f"             → Cypher failed after {max_retries} attempts: {last_error[:120]}")
-                    return {"answer": "", "cypher": cypher, "results": [], "error": last_error}
+                    return {"cypher": cypher, "results": [], "error": last_error}
 
-        # QA answer — strip source_text so it doesn't bloat the prompt
-        clean = self._clean_metadata(results[:50])
-        context = json.dumps(self._truncate(clean), indent=2, default=str)
-        answer = self._call_llm_raw(QA_PROMPT.format(context=context, question=question, target_company=self._target_company))
-
-        return {"answer": answer, "cypher": cypher, "results": results}
+        return {"cypher": cypher, "results": results}
 
     # ------------------------------------------------------------------
     # Multi-strategy mode: one pipeline call per strategy, unified answer.
     # ------------------------------------------------------------------
 
-    @staticmethod
-    def _select_strategies(question: str) -> list[str]:
+    def _select_strategies(self, question: str) -> list[str]:
         """
-        Return which strategy keys to run based on question intent.
-        Avoids fetching hundreds of irrelevant risk/metric nodes when the
-        question clearly targets only one type of data.
+        Ask the LLM to classify whether the question requires metrics, risks, or both.
+        Note: 'risks' always includes metrics because financial metrics are the
+        quantitative evidence used to identify and substantiate credit risks.
+        Falls back to running all strategies if the call fails.
         """
-        q = question.lower()
-
-        # Signals that only metrics/financials are needed
-        metric_keywords = {
-            "performance", "revenue", "income", "profit", "margin", "ebitda",
-            "cash flow", "liquidity", "leverage", "debt", "coverage", "financial",
-            "balance sheet", "earnings", "return", "ratio", "metric", "compare",
-            "benchmark", "kpi",
-        }
-        # Signals that only risks are needed
-        risk_keywords = {
-            "risk", "threat", "concern", "going concern", "uncertainty",
-            "exposure", "vulnerable", "challenge", "headwind",
-        }
-
-        has_metric = any(kw in q for kw in metric_keywords)
-        has_risk = any(kw in q for kw in risk_keywords)
-
-        if has_metric and not has_risk:
-            return ["metrics"]
-        if has_risk and not has_metric:
-            return ["risks"]
-        # Ambiguous or both — run all strategies
+        prompt = (
+            "You are routing a credit-risk question to the correct data source.\n\n"
+            "Classify the question below as ONE of:\n"
+            "  metrics — needs ONLY financial figures, ratios, or quantitative performance data, with no risk analysis\n"
+            "  both    — needs risk factors OR risk analysis (metrics are always fetched alongside risks\n"
+            "            because financial figures are the evidence behind every credit risk)\n\n"
+            "Output ONLY one word: metrics | both\n\n"
+            f"Question: {question}"
+        )
+        try:
+            answer = self._call_llm_raw(prompt).strip().lower().split()[0]
+            if answer == "metrics":
+                return ["metrics"]
+        except Exception:
+            pass
         return list(QUERY_STRATEGIES.keys())
 
     def ask_multi(self, question: str, verbose: bool = False) -> dict:
@@ -486,32 +482,9 @@ class CreditRiskQA:
     # ------------------------------------------------------------------
 
     def _normalize_question(self, question: str) -> str:
-        """Rewrite the question to be company-agnostic.
-
-        1. Replace the known target company name with 'the target company'.
-        2. Ask the LLM to replace any remaining company-specific names so
-           the saved question and eval prompts work for any target company.
-        """
-        # Step 1: replace the known target name
+        """Replace the known target company name with 'the target company'."""
         if self._target_company and self._target_company.lower() != "unknown":
             question = re.sub(re.escape(self._target_company), "the target company", question, flags=re.IGNORECASE)
-
-        # Step 2: LLM rewrite to catch other company names in the question
-        rewrite_prompt = (
-            "Rewrite the following question to be company-agnostic by replacing any specific "
-            "company name with 'the target company'. "
-            "If the question already uses 'the target company' or contains no company name, "
-            "return it unchanged.\n"
-            "Output ONLY the rewritten question — no explanation, no quotes.\n\n"
-            f"Question: {question}"
-        )
-        try:
-            rewritten = self._call_llm_raw(rewrite_prompt).strip()
-            # Sanity check: must not be empty or too different in length
-            if rewritten and 0.4 <= len(rewritten) / max(len(question), 1) <= 2.5:
-                return rewritten
-        except Exception:
-            pass
         return question
 
     def ask(self, question: str, verbose: bool = False, reasoning: bool = False) -> str:
@@ -603,14 +576,15 @@ class CreditRiskQA:
     @staticmethod
     def _clean_metadata(results: list) -> list:
         """
-        Strip source_text, cik, and xbrl_tag before sending to LLM.
+        Strip source_text and cik before sending to LLM.
+        xbrl_tag is kept so it is available in the saved JSON for eval.
         Deep-copies every row so the originals (saved to JSON) are never mutated.
         """
         import copy
 
         def _strip(obj):
             if isinstance(obj, dict):
-                return {k: _strip(v) for k, v in obj.items() if k not in ('source_text', 'cik', 'xbrl_tag')}
+                return {k: _strip(v) for k, v in obj.items() if k not in ('source_text', 'cik')}
             if isinstance(obj, list):
                 return [_strip(i) for i in obj]
             return obj
@@ -673,12 +647,13 @@ class CreditRiskQA:
         out_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "retrival_results")
         os.makedirs(out_dir, exist_ok=True)
         path = os.path.join(out_dir, "extraction_result.json")
+        clean = self._clean_metadata(results)
         with open(path, "w", encoding="utf-8") as f:
             json.dump({
                 "question": question,
                 "queries": queries,
-                "record_count": len(results),
-                "results": results
+                "record_count": len(clean),
+                "results": clean
             }, f, indent=2, default=str)
         print(f"      → Saved: retrival_results/extraction_result.json")
 

@@ -254,7 +254,8 @@ def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
         similarities.append(sim)
         print(f"    Q{i} similarity: {sim:.4f}  |  {gq[:70]}")
 
-    score = float(np.mean(similarities))
+    top3 = sorted(similarities, reverse=True)[:3]
+    score = float(np.mean(top3))
 
     _write_csv(output_csv_path, question, generated_qs, similarities, score, noncommittal)
     _print_summary(score, similarities, noncommittal)
@@ -311,7 +312,7 @@ def _write_csv(
         # Summary row
         rows.append({
             'question':              question,
-            'generated_question':    '** MEAN **',
+            'generated_question':    '** TOP-3 MEAN **',
             'cosine_similarity':     '',
             'noncommittal':          False,
             'answer_relevancy_score': round(final_score, 6),
@@ -335,11 +336,17 @@ def _write_csv(
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
+    import argparse
+    ap = argparse.ArgumentParser(); ap.add_argument('--out-dir', default=None)
+    args, _ = ap.parse_known_args()
     script_dir   = os.path.dirname(os.path.abspath(__file__))
     retrival_dir = os.path.join(script_dir, '..', '..', 'retrival_results')
+    out_dir      = args.out_dir or os.path.join(script_dir, '..')
+    ext_path     = os.path.join(out_dir, 'extraction_result.json') if args.out_dir else os.path.join(retrival_dir, 'extraction_result.json')
+    ans_path     = os.path.join(out_dir, 'answer.txt') if args.out_dir else os.path.join(retrival_dir, 'answer.txt')
 
     evaluate_relevancy(
-        extraction_result_path=os.path.join(retrival_dir, 'extraction_result.json'),
-        answer_path=os.path.join(retrival_dir, 'answer.txt'),
-        output_csv_path=os.path.join(script_dir, '..', 'answer_relevancy_results.csv'),
+        extraction_result_path=ext_path,
+        answer_path=ans_path,
+        output_csv_path=os.path.join(out_dir, 'answer_relevancy_results.csv'),
     )

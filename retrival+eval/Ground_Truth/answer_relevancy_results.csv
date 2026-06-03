@@ -1,7 +1,7 @@
 question,generated_question,cosine_similarity,noncommittal,answer_relevancy_score,quality_gate
-What are the main risks facing the target company and how do they compare to its peers?,"What are the primary risks facing SolarWinds Corporation, and how do they compare to those of its peers?",0.989715,False,,
-What are the main risks facing the target company and how do they compare to its peers?,How does SolarWinds' financial situation differ from that of its peers in terms of profitability and liquidity challenges?,0.37836,False,,
-What are the main risks facing the target company and how do they compare to its peers?,"What types of risks do SolarWinds' peers face, and are they similar to or distinct from those faced by SolarWinds?",0.402527,False,,
-What are the main risks facing the target company and how do they compare to its peers?,"How does the nature of SolarWinds' risks, such as indebtedness and merger-related uncertainty, impact its financial flexibility and stability?",0.381315,False,,
-What are the main risks facing the target company and how do they compare to its peers?,In what ways do the risk profiles of SolarWinds and its peers reflect different underlying structural and operational challenges?,0.403714,False,,
-What are the main risks facing the target company and how do they compare to its peers?,** MEAN **,,False,0.511126,WARNING
+What leverage and debt structure risks does the target company face?,What are the primary risks associated with SolarWinds Corporation's financial structure?,0.823181,False,,
+What leverage and debt structure risks does the target company face?,How does SolarWinds' debt reliance impact its financial flexibility and stability?,0.464779,False,,
+What leverage and debt structure risks does the target company face?,Are there any peer companies that provide a comparable basis for evaluating SolarWinds' leverage and debt structure?,0.47696,False,,
+What leverage and debt structure risks does the target company face?,What potential consequences could arise from SolarWinds' strategy of financing acquisitions with debt?,0.544147,False,,
+What leverage and debt structure risks does the target company face?,How does SolarWinds' current level of indebtedness affect its overall creditworthiness and insolvency risk?,0.41382,False,,
+What leverage and debt structure risks does the target company face?,** MEAN **,,False,0.544577,WARNING

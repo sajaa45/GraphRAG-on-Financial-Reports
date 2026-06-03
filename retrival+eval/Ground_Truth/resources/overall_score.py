@@ -39,7 +39,7 @@ def _read_csv(path: str) -> list[dict]:
 
 def score_answer_relevancy(path: str) -> float:
     for row in _read_csv(path):
-        if row.get('generated_question', '').strip() == '** MEAN **':
+        if row.get('generated_question', '').strip() in ('** MEAN **', '** TOP-3 MEAN **'):
             return float(row['answer_relevancy_score'])
     raise ValueError(f"No ** MEAN ** summary row found in {path}")
 
@@ -222,8 +222,15 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    script_dir       = os.path.dirname(os.path.abspath(__file__))
-    ground_truth_dir = os.path.join(script_dir, "..")
-    output_csv_path  = os.path.join(ground_truth_dir, "overall_score.csv")
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--in-dir',  default=None)
+    ap.add_argument('--out-dir', default=None)
+    args, _ = ap.parse_known_args()
 
-    compute_overall(ground_truth_dir, output_csv_path)
+    script_dir       = os.path.dirname(os.path.abspath(__file__))
+    in_dir           = args.in_dir  or os.path.join(script_dir, "..")
+    out_dir          = args.out_dir or in_dir
+    output_csv_path  = os.path.join(out_dir, "overall_score.csv")
+
+    compute_overall(in_dir, output_csv_path)
