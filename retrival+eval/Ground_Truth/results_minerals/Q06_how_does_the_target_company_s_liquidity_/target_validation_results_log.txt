@@ -1,0 +1,32 @@
+======================================================================
+Target Company — Extraction Accuracy Validation (Risks + Metrics)
+======================================================================
+
+[1/4] Loading extraction results
+  Question : How does the target company's liquidity position compare to its peers?
+
+[2/4] Collecting target chunks
+  Total : 19  (11 risks, 8 metrics)
+
+[3/4] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
+
+[4/4] Judging extraction accuracy
+  Risks — 11 items in 2 batch(es)
+    Batch [1/2] ...
+    Batch [2/2] ...
+  Metrics — 8 items in 1 batch(es)
+    Batch [1/1] ...
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Total             : 19
+  Correctly extracted: 19  (100.0%)
+  Risk accuracy     : 11/11
+  Metric accuracy   : 8/8
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q06_how_does_the_target_company_s_liquidity_\target_validation_results.csv
+======================================================================
+Extraction Accuracy : 1.00  (risks 11/11, metrics 8/8)
+======================================================================

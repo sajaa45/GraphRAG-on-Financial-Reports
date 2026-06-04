@@ -1,0 +1,43 @@
+======================================================================
+Answer Relevancy — True RAGAS Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : Which company in the peer group represents the strongest overall credit profile?
+  Answer chars: 1897
+
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
+
+[3/5] Checking for non-committal answer
+  Non-committal: False
+
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. How does Minerals Technologies Inc. compare to its peers in terms of overall financial performance?
+    2. What sets Minerals Technologies Inc. apart from other companies in the analysis in terms of credit profile?
+    3. How do the peer companies differ from one another in their financial health and stability?
+    4. What are the key factors that contribute to Minerals Technologies Inc.'s strong financial position relative to its peers?
+    5. How does the financial analysis of Minerals Technologies Inc. and its peers inform an assessment of their relative creditworthiness?
+
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.5541  |  How does Minerals Technologies Inc. compare to its peers in terms of o
+    Q2 similarity: 0.6652  |  What sets Minerals Technologies Inc. apart from other companies in the
+    Q3 similarity: 0.6253  |  How do the peer companies differ from one another in their financial h
+    Q4 similarity: 0.5680  |  What are the key factors that contribute to Minerals Technologies Inc.
+    Q5 similarity: 0.6097  |  How does the financial analysis of Minerals Technologies Inc. and its 
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q15_which_company_in_the_peer_group_represen\answer_relevancy_results.csv
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Individual similarities : [0.5541, 0.6652, 0.6253, 0.568, 0.6097]
+  Mean similarity         : 0.6334
+  Answer Relevancy Score  : 0.6334
+  Quality gate            : WARNING  (threshold: 0.70)
+======================================================================
+Answer Relevancy Score : 0.6334  [WARNING]
+======================================================================

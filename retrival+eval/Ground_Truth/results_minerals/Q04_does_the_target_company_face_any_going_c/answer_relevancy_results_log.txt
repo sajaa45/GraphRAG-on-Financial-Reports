@@ -1,0 +1,43 @@
+======================================================================
+Answer Relevancy — True RAGAS Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : Does the target company face any going-concern or solvency risks compared to its peers?
+  Answer chars: 1743
+
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
+
+[3/5] Checking for non-committal answer
+  Non-committal: False
+
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. Does Minerals Technologies Inc. exhibit any signs of going-concern risk based on its financial metrics?
+    2. How does the financial health of Minerals Technologies Inc. compare to that of its peer companies?
+    3. Which peer companies of Minerals Technologies Inc. show potential solvency and liquidity concerns?
+    4. What is the overall assessment of Minerals Technologies Inc.'s capital structure and liquidity position?
+    5. Are there any notable differences in the financial risk profiles of Minerals Technologies Inc. and its peers?
+
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.6746  |  Does Minerals Technologies Inc. exhibit any signs of going-concern ris
+    Q2 similarity: 0.6748  |  How does the financial health of Minerals Technologies Inc. compare to
+    Q3 similarity: 0.6965  |  Which peer companies of Minerals Technologies Inc. show potential solv
+    Q4 similarity: 0.5156  |  What is the overall assessment of Minerals Technologies Inc.'s capital
+    Q5 similarity: 0.6902  |  Are there any notable differences in the financial risk profiles of Mi
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q04_does_the_target_company_face_any_going_c\answer_relevancy_results.csv
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Individual similarities : [0.6746, 0.6748, 0.6965, 0.5156, 0.6902]
+  Mean similarity         : 0.6872
+  Answer Relevancy Score  : 0.6872
+  Quality gate            : WARNING  (threshold: 0.70)
+======================================================================
+Answer Relevancy Score : 0.6872  [WARNING]
+======================================================================

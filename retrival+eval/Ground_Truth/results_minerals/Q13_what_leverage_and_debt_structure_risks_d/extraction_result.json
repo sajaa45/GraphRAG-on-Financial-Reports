@@ -1,0 +1,1083 @@
+{
+  "question": "What leverage and debt structure risks does the target company face?",
+  "queries": [
+    {
+      "strategy": "risks",
+      "cypher": "MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)\nWHERE toLower(r.description) CONTAINS 'leverage' OR toLower(r.name) CONTAINS 'leverage' OR toLower(r.why) CONTAINS 'leverage' OR toLower(r.source_text) CONTAINS 'leverage'\n   OR toLower(r.description) CONTAINS 'debt structure' OR toLower(r.name) CONTAINS 'debt structure' OR toLower(r.why) CONTAINS 'debt structure' OR toLower(r.source_text) CONTAINS 'debt structure'\nWITH tc, collect({citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page})[0..15] AS target_risks\nOPTIONAL MATCH (peer:Company {is_peer:true})-[:COMPETES_WITH]->(tc)\nOPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)\nWHERE toLower(pr.description) CONTAINS 'leverage' OR toLower(pr.name) CONTAINS 'leverage' OR toLower(pr.why) CONTAINS 'leverage' OR toLower(pr.source_text) CONTAINS 'leverage'\n   OR toLower(pr.description) CONTAINS 'debt structure' OR toLower(pr.name) CONTAINS 'debt structure' OR toLower(pr.why) CONTAINS 'debt structure' OR toLower(pr.source_text) CONTAINS 'debt structure'\nWITH tc, target_risks, peer, collect({citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page})[0..10] AS peer_risks\nRETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks\nLIMIT 20"
+    },
+    {
+      "strategy": "metrics",
+      "cypher": "MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)\nWHERE mc.name IN ['Leverage', 'Debt Structure']\nWITH tc, mc, collect({citation_id: m.citation_id, name: m.name, label: m.label, gaap_concept: m.gaap_concept, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag, source_page: m.source_page, section_title: m.section_title, source_text: m.source_text})[0..20] AS target_metrics\nOPTIONAL MATCH (peer:Company {is_peer:true})-[:COMPETES_WITH]->(tc)\nOPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(pmc:MetricCategory {name: mc.name})-[:HAS_METRIC]->(pm:Metric)\nWITH tc, mc, target_metrics, peer, collect({citation_id: pm.citation_id, name: pm.name, label: pm.label, gaap_concept: pm.gaap_concept, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url})[0..15] AS peer_metrics\nRETURN tc.name AS target, mc.name AS category, target_metrics, peer.name AS peer, peer_metrics\nLIMIT 20"
+    }
+  ],
+  "record_count": 9,
+  "results": [
+    {
+      "target": "Minerals Technologies Inc.",
+      "target_risks": [
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0012",
+          "name": "Debt covenants and financial ratios",
+          "why": "Covenants restrict activities like incurring additional debt, paying dividends, selling assets, and require compliance with a maximum net leverage ratio; breach could trigger default, accelerating debt repayment and risking insolvency.",
+          "description": "Debt agreements contain covenants limiting business operations and requiring compliance with specific financial ratios, which may be affected by events beyond the Company's control.",
+          "document_url": null
+        },
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0013",
+          "name": "Failure to comply with debt covenants",
+          "why": "Lenders under the senior secured credit facility could demand immediate repayment of all outstanding debt plus interest upon default, and the Company cannot assure sufficient assets to cover all debt obligations.",
+          "description": "A breach of debt covenants could result in default, causing lenders to declare all borrowed amounts immediately due and payable.",
+          "document_url": null
+        },
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0014",
+          "name": "Refinancing risk",
+          "why": "The Company may be unable to secure waivers or amendments if it fails to comply with covenants, and future refinancing may impose comparable restrictions or be unavailable altogether.",
+          "description": "Future refinancing of debt is likely to include similar restrictive covenants, and the Company cannot assure it will obtain waivers, amendments, or acceptable refinancing terms.",
+          "document_url": null
+        },
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0015",
+          "name": "Future debt obligations",
+          "why": "New debt obligations could impose further limitations on business activities, potentially constraining strategic decisions and financial planning.",
+          "description": "Incurring future debt may subject the Company to additional restrictive covenants that reduce financial and operational flexibility.",
+          "document_url": null
+        },
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0016",
+          "name": "Growth initiatives failure",
+          "why": "Growth relies on expanding into markets like Brazil, India, and China, entering consumer markets, and completing acquisitions; success depends on limited targets, financing, integration challenges, and unmet synergies.",
+          "description": "The Company\u2019s growth depends on uncertain events including market penetration, acquisitions, and integration success, which may not materialize as planned.",
+          "document_url": null
+        },
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0017",
+          "name": "Acquisition integration risks",
+          "why": "Integration requires retaining key personnel, avoiding management distraction, and combining administrative services, with risks of unanticipated costs, delays, and failed synergies.",
+          "description": "Integrating acquired businesses may be more costly, disruptive, or prolonged than anticipated, and expected synergies may not materialize.",
+          "document_url": null
+        },
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0018",
+          "name": "Acquisition financing and costs",
+          "why": "Acquisitions could increase debt and costs, and the Company may incur expenses and divert management attention for deals that ultimately fail to close.",
+          "description": "Future acquisitions may require additional debt, incur costs, and create contingent liabilities, even if not consummated.",
+          "document_url": null
+        },
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0019",
+          "name": "New product development delays or failures",
+          "why": "The Company\u2019s success depends on timely, cost-effective innovation across all product lines; any failure in these stages could cause actual results to differ materially from expectations.",
+          "description": "Delays or failures in developing, testing, producing, marketing, or selling new products could materially affect operational results.",
+          "document_url": null
+        },
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0020",
+          "name": "Intellectual property protection failure",
+          "why": "Failure to protect patented and unpatented intellectual property could allow competitors to replicate or undercut the Company\u2019s products, harming financial condition or results.",
+          "description": "The Company\u2019s competitive position depends on defending proprietary knowledge against disclosure, theft, and infringement.",
+          "document_url": null
+        },
+        {
+          "source_page": 15,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0021",
+          "name": "Competitor technological advancement",
+          "why": "If competitors introduce superior or lower-cost technologies, the Company\u2019s offerings may become less competitive, reducing sales and profitability.",
+          "description": "Competitors developing more effective or less expensive products could materially adversely affect the Company\u2019s financial condition or results.",
+          "document_url": null
+        }
+      ],
+      "peer": "Global Gas Corp",
+      "peer_risks": [
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": null,
+          "citation_id": null,
+          "name": null,
+          "why": null,
+          "description": null,
+          "document_url": null
+        }
+      ],
+      "_strategy": "risks"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "target_risks": [],
+      "peer": "Arcadium Lithium plc",
+      "peer_risks": [
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": null,
+          "citation_id": null,
+          "name": null,
+          "why": null,
+          "description": null,
+          "document_url": null
+        }
+      ],
+      "_strategy": "risks"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "target_risks": [],
+      "peer": "NL INDUSTRIES INC",
+      "peer_risks": [
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_21",
+          "citation_id": "PEER_R0189",
+          "name": "LPC acquisition may result in unexpected legal or financial liabilities",
+          "why": "The acquisition of LPC could expose Kronos to unexpected legal or financial liabilities, which may harm its business, financial condition, results of operations, and prospects.",
+          "description": "LPC may have unforeseen legal or financial liabilities that adversely affect Kronos' business and financial condition.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_24",
+          "citation_id": "PEER_R0192",
+          "name": "Kronos' high leverage impairs financial flexibility",
+          "why": "As of December 31, 2024, Kronos had $507.4 million in consolidated debt, including 9.50% and 3.75% senior secured notes, a term loan from Contran, and borrowings on its Global Revolver.",
+          "description": "Kronos' significant debt burden increases vulnerability and limits financial flexibility.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_28",
+          "citation_id": "PEER_R0196",
+          "name": "High leverage reduces strategic flexibility and competitive position",
+          "why": "Kronos' high debt level limits its flexibility in planning for or reacting to changes in its business and industry, and places it at a competitive disadvantage relative to less leveraged competitors.",
+          "description": "Kronos' debt burden reduces flexibility to respond to business changes and places it at a competitive disadvantage.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_20",
+          "citation_id": "PEER_R0188",
+          "name": "Integration difficulties following acquisition of LPC",
+          "why": "Unforeseen technological or operational difficulties in integrating LPC could prevent expected process innovations, synergies, efficiency gains, or product quality improvements, and may divert management time from other operations.",
+          "description": "Kronos may fail to successfully integrate LPC, leading to unachieved synergies, inefficiencies, or diverted management attention.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_22",
+          "citation_id": "PEER_R0190",
+          "name": "Dependence on subsidiary and affiliate distributions for cash flow",
+          "why": "Subsidiaries and affiliate have no obligation to pay dividends or distributions, and such payments may be restricted by law, currency regulations, or debt agreements.",
+          "description": "NL Industries relies on distributions from subsidiaries and affiliate to service debt and pay dividends, which are not guaranteed.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_23",
+          "citation_id": "PEER_R0191",
+          "name": "Inability to liquidate subsidiary and affiliate assets at fair value",
+          "why": "If forced to liquidate subsidiary and affiliate securities to satisfy liabilities, NL Industries may have to sell at times when market conditions yield less than perceived long-term value.",
+          "description": "Liquidating ownership interests in subsidiaries or affiliate to meet liabilities may require selling at below long-term value.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_25",
+          "citation_id": "PEER_R0193",
+          "name": "Debt service obligations reduce cash available for operations and dividends",
+          "why": "Kronos' debt level requires significant cash flow to service interest payments, which reduces its ability to fund working capital, capital expenditures, dividends, or acquisitions.",
+          "description": "A portion of Kronos' cash flow must be used to pay interest on debt, reducing funds for operations, dividends, or acquisitions.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_26",
+          "citation_id": "PEER_R0194",
+          "name": "Debt limits ability to obtain additional financing",
+          "why": "Kronos' level of debt limits its ability to obtain additional financing to fund working capital, capital expenditures, acquisitions, or general corporate requirements.",
+          "description": "Kronos' high debt level restricts its capacity to secure additional financing for future needs.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_27",
+          "citation_id": "PEER_R0195",
+          "name": "Debt restricts subsidiary dividend payments to NL Industries",
+          "why": "Kronos' debt level limits the ability of its subsidiaries to pay dividends to NL Industries, affecting NL's cash flow and ability to pay dividends.",
+          "description": "Kronos' debt covenants may limit its subsidiaries' ability to pay dividends to NL Industries.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        }
+      ],
+      "_strategy": "risks"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "category": "Leverage",
+      "target_metrics": [
+        {
+          "source_page": 40,
+          "section_title": "Item 7.\u00a0 Management\u2019s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Interest Expense",
+          "citation_id": "TARGET_M0005",
+          "name": "Interest expense, net (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Interest expense, net",
+          "label": null,
+          "value": "56.4"
+        },
+        {
+          "source_page": 40,
+          "section_title": "Item 7.\u00a0 Management\u2019s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Debt Extinguishment Costs",
+          "citation_id": "TARGET_M0006",
+          "name": "Debt extinguishment expenses (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Debt extinguishment expenses",
+          "label": null,
+          "value": "1.8"
+        },
+        {
+          "source_page": 45,
+          "section_title": "Item 7.\u00a0 Management\u2019s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Long-term Debt",
+          "citation_id": "TARGET_M0019",
+          "name": "long-term debt (2024)",
+          "xbrl_tag": null,
+          "metric_type": "long-term debt",
+          "label": null,
+          "value": "1.9"
+        },
+        {
+          "source_page": 48,
+          "section_title": "Item 7.\u00a0 Management\u2019s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Accumulated Other Comprehensive Loss (Pension Actuarial Losses)",
+          "citation_id": "TARGET_M0022",
+          "name": "total actuarial losses recognized in Accumulated other comprehensive loss for pension plans were $1.3 million as compared to $32.1 million in 2023 (2024)",
+          "xbrl_tag": null,
+          "metric_type": "total actuarial losses recognized in Accumulated other comprehensive loss for pension plans were $1.3 million as compared to $32.1 million in 2023",
+          "label": null,
+          "value": "1.3"
+        },
+        {
+          "source_page": 59,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Short-term Debt",
+          "citation_id": "TARGET_M0024",
+          "name": "Short-term debt (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Short-term debt",
+          "label": null,
+          "value": "5.1"
+        },
+        {
+          "source_page": 59,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Current Maturities of Long-term Debt",
+          "citation_id": "TARGET_M0025",
+          "name": "Current maturities of long-term debt (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Current maturities of long-term debt",
+          "label": null,
+          "value": "6.5"
+        },
+        {
+          "source_page": 59,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Total Liabilities",
+          "citation_id": "TARGET_M0026",
+          "name": "Total liabilities (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Total liabilities",
+          "label": null,
+          "value": "1610.7"
+        },
+        {
+          "source_page": 59,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Total Assets",
+          "citation_id": "TARGET_M0027",
+          "name": "Total assets (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Total assets",
+          "label": null,
+          "value": "3393.9"
+        },
+        {
+          "source_page": 59,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Total Equity",
+          "citation_id": "TARGET_M0028",
+          "name": "Total shareholders\u2019 equity (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Total shareholders\u2019 equity",
+          "label": null,
+          "value": "1783.2"
+        },
+        {
+          "source_page": 62,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Dividends Paid",
+          "citation_id": "TARGET_M0033",
+          "name": "Cash dividends paid (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Cash dividends paid",
+          "label": null,
+          "value": "13.2"
+        },
+        {
+          "source_page": 62,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Treasury Stock",
+          "citation_id": "TARGET_M0034",
+          "name": "Purchase of common stock for treasury (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Purchase of common stock for treasury",
+          "label": null,
+          "value": "63.6"
+        },
+        {
+          "source_page": 69,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Lease Liabilities",
+          "citation_id": "TARGET_M0038",
+          "name": "Total future minimum lease payments (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Total future minimum lease payments",
+          "label": null,
+          "value": "53.2"
+        },
+        {
+          "source_page": 71,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Accrued Liabilities",
+          "citation_id": "TARGET_M0041",
+          "name": "Restructuring liability, end of period (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Restructuring liability, end of period",
+          "label": null,
+          "value": "2.4"
+        },
+        {
+          "source_page": 75,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Net Deferred Tax Liability",
+          "citation_id": "TARGET_M0051",
+          "name": "Net deferred tax liability (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Net deferred tax liability",
+          "label": null,
+          "value": "115.7"
+        },
+        {
+          "source_page": 75,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Deferred Tax Assets",
+          "citation_id": "TARGET_M0052",
+          "name": "Total deferred tax assets (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Total deferred tax assets",
+          "label": null,
+          "value": "77.4"
+        },
+        {
+          "source_page": 75,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Deferred Tax Liabilities",
+          "citation_id": "TARGET_M0053",
+          "name": "Total deferred tax liabilities (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Total deferred tax liabilities",
+          "label": null,
+          "value": "193.1"
+        },
+        {
+          "source_page": 75,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Net Deferred Tax Asset",
+          "citation_id": "TARGET_M0054",
+          "name": "Net deferred tax asset, long-term (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Net deferred tax asset, long-term",
+          "label": null,
+          "value": "14.8"
+        },
+        {
+          "source_page": 75,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Unrecognized Tax Benefits",
+          "citation_id": "TARGET_M0055",
+          "name": "Total unrecognized tax benefits (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Total unrecognized tax benefits",
+          "label": null,
+          "value": "1.9"
+        },
+        {
+          "source_page": 75,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Accrued Interest and Penalties",
+          "citation_id": "TARGET_M0056",
+          "name": "Accrued balance of interest and penalties (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Accrued balance of interest and penalties",
+          "label": null,
+          "value": "0.4"
+        },
+        {
+          "source_page": 76,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Property, Plant and Equipment, Net",
+          "citation_id": "TARGET_M0059",
+          "name": "Property, plant and equipment, net (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Property, plant and equipment, net",
+          "label": null,
+          "value": "989.7"
+        }
+      ],
+      "peer": "Global Gas Corp",
+      "peer_metrics": [
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Stockholders' Equity Attributable to Parent",
+          "citation_id": "PEER_M0100",
+          "name": "Stockholders' Equity Attributable to Parent (2024)",
+          "xbrl_tag": "StockholdersEquity",
+          "metric_type": "Total shareholders\u2019 equity",
+          "label": "Stockholders' Equity Attributable to Parent",
+          "value": "-0.4459",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Deferred Tax Assets, Gross",
+          "citation_id": "PEER_M0104",
+          "name": "Deferred Tax Assets, Gross (2024)",
+          "xbrl_tag": "DeferredTaxAssetsGross",
+          "metric_type": "Total deferred tax liabilities",
+          "label": "Deferred Tax Assets, Gross",
+          "value": "0.275",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2025",
+          "gaap_concept": "Interest Expense",
+          "citation_id": "PEER_M0092",
+          "name": "Interest Expense (2025)",
+          "xbrl_tag": "InterestExpense",
+          "metric_type": "Interest expense, net",
+          "label": "Interest Expense",
+          "value": "0.0",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Operating Loss Carryforwards",
+          "citation_id": "PEER_M0095",
+          "name": "Operating Loss Carryforwards (2024)",
+          "xbrl_tag": "OperatingLossCarryforwards",
+          "metric_type": "total actuarial losses recognized in Accumulated other comprehensive loss for pension plans were $1.3 million as compared to $32.1 million in 2023",
+          "label": "Operating Loss Carryforwards",
+          "value": "0.6893",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Unsecured Debt",
+          "citation_id": "PEER_M0109",
+          "name": "Unsecured Debt (2024)",
+          "xbrl_tag": "UnsecuredDebt",
+          "metric_type": "Repayment of long-term debt",
+          "label": "Unsecured Debt",
+          "value": "0.104",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2025",
+          "gaap_concept": "Short-term Debt",
+          "citation_id": "PEER_M0112",
+          "name": "Short-term Debt (2025)",
+          "xbrl_tag": "ShortTermBorrowings",
+          "metric_type": "Short-term investments amounted to $ 4.0 million",
+          "label": "Short-term Debt",
+          "value": "0.17",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Liabilities",
+          "citation_id": "PEER_M0101",
+          "name": "Liabilities (2024)",
+          "xbrl_tag": "Liabilities",
+          "metric_type": "Total future minimum lease payments",
+          "label": "Liabilities",
+          "value": "0.7106",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Assets",
+          "citation_id": "PEER_M0114",
+          "name": "Assets (2024)",
+          "xbrl_tag": "Assets",
+          "metric_type": "Ending balance at December 31, 2024",
+          "label": "Assets",
+          "value": "0.2647",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Other Accounts Payable and Accrued Liabilities",
+          "citation_id": "PEER_M0102",
+          "name": "Other Accounts Payable and Accrued Liabilities (2024)",
+          "xbrl_tag": "OtherAccountsPayableAndAccruedLiabilities",
+          "metric_type": "Restructuring liability, end of period",
+          "label": "Other Accounts Payable and Accrued Liabilities",
+          "value": "0.0188",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Operating Income (Loss)",
+          "citation_id": "PEER_M0107",
+          "name": "Operating Income (Loss) (2024)",
+          "xbrl_tag": "OperatingIncomeLoss",
+          "metric_type": "Cumulative foreign currency translation",
+          "label": "Operating Income (Loss)",
+          "value": "-0.552",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        }
+      ],
+      "_strategy": "metrics"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "category": "Leverage",
+      "target_metrics": [],
+      "peer": "Arcadium Lithium plc",
+      "peer_metrics": [
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Depreciation, Depletion and Amortization",
+          "citation_id": "PEER_M0057",
+          "name": "Depreciation, Depletion and Amortization (2024)",
+          "xbrl_tag": "DepreciationDepletionAndAmortization",
+          "metric_type": "Accumulated Amortization ... $106.1 million",
+          "label": "Depreciation, Depletion and Amortization",
+          "value": "124.0",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Assets",
+          "citation_id": "PEER_M0042",
+          "name": "Assets (2024)",
+          "xbrl_tag": "Assets",
+          "metric_type": "Total assets",
+          "label": "Assets",
+          "value": "10190.1",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Gain (Loss) on Extinguishment of Debt",
+          "citation_id": "PEER_M0036",
+          "name": "Gain (Loss) on Extinguishment of Debt (2024)",
+          "xbrl_tag": "GainsLossesOnExtinguishmentOfDebt",
+          "metric_type": "Debt extinguishment expenses",
+          "label": "Gain (Loss) on Extinguishment of Debt",
+          "value": "-1.1",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Unrecognized Tax Benefits",
+          "citation_id": "PEER_M0052",
+          "name": "Unrecognized Tax Benefits (2024)",
+          "xbrl_tag": "UnrecognizedTaxBenefits",
+          "metric_type": "Total unrecognized tax benefits",
+          "label": "Unrecognized Tax Benefits",
+          "value": "14.7",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Increase (Decrease) in Accrued Liabilities and Other Operating Liabilities",
+          "citation_id": "PEER_M0047",
+          "name": "Increase (Decrease) in Accrued Liabilities and Other Operating Liabilities (2024)",
+          "xbrl_tag": "IncreaseDecreaseInAccruedLiabilitiesAndOtherOperatingLiabilities",
+          "metric_type": "Restructuring liability, end of period",
+          "label": "Increase (Decrease) in Accrued Liabilities and Other Operating Liabilities",
+          "value": "98.5",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Deferred Tax Liabilities, Intangible Assets",
+          "citation_id": "PEER_M0056",
+          "name": "Deferred Tax Liabilities, Intangible Assets (2024)",
+          "xbrl_tag": "DeferredTaxLiabilitiesGoodwillAndIntangibleAssetsIntangibleAssets",
+          "metric_type": "Gross Carrying Amount ... $324.2 million",
+          "label": "Deferred Tax Liabilities, Intangible Assets",
+          "value": "6.3",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Stockholders' Equity Attributable to Parent",
+          "citation_id": "PEER_M0043",
+          "name": "Stockholders' Equity Attributable to Parent (2024)",
+          "xbrl_tag": "StockholdersEquity",
+          "metric_type": "Total shareholders\u2019 equity",
+          "label": "Stockholders' Equity Attributable to Parent",
+          "value": "6261.9",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Deferred Tax Liabilities, Net",
+          "citation_id": "PEER_M0051",
+          "name": "Deferred Tax Liabilities, Net (2024)",
+          "xbrl_tag": "DeferredTaxLiabilities",
+          "metric_type": "Net deferred tax asset, long-term",
+          "label": "Deferred Tax Liabilities, Net",
+          "value": "1113.1",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Unrecognized Tax Benefits, Income Tax Penalties and Interest Accrued",
+          "citation_id": "PEER_M0053",
+          "name": "Unrecognized Tax Benefits, Income Tax Penalties and Interest Accrued (2024)",
+          "xbrl_tag": "UnrecognizedTaxBenefitsIncomeTaxPenaltiesAndInterestAccrued",
+          "metric_type": "Accrued balance of interest and penalties",
+          "label": "Unrecognized Tax Benefits, Income Tax Penalties and Interest Accrued",
+          "value": "7.1",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Long-term Debt",
+          "citation_id": "PEER_M0066",
+          "name": "Long-term Debt (2024)",
+          "xbrl_tag": "LongTermDebt",
+          "metric_type": "Repayment of long-term debt",
+          "label": "Long-term Debt",
+          "value": "960.6",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Accumulated Other Comprehensive Income (Loss), Net of Tax",
+          "citation_id": "PEER_M0063",
+          "name": "Accumulated Other Comprehensive Income (Loss), Net of Tax (2024)",
+          "xbrl_tag": "AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "metric_type": "Cumulative foreign currency translation",
+          "label": "Accumulated Other Comprehensive Income (Loss), Net of Tax",
+          "value": "-90.4",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Payments of Ordinary Dividends, Common Stock",
+          "citation_id": "PEER_M0044",
+          "name": "Payments of Ordinary Dividends, Common Stock (2024)",
+          "xbrl_tag": "PaymentsOfDividendsCommonStock",
+          "metric_type": "Cash dividends paid",
+          "label": "Payments of Ordinary Dividends, Common Stock",
+          "value": "0.0",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Asset Retirement Obligation",
+          "citation_id": "PEER_M0064",
+          "name": "Asset Retirement Obligation (2024)",
+          "xbrl_tag": "AssetRetirementObligation",
+          "metric_type": "Asset retirement obligation, end of period",
+          "label": "Asset Retirement Obligation",
+          "value": "14.2",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Long-term Debt, Current Maturities",
+          "citation_id": "PEER_M0040",
+          "name": "Long-term Debt, Current Maturities (2024)",
+          "xbrl_tag": "LongTermDebtCurrent",
+          "metric_type": "Current maturities of long-term debt",
+          "label": "Long-term Debt, Current Maturities",
+          "value": "288.9",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "shares",
+          "year": "2024",
+          "gaap_concept": "Stock Issued During Period, Shares, Treasury Stock Reissued",
+          "citation_id": "PEER_M0045",
+          "name": "Stock Issued During Period, Shares, Treasury Stock Reissued (2024)",
+          "xbrl_tag": "StockIssuedDuringPeriodSharesTreasuryStockReissued",
+          "metric_type": "Purchase of common stock for treasury",
+          "label": "Stock Issued During Period, Shares, Treasury Stock Reissued",
+          "value": "3525",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        }
+      ],
+      "_strategy": "metrics"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "category": "Leverage",
+      "target_metrics": [],
+      "peer": "NL INDUSTRIES INC",
+      "peer_metrics": [
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Defined Benefit Plan, Net Periodic Benefit Cost (Credit)",
+          "citation_id": "PEER_M0161",
+          "name": "Defined Benefit Plan, Net Periodic Benefit Cost (Credit) (2024)",
+          "xbrl_tag": "DefinedBenefitPlanNetPeriodicBenefitCost",
+          "metric_type": "Post-Retirement Benefits Funded status",
+          "label": "Defined Benefit Plan, Net Periodic Benefit Cost (Credit)",
+          "value": "1.375",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Accumulated Other Comprehensive Income (Loss), Net of Tax",
+          "citation_id": "PEER_M0163",
+          "name": "Accumulated Other Comprehensive Income (Loss), Net of Tax (2024)",
+          "xbrl_tag": "AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "metric_type": "Cumulative foreign currency translation",
+          "label": "Accumulated Other Comprehensive Income (Loss), Net of Tax",
+          "value": "-223.356",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Assets",
+          "citation_id": "PEER_M0148",
+          "name": "Assets (2024)",
+          "xbrl_tag": "Assets",
+          "metric_type": "Total assets",
+          "label": "Assets",
+          "value": "578.258",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Stockholders' Equity Attributable to Parent",
+          "citation_id": "PEER_M0149",
+          "name": "Stockholders' Equity Attributable to Parent (2024)",
+          "xbrl_tag": "StockholdersEquity",
+          "metric_type": "Total shareholders\u2019 equity",
+          "label": "Stockholders' Equity Attributable to Parent",
+          "value": "396.904",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Payments of Dividends",
+          "citation_id": "PEER_M0150",
+          "name": "Payments of Dividends (2024)",
+          "xbrl_tag": "PaymentsOfDividends",
+          "metric_type": "Cash dividends paid",
+          "label": "Payments of Dividends",
+          "value": "15.6",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Additional Paid in Capital, Common Stock",
+          "citation_id": "PEER_M0151",
+          "name": "Additional Paid in Capital, Common Stock (2024)",
+          "xbrl_tag": "AdditionalPaidInCapitalCommonStock",
+          "metric_type": "Purchase of common stock for treasury",
+          "label": "Additional Paid in Capital, Common Stock",
+          "value": "299.099",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Increase (Decrease) in Accounts Payable and Accrued Liabilities",
+          "citation_id": "PEER_M0152",
+          "name": "Increase (Decrease) in Accounts Payable and Accrued Liabilities (2024)",
+          "xbrl_tag": "IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
+          "metric_type": "Restructuring liability, end of period",
+          "label": "Increase (Decrease) in Accounts Payable and Accrued Liabilities",
+          "value": "-13.256",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Deferred Income Tax Liabilities, Net",
+          "citation_id": "PEER_M0153",
+          "name": "Deferred Income Tax Liabilities, Net (2024)",
+          "xbrl_tag": "DeferredIncomeTaxLiabilitiesNet",
+          "metric_type": "Net deferred tax liability",
+          "label": "Deferred Income Tax Liabilities, Net",
+          "value": "53.391",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Deferred Tax Liabilities, Net",
+          "citation_id": "PEER_M0155",
+          "name": "Deferred Tax Liabilities, Net (2024)",
+          "xbrl_tag": "DeferredTaxLiabilities",
+          "metric_type": "Net deferred tax asset, long-term",
+          "label": "Deferred Tax Liabilities, Net",
+          "value": "53.391",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Unrecognized Tax Benefits",
+          "citation_id": "PEER_M0156",
+          "name": "Unrecognized Tax Benefits (2024)",
+          "xbrl_tag": "UnrecognizedTaxBenefits",
+          "metric_type": "Total unrecognized tax benefits",
+          "label": "Unrecognized Tax Benefits",
+          "value": "7.3",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Accrued Liabilities, Current",
+          "citation_id": "PEER_M0157",
+          "name": "Accrued Liabilities, Current (2024)",
+          "xbrl_tag": "AccruedLiabilitiesCurrent",
+          "metric_type": "Accrued balance of interest and penalties",
+          "label": "Accrued Liabilities, Current",
+          "value": "12.032",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Property, Plant and Equipment, Net",
+          "citation_id": "PEER_M0158",
+          "name": "Property, Plant and Equipment, Net (2024)",
+          "xbrl_tag": "PropertyPlantAndEquipmentNet",
+          "metric_type": "Property, plant and equipment, net",
+          "label": "Property, Plant and Equipment, Net",
+          "value": "24.026",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Goodwill",
+          "citation_id": "PEER_M0159",
+          "name": "Goodwill (2024)",
+          "xbrl_tag": "Goodwill",
+          "metric_type": "Goodwill was $913.8 million",
+          "label": "Goodwill",
+          "value": "27.156",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "OtherReceivableAfterAllowanceForCreditLossNoncurrent",
+          "citation_id": "PEER_M0162",
+          "name": "OtherReceivableAfterAllowanceForCreditLossNoncurrent (2024)",
+          "xbrl_tag": "OtherReceivableAfterAllowanceForCreditLossNoncurrent",
+          "metric_type": "provision for credit loss of $30 million",
+          "label": "OtherReceivableAfterAllowanceForCreditLossNoncurrent",
+          "value": "9.3",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Assets for Plan Benefits, Defined Benefit Plan",
+          "citation_id": "PEER_M0170",
+          "name": "Assets for Plan Benefits, Defined Benefit Plan (2024)",
+          "xbrl_tag": "DefinedBenefitPlanAssetsForPlanBenefitsNoncurrent",
+          "metric_type": "Ending balance at December 31, 2024",
+          "label": "Assets for Plan Benefits, Defined Benefit Plan",
+          "value": "0.354",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        }
+      ],
+      "_strategy": "metrics"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "category": "Debt Structure",
+      "target_metrics": [
+        {
+          "source_page": 44,
+          "section_title": "Item 7.\u00a0 Management\u2019s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+          "unit": "% per annum",
+          "year": "2024",
+          "gaap_concept": "Interest Rate on Term Loan Facility",
+          "citation_id": "TARGET_M0018",
+          "name": "Loans under the Term Loan Facility will bear interest at a rate equal to ... Term SOFR plus an applicable margin equal to 2.00% per annum (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Loans under the Term Loan Facility will bear interest at a rate equal to ... Term SOFR plus an applicable margin equal to 2.00% per annum",
+          "label": null,
+          "value": "2.0"
+        },
+        {
+          "source_page": 62,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Total Debt",
+          "citation_id": "TARGET_M0032",
+          "name": "Repayment of long-term debt (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Repayment of long-term debt",
+          "label": null,
+          "value": "533.6"
+        }
+      ],
+      "peer": "Global Gas Corp",
+      "peer_metrics": [],
+      "_strategy": "metrics"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "category": "Debt Structure",
+      "target_metrics": [],
+      "peer": "Arcadium Lithium plc",
+      "peer_metrics": [],
+      "_strategy": "metrics"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "category": "Debt Structure",
+      "target_metrics": [],
+      "peer": "NL INDUSTRIES INC",
+      "peer_metrics": [
+        {
+          "unit": null,
+          "year": null,
+          "gaap_concept": null,
+          "citation_id": null,
+          "name": null,
+          "xbrl_tag": null,
+          "metric_type": null,
+          "label": null,
+          "value": null,
+          "source_url": null
+        }
+      ],
+      "_strategy": "metrics"
+    }
+  ]
+}

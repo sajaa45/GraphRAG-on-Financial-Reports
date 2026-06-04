@@ -1,0 +1,44 @@
+======================================================================
+Answer-Source Traceability — Phase 1 Ground Truth Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : What is the target company's leverage ratio and how does it rank among its peers?
+  Answer chars: 1472
+  Result rows : 6
+
+[2/5] Building source registry
+  Total sources: 105  (45 risks, 60 metrics)
+    [TARGET_R0001] Worldwide general economic, business, and industry conditions — Global economic 
+    [TARGET_R0002] Cyclical nature of industries served — Demand for the Company’s products is tied
+    [TARGET_R0003] Declining demand in the paper industry — Production levels for uncoated freeshee
+    [TARGET_R0004] Pricing pressure and inability to pass on cost increases — The Company may face 
+    [TARGET_R0005] Pension and postretirement benefit plan expenses — Changes in financial market c
+    ... and 100 more
+
+[3/5] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
+
+[4/5] Parsing claims and inline citations from answer
+  → 8 claims  |  8 cited  |  0 unresolved  |  0 uncited
+    C001: Its total liabilities are $1,610.7 million and total assets are $3,393  [CITE:TARGET_M0026] ✓
+    C002: Its total liabilities are $1,610.7 million and total assets are $3,393  [CITE:TARGET_M0027] ✓
+    C003: For peers, Global Gas Corp has total liabilities of $0.7106 million an  [CITE:PEER_M0101] ✓
+    C004: For peers, Global Gas Corp has total liabilities of $0.7106 million an  [CITE:PEER_M0114] ✓
+    C005: Arcadium Lithium plc has total liabilities of $3,928.2 million (calcul  [CITE:PEER_M0042] ✓
+    ... and 3 more
+
+[5/5] Judging source correctness (8 claims — 1 batched LLM call)
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Total claims       : 8
+  Correct source     : 8  (100.0%)
+  Wrong source       : 0
+  Fabricated (no src): 0
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q07_what_is_the_target_company_s_leverage_ra\answer_source_traceability.csv
+======================================================================
+Source Traceability Score: 100.0%
+======================================================================

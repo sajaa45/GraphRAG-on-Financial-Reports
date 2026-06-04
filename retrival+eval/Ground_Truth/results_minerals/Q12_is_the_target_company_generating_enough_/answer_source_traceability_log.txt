@@ -1,0 +1,44 @@
+======================================================================
+Answer-Source Traceability — Phase 1 Ground Truth Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : Is the target company generating enough cash flow to cover its debt obligations?
+  Answer chars: 1448
+  Result rows : 9
+
+[2/5] Building source registry
+  Total sources: 124  (42 risks, 82 metrics)
+    [TARGET_R0001] Worldwide general economic, business, and industry conditions — Global economic 
+    [TARGET_R0002] Cyclical nature of industries served — Demand for the Company’s products is tied
+    [TARGET_R0003] Declining demand in the paper industry — Production levels for uncoated freeshee
+    [TARGET_R0004] Pricing pressure and inability to pass on cost increases — The Company may face 
+    [TARGET_R0005] Pension and postretirement benefit plan expenses — Changes in financial market c
+    ... and 119 more
+
+[3/5] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
+
+[4/5] Parsing claims and inline citations from answer
+  → 6 claims  |  6 cited  |  0 unresolved  |  0 uncited
+    C001: Its total debt obligations include $971.3 million in total debt, with   [CITE:TARGET_M0025] ✓
+    C002: Its total debt obligations include $971.3 million in total debt, with   [CITE:TARGET_M0024] ✓
+    C003: Interest expense was $56.4 million in 2024 .  [CITE:TARGET_M0005] ✓
+    C004: In comparison, Arcadium Lithium plc had negative operating cash flow o  [CITE:PEER_M0069] ✓
+    C005: , and Global Gas Corp had negative operating cash flow of $1.344 milli  [CITE:PEER_M0111] ✓
+    ... and 1 more
+
+[5/5] Judging source correctness (6 claims — 1 batched LLM call)
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Total claims       : 6
+  Correct source     : 4  (66.7%)
+  Wrong source       : 2
+  Fabricated (no src): 0
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q12_is_the_target_company_generating_enough_\answer_source_traceability.csv
+======================================================================
+Source Traceability Score: 66.7%
+======================================================================

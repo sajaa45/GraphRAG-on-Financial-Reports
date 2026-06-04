@@ -1,0 +1,43 @@
+======================================================================
+Answer Relevancy — True RAGAS Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : What are the main operational and business risks facing the target company?
+  Answer chars: 1798
+
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
+
+[3/5] Checking for non-committal answer
+  Non-committal: False
+
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. What are the primary risks associated with Minerals Technologies Inc.'s operational and business activities?
+    2. How does the company's exposure to cyclical industries impact its revenue and profitability?
+    3. What are the key factors that exert pressure on Minerals Technologies Inc.'s margins and sales?
+    4. How does the competitive landscape affect Minerals Technologies Inc.'s ability to maintain its market position?
+    5. What are the potential consequences of Minerals Technologies Inc.'s failure to manage its debt and maintain long-term sales contracts?
+
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.9440  |  What are the primary risks associated with Minerals Technologies Inc.'
+    Q2 similarity: 0.4146  |  How does the company's exposure to cyclical industries impact its reve
+    Q3 similarity: 0.5785  |  What are the key factors that exert pressure on Minerals Technologies 
+    Q4 similarity: 0.5490  |  How does the competitive landscape affect Minerals Technologies Inc.'s
+    Q5 similarity: 0.6282  |  What are the potential consequences of Minerals Technologies Inc.'s fa
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q01_what_are_the_main_operational_and_busine\answer_relevancy_results.csv
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Individual similarities : [0.944, 0.4146, 0.5785, 0.549, 0.6282]
+  Mean similarity         : 0.7169
+  Answer Relevancy Score  : 0.7169
+  Quality gate            : PASS  (threshold: 0.70)
+======================================================================
+Answer Relevancy Score : 0.7169  [PASS]
+======================================================================

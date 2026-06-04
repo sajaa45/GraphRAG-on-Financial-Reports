@@ -1,0 +1,43 @@
+======================================================================
+Answer Relevancy — True RAGAS Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : Based on its risk disclosures and financial metrics, what is the target company's key credit weakness?
+  Answer chars: 1157
+
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
+
+[3/5] Checking for non-committal answer
+  Non-committal: False
+
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. What are the primary factors contributing to Minerals Technologies Inc.'s elevated credit risk?
+    2. How does the company's debt burden impact its financial health and operations?
+    3. What industry challenges does Minerals Technologies Inc. face, and how do they affect its financial performance?
+    4. What are the potential consequences of the company breaching its debt covenants?
+    5. How do the combination of debt, industry headwinds, and covenant risk affect Minerals Technologies Inc.'s refinancing and liquidity situation?
+
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.7303  |  What are the primary factors contributing to Minerals Technologies Inc
+    Q2 similarity: 0.5341  |  How does the company's debt burden impact its financial health and ope
+    Q3 similarity: 0.6317  |  What industry challenges does Minerals Technologies Inc. face, and how
+    Q4 similarity: 0.5164  |  What are the potential consequences of the company breaching its debt 
+    Q5 similarity: 0.4678  |  How do the combination of debt, industry headwinds, and covenant risk 
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q16_based_on_its_risk_disclosures_and_financ\answer_relevancy_results.csv
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Individual similarities : [0.7303, 0.5341, 0.6317, 0.5164, 0.4678]
+  Mean similarity         : 0.6320
+  Answer Relevancy Score  : 0.6320
+  Quality gate            : WARNING  (threshold: 0.70)
+======================================================================
+Answer Relevancy Score : 0.6320  [WARNING]
+======================================================================

@@ -1,0 +1,24 @@
+======================================================================
+Peer XBRL Metrics Ground Truth Validation (SEC EDGAR)
+======================================================================
+
+[1/4] Loading extraction results from C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q10_how_does_the_target_company_s_debt_matur\extraction_result.json
+  Question: How does the target company's debt maturity profile compare to its peers?
+  Peer metrics with xbrl_tag: 40
+
+[2/4] Fetching ground truth from SEC EDGAR (40 metrics)
+
+[3/4] Results
+  Total        : 40
+  Matches      : 36
+  Mismatches   : 4
+  Not found    : 0
+  Errors       : 0
+  Accuracy     : 90.0%
+
+[4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q10_how_does_the_target_company_s_debt_matur\metrics_validation_results.csv
+  ✓ Saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q10_how_does_the_target_company_s_debt_matur\metrics_validation_results.csv
+
+======================================================================
+Validation Complete — Accuracy: 90.0%
+======================================================================

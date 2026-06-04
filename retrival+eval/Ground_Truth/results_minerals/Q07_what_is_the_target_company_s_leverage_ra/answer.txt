@@ -1,0 +1,7 @@
+**Sources:**
+- Minerals Technologies Inc.: null
+- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm
+- Arcadium Lithium plc: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm
+- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm
+
+The target company, Minerals Technologies Inc., does not have a calculated leverage ratio provided in the graph results. Its total liabilities are $1,610.7 million and total assets are $3,393.9 million as of 2024 [CITE:TARGET_M0026][CITE:TARGET_M0027], but no debt-to-equity or debt-to-assets ratio is explicitly stated. For peers, Global Gas Corp has total liabilities of $0.7106 million and total assets of $0.2647 million [CITE:PEER_M0101][CITE:PEER_M0114], which implies an inverse leverage structure inconsistent with typical reporting and likely reflects data scaling or entity structure differences. Arcadium Lithium plc has total liabilities of $3,928.2 million (calculated as $10,190.1M assets - $6,261.9M equity) [CITE:PEER_M0042][CITE:PEER_M0043], and NL Industries has total liabilities of $181.4 million (calculated as $578.3M assets - $396.9M equity) [CITE:PEER_M0148][CITE:PEER_M0149]. Without a standardized leverage metric reported for Minerals Technologies Inc., a direct ranking among peers cannot be determined. The absence of a calculated ratio prevents meaningful comparison.

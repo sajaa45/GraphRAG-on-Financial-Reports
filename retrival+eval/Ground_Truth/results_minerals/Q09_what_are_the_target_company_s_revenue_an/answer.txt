@@ -1,0 +1,7 @@
+**Sources:**
+- Minerals Technologies Inc.: https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json
+- Global Gas Corp: https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json
+- Arcadium Lithium plc: https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json
+- NL INDUSTRIES INC: https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json
+
+Minerals Technologies Inc. reported worldwide sales of $2,119 million and net income of $167.1 million in 2024 [CITE:TARGET_M0001][CITE:TARGET_M0003]. Its operating income was $286.5 million, indicating strong operational profitability [CITE:TARGET_M0002]. Compared to peers, Arcadium Lithium plc had lower revenue at $1,007.8 million and net income of $103.2 million [CITE:PEER_M0033][CITE:PEER_M0003], while NL INDUSTRIES INC reported revenue of $145.9 million and net income of $67.2 million [CITE:PEER_M0145][CITE:PEER_M0118]. Global Gas Corp reported a net loss of $0.13 million and an operating loss of $0.55 million [CITE:PEER_M0079][CITE:PEER_M0107], indicating unprofitability. Minerals Technologies Inc. demonstrates significantly higher revenue and net income than all peers, with no signs of operational distress. Its net income is more than 1.6 times that of Arcadium Lithium plc and over 2.4 times that of NL INDUSTRIES INC. Global Gas Corp’s negative net income and operating income reflect elevated credit risk [CITE:PEER_M0079][CITE:PEER_M0107].

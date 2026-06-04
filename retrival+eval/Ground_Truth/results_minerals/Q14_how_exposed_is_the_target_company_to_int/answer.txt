@@ -1,0 +1,11 @@
+**Sources:**
+- Minerals Technologies Inc.: null
+- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm
+- Arcadium Lithium plc: null
+- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm
+
+Minerals Technologies Inc. faces significant interest rate risk due to its $971.3 million of debt, with interest payments tied to SOFR-based rates that may rise, potentially straining cash flow [CITE:TARGET_R0011]. The company’s Term Loan Facility bears interest at Term SOFR plus a 2.00% margin [CITE:TARGET_M0018]. In 2024, it incurred $56.4 million in net interest expense and $1.8 million in debt extinguishment costs [CITE:TARGET_M0005][CITE:TARGET_M0006]. 
+
+Compared to peers, Global Gas Corp has no reported interest expense for 2025 [CITE:PEER_M0092], and its debt levels are negligible (unsecured debt of $0.104 million) [CITE:PEER_M0109], indicating minimal exposure. NL Industries Inc. faces variable interest rate exposure on its Kronos Global Revolver, where rising rates increase borrowing costs [CITE:PEER_R0197], and also risks refinancing debt on unfavorable terms [CITE:PEER_R0199]. Arcadium Lithium plc has no peer metrics provided for interest rate exposure. 
+
+Thus, Minerals Technologies Inc. has substantially higher absolute interest rate exposure than Global Gas Corp and comparable exposure to NL Industries Inc., though its debt scale and SOFR-linked structure amplify vulnerability to rate hikes.

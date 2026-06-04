@@ -1,0 +1,41 @@
+======================================================================
+Risk Factor Chunks — Semantic Relevance Validation
+======================================================================
+
+[1/4] Loading extraction results
+  ✓ Bedrock client initialized (region: us-east-1, model: us.meta.llama3-3-70b-instruct-v1:0)
+  → Found 32 risk chunks to validate
+
+[2/4] LLM semantic relevance — 32 chunks → 32 unique texts (0 duplicates skipped), 32 theme evaluations in 4 calls of ≤10 (0 skipped — no usable text)
+  Call [1/4] — 10 chunk(s), 10 evaluations...
+    Parsed 10/10 evaluations successfully
+  Call [2/4] — 10 chunk(s), 10 evaluations...
+    Parsed 10/10 evaluations successfully
+  Call [3/4] — 10 chunk(s), 10 evaluations...
+    Parsed 10/10 evaluations successfully
+  Call [4/4] — 2 chunk(s), 2 evaluations...
+  [DEBUG] LLM Response:
+1.1: YES — The chunk clearly states that competitors with superior resources can outperform Kronos.
+2.1: YES — The chunk explicitly mentions pricing pressure in CompX's mature and competitive markets as a threat to profitability.
+    Parsed 2/2 evaluations successfully
+
+[3/4] Metrics
+  Total chunks: 32
+  Relevant:   32
+  Irrelevant: 0
+  Precision:  100.00%
+
+[4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q02_what_cybersecurity_or_technology_risks_d\risks_validation_results.csv
+  ✓ Saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q02_what_cybersecurity_or_technology_risks_d\risks_validation_results.csv
+
+======================================================================
+Validation Complete
+Semantic Precision: 100.00%
+
+----------------------------------------------------------------------
+Chunk Length Analysis
+----------------------------------------------------------------------
+Relevant chunks (n=32):
+  Avg length: 141 chars
+  Min: 95 | Max: 185
+======================================================================

@@ -1,0 +1,43 @@
+======================================================================
+Answer Relevancy — True RAGAS Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : How does the target company's liquidity position compare to its peers?
+  Answer chars: 1398
+
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
+
+[3/5] Checking for non-committal answer
+  Non-committal: False
+
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. How does Minerals Technologies Inc. compare to its peers in terms of liquidity position?
+    2. Which companies among the peers face elevated liquidity risk and why?
+    3. What is the overall assessment of Minerals Technologies Inc.'s financial health relative to its peers?
+    4. How do the operating cash flows of the peer companies impact their liquidity positions?
+    5. Which company has the strongest financial foundation based on cash balance and operating cash flow among the ones analyzed?
+
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.9864  |  How does Minerals Technologies Inc. compare to its peers in terms of l
+    Q2 similarity: 0.7379  |  Which companies among the peers face elevated liquidity risk and why?
+    Q3 similarity: 0.5809  |  What is the overall assessment of Minerals Technologies Inc.'s financi
+    Q4 similarity: 0.7191  |  How do the operating cash flows of the peer companies impact their liq
+    Q5 similarity: 0.4268  |  Which company has the strongest financial foundation based on cash bal
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q06_how_does_the_target_company_s_liquidity_\answer_relevancy_results.csv
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Individual similarities : [0.9864, 0.7379, 0.5809, 0.7191, 0.4268]
+  Mean similarity         : 0.8145
+  Answer Relevancy Score  : 0.8145
+  Quality gate            : PASS  (threshold: 0.70)
+======================================================================
+Answer Relevancy Score : 0.8145  [PASS]
+======================================================================

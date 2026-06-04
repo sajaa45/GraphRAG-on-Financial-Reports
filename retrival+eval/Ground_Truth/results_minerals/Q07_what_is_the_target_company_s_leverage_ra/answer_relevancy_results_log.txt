@@ -1,0 +1,43 @@
+======================================================================
+Answer Relevancy — True RAGAS Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : What is the target company's leverage ratio and how does it rank among its peers?
+  Answer chars: 1472
+
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
+
+[3/5] Checking for non-committal answer
+  Non-committal: False
+
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. Can a direct comparison of leverage be made between Minerals Technologies Inc. and its peers based on the provided information?
+    2. Why is it challenging to assess the financial leverage of Minerals Technologies Inc. relative to its peers?
+    3. Is there a standardized metric for leverage reported across all the companies mentioned, including Minerals Technologies Inc. and its peers?
+    4. How does the absence of a calculated leverage ratio for Minerals Technologies Inc. impact the ability to rank it among its peers?
+    5. Can a meaningful comparison of financial leverage be made among the peer companies, given the information provided about their financial structures?
+
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.6725  |  Can a direct comparison of leverage be made between Minerals Technolog
+    Q2 similarity: 0.7613  |  Why is it challenging to assess the financial leverage of Minerals Tec
+    Q3 similarity: 0.7766  |  Is there a standardized metric for leverage reported across all the co
+    Q4 similarity: 0.8669  |  How does the absence of a calculated leverage ratio for Minerals Techn
+    Q5 similarity: 0.6490  |  Can a meaningful comparison of financial leverage be made among the pe
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q07_what_is_the_target_company_s_leverage_ra\answer_relevancy_results.csv
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Individual similarities : [0.6725, 0.7613, 0.7766, 0.8669, 0.649]
+  Mean similarity         : 0.8016
+  Answer Relevancy Score  : 0.8016
+  Quality gate            : PASS  (threshold: 0.70)
+======================================================================
+Answer Relevancy Score : 0.8016  [PASS]
+======================================================================

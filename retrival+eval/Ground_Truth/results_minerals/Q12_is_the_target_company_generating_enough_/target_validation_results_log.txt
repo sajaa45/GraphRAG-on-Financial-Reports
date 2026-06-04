@@ -1,0 +1,35 @@
+======================================================================
+Target Company — Extraction Accuracy Validation (Risks + Metrics)
+======================================================================
+
+[1/4] Loading extraction results
+  Question : Is the target company generating enough cash flow to cover its debt obligations?
+
+[2/4] Collecting target chunks
+  Total : 43  (15 risks, 28 metrics)
+
+[3/4] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
+
+[4/4] Judging extraction accuracy
+  Risks — 15 items in 2 batch(es)
+    Batch [1/2] ...
+    Batch [2/2] ...
+  Metrics — 28 items in 4 batch(es)
+    Batch [1/4] ...
+    Batch [2/4] ...
+    Batch [3/4] ...
+    Batch [4/4] ...
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Total             : 43
+  Correctly extracted: 35  (81.4%)
+  Risk accuracy     : 15/15
+  Metric accuracy   : 20/28
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q12_is_the_target_company_generating_enough_\target_validation_results.csv
+======================================================================
+Extraction Accuracy : 0.81  (risks 15/15, metrics 20/28)
+======================================================================

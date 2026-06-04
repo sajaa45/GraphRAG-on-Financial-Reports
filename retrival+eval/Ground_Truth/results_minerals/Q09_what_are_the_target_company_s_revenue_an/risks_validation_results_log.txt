@@ -1,0 +1,9 @@
+======================================================================
+Risk Factor Chunks — Semantic Relevance Validation
+======================================================================
+
+[1/4] Loading extraction results
+  ✓ Bedrock client initialized (region: us-east-1, model: us.meta.llama3-3-70b-instruct-v1:0)
+  → Found 0 risk chunks to validate
+
+✗ No risk chunks found — writing empty CSV and skipping validation

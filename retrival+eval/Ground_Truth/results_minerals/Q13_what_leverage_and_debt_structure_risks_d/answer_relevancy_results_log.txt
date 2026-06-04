@@ -1,0 +1,43 @@
+======================================================================
+Answer Relevancy — True RAGAS Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : What leverage and debt structure risks does the target company face?
+  Answer chars: 1503
+
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
+
+[3/5] Checking for non-committal answer
+  Non-committal: False
+
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. What are the primary risks associated with Minerals Technologies Inc.'s debt structure?
+    2. How do the company's debt covenants impact its financial flexibility and operations?
+    3. What are the potential consequences of Minerals Technologies Inc. breaching its debt covenants?
+    4. How does the company's leverage profile affect its credit risk and overall financial health?
+    5. What limitations exist in assessing Minerals Technologies Inc.'s debt structure relative to its peers?
+
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.9150  |  What are the primary risks associated with Minerals Technologies Inc.'
+    Q2 similarity: 0.6350  |  How do the company's debt covenants impact its financial flexibility a
+    Q3 similarity: 0.6854  |  What are the potential consequences of Minerals Technologies Inc. brea
+    Q4 similarity: 0.7752  |  How does the company's leverage profile affect its credit risk and ove
+    Q5 similarity: 0.7128  |  What limitations exist in assessing Minerals Technologies Inc.'s debt 
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q13_what_leverage_and_debt_structure_risks_d\answer_relevancy_results.csv
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Individual similarities : [0.915, 0.635, 0.6854, 0.7752, 0.7128]
+  Mean similarity         : 0.8010
+  Answer Relevancy Score  : 0.8010
+  Quality gate            : PASS  (threshold: 0.70)
+======================================================================
+Answer Relevancy Score : 0.8010  [PASS]
+======================================================================

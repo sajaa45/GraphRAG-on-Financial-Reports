@@ -1,0 +1,24 @@
+======================================================================
+Peer XBRL Metrics Ground Truth Validation (SEC EDGAR)
+======================================================================
+
+[1/4] Loading extraction results from C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q11_does_the_target_company_carry_more_finan\extraction_result.json
+  Question: Does the target company carry more financial risk relative to its operating performance than its pee
+  Peer metrics with xbrl_tag: 88
+
+[2/4] Fetching ground truth from SEC EDGAR (88 metrics)
+
+[3/4] Results
+  Total        : 88
+  Matches      : 81
+  Mismatches   : 7
+  Not found    : 0
+  Errors       : 0
+  Accuracy     : 92.0%
+
+[4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q11_does_the_target_company_carry_more_finan\metrics_validation_results.csv
+  ✓ Saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q11_does_the_target_company_carry_more_finan\metrics_validation_results.csv
+
+======================================================================
+Validation Complete — Accuracy: 92.0%
+======================================================================

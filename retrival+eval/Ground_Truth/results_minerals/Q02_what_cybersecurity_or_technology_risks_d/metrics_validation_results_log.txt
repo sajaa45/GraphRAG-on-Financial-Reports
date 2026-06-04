@@ -1,0 +1,24 @@
+======================================================================
+Peer XBRL Metrics Ground Truth Validation (SEC EDGAR)
+======================================================================
+
+[1/4] Loading extraction results from C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q02_what_cybersecurity_or_technology_risks_d\extraction_result.json
+  Question: What cybersecurity or technology risks does the target company disclose and do its peers face simila
+  Peer metrics with xbrl_tag: 57
+
+[2/4] Fetching ground truth from SEC EDGAR (57 metrics)
+
+[3/4] Results
+  Total        : 57
+  Matches      : 51
+  Mismatches   : 6
+  Not found    : 0
+  Errors       : 0
+  Accuracy     : 89.5%
+
+[4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q02_what_cybersecurity_or_technology_risks_d\metrics_validation_results.csv
+  ✓ Saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q02_what_cybersecurity_or_technology_risks_d\metrics_validation_results.csv
+
+======================================================================
+Validation Complete — Accuracy: 89.5%
+======================================================================

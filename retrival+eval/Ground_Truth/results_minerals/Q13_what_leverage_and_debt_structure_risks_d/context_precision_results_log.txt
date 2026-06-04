@@ -1,0 +1,44 @@
+======================================================================
+Context Precision — RAGAS-style Ground Truth Evaluation
+======================================================================
+
+[1/4] Loading extraction results
+  Question : What leverage and debt structure risks does the target company face?
+
+[2/4] Collecting retrieved chunks
+  Total chunks : 81  (19 risks, 62 metrics)
+    [TARGET_R0012] Minerals Technologies Inc. (target) — Debt covenants and financial ratios — Debt agreements contain covenants limiting business operations and requiring compliance with specific financial ratios, which may be affected by events beyond the Company's control.
+    [TARGET_R0013] Minerals Technologies Inc. (target) — Failure to comply with debt covenants — A breach of debt covenants could result in default, causing lenders to declare all borrowed amounts immediately due and payable.
+    [TARGET_R0014] Minerals Technologies Inc. (target) — Refinancing risk — Future refinancing of debt is likely to include similar restrictive covenants, and the Company cannot assure it will obtain waivers, amendments, or acceptable refinancing terms.
+    [TARGET_R0015] Minerals Technologies Inc. (target) — Future debt obligations — Incurring future debt may subject the Company to additional restrictive covenants that reduce financial and operational flexibility.
+    ... and 77 more
+
+[3/4] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
+
+[4/4] Judging relevance — 81 chunks in 5 batch(es)
+  Batch [1/5] — 20 chunks ...
+    → parsed 20/20
+  Batch [2/5] — 20 chunks ...
+    → parsed 20/20
+  Batch [3/5] — 20 chunks ...
+    → parsed 20/20
+  Batch [4/5] — 20 chunks ...
+    → parsed 20/20
+  Batch [5/5] — 1 chunks ...
+    → parsed 1/1
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Total chunks     : 81
+  Relevant         : 76  (93.8%)
+  Irrelevant       : 5
+  Risk precision   : 14/19
+  Metric precision : 62/62
+  Quality gate     : PASS  (threshold: 0.70)
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q13_what_leverage_and_debt_structure_risks_d\context_precision_results.csv
+======================================================================
+Context Precision Score : 0.94  [PASS]
+======================================================================

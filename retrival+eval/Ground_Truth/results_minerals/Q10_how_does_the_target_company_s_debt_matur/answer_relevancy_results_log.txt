@@ -1,0 +1,43 @@
+======================================================================
+Answer Relevancy — True RAGAS Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : How does the target company's debt maturity profile compare to its peers?
+  Answer chars: 1441
+
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
+
+[3/5] Checking for non-committal answer
+  Non-committal: False
+
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. How does Minerals Technologies Inc.'s debt burden compare to its peer companies?
+    2. What is the general composition of Minerals Technologies Inc.'s debt in terms of maturity?
+    3. Can the debt maturity profiles of Minerals Technologies Inc. and its peers be directly compared?
+    4. How does the long-term debt of Minerals Technologies Inc. relate to that of the other companies mentioned?
+    5. What overall observation can be made about Minerals Technologies Inc.'s debt obligations in relation to its peers?
+
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.7494  |  How does Minerals Technologies Inc.'s debt burden compare to its peer 
+    Q2 similarity: 0.7880  |  What is the general composition of Minerals Technologies Inc.'s debt i
+    Q3 similarity: 0.9347  |  Can the debt maturity profiles of Minerals Technologies Inc. and its p
+    Q4 similarity: 0.6813  |  How does the long-term debt of Minerals Technologies Inc. relate to th
+    Q5 similarity: 0.7377  |  What overall observation can be made about Minerals Technologies Inc.'
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q10_how_does_the_target_company_s_debt_matur\answer_relevancy_results.csv
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Individual similarities : [0.7494, 0.788, 0.9347, 0.6813, 0.7377]
+  Mean similarity         : 0.8240
+  Answer Relevancy Score  : 0.8240
+  Quality gate            : PASS  (threshold: 0.70)
+======================================================================
+Answer Relevancy Score : 0.8240  [PASS]
+======================================================================

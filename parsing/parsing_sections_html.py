@@ -604,7 +604,7 @@ def main():
         "html_path",
         nargs='?',
         help="Path to the HTML file to parse",
-        default="input/swi.html"
+        default="input/kimco.html"
     )
     parser.add_argument(
         "--output", "-o",

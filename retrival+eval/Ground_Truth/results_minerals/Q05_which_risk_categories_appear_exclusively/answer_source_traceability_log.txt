@@ -1,0 +1,25 @@
+======================================================================
+Answer-Source Traceability — Phase 1 Ground Truth Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : Which risk categories appear exclusively in the target company's filings but not in any peer filing?
+  Answer chars: 1188
+  Result rows : 15
+
+[2/5] Building source registry
+  Total sources: 182  (45 risks, 137 metrics)
+    [TARGET_R0001] Worldwide general economic, business, and industry conditions — Global economic 
+    [TARGET_R0002] Cyclical nature of industries served — Demand for the Company’s products is tied
+    [TARGET_R0003] Declining demand in the paper industry — Production levels for uncoated freeshee
+    [TARGET_R0004] Pricing pressure and inability to pass on cost increases — The Company may face 
+    [TARGET_R0005] Pension and postretirement benefit plan expenses — Changes in financial market c
+    ... and 177 more
+
+[3/5] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
+
+[4/5] Parsing claims and inline citations from answer
+  → 0 claims  |  0 cited  |  0 unresolved  |  0 uncited
+
+✗ No claims found — aborting

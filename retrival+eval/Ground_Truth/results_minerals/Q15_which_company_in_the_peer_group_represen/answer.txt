@@ -1,0 +1,11 @@
+**Sources:**
+- Minerals Technologies Inc.: null
+- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm
+- Arcadium Lithium plc: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm
+- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm
+
+Minerals Technologies Inc. generated $286.5 million in operating income and $167.1 million in net income in 2024 [CITE:TARGET_M0002][CITE:TARGET_M0003], with $236.4 million in net cash provided by operating activities [CITE:TARGET_M0031] and $333.1 million in cash and cash equivalents [CITE:TARGET_M0023]. Its total debt of $1.9 billion is supported by strong profitability and liquidity [CITE:TARGET_M0019][CITE:TARGET_M0024][CITE:TARGET_M0032]. 
+
+In comparison, Global Gas Corp had negative operating income of $0.552 million and negative net income of $0.1307 million in 2024 [CITE:PEER_M0107][CITE:PEER_M0079], with negative operating cash flow of $1.344 million [CITE:PEER_M0111] and minimal cash of $0.1141 million [CITE:PEER_M0110]. Arcadium Lithium plc reported negative operating cash flow of $176.0 million [CITE:PEER_M0069] despite $103.2 million in net income [CITE:PEER_M0003], indicating high capital intensity. NL Industries Inc. had $37.9 million in operating income and $67.2 million in net income [CITE:PEER_M0139][CITE:PEER_M0118], with $25.6 million in operating cash flow [CITE:PEER_M0166] and $163.2 million in cash [CITE:PEER_M0165], but its scale and leverage metrics are significantly smaller than Minerals Technologies Inc.
+
+Minerals Technologies Inc. demonstrates the strongest overall credit profile among peers, with robust profitability, substantial liquidity, and positive cash flow, despite elevated risks from cyclical industries and debt covenants [CITE:TARGET_R0001][CITE:TARGET_R0012].

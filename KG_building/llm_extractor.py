@@ -96,7 +96,17 @@ class LLMExtractor:
         except ImportError:
             raise ImportError("rank_bm25 is not installed. Run: pip install rank-bm25")
 
-        tokenized_titles = [s['title'].lower().split() for s in self._flat_sections]
+        def _section_tokens(s: dict) -> list[str]:
+            # Combine title + first 300 chars of content so subsections with
+            # generic/numbered titles can still be matched by their text.
+            text = s['title']
+            pages = s.get('page_contents') or []
+            if pages:
+                first_page = pages[0] if isinstance(pages[0], str) else str(pages[0])
+                text += ' ' + first_page[:300]
+            return text.lower().split()
+
+        tokenized_titles = [_section_tokens(s) for s in self._flat_sections]
         bm25 = BM25Okapi(tokenized_titles)
 
         seen_indices: set = set()

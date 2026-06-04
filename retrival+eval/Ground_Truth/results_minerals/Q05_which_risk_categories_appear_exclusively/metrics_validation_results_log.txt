@@ -1,0 +1,24 @@
+======================================================================
+Peer XBRL Metrics Ground Truth Validation (SEC EDGAR)
+======================================================================
+
+[1/4] Loading extraction results from C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q05_which_risk_categories_appear_exclusively\extraction_result.json
+  Question: Which risk categories appear exclusively in the target company's filings but not in any peer filing?
+  Peer metrics with xbrl_tag: 88
+
+[2/4] Fetching ground truth from SEC EDGAR (88 metrics)
+
+[3/4] Results
+  Total        : 88
+  Matches      : 81
+  Mismatches   : 7
+  Not found    : 0
+  Errors       : 0
+  Accuracy     : 92.0%
+
+[4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q05_which_risk_categories_appear_exclusively\metrics_validation_results.csv
+  ✓ Saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q05_which_risk_categories_appear_exclusively\metrics_validation_results.csv
+
+======================================================================
+Validation Complete — Accuracy: 92.0%
+======================================================================

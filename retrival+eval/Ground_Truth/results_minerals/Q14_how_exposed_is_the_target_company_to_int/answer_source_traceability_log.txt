@@ -1,0 +1,44 @@
+======================================================================
+Answer-Source Traceability — Phase 1 Ground Truth Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : How exposed is the target company to interest rate risk compared to its peers?
+  Answer chars: 1518
+  Result rows : 9
+
+[2/5] Building source registry
+  Total sources: 82  (20 risks, 62 metrics)
+    [TARGET_R0007] Competitive industries — The Company operates in very competitive industries wit
+    [TARGET_R0008] Competition from alternative products and lower-cost countries — The Company fac
+    [TARGET_R0009] Consolidation in customer industries — Consolidation in paper, foundry, and stee
+    [TARGET_R0010] Failure to renew or extend long-term sales contracts — Failure to renew long-ter
+    [TARGET_R0011] Servicing the Company’s debt — Servicing $971.3 million of debt requires signifi
+    ... and 77 more
+
+[3/5] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
+
+[4/5] Parsing claims and inline citations from answer
+  → 7 claims  |  7 cited  |  0 unresolved  |  0 uncited
+    C001: The company’s Term Loan Facility bears interest at Term SOFR plus a 2.  [CITE:TARGET_M0018] ✓
+    C002: In 2024, it incurred $56.4 million in net interest expense and $1.8 mi  [CITE:TARGET_M0005] ✓
+    C003: In 2024, it incurred $56.4 million in net interest expense and $1.8 mi  [CITE:TARGET_M0006] ✓
+    C004: Compared to peers, Global Gas Corp has no reported interest expense fo  [CITE:PEER_M0092] ✓
+    C005: , and its debt levels are negligible (unsecured debt of $0.104 million  [CITE:PEER_M0109] ✓
+    ... and 2 more
+
+[5/5] Judging source correctness (7 claims — 1 batched LLM call)
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Total claims       : 7
+  Correct source     : 7  (100.0%)
+  Wrong source       : 0
+  Fabricated (no src): 0
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q14_how_exposed_is_the_target_company_to_int\answer_source_traceability.csv
+======================================================================
+Source Traceability Score: 100.0%
+======================================================================

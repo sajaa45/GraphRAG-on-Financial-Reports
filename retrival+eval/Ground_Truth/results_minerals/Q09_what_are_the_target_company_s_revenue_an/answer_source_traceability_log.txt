@@ -1,0 +1,44 @@
+======================================================================
+Answer-Source Traceability — Phase 1 Ground Truth Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : What are the target company's revenue and net income trends and how do they compare to peers?
+  Answer chars: 1418
+  Result rows : 3
+
+[2/5] Building source registry
+  Total sources: 59  (0 risks, 59 metrics)
+    [TARGET_M0001] Worldwide sales (2024) = 2119 $ billion (2024)
+    [TARGET_M0002] Consolidated income from operations (2024) = 286.5 $ million (2024)
+    [TARGET_M0003] Net income (2024) = 167.1 $ million (2024)
+    [TARGET_M0004] Production margin (2024) = 547.7 $ million (2024)
+    [TARGET_M0007] Provision for taxes on income (2024) = 59.4 $ million (2024)
+    ... and 54 more
+
+[3/5] Initialising LLM (AWS Bedrock)
+  Region: us-east-1  |  Model: us.meta.llama3-3-70b-instruct-v1:0
+
+[4/5] Parsing claims and inline citations from answer
+  → 9 claims  |  9 cited  |  0 unresolved  |  0 uncited
+    C001: Its operating income was $286.5 million, indicating strong operational  [CITE:TARGET_M0002] ✓
+    C002: Compared to peers, Arcadium Lithium plc had lower revenue at $1,007.8   [CITE:PEER_M0033] ✓
+    C003: Compared to peers, Arcadium Lithium plc had lower revenue at $1,007.8   [CITE:PEER_M0003] ✓
+    C004: , while NL INDUSTRIES INC reported revenue of $145.9 million and net i  [CITE:PEER_M0145] ✓
+    C005: , while NL INDUSTRIES INC reported revenue of $145.9 million and net i  [CITE:PEER_M0118] ✓
+    ... and 4 more
+
+[5/5] Judging source correctness (9 claims — 1 batched LLM call)
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Total claims       : 9
+  Correct source     : 7  (77.8%)
+  Wrong source       : 2
+  Fabricated (no src): 0
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q09_what_are_the_target_company_s_revenue_an\answer_source_traceability.csv
+======================================================================
+Source Traceability Score: 77.8%
+======================================================================

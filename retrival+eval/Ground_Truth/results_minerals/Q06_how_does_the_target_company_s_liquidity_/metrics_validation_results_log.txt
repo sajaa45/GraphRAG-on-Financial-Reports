@@ -1,0 +1,24 @@
+======================================================================
+Peer XBRL Metrics Ground Truth Validation (SEC EDGAR)
+======================================================================
+
+[1/4] Loading extraction results from C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q06_how_does_the_target_company_s_liquidity_\extraction_result.json
+  Question: How does the target company's liquidity position compare to its peers?
+  Peer metrics with xbrl_tag: 17
+
+[2/4] Fetching ground truth from SEC EDGAR (17 metrics)
+
+[3/4] Results
+  Total        : 17
+  Matches      : 15
+  Mismatches   : 2
+  Not found    : 0
+  Errors       : 0
+  Accuracy     : 88.2%
+
+[4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q06_how_does_the_target_company_s_liquidity_\metrics_validation_results.csv
+  ✓ Saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q06_how_does_the_target_company_s_liquidity_\metrics_validation_results.csv
+
+======================================================================
+Validation Complete — Accuracy: 88.2%
+======================================================================

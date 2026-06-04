@@ -1,0 +1,747 @@
+{
+  "question": "How does the target company's liquidity position compare to its peers?",
+  "queries": [
+    {
+      "strategy": "risks",
+      "cypher": "MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)\nWHERE toLower(r.description) CONTAINS 'liquidity' OR toLower(r.name) CONTAINS 'liquidity' OR toLower(r.why) CONTAINS 'liquidity' OR toLower(r.source_text) CONTAINS 'liquidity'\nWITH tc, collect({citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page})[0..15] AS target_risks\nOPTIONAL MATCH (peer:Company {is_peer:true})-[:COMPETES_WITH]->(tc)\nOPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)\nWHERE toLower(pr.description) CONTAINS 'liquidity' OR toLower(pr.name) CONTAINS 'liquidity' OR toLower(pr.why) CONTAINS 'liquidity' OR toLower(pr.source_text) CONTAINS 'liquidity'\nWITH tc, target_risks, peer, collect({citation_id: pr.citation_id, risk_id: pr.risk_id, name: pr.name, description: pr.description, why: pr.why, source_text: pr.source_text, document_url: pr.document_url, section_title: pr.section_title, source_page: pr.source_page})[0..10] AS peer_risks\nRETURN tc.name AS target, target_risks, peer.name AS peer, peer_risks\nLIMIT 20"
+    },
+    {
+      "strategy": "metrics",
+      "cypher": "MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)\nWHERE mc.name = 'Liquidity'\nWITH tc, mc, collect({citation_id: m.citation_id, name: m.name, label: m.label, gaap_concept: m.gaap_concept, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag, source_page: m.source_page, section_title: m.section_title, source_text: m.source_text})[0..20] AS target_metrics\nOPTIONAL MATCH (peer:Company {is_peer:true})-[:COMPETES_WITH]->(tc)\nOPTIONAL MATCH (peer)-[:HAS_METRIC_CATEGORY]->(pmc:MetricCategory {name: mc.name})-[:HAS_METRIC]->(pm:Metric)\nWITH tc, mc, target_metrics, peer, collect({citation_id: pm.citation_id, name: pm.name, label: pm.label, gaap_concept: pm.gaap_concept, value: pm.value, unit: pm.unit, year: pm.year, metric_type: pm.metric_type, xbrl_tag: pm.xbrl_tag, source_url: pm.source_url})[0..15] AS peer_metrics\nRETURN tc.name AS target, mc.name AS category, target_metrics, peer.name AS peer, peer_metrics\nLIMIT 20"
+    }
+  ],
+  "record_count": 6,
+  "results": [
+    {
+      "target": "Minerals Technologies Inc.",
+      "target_risks": [
+        {
+          "source_page": 13,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0001",
+          "name": "Worldwide general economic, business, and industry conditions",
+          "why": "These conditions reduce demand for products, increase costs due to inflation, hinder customer financing, and may prevent the Company from passing on rising raw material or energy costs, directly impacting revenues and cash flows.",
+          "description": "Global economic conditions, including declining consumer confidence, volatile raw material prices, credit market instability, high unemployment, and fluctuating interest and exchange rates, may adversely affect the Company\u2019s results.",
+          "document_url": null
+        },
+        {
+          "source_page": 13,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0002",
+          "name": "Cyclical nature of industries served",
+          "why": "Economic slowdowns cause customers to reduce capital expenditures, defer projects, or face liquidity issues, leading to lower sales, increased bad debt, and potential asset impairments, especially in sectors like metalcasting and paper where demand is declining.",
+          "description": "Demand for the Company\u2019s products is tied to cyclical industries such as metalcasting, steel, paper, commercial construction, infrastructure, oil & gas, and automotive markets.",
+          "document_url": null
+        },
+        {
+          "source_page": 13,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0003",
+          "name": "Declining demand in the paper industry",
+          "why": "Reduced demand has already caused mill closures and conversions in both regions, and the Company expects paper consumption to remain flat, directly threatening revenue from this key product line.",
+          "description": "Production levels for uncoated freesheet paper in North America and Europe are projected to continue decreasing, reducing demand for the Specialty Additives product line.",
+          "document_url": null
+        },
+        {
+          "source_page": 13,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0004",
+          "name": "Pricing pressure and inability to pass on cost increases",
+          "why": "Cost increases in raw materials or energy may not be fully recoverable through price adjustments, leading to lower profitability and adverse effects on financial condition and cash flows.",
+          "description": "The Company may face pricing pressure or be unable to pass rising raw material or energy costs to customers, reducing revenues and margins.",
+          "document_url": null
+        },
+        {
+          "source_page": 13,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0005",
+          "name": "Pension and postretirement benefit plan expenses",
+          "why": "Actuarial valuations for these plans depend on discount rates and expected returns on plan assets, which are sensitive to economic conditions; adverse market changes can significantly raise expense recognition.",
+          "description": "Changes in financial market conditions may increase the Company\u2019s recorded expenses for pension and other postretirement benefit plans.",
+          "document_url": null
+        },
+        {
+          "source_page": 13,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0006",
+          "name": "Supplier and customer financial distress",
+          "why": "Economic hardship may cause suppliers to fail to fulfill obligations or customers to delay payments, increasing accounts receivable aging and bad debt exposure, potentially triggering asset impairments.",
+          "description": "Suppliers or customers may experience financial difficulties, disrupting supply chains or leading to uncollectible receivables.",
+          "document_url": null
+        },
+        {
+          "source_page": 14,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0007",
+          "name": "Competitive industries",
+          "why": "Some competitors have greater financial and other resources, better ability to withstand economic downturns, and greater operating flexibility, leading to price pressure that could reduce profit margins.",
+          "description": "The Company operates in very competitive industries with competitors having greater financial resources, potentially reducing profit margins.",
+          "document_url": null
+        },
+        {
+          "source_page": 14,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0008",
+          "name": "Competition from alternative products and lower-cost countries",
+          "why": "Competitors in countries like China and India may offer lower prices, and alternative products may replace the Company\u2019s offerings, increasing competitive pressure.",
+          "description": "The Company faces competition from alternative products and competitors in lower-cost production countries like China and India.",
+          "document_url": null
+        },
+        {
+          "source_page": 14,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0009",
+          "name": "Consolidation in customer industries",
+          "why": "Consolidations concentrate purchasing power in fewer manufacturers, enabling them to increase pressure on suppliers, and may lead to mill closures reducing demand for the Company\u2019s products.",
+          "description": "Consolidation in paper, foundry, and steel industries could reduce sales and increase pressure on suppliers like the Company.",
+          "document_url": null
+        },
+        {
+          "source_page": 14,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0010",
+          "name": "Failure to renew or extend long-term sales contracts",
+          "why": "Sales of calcium carbonate to paper customers rely on long-term evergreen agreements; failure to renew them on favorable terms could reduce sales and impair satellite plant assets.",
+          "description": "Failure to renew long-term contracts for satellite operations could substantially harm sales and lead to asset impairments.",
+          "document_url": null
+        },
+        {
+          "source_page": 14,
+          "section_title": "Item 1A.\u00a0 Risk Factors",
+          "risk_id": null,
+          "citation_id": "TARGET_R0011",
+          "name": "Servicing the Company\u2019s debt",
+          "why": "The Company must make substantial interest payments on debt, including SOFR-based rates that may rise, and may lack sufficient cash flow to meet obligations without costly alternatives.",
+          "description": "Servicing $971.3 million of debt requires significant cash, reducing flexibility and increasing vulnerability to economic conditions.",
+          "document_url": null
+        }
+      ],
+      "peer": "Global Gas Corp",
+      "peer_risks": [
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001817232_risk_72",
+          "citation_id": "PEER_R0072",
+          "name": "Restrictions on Holdings' distributions limiting liquidity",
+          "why": "If Holdings is restricted by law, regulation, or financing agreements from making distributions, Global Gas Corp may be unable to obtain needed funds, directly impairing its liquidity and financial condition.",
+          "description": "Legal, regulatory, or financing restrictions on Holdings may prevent it from distributing funds, materially affecting Global Gas Corp's liquidity and financial condition.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001817232_risk_107",
+          "citation_id": "PEER_R0107",
+          "name": "Inability to service debt due to uncertain future cash flow",
+          "why": "Ability to satisfy debt obligations depends on future performance, which is impacted by uncontrollable factors like economic conditions and mineral prices, making cash flow uncertain.",
+          "description": "The company may lack sufficient cash flow to pay interest on debt or refinance obligations due to volatile market and operational factors.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001817232_risk_108",
+          "citation_id": "PEER_R0108",
+          "name": "Risk of asset sales to generate liquidity",
+          "why": "If the company cannot raise cash or refinance debt, it may be required to sell assets to generate liquidity, which could have a material adverse effect on business and financial results.",
+          "description": "Failure to secure financing may force asset sales, which could materially harm business, operations, and financial results.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001817232_risk_109",
+          "citation_id": "PEER_R0109",
+          "name": "Delay or reduction in operations due to financing failure",
+          "why": "If additional financing is not obtained on a timely basis, the company could be forced to reduce or delay its proposed operations.",
+          "description": "Failure to obtain timely financing may force the company to reduce or delay proposed operational programs.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001817232_risk_111",
+          "citation_id": "PEER_R0111",
+          "name": "Limited liquidity and trading restrictions due to OTCQB quotation",
+          "why": "The paragraph lists specific consequences: limited market quotations, reduced liquidity, penny stock designation triggering Rule 419 requirements, and reduced trading activity.",
+          "description": "Global Gas' securities are quoted on OTCQB instead of a national exchange, limiting trading ability and subjecting them to additional restrictions.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001817232_risk_112",
+          "citation_id": "PEER_R0112",
+          "name": "Loss of covered securities status leading to state-level regulation",
+          "why": "The text explicitly states that under the National Securities Markets Improvement Act of 1996, Global Gas' securities no longer qualify as covered securities, thus triggering state-by-state regulatory requirements.",
+          "description": "Global Gas' securities no longer qualify as covered securities, making the company subject to regulation in every state where securities are offered.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm"
+        }
+      ],
+      "_strategy": "risks"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "target_risks": [],
+      "peer": "Arcadium Lithium plc",
+      "peer_risks": [
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_22",
+          "citation_id": "PEER_R0140",
+          "name": "Climate change and severe weather may materially harm business",
+          "why": "Unpredictable climate impacts may damage facilities, interrupt supply chains, or increase operational costs without adequate insurance coverage.",
+          "description": "Severe weather events and climate change effects are unpredictable and could materially adversely affect Arcadium\u2019s business.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_30",
+          "citation_id": "PEER_R0148",
+          "name": "Restrictions under Rio Tinto Transaction Agreement may constrain business activities and prevent pursuit of attractive opportunities",
+          "why": "The text states that restrictions may prevent pursuing otherwise attractive business opportunities, acquisitions, investments, or changes to business prior to closing, potentially causing adverse effects.",
+          "description": "The Rio Tinto Transaction Agreement restricts business conduct to ordinary course, preventing strategic actions like acquisitions or investments.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_32",
+          "citation_id": "PEER_R0150",
+          "name": "Governmental injunctions or laws may prevent consummation of the Rio Tinto Transaction",
+          "why": "The text explicitly states that one condition to closing is no governmental entity having enacted any law or issued any order restraining or prohibiting the transaction.",
+          "description": "A governmental entity enacting a law or issuing an order restraining the transaction could block its completion.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_19",
+          "citation_id": "PEER_R0137",
+          "name": "Additional funding may be difficult to access",
+          "why": "Tight credit conditions or market volatility could prevent Arcadium from securing necessary financing on favorable terms or at all.",
+          "description": "Operations and expansion may require additional capital, but accessing global capital and credit markets may be challenging.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_20",
+          "citation_id": "PEER_R0138",
+          "name": "Operations in Argentina expose Arcadium to political, financial, and operational risks",
+          "why": "Political instability, currency controls, or regulatory changes in Argentina could disrupt operations or increase costs.",
+          "description": "Arcadium\u2019s lithium extraction and production in Argentina involve specific political, financial, and operational risks.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_21",
+          "citation_id": "PEER_R0139",
+          "name": "Natural disasters and catastrophic events may disrupt production",
+          "why": "These events can halt operations, damage infrastructure, and lead to uninsured losses, impacting revenue and cash flow.",
+          "description": "Severe weather, natural disasters, epidemics, or pandemics could disrupt production and may not be fully covered by insurance.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_29",
+          "citation_id": "PEER_R0147",
+          "name": "Data breaches and cyber incidents could harm our reputation and result in legal and financial liabilities",
+          "why": "The paragraph explicitly states that such incidents could harm reputation and result in legal and financial liabilities, without qualification or condition.",
+          "description": "Cyber incidents or data breaches may damage the company's reputation and lead to legal and financial liabilities.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_33",
+          "citation_id": "PEER_R0151",
+          "name": "Restrictions on non-ordinary course capital expenditures and capital raising under Rio Tinto Transaction Agreement",
+          "why": "The text specifies restrictions on non-ordinary course capital expenditures, issuing equity or debt, assuming additional debt, repurchasing equity, and acquisition/disposition transactions without Rio Tinto\u2019s consent.",
+          "description": "The company is restricted from non-ordinary course capital spending and raising capital without Rio Tinto\u2019s consent during the pending transaction.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_31",
+          "citation_id": "PEER_R0149",
+          "name": "Shareholder class or derivative actions may delay or prevent the Rio Tinto Transaction",
+          "why": "The text notes such lawsuits can be costly, divert management resources, and if successful, may result in an injunction prohibiting consummation of the transaction.",
+          "description": "Litigation from shareholders could incur substantial costs and delay or block completion of the Rio Tinto Transaction.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0001977303_risk_34",
+          "citation_id": "PEER_R0152",
+          "name": "Inability to secure financing may threaten going concern status and lead to loss of shareholder investment",
+          "why": "The company had negative cash flows of $176M (operating) and $445.3M (investing) in 2024, and its ability to fund expansion depends on securing financing under restrictive conditions; failure could cause stockholders to lose their entire investment.",
+          "description": "Failure to obtain necessary financing could prevent funding operations and expansion, risking the company\u2019s ability to continue as a going concern.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm"
+        }
+      ],
+      "_strategy": "risks"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "target_risks": [],
+      "peer": "NL INDUSTRIES INC",
+      "peer_risks": [
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_41",
+          "citation_id": "PEER_R0209",
+          "name": "Climate change regulations increasing energy costs or requiring emissions permits",
+          "why": "Laws requiring emissions reporting, carbon pricing, or renewable targets could increase energy costs, and if these cannot be passed to customers, operating income and liquidity may decline.",
+          "description": "GHG emissions regulations and energy-related laws could raise production costs for Kronos and CompX due to their high energy use.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_14",
+          "citation_id": "PEER_R0182",
+          "name": "Failure of new product features to achieve same success as existing products",
+          "why": "CompX sometimes bears full development costs for custom innovations, and if customers reject or abandon them, it may not recover those costs.",
+          "description": "CompX may not recover development costs if customers reject or abandon custom product innovations.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_29",
+          "citation_id": "PEER_R0197",
+          "name": "Variable interest rate exposure on debt",
+          "why": "Indebtedness under Kronos\u2019 Global Revolver accrues interest at variable rates, and rising market rates could increase costs even if borrowing amounts stay the same.",
+          "description": "Kronos' debt accrues interest at variable rates, so rising market rates increase borrowing costs, harming financial condition, operations, and cash flows.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_33",
+          "citation_id": "PEER_R0201",
+          "name": "Legal liability from lead pigment litigation",
+          "why": "The company is named in lawsuits seeking damages for personal injury, property damage, and governmental expenditures from lead paint use, with one settlement already recognized and future liabilities possible.",
+          "description": "NL Industries faces potential material liabilities from lawsuits related to lead-based paint, including abatement, health, and remediation costs.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_31",
+          "citation_id": "PEER_R0199",
+          "name": "Failure to refinance debt on favorable terms",
+          "why": "Kronos may need to refinance debt before maturity, but may not be able to do so in a timely manner on favorable terms, if at all, in the current credit markets.",
+          "description": "Kronos may be unable to refinance debt in a timely manner or on favorable terms due to credit market conditions, threatening liquidity and dividend payments.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_34",
+          "citation_id": "PEER_R0202",
+          "name": "Environmental remediation costs from former operations",
+          "why": "Certain former properties are subject to litigation or investigations under environmental laws seeking cleanup costs, damages for injury to natural resources, and personal injury claims, with estimates difficult to determine.",
+          "description": "NL Industries may incur material costs for environmental cleanup at former facilities due to ongoing litigation and regulatory proceedings.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_1",
+          "citation_id": "PEER_R0169",
+          "name": "Demand for Kronos' TiO2 products linked to economic conditions",
+          "why": "In 2024, 90% of Kronos' sales came from TiO2, and demand for TiO2 historically correlates with economic conditions; regional or global events can negatively impact demand, reducing earnings or causing operating losses.",
+          "description": "Kronos' sales and profitability depend on TiO2 demand, which is tied to global, regional, and local GDP and discretionary spending, which can decline due to economic or geopolitical events.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_2",
+          "citation_id": "PEER_R0170",
+          "name": "Cyclical pricing in the global TiO2 industry",
+          "why": "Historically, TiO2 markets alternate between increasing and decreasing demand; selling prices and profit margins rise with demand but fall during downturns, and customer inventory behavior (accelerating or deferring purchases) further impacts revenue stability.",
+          "description": "TiO2 pricing is cyclical and sensitive to global economic conditions, causing fluctuations in selling prices and profit margins that directly affect Kronos' earnings and cash flows.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_3",
+          "citation_id": "PEER_R0171",
+          "name": "Limited capacity expansion without additional investment",
+          "why": "Kronos' ability to expand capacity without new investment is limited, so its profitability becomes even more reliant on product pricing, which is subject to market cycles and competition.",
+          "description": "Kronos may be unable to increase TiO2 production capacity without costly greenfield or brownfield investments, making profitability more dependent on volatile selling prices.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        },
+        {
+          "source_page": null,
+          "section_title": null,
+          "risk_id": "0000072162_risk_15",
+          "citation_id": "PEER_R0183",
+          "name": "Higher costs or unavailability of raw materials impacting financial results",
+          "why": "These raw materials are commodities subject to significant price fluctuations due to global supply/demand and speculative activity, and unanticipated price increases can occur.",
+          "description": "Fluctuations in prices or shortages of raw materials like zinc, brass, stainless steel, and aluminum could negatively affect CompX's financial results.",
+          "document_url": "https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm"
+        }
+      ],
+      "_strategy": "risks"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "category": "Liquidity",
+      "target_metrics": [
+        {
+          "source_page": 45,
+          "section_title": "Item 7.\u00a0 Management\u2019s Discussion and Analysis of Financial\n    Condition and Results of Operations",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Commitments and Contingencies",
+          "citation_id": "TARGET_M0020",
+          "name": "uncommitted short-term bank credit lines (2024)",
+          "xbrl_tag": null,
+          "metric_type": "uncommitted short-term bank credit lines",
+          "label": null,
+          "value": "24.3"
+        },
+        {
+          "source_page": 59,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Cash and Cash Equivalents",
+          "citation_id": "TARGET_M0023",
+          "name": "Cash and cash equivalents (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Cash and cash equivalents",
+          "label": null,
+          "value": "333.1"
+        },
+        {
+          "source_page": 62,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Operating Cash Flow",
+          "citation_id": "TARGET_M0031",
+          "name": "Net cash provided by operating activities (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Net cash provided by operating activities",
+          "label": null,
+          "value": "236.4"
+        },
+        {
+          "source_page": 64,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Short-term Investments",
+          "citation_id": "TARGET_M0035",
+          "name": "Short-term investments amounted to $ 4.0 million (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Short-term investments amounted to $ 4.0 million",
+          "label": null,
+          "value": "4.0"
+        },
+        {
+          "source_page": 76,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Income Taxes Paid",
+          "citation_id": "TARGET_M0057",
+          "name": "Net cash paid for income taxes (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Net cash paid for income taxes",
+          "label": null,
+          "value": "70.8"
+        },
+        {
+          "source_page": 76,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Inventories",
+          "citation_id": "TARGET_M0058",
+          "name": "Total inventories (2024)",
+          "xbrl_tag": null,
+          "metric_type": "Total inventories",
+          "label": null,
+          "value": "342.1"
+        },
+        {
+          "source_page": 86,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2023",
+          "gaap_concept": "Defined Benefit Pension Plan Assets - Level 3",
+          "citation_id": "TARGET_M0070",
+          "name": "Ending balance at December 31, 2023 (2023)",
+          "xbrl_tag": null,
+          "metric_type": "Ending balance at December 31, 2023",
+          "label": null,
+          "value": "7.1"
+        },
+        {
+          "source_page": 86,
+          "section_title": "Item 15.\u00a0 Exhibits and Financial Statement Schedules",
+          "unit": "$ million",
+          "year": "2025",
+          "gaap_concept": "Pension Plan Contributions",
+          "citation_id": "TARGET_M0072",
+          "name": "Contributions (2025)",
+          "xbrl_tag": null,
+          "metric_type": "Contributions",
+          "label": null,
+          "value": "11.0"
+        }
+      ],
+      "peer": "Global Gas Corp",
+      "peer_metrics": [
+        {
+          "unit": "$ million",
+          "year": "2025",
+          "gaap_concept": "Short-term Debt",
+          "citation_id": "PEER_M0112",
+          "name": "Short-term Debt (2025)",
+          "xbrl_tag": "ShortTermBorrowings",
+          "metric_type": "Short-term investments amounted to $ 4.0 million",
+          "label": "Short-term Debt",
+          "value": "0.17",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Assets",
+          "citation_id": "PEER_M0114",
+          "name": "Assets (2024)",
+          "xbrl_tag": "Assets",
+          "metric_type": "Ending balance at December 31, 2024",
+          "label": "Assets",
+          "value": "0.2647",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Cash and Cash Equivalents, at Carrying Value",
+          "citation_id": "PEER_M0110",
+          "name": "Cash and Cash Equivalents, at Carrying Value (2024)",
+          "xbrl_tag": "CashAndCashEquivalentsAtCarryingValue",
+          "metric_type": "Cash and cash equivalents",
+          "label": "Cash and Cash Equivalents, at Carrying Value",
+          "value": "0.1141",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Net Cash Provided by (Used in) Operating Activities",
+          "citation_id": "PEER_M0111",
+          "name": "Net Cash Provided by (Used in) Operating Activities (2024)",
+          "xbrl_tag": "NetCashProvidedByUsedInOperatingActivities",
+          "metric_type": "Net cash provided by operating activities",
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "value": "-1.344",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001817232.json"
+        }
+      ],
+      "_strategy": "metrics"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "category": "Liquidity",
+      "target_metrics": [],
+      "peer": "Arcadium Lithium plc",
+      "peer_metrics": [
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Net Cash Provided by (Used in) Operating Activities",
+          "citation_id": "PEER_M0069",
+          "name": "Net Cash Provided by (Used in) Operating Activities (2024)",
+          "xbrl_tag": "NetCashProvidedByUsedInOperatingActivities",
+          "metric_type": "Net cash provided by operating activities",
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "value": "-176.0",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Commitments and Contingencies",
+          "citation_id": "PEER_M0067",
+          "name": "Commitments and Contingencies (2024)",
+          "xbrl_tag": "CommitmentsAndContingencies",
+          "metric_type": "uncommitted short-term bank credit lines",
+          "label": "Commitments and Contingencies",
+          "value": "0.0",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Income Taxes Receivable",
+          "citation_id": "PEER_M0071",
+          "name": "Income Taxes Receivable (2024)",
+          "xbrl_tag": "IncomeTaxReceivable",
+          "metric_type": "Net cash paid for income taxes",
+          "label": "Income Taxes Receivable",
+          "value": "82.2",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Assets for Plan Benefits, Defined Benefit Plan",
+          "citation_id": "PEER_M0075",
+          "name": "Assets for Plan Benefits, Defined Benefit Plan (2024)",
+          "xbrl_tag": "DefinedBenefitPlanAssetsForPlanBenefitsNoncurrent",
+          "metric_type": "Contributions",
+          "label": "Assets for Plan Benefits, Defined Benefit Plan",
+          "value": "2.3",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Short-term Lease, Cost",
+          "citation_id": "PEER_M0070",
+          "name": "Short-term Lease, Cost (2024)",
+          "xbrl_tag": "ShortTermLeaseCost",
+          "metric_type": "Short-term investments amounted to $ 4.0 million",
+          "label": "Short-term Lease, Cost",
+          "value": "0.5",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Cash and Cash Equivalents, at Carrying Value",
+          "citation_id": "PEER_M0068",
+          "name": "Cash and Cash Equivalents, at Carrying Value (2024)",
+          "xbrl_tag": "CashAndCashEquivalentsAtCarryingValue",
+          "metric_type": "Cash and cash equivalents",
+          "label": "Cash and Cash Equivalents, at Carrying Value",
+          "value": "93.2",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Inventory, Net",
+          "citation_id": "PEER_M0072",
+          "name": "Inventory, Net (2024)",
+          "xbrl_tag": "InventoryNet",
+          "metric_type": "Total inventories",
+          "label": "Inventory, Net",
+          "value": "417.6",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001977303.json"
+        }
+      ],
+      "_strategy": "metrics"
+    },
+    {
+      "target": "Minerals Technologies Inc.",
+      "category": "Liquidity",
+      "target_metrics": [],
+      "peer": "NL INDUSTRIES INC",
+      "peer_metrics": [
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Accrual for Environmental Loss Contingencies",
+          "citation_id": "PEER_M0164",
+          "name": "Accrual for Environmental Loss Contingencies (2024)",
+          "xbrl_tag": "AccrualForEnvironmentalLossContingencies",
+          "metric_type": "uncommitted short-term bank credit lines",
+          "label": "Accrual for Environmental Loss Contingencies",
+          "value": "69.278",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Cash and Cash Equivalents, at Carrying Value",
+          "citation_id": "PEER_M0165",
+          "name": "Cash and Cash Equivalents, at Carrying Value (2024)",
+          "xbrl_tag": "CashAndCashEquivalentsAtCarryingValue",
+          "metric_type": "Cash and cash equivalents",
+          "label": "Cash and Cash Equivalents, at Carrying Value",
+          "value": "163.154",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Net Cash Provided by (Used in) Operating Activities",
+          "citation_id": "PEER_M0166",
+          "name": "Net Cash Provided by (Used in) Operating Activities (2024)",
+          "xbrl_tag": "NetCashProvidedByUsedInOperatingActivities",
+          "metric_type": "Net cash provided by operating activities",
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "value": "25.574",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Proceeds from Sale, Maturity and Collection of Short-term Investments",
+          "citation_id": "PEER_M0167",
+          "name": "Proceeds from Sale, Maturity and Collection of Short-term Investments (2024)",
+          "xbrl_tag": "ProceedsFromSaleMaturityAndCollectionOfShorttermInvestments",
+          "metric_type": "Short-term investments amounted to $ 4.0 million",
+          "label": "Proceeds from Sale, Maturity and Collection of Short-term Investments",
+          "value": "54.0",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Inventory, Net",
+          "citation_id": "PEER_M0168",
+          "name": "Inventory, Net (2024)",
+          "xbrl_tag": "InventoryNet",
+          "metric_type": "Total inventories",
+          "label": "Inventory, Net",
+          "value": "28.366",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        },
+        {
+          "unit": "$ million",
+          "year": "2024",
+          "gaap_concept": "Assets for Plan Benefits, Defined Benefit Plan",
+          "citation_id": "PEER_M0170",
+          "name": "Assets for Plan Benefits, Defined Benefit Plan (2024)",
+          "xbrl_tag": "DefinedBenefitPlanAssetsForPlanBenefitsNoncurrent",
+          "metric_type": "Ending balance at December 31, 2024",
+          "label": "Assets for Plan Benefits, Defined Benefit Plan",
+          "value": "0.354",
+          "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000072162.json"
+        }
+      ],
+      "_strategy": "metrics"
+    }
+  ]
+}

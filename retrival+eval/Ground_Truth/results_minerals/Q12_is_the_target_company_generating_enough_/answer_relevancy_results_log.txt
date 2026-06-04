@@ -1,0 +1,43 @@
+======================================================================
+Answer Relevancy — True RAGAS Evaluation
+======================================================================
+
+[1/5] Loading inputs
+  Question    : Is the target company generating enough cash flow to cover its debt obligations?
+  Answer chars: 1448
+
+[2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
+  Region      : us-east-1
+  LLM model   : us.meta.llama3-3-70b-instruct-v1:0
+  Embed model : all-MiniLM-L6-v2  (local, sentence-transformers)
+
+[3/5] Checking for non-committal answer
+  Non-committal: False
+
+[4/5] Generating 5 questions from the answer
+  Generated 5 question(s):
+    1. How does Minerals Technologies Inc.'s operating cash flow compare to its debt obligations and interest expenses?
+    2. What does the comparison of operating cash flows between Minerals Technologies Inc. and its peers reveal about their debt servicing capacities?
+    3. Is Minerals Technologies Inc. at risk of defaulting on its debt obligations based on its current financial situation?
+    4. How does Minerals Technologies Inc.'s liquidity position compare to that of its peers in the industry?
+    5. What can be inferred about the financial health of Minerals Technologies Inc. relative to its peers based on their operating cash flows?
+
+[5/5] Embedding questions and computing cosine similarities
+    Q1 similarity: 0.8076  |  How does Minerals Technologies Inc.'s operating cash flow compare to i
+    Q2 similarity: 0.7094  |  What does the comparison of operating cash flows between Minerals Tech
+    Q3 similarity: 0.6521  |  Is Minerals Technologies Inc. at risk of defaulting on its debt obliga
+    Q4 similarity: 0.3867  |  How does Minerals Technologies Inc.'s liquidity position compare to th
+    Q5 similarity: 0.6044  |  What can be inferred about the financial health of Minerals Technologi
+
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q12_is_the_target_company_generating_enough_\answer_relevancy_results.csv
+
+──────────────────────────────────────────────────────────────────────
+Results
+──────────────────────────────────────────────────────────────────────
+  Individual similarities : [0.8076, 0.7094, 0.6521, 0.3867, 0.6044]
+  Mean similarity         : 0.7230
+  Answer Relevancy Score  : 0.7230
+  Quality gate            : PASS  (threshold: 0.70)
+======================================================================
+Answer Relevancy Score : 0.7230  [PASS]
+======================================================================

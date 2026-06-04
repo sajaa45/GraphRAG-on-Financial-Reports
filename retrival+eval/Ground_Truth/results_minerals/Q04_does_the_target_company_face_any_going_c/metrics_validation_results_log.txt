@@ -1,0 +1,24 @@
+======================================================================
+Peer XBRL Metrics Ground Truth Validation (SEC EDGAR)
+======================================================================
+
+[1/4] Loading extraction results from C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q04_does_the_target_company_face_any_going_c\extraction_result.json
+  Question: Does the target company face any going-concern or solvency risks compared to its peers?
+  Peer metrics with xbrl_tag: 54
+
+[2/4] Fetching ground truth from SEC EDGAR (54 metrics)
+
+[3/4] Results
+  Total        : 54
+  Matches      : 50
+  Mismatches   : 4
+  Not found    : 0
+  Errors       : 0
+  Accuracy     : 92.6%
+
+[4/4] Writing results to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q04_does_the_target_company_face_any_going_c\metrics_validation_results.csv
+  ✓ Saved to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\results\Q04_does_the_target_company_face_any_going_c\metrics_validation_results.csv
+
+======================================================================
+Validation Complete — Accuracy: 92.6%
+======================================================================

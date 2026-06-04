@@ -1,0 +1,7 @@
+**Sources:**
+- Minerals Technologies Inc.: null
+- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm
+- Arcadium Lithium plc: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm
+- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm
+
+Minerals Technologies Inc. has $6.5 million in current maturities of long-term debt and $5.1 million in short-term debt as of 2024 [CITE:TARGET_M0025][CITE:TARGET_M0024]. Its total long-term debt is $1.9 billion [CITE:TARGET_M0019]. In comparison, Arcadium Lithium plc has $288.9 million in current maturities of long-term debt [CITE:PEER_M0040] and $960.6 million in long-term debt [CITE:PEER_M0066]. NL Industries Inc. does not provide explicit debt maturity figures in the data [CITE:PEER_R0192][CITE:PEER_R0196]. Global Gas Corp reports $0.17 million in short-term debt for 2025 [CITE:PEER_M0112] and $0.104 million in unsecured debt for 2024 [CITE:PEER_M0109], but no long-term debt maturity details. Minerals Technologies Inc. has a significantly larger long-term debt burden than Global Gas Corp and NL Industries Inc., but a smaller total debt than Arcadium Lithium plc. The company’s debt maturity profile is concentrated in long-term obligations, with modest near-term maturities. No peer provides a comparable full maturity schedule for direct comparison.
