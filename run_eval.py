@@ -17,30 +17,7 @@ import sys
 
 # ── Questions to evaluate ────────────────────────────────────────────────────
 QUESTIONS = [
-    # ── Risk-focused ──────────────────────────────────────────────────────
-    "What are the main operational and business risks facing the target company?",
-    "What cybersecurity or technology risks does the target company disclose and do its peers face similar threats?",
-    "What regulatory and legal risks could materially impact the target company's business?",
-    "Does the target company face any going-concern or solvency risks compared to its peers?",
-    "Which risk categories appear exclusively in the target company's filings but not in any peer filing?",
-
-    # ── Metrics-focused ───────────────────────────────────────────────────
-    "How does the target company's liquidity position compare to its peers?",
-    "What is the target company's leverage ratio and how does it rank among its peers?",
-    "How does the target company's interest coverage compare to its peers?",
-    "What are the target company's revenue and net income trends and how do they compare to peers?",
-    "How does the target company's debt maturity profile compare to its peers?",
-
-    # ── Cross-domain (risks + metrics) ────────────────────────────────────
-    "Does the target company carry more financial risk relative to its operating performance than its peers?",
-    "Is the target company generating enough cash flow to cover its debt obligations?",
-    "What leverage and debt structure risks does the target company face?",
-    "How exposed is the target company to interest rate risk compared to its peers?",
-
-    # ── Synthesis ─────────────────────────────────────────────────────────
-    "Which company in the peer group represents the strongest overall credit profile?",
-    "Based on its risk disclosures and financial metrics, what is the target company's key credit weakness?",
-]
+    "Is Minerals Technologies Inc. achieving the best profitability among its peers?"]
 # ─────────────────────────────────────────────────────────────────────────────
 
 BASE        = os.path.dirname(os.path.abspath(__file__))
@@ -173,8 +150,15 @@ def run(cmd: list, label: str) -> int:
     env = os.environ.copy()
     env["PYTHONIOENCODING"] = "utf-8"
     result = subprocess.run(cmd, cwd=BASE, capture_output=True, env=env)
-    status = "OK" if result.returncode == 0 else f"FAILED (code {result.returncode})"
-    print(f"\r  [{label}] {status:<30}")
+    if result.returncode == 0:
+        print(f"\r  [{label}] OK{' '*30}")
+    else:
+        print(f"\r  [{label}] FAILED (code {result.returncode})")
+        err = (result.stderr or result.stdout or b"").decode("utf-8", errors="replace").strip()
+        if err:
+            # Show last 5 lines — usually where the exception is
+            for line in err.splitlines()[-5:]:
+                print(f"      {line}")
     return result.returncode
 
 

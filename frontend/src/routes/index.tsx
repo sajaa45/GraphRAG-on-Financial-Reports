@@ -1,25 +1,25 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import {
-  Upload,
-  Play,
-  FileText,
-  Settings,
-  RotateCcw,
-  AlertCircle,
-  Send,
-  ShieldCheck,
-  Sparkles,
-  Building2,
-  ChevronDown,
-} from "lucide-react";
 import { StepItem, type StepData, type StepStatus } from "@/components/StepItem";
 import {
+  DEFAULT_BACKEND_URL,
   PIPELINE_STEPS,
   getBackendUrl,
   setBackendUrl,
-  DEFAULT_BACKEND_URL,
 } from "@/lib/pipeline-config";
+import { createFileRoute } from "@tanstack/react-router";
+import {
+  AlertCircle,
+  Building2,
+  ChevronDown,
+  FileText,
+  Play,
+  RotateCcw,
+  Send,
+  Settings,
+  ShieldCheck,
+  Sparkles,
+  Upload,
+} from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -32,9 +32,8 @@ interface CitationInfo {
   company: string;
   role: "target" | "peer";
   document_url: string | null;
-  source_page?: number | string | null;
-  section_title?: string | null;
   summary: string;
+  page?: number | string | null;
 }
 
 interface ChatMessage {
@@ -58,8 +57,7 @@ interface EvaluationResult {
 const EVAL_TESTS: { value: string; label: string }[] = [
   { value: "answer_relevancy",           label: "Answer Relevancy" },
   { value: "context_precision",          label: "Context Precision" },
-  { value: "context_recall",             label: "Context Recall" },
-  { value: "faithfulness",               label: "Faithfulness" },
+  { value: "answer_source_traceability", label: "Source Traceability" },
   { value: "target_validation",          label: "Target Extraction" },
   { value: "risk_peers_validation",      label: "Peer Risk Validation" },
   { value: "overall_score",              label: "Overall Score" },
@@ -159,7 +157,6 @@ function Index() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [question, setQuestion] = useState("");
   const [asking, setAsking] = useState(false);
-  const [reasoningEnabled, setReasoningEnabled] = useState(false);
   const phase2Ref = useRef<HTMLDivElement>(null);
 
   const resetSteps = useCallback(() => {
@@ -286,10 +283,10 @@ function Index() {
     setSteps((prev) =>
       prev.map((s) => ({
         ...s,
-        status:     s.id < startFromStep ? s.status     : ("pending" as StepStatus),
-        logs:       s.id < startFromStep ? s.logs       : [],
-        summary:    s.id < startFromStep ? s.summary    : undefined,
-        durationMs: s.id < startFromStep ? s.durationMs : undefined,
+        status:     Number(s.id) < startFromStep ? s.status     : ("pending" as StepStatus),
+        logs:       Number(s.id) < startFromStep ? s.logs       : [],
+        summary:    Number(s.id) < startFromStep ? s.summary    : undefined,
+        durationMs: Number(s.id) < startFromStep ? s.durationMs : undefined,
       })),
     );
     stepStartRef.current = {};
@@ -374,7 +371,7 @@ function Index() {
       const r = await fetch(`${backendUrl}/qa/run`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, reasoning: reasoningEnabled }),
+        body: JSON.stringify({ question: q }),
       });
       if (r.ok) {
         const data = await r.json();
@@ -403,7 +400,7 @@ function Index() {
       ),
     );
     setAsking(false);
-  }, [question, asking, backendUrl, reasoningEnabled]);
+  }, [question, asking, backendUrl]);
 
   // -------- Evaluation (per-message, user-chosen test type) --------
   const runEvaluation = useCallback(
@@ -477,7 +474,7 @@ function Index() {
             </div>
             <div className="flex flex-col leading-tight">
               <span className="font-sans text-lg italic tracking-tight text-foreground">
-                Verdant
+                Performance Analysis
               </span>
               <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
                 KYC Intelligence
@@ -540,7 +537,7 @@ function Index() {
             Know who you're <em className="text-[var(--accent)]">really</em> dealing with.
           </h1>
           <p className="mt-5 text-base text-muted-foreground max-w-xl leading-relaxed">
-            Upload a counterparty filing and Verdant maps its financial profile, peers, and risk surface into a queryable knowledge graph — with every answer auditable down to its source.
+            Turn complex financial reports into a searchable knowledge base. Ask questions in plain language and uncover insights, trends, and risks with source-backed answers.
           </p>
         </header>
 
@@ -549,7 +546,7 @@ function Index() {
           <PhaseHeader
             kicker="01 — Ingestion"
             title="Counterparty Filing"
-            subtitle="Drop a 10-K, annual report, or registration document. Verdant parses it into structured entities and a graph."
+            subtitle="Drop a 10-K, annual report, or registration document. The system will organize its key financial information, entities, and relationships into an interactive knowledge base."
             badge={phase1Badge}
           />
 
@@ -740,7 +737,12 @@ function Index() {
                   </div>
                 )}
                 {messages.map((m) => (
-                  <MessageBubble key={m.id} message={m} onEvaluate={(testType) => runEvaluation(m.id, testType)} />
+                  <MessageBubble
+                    key={m.id}
+                    message={m}
+                    onEvaluate={(testType) => runEvaluation(m.id, testType)}
+                    sourceFileName={file?.name ?? previousFilename ?? null}
+                  />
                 ))}
               </div>
 
@@ -750,42 +752,23 @@ function Index() {
                   e.preventDefault();
                   askQuestion();
                 }}
-                className="border-t border-border bg-[var(--panel)] p-3 flex flex-col gap-2"
+                className="border-t border-border bg-[var(--panel)] p-3 flex items-center gap-2"
               >
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="Ask about risks, financials, peer comparisons…"
-                    disabled={asking}
-                    className="flex-1 rounded-lg bg-card border border-input px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring transition-all placeholder:text-muted-foreground"
-                  />
-                  <button
-                    type="submit"
-                    disabled={!question.trim() || asking}
-                    className="flex items-center gap-1.5 rounded-lg bg-[var(--warning)] text-white text-xs font-semibold px-4 py-2.5 transition-all hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
-                  >
-                    <Send className="h-3.5 w-3.5" /> Ask
-                  </button>
-                </div>
-                <div className="flex items-center gap-2 px-1">
-                  <button
-                    type="button"
-                    onClick={() => setReasoningEnabled((v) => !v)}
-                    className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest transition-all ${
-                      reasoningEnabled
-                        ? "border-[var(--accent)]/50 bg-[color-mix(in_oklab,var(--accent)_8%,transparent)] text-[var(--accent)]"
-                        : "border-border text-muted-foreground hover:border-muted-foreground"
-                    }`}
-                  >
-                    <Sparkles className="h-3 w-3" />
-                    {reasoningEnabled ? "Reasoning on" : "Reasoning off"}
-                  </button>
-                  <span className="text-[10px] text-muted-foreground font-mono">
-                    {reasoningEnabled ? "Chain-of-thought will appear below the answer" : "Enable to see step-by-step reasoning"}
-                  </span>
-                </div>
+                <input
+                  type="text"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="Ask about risks, financials, peer comparisons…"
+                  disabled={asking}
+                  className="flex-1 rounded-lg bg-card border border-input px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring transition-all placeholder:text-muted-foreground"
+                />
+                <button
+                  type="submit"
+                  disabled={!question.trim() || asking}
+                  className="flex items-center gap-1.5 rounded-lg bg-[var(--warning)] text-white text-xs font-semibold px-4 py-2.5 transition-all hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
+                >
+                  <Send className="h-3.5 w-3.5" /> Ask
+                </button>
               </form>
             </div>
           </section>
@@ -796,7 +779,7 @@ function Index() {
           <div className="flex items-center gap-2 text-muted-foreground">
             <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)]" />
             <span className="text-[10px] font-mono uppercase tracking-widest">
-              Verdant · KYC Engine · Auditable by design
+              KYC Engine · Auditable by design
             </span>
           </div>
           <div className="text-[10px] text-muted-foreground font-mono">
@@ -846,9 +829,11 @@ const _CITE_RE = /\[CITE:([^\]]+)\]/g;
 function CitedText({
   text,
   citations,
+  sourceFileName,
 }: {
   text: string;
   citations?: Record<string, CitationInfo>;
+  sourceFileName?: string | null;
 }) {
   // Build ordered list of unique citation IDs as they appear in the text
   const citeOrder: string[] = [];
@@ -932,12 +917,6 @@ function CitedText({
             <span className={info.role === "target" ? "text-[var(--accent)]" : "text-[var(--warning)]"}>
               {info.role}
             </span>
-            {info.section_title && (
-              <> · <span className="text-muted-foreground">{info.section_title}</span></>
-            )}
-            {info.source_page != null && (
-              <> · <span className="text-foreground">p.{info.source_page}</span></>
-            )}
             {" · "}
             {info.summary.slice(0, 80)}
             {href && (
@@ -971,103 +950,27 @@ function CitedText({
 }
 
 // ---------------------------------------------------------------------------
-// SourcesList — always-visible citations panel
-// ---------------------------------------------------------------------------
-
-function SourcesList({ citations }: { citations?: Record<string, CitationInfo> }) {
-  if (!citations || Object.keys(citations).length === 0) return null;
-  const entries = Object.entries(citations);
-  return (
-    <div className="mt-4 rounded-xl border border-border overflow-hidden">
-      <div className="px-3 py-2 bg-[var(--panel)] border-b border-border flex items-center gap-2">
-        <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-        <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
-          Sources · {entries.length}
-        </span>
-      </div>
-      <div className="divide-y divide-border">
-        {entries.map(([id, info], idx) => {
-          const href = info.document_url || null;
-          return (
-            <div key={id} className="flex gap-3 px-3 py-2.5 text-[11px]">
-              <span className="shrink-0 font-mono text-[var(--accent)] w-5 pt-px">[{idx + 1}]</span>
-              <div className="flex-1 min-w-0 space-y-0.5">
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                  <span className="font-medium text-foreground">{info.company}</span>
-                  <span className={`font-mono text-[9px] uppercase tracking-widest px-1.5 py-0.5 rounded-full ${
-                    info.role === "target"
-                      ? "bg-[color-mix(in_oklab,var(--accent)_10%,transparent)] text-[var(--accent)]"
-                      : "bg-[color-mix(in_oklab,var(--warning)_10%,transparent)] text-[var(--warning)]"
-                  }`}>
-                    {info.role}
-                  </span>
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground/60">
-                    {info.type}
-                  </span>
-                  {info.section_title && (
-                    <span className="text-[10px] text-muted-foreground truncate max-w-[200px]">
-                      {info.section_title}
-                    </span>
-                  )}
-                  {info.source_page != null && (
-                    <span className="font-mono text-[9px] text-foreground bg-muted px-1.5 py-0.5 rounded">
-                      p.{info.source_page}
-                    </span>
-                  )}
-                </div>
-                <p className="text-muted-foreground leading-relaxed line-clamp-2">{info.summary}</p>
-                {href && (
-                  <a href={href} target="_blank" rel="noopener noreferrer"
-                     className="inline-flex items-center gap-1 text-[10px] font-mono text-[var(--accent)] hover:underline underline-offset-2">
-                    Open filing ↗
-                  </a>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// ReasoningTrace — Claude-style shaded chain-of-thought
+// ReasoningTrace — collapsible chain-of-thought
 // ---------------------------------------------------------------------------
 
 function ReasoningTrace({ trace }: { trace: string }) {
-  const [open, setOpen] = useState(true);
-  const [expanded, setExpanded] = useState(false);
+  const [open, setOpen] = useState(false);
   return (
-    <div className="mt-4 rounded-xl overflow-hidden border border-[color-mix(in_oklab,var(--accent)_20%,transparent)] bg-[color-mix(in_oklab,var(--accent)_4%,transparent)]">
+    <div className="mt-3 rounded-lg border border-border bg-[var(--panel)] overflow-hidden">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between px-4 py-2.5 text-left"
+        className="w-full flex items-center justify-between px-3 py-2 text-left"
       >
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-3 w-3 text-[var(--accent)]/60" />
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--accent)]/70">
-            Reasoning trace
-          </span>
-        </div>
-        <ChevronDown className={`h-3.5 w-3.5 text-[var(--accent)]/50 transition-transform ${open ? "rotate-180" : ""}`} />
+        <span className="font-mono text-[10px] uppercase tracking-widest text-foreground">
+          Reasoning trace
+        </span>
+        <ChevronDown className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="px-4 pb-4 border-t border-[color-mix(in_oklab,var(--accent)_15%,transparent)]">
-          <pre
-            className={`mt-3 whitespace-pre-wrap text-[11px] font-mono text-muted-foreground leading-relaxed overflow-y-auto transition-all ${
-              expanded ? "" : "max-h-80"
-            }`}
-          >
+        <div className="px-3 pb-3">
+          <pre className="whitespace-pre-wrap text-[10px] font-mono text-muted-foreground leading-relaxed max-h-96 overflow-y-auto">
             {trace}
           </pre>
-          <button
-            onClick={() => setExpanded((e) => !e)}
-            className="mt-2 flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-[var(--accent)]/60 hover:text-[var(--accent)] transition-colors"
-          >
-            <ChevronDown className={`h-3 w-3 transition-transform ${expanded ? "rotate-180" : ""}`} />
-            {expanded ? "Collapse" : "Expand full trace"}
-          </button>
         </div>
       )}
     </div>
@@ -1081,12 +984,14 @@ function ReasoningTrace({ trace }: { trace: string }) {
 function MessageBubble({
   message,
   onEvaluate,
+  sourceFileName,
 }: {
   message: ChatMessage;
   onEvaluate: (testType: string) => void;
+  sourceFileName?: string | null;
 }) {
   const [traceOpen, setTraceOpen] = useState(false);
-  const [selectedEval, setSelectedEval] = useState("overall_score");
+  const [selectedEval, setSelectedEval] = useState(EVAL_TESTS[0].value);
 
   if (message.role === "user") {
     return (
@@ -1100,7 +1005,6 @@ function MessageBubble({
 
   const isThinking = !message.content;
   const traceDone = message.trace?.every((t) => t.status === "done");
-  const hasCitations = message.citations && Object.keys(message.citations).length > 0;
 
   return (
     <div className="p-5" style={{ animation: "fadeReveal 0.4s var(--ease-out-expo) both" }}>
@@ -1109,10 +1013,9 @@ function MessageBubble({
           <Sparkles className="h-3.5 w-3.5" />
         </div>
         <div className="flex-1 min-w-0">
-
-          {/* Process trace — collapsible, auto-open while thinking */}
+          {/* Process trace */}
           {message.trace && (
-            <div className="mb-4 rounded-lg border border-border bg-[var(--panel)] overflow-hidden">
+            <div className="mb-3 rounded-lg border border-border bg-[var(--panel)] overflow-hidden">
               <button
                 onClick={() => setTraceOpen((o) => !o)}
                 className="w-full flex items-center justify-between px-3 py-2 text-left"
@@ -1139,11 +1042,15 @@ function MessageBubble({
                         <StatusDot status={t.status} />
                         {t.step}
                       </span>
-                      <span className={
-                        t.status === "done" ? "text-[var(--accent)]"
-                        : t.status === "running" ? "text-[var(--warning)]"
-                        : "text-muted-foreground/60"
-                      }>
+                      <span
+                        className={
+                          t.status === "done"
+                            ? "text-[var(--accent)]"
+                            : t.status === "running"
+                            ? "text-[var(--warning)]"
+                            : "text-muted-foreground/60"
+                        }
+                      >
                         {t.status.toUpperCase()}
                       </span>
                     </div>
@@ -1160,27 +1067,17 @@ function MessageBubble({
             <CitedText text={message.content} citations={message.citations} />
           )}
 
-          {/* Reasoning trace — shaded, shown below answer */}
+          {/* Reasoning trace (LLM chain-of-thought) */}
           {message.reasoning_trace && (
             <ReasoningTrace trace={message.reasoning_trace} />
           )}
 
-          {/* Sources — always visible if any citations exist */}
-          {!isThinking && hasCitations && (
-            <SourcesList citations={message.citations} />
-          )}
-
-          {/* Evaluation */}
+          {/* Evaluation CTA */}
           {!isThinking && traceDone && (
-            <div className="mt-4 rounded-xl border border-border overflow-hidden">
-              <div className="px-4 py-3 bg-[var(--panel)] border-b border-border flex items-center justify-between flex-wrap gap-3">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)]" />
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    Audit
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
+            <div className="mt-4">
+              {!message.evaluating && (
+                <div className="flex items-center gap-2 flex-wrap">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)] shrink-0" />
                   <select
                     value={selectedEval}
                     onChange={(e) => setSelectedEval(e.target.value)}
@@ -1192,31 +1089,21 @@ function MessageBubble({
                   </select>
                   <button
                     onClick={() => onEvaluate(selectedEval)}
-                    disabled={message.evaluating}
-                    className="inline-flex items-center gap-1.5 rounded-md bg-[var(--elevated)] border border-[var(--accent)]/30 px-3 py-1.5 text-[11px] font-semibold text-[var(--accent)] hover:bg-[color-mix(in_oklab,var(--accent)_8%,transparent)] transition-all disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[var(--accent)]/40 bg-[color-mix(in_oklab,var(--accent)_6%,transparent)] px-3 py-1.5 text-[11px] font-semibold text-foreground hover:bg-[color-mix(in_oklab,var(--accent)_12%,transparent)] transition-all"
                   >
-                    {message.evaluating ? (
-                      <>
-                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)] animate-pulse" />
-                        Running…
-                      </>
-                    ) : (
-                      <>
-                        <ShieldCheck className="h-3 w-3" /> Run
-                      </>
-                    )}
+                    {message.evaluation ? 'Run another' : 'Run audit'}
                   </button>
                 </div>
-              </div>
-              {message.evaluation && <Scorecard data={message.evaluation} />}
-              {!message.evaluation && !message.evaluating && (
-                <div className="px-4 py-3 text-[11px] text-muted-foreground font-mono">
-                  Select a test and click Run to audit this answer.
+              )}
+              {message.evaluating && (
+                <div className="inline-flex items-center gap-2 text-[11px] text-muted-foreground font-mono uppercase tracking-widest">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)] animate-pulse" />
+                  Running {EVAL_TESTS.find((t) => t.value === message.evalType)?.label ?? "audit"}…
                 </div>
               )}
+              {message.evaluation && <Scorecard data={message.evaluation} />}
             </div>
           )}
-
         </div>
       </div>
     </div>
@@ -1236,111 +1123,55 @@ function StatusDot({ status }: { status: string }) {
   return <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />;
 }
 
-const BAR_CHART_TYPES = new Set(["overall_score", "context_recall"]);
-
-function scoreBarColor(score: number) {
-  return score >= 0.75
-    ? "var(--accent)"
-    : score >= 0.5
-    ? "var(--warning)"
-    : "var(--destructive, #ef4444)";
-}
-
 function Scorecard({ data }: { data: EvaluationResult }) {
   const label = EVAL_TESTS.find((t) => t.value === data.test_type)?.label ?? "Audit";
-  const pct = Math.round(data.weighted * 100);
-  const scoreColor =
-    pct >= 75 ? "text-[var(--accent)]" : pct >= 50 ? "text-[var(--warning)]" : "text-destructive";
-  const barColor =
-    pct >= 75 ? "bg-[var(--accent)]" : pct >= 50 ? "bg-[var(--warning)]" : "bg-destructive";
-
-  const useBarChart = BAR_CHART_TYPES.has(data.test_type);
-
   return (
-    <div style={{ animation: "fadeReveal 0.4s var(--ease-out-expo) both" }}>
-      {/* Overall score banner */}
-      <div className="flex items-center gap-4 px-4 py-3 border-b border-border">
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-1.5">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</span>
-            <span className={`font-sans text-xl font-semibold ${scoreColor}`}>
-              {pct}<span className="text-xs text-muted-foreground font-mono">/100</span>
-            </span>
-          </div>
-          <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-            <div
-              className={`h-full rounded-full ${barColor} transition-all`}
-              style={{ width: `${pct}%` }}
-            />
-          </div>
+    <div
+      className="mt-2 overflow-hidden rounded-xl border border-border bg-card"
+      style={{ animation: "fadeReveal 0.5s var(--ease-out-expo) both" }}
+    >
+      <div className="flex items-center justify-between px-4 py-3 bg-[var(--panel)] border-b border-border">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)]" />
+          <span className="font-mono text-[10px] uppercase tracking-widest text-foreground">
+            {label}
+          </span>
+        </div>
+        <div className="flex items-baseline gap-1.5">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+            Score
+          </span>
+          <span className="font-sans text-2xl text-[var(--accent)]">
+            {(data.weighted * 100).toFixed(0)}
+          </span>
+          <span className="text-xs text-muted-foreground">/100</span>
         </div>
       </div>
-
-      {/* Dimension rows — bar-chart style for overall/recall, table style for others */}
-      {data.rows.length > 0 && (
-        useBarChart ? (
-          <div className="px-4 py-3 flex flex-col gap-3">
-            {data.rows.map((r, i) => {
-              const rpct = Math.round(r.score * 100);
-              const color = scoreBarColor(r.score);
-              return (
-                <div key={i}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-mono text-[11px] text-foreground">{r.dimension}</span>
-                    <div className="flex items-center gap-2">
-                      {r.note && (
-                        <span className="font-mono text-[10px] text-muted-foreground">{r.note}</span>
-                      )}
-                      <span
-                        className="font-mono text-[13px] font-semibold tabular-nums"
-                        style={{ color }}
-                      >
-                        {rpct}%
-                      </span>
-                    </div>
-                  </div>
-                  <div className="h-2.5 w-full rounded-full bg-muted overflow-hidden">
+      <table className="w-full text-left">
+        <tbody className="divide-y divide-border text-sm">
+          {data.rows.map((r, i) => (
+            <tr key={i}>
+              <td className="px-4 py-2.5 font-medium text-foreground w-2/3" title={r.dimension}>
+                {r.dimension}
+              </td>
+              <td className="px-4 py-2.5 text-xs text-muted-foreground">{r.note}</td>
+              <td className="px-4 py-2.5 w-32">
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 flex-1 rounded-full bg-muted overflow-hidden">
                     <div
-                      className="h-full rounded-full transition-all duration-700"
-                      style={{ width: `${rpct}%`, backgroundColor: color }}
+                      className="h-full rounded-full bg-[var(--accent)]"
+                      style={{ width: `${r.score * 100}%` }}
                     />
                   </div>
+                  <span className="font-mono text-sm font-semibold text-foreground w-10 text-right">
+                    {(r.score * 100).toFixed(0)}%
+                  </span>
                 </div>
-              );
-            })}
-          </div>
-        ) : (
-          <table className="w-full text-left">
-            <tbody className="divide-y divide-border">
-              {data.rows.map((r, i) => (
-                <tr key={i} className="hover:bg-muted/30 transition-colors">
-                  <td className="px-4 py-2.5 text-[11px] font-medium text-foreground w-1/3 truncate max-w-[160px]" title={r.dimension}>
-                    {r.dimension}
-                  </td>
-                  <td className="px-4 py-2.5 text-[11px] text-muted-foreground leading-snug">{r.note}</td>
-                  <td className="px-4 py-2.5 w-28">
-                    <div className="flex items-center gap-2">
-                      <div className="h-1 flex-1 rounded-full bg-muted overflow-hidden">
-                        <div
-                          className={`h-full rounded-full ${
-                            r.score >= 0.75 ? "bg-[var(--accent)]"
-                            : r.score >= 0.5 ? "bg-[var(--warning)]"
-                            : "bg-destructive"
-                          }`}
-                          style={{ width: `${r.score * 100}%` }}
-                        />
-                      </div>
-                      <span className="font-mono text-[10px] text-foreground w-7 text-right shrink-0">
-                        {Math.round(r.score * 100)}
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )
-      )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

@@ -283,7 +283,18 @@ def extract_claims(answer_text: str, registry: dict[str, dict]) -> list[dict]:
 
     Returns [{claim_id, claim_text, resolved_citation}, ...]
     """
-    sentences = _safe_sentence_split(answer_text)
+    # Split into paragraphs first so a "**Sources:**" header block (which has no
+    # sentence-ending punctuation) doesn't absorb the claim paragraphs that follow it.
+    paragraphs = re.split(r'\n{2,}', answer_text)
+    sentences: list[str] = []
+    sources_skip_prefixes = ('**sources', 'sources:', '- ')
+    for para in paragraphs:
+        para = para.strip()
+        if not para:
+            continue
+        if any(para.lower().startswith(p) for p in sources_skip_prefixes):
+            continue
+        sentences.extend(_safe_sentence_split(para))
 
     claims = []
     claim_num = 0

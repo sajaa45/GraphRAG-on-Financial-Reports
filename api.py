@@ -162,7 +162,7 @@ async def _run_pipeline(
         def _reconstruct_ctx():
             from neo4j import GraphDatabase
             driver = GraphDatabase.driver(
-                os.getenv("NEO4J_URI", "bolt://localhost:7687"),
+                os.getenv("NEO4J_URI", "neo4j://localhost:7687"),
                 auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
             )
             with driver.session() as s:
@@ -568,15 +568,15 @@ def _read_csv(path: str) -> list:
 def _csv_to_scorecard(rows: list, test_type: str) -> Dict[str, Any]:
     """Map CSV rows from any eval test into a unified {rows, weighted} scorecard."""
     if test_type == "answer_relevancy":
-        summary  = next((r for r in rows if r.get("generated_question", "").strip() == "** MEAN **"), None)
+        summary  = next((r for r in rows if r.get("generated_question", "").strip() == "** TOP-3 MEAN **"), None)
         weighted = float(summary["answer_relevancy_score"]) if summary else 0.0
         items = [
             {
                 "dimension": r["generated_question"],
                 "score":     float(r.get("cosine_similarity") or 0),
-                "note":      f"noncommittal={r.get('noncommittal', False)}",
+                "note":      "",
             }
-            for r in rows if r.get("generated_question", "").strip() != "** MEAN **"
+            for r in rows if r.get("generated_question", "").strip() != "** TOP-3 MEAN **"
         ]
         return {"test_type": test_type, "rows": items, "weighted": weighted}
 

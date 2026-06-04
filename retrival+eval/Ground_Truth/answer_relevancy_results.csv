@@ -1,7 +1,7 @@
 question,generated_question,cosine_similarity,noncommittal,answer_relevancy_score,quality_gate
-What leverage and debt structure risks does the target company face?,What are the primary risks associated with SolarWinds Corporation's financial structure?,0.823181,False,,
-What leverage and debt structure risks does the target company face?,How does SolarWinds' debt reliance impact its financial flexibility and stability?,0.464779,False,,
-What leverage and debt structure risks does the target company face?,Are there any peer companies that provide a comparable basis for evaluating SolarWinds' leverage and debt structure?,0.47696,False,,
-What leverage and debt structure risks does the target company face?,What potential consequences could arise from SolarWinds' strategy of financing acquisitions with debt?,0.544147,False,,
-What leverage and debt structure risks does the target company face?,How does SolarWinds' current level of indebtedness affect its overall creditworthiness and insolvency risk?,0.41382,False,,
-What leverage and debt structure risks does the target company face?,** MEAN **,,False,0.544577,WARNING
+How does the target company's liquidity position compare to its peers,What is the overall trend in SolarWinds Corporation's cash position at the end of 2024?,0.505709,False,,
+How does the target company's liquidity position compare to its peers,How does the company's operating cash flow impact its financial stability?,0.369973,False,,
+How does the target company's liquidity position compare to its peers,What factors contribute to the elevated risk associated with SolarWinds Corporation's financial situation?,0.501164,False,,
+How does the target company's liquidity position compare to its peers,Is SolarWinds Corporation's liquidity comparable to that of its peers?,0.915665,False,,
+How does the target company's liquidity position compare to its peers,What is the impact of financing activities on SolarWinds Corporation's cash balances?,0.387136,False,,
+How does the target company's liquidity position compare to its peers,** TOP-3 MEAN **,,False,0.640846,WARNING

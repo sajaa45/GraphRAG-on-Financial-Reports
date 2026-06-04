@@ -3,6 +3,7 @@ import re
 import json
 import time
 import boto3
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from neo4j import GraphDatabase
 from langchain_aws import ChatBedrockConverse
 from langchain_core.prompts import PromptTemplate
@@ -10,6 +11,10 @@ from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
 
+# LangSmith tracing — activate by setting LANGCHAIN_API_KEY in .env
+os.environ.setdefault("LANGCHAIN_TRACING_V2",
+                      "true" if os.getenv("LANGCHAIN_API_KEY") else "false")
+os.environ.setdefault("LANGCHAIN_PROJECT", "PeersGraphRAG")
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 
 # ---------------------------------------------------------------------------
@@ -435,15 +440,25 @@ class CreditRiskQA:
         active_strategies = self._select_strategies(question)
         print(f"      [strategy routing] selected: {active_strategies}")
 
-        for strategy, template in QUERY_STRATEGIES.items():
-            if strategy not in active_strategies:
-                print(f"      [{strategy}] skipped (not needed for this question)")
-                continue
-            sub_question = template.format(question=question)
-            print(f"      [{strategy}] {sub_question[:80]}")
-            data = self._run_pipeline(sub_question)
+        def _run_strategy(strategy: str) -> tuple[str, dict]:
+            sub_question = QUERY_STRATEGIES[strategy].format(question=question)
+            return strategy, self._run_pipeline(sub_question)
+
+        skipped = [s for s in QUERY_STRATEGIES if s not in active_strategies]
+        for s in skipped:
+            print(f"      [{s}] skipped")
+
+        with ThreadPoolExecutor(max_workers=len(active_strategies)) as pool:
+            futures = {pool.submit(_run_strategy, s): s for s in active_strategies}
+            strategy_results: dict[str, dict] = {}
+            for fut in as_completed(futures):
+                strategy, data = fut.result()
+                strategy_results[strategy] = data
+
+        for strategy in active_strategies:
+            data = strategy_results[strategy]
             rows = data["results"]
-            print(f"             Cypher: {data['cypher'][:120].replace(chr(10), ' ')}")
+            print(f"      [{strategy}] Cypher: {data['cypher'][:120].replace(chr(10), ' ')}")
             print(f"             → {len(rows)} records")
             for row in rows:
                 row["_strategy"] = strategy

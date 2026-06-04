@@ -3,8 +3,8 @@ Answer Relevancy — True RAGAS Evaluation
 ======================================================================
 
 [1/5] Loading inputs
-  Question    : What leverage and debt structure risks does the target company face?
-  Answer chars: 1608
+  Question    : How does the target company's liquidity position compare to its peers
+  Answer chars: 1139
 
 [2/5] Initialising LLM (AWS Bedrock) + embedding model (local)
   Region      : us-east-1
@@ -16,28 +16,28 @@ Answer Relevancy — True RAGAS Evaluation
 
 [4/5] Generating 5 questions from the answer
   Generated 5 question(s):
-    1. What are the primary risks associated with SolarWinds Corporation's financial structure?
-    2. How does SolarWinds' debt reliance impact its financial flexibility and stability?
-    3. Are there any peer companies that provide a comparable basis for evaluating SolarWinds' leverage and debt structure?
-    4. What potential consequences could arise from SolarWinds' strategy of financing acquisitions with debt?
-    5. How does SolarWinds' current level of indebtedness affect its overall creditworthiness and insolvency risk?
+    1. What is the overall trend in SolarWinds Corporation's cash position at the end of 2024?
+    2. How does the company's operating cash flow impact its financial stability?
+    3. What factors contribute to the elevated risk associated with SolarWinds Corporation's financial situation?
+    4. Is SolarWinds Corporation's liquidity comparable to that of its peers?
+    5. What is the impact of financing activities on SolarWinds Corporation's cash balances?
 
 [5/5] Embedding questions and computing cosine similarities
-    Q1 similarity: 0.8232  |  What are the primary risks associated with SolarWinds Corporation's fi
-    Q2 similarity: 0.4648  |  How does SolarWinds' debt reliance impact its financial flexibility an
-    Q3 similarity: 0.4770  |  Are there any peer companies that provide a comparable basis for evalu
-    Q4 similarity: 0.5441  |  What potential consequences could arise from SolarWinds' strategy of f
-    Q5 similarity: 0.4138  |  How does SolarWinds' current level of indebtedness affect its overall 
+    Q1 similarity: 0.5057  |  What is the overall trend in SolarWinds Corporation's cash position at
+    Q2 similarity: 0.3700  |  How does the company's operating cash flow impact its financial stabil
+    Q3 similarity: 0.5012  |  What factors contribute to the elevated risk associated with SolarWind
+    Q4 similarity: 0.9157  |  Is SolarWinds Corporation's liquidity comparable to that of its peers?
+    Q5 similarity: 0.3871  |  What is the impact of financing activities on SolarWinds Corporation's
 
-✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\resources\..\answer_relevancy_results.csv
+✓ Results written to C:\Users\LENOVO\Desktop\PeersGraphRAG\retrival+eval\Ground_Truth\answer_relevancy_results.csv
 
 ──────────────────────────────────────────────────────────────────────
 Results
 ──────────────────────────────────────────────────────────────────────
-  Individual similarities : [0.8232, 0.4648, 0.477, 0.5441, 0.4138]
-  Mean similarity         : 0.5446
-  Answer Relevancy Score  : 0.5446
+  Individual similarities : [0.5057, 0.37, 0.5012, 0.9157, 0.3871]
+  Mean similarity         : 0.6408
+  Answer Relevancy Score  : 0.6408
   Quality gate            : WARNING  (threshold: 0.70)
 ======================================================================
-Answer Relevancy Score : 0.5446  [WARNING]
+Answer Relevancy Score : 0.6408  [WARNING]
 ======================================================================

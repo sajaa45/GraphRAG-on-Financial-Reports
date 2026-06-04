@@ -64,7 +64,7 @@
 
   /* Graphite + muted emerald palette */
   --background: oklch(0.18 0.005 240);       /* ~#0F1115 */
-  --foreground: oklch(0.96 0.005 240);
+  --foreground: oklch(96.773% 0.0079 114.537);
   --card: oklch(0.215 0.006 240);            /* ~#16191F */
   --card-foreground: oklch(0.96 0.005 240);
   --panel: oklch(0.20 0.005 240);            /* sub-panel */
