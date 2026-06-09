@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import argparse
+import importlib.util
 import time
 import re
 import boto3
@@ -25,6 +26,19 @@ _JSON_BLOCK_RE = re.compile(r'\[.*\]', re.DOTALL)
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 
 
+def make_llm_fn(client, model: str):
+    """Return a prompt→str callable backed by a boto3 bedrock-runtime client."""
+    def llm_fn(prompt: str) -> str:
+        response = client.converse(
+            modelId=model,
+            messages=[{"role": "user", "content": [{"text": prompt}]}],
+            inferenceConfig={"maxTokens": 4096, "temperature": 0.0},
+        )
+        text = response["output"]["message"]["content"][0]["text"]
+        return _THINK_RE.sub('', text).strip()
+    return llm_fn
+
+
 class LLMExtractor:
     """Reads sections from parsed_sections_html.json, finds relevant sections by keyword
     matching, prompts the LLM page-by-page, and saves extracted entities to JSON."""
@@ -33,7 +47,8 @@ class LLMExtractor:
                  parsed_sections_file: str,
                  output_dir: str = "/app/output",
                  main_company: str = "the Company",
-                 source_file: str = ""):
+                 source_file: str = "",
+                 bedrock_client=None):
 
         with open(parsed_sections_file, 'r', encoding='utf-8') as f:
             parsed_data = json.load(f)
@@ -41,14 +56,17 @@ class LLMExtractor:
         print(f"✓ Loaded {len(self._flat_sections)} sections from {parsed_sections_file}")
 
         self.bedrock_model = os.getenv("BEDROCK_MODEL", "")
-        region = os.getenv("AWS_REGION", os.getenv("AWS_DEFAULT_REGION", "us-east-1"))
-        self.bedrock = boto3.client(
-            service_name="bedrock-runtime",
-            region_name=region,
-            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-        )
-        print(f"✓ Bedrock client ready (model: {self.bedrock_model}, region: {region})")
+        if bedrock_client is not None:
+            self.bedrock = bedrock_client
+        else:
+            region = os.getenv("AWS_REGION", os.getenv("AWS_DEFAULT_REGION", "us-east-1"))
+            self.bedrock = boto3.client(
+                service_name="bedrock-runtime",
+                region_name=region,
+                aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+                aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+            )
+            print(f"✓ Bedrock client ready (model: {self.bedrock_model}, region: {region})")
 
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
@@ -76,13 +94,20 @@ class LLMExtractor:
     def _flatten_sections(self, sections: list) -> list:
         flat = []
         for section in sections:
-            if 'page_contents' in section and section['page_contents']:
+            raw_pages = section.get('page_contents') or []
+            raw_chunks = section.get('chunk_contents') or []
+            if raw_chunks and not raw_pages:
+                raw_pages = [
+                    {'page_number': c.get('chunk_index', i + 1), 'content': c.get('content', '')}
+                    for i, c in enumerate(raw_chunks)
+                ]
+            if raw_pages:
                 flat.append({
                     'title': section['title'],
                     'level': section.get('level', 1),
                     'start_page': section.get('start_page'),
                     'end_page': section.get('end_page'),
-                    'page_contents': section['page_contents'],
+                    'page_contents': raw_pages,
                 })
             if 'subsections' in section:
                 flat.extend(self._flatten_sections(section['subsections']))
@@ -97,20 +122,15 @@ class LLMExtractor:
             raise ImportError("rank_bm25 is not installed. Run: pip install rank-bm25")
 
         def _section_tokens(s: dict) -> list[str]:
-            # Combine title + first 300 chars of content so subsections with
-            # generic/numbered titles can still be matched by their text.
             text = s['title']
             pages = s.get('page_contents') or []
-            if pages:
-                first_page = pages[0] if isinstance(pages[0], str) else str(pages[0])
-                text += ' ' + first_page[:300]
             return text.lower().split()
 
         tokenized_titles = [_section_tokens(s) for s in self._flat_sections]
         bm25 = BM25Okapi(tokenized_titles)
 
         seen_indices: set = set()
-        matched: list = []  # (section, best_score)
+        matched: list = []  
 
         for query in section_queries:
             query_tokens = query.lower().split()
@@ -172,12 +192,11 @@ class LLMExtractor:
                 err = str(e)
                 is_throttle = "ThrottlingException" in err or "429" in err
                 is_overload = "ServiceUnavailableException" in err or "503" in err
-                if (is_throttle or is_overload) and attempt < 4:
-                    wait = 60 if is_overload else 30 * (attempt + 1)
-                    print(f"    ⚠ Bedrock {'overloaded' if is_overload else 'rate limit'}... retrying in {wait}s ({attempt+1}/4)")
-                    time.sleep(wait)
-                else:
+                if not (is_throttle or is_overload) or attempt == 4:
                     raise
+                wait = 60 if is_overload else 30 * (attempt + 1)
+                print(f"    ⚠ Bedrock {'overloaded' if is_overload else 'rate limit'}... retrying in {wait}s ({attempt+1}/4)")
+                time.sleep(wait)
 
     def _extract_entities_from_page(self, page_text: str, page_number: int,
                                      section_title: str, relation_config) -> list:
@@ -204,22 +223,8 @@ class LLMExtractor:
             try:
                 entities_data = json.loads(raw_json)
             except json.JSONDecodeError as je:
-                cleaned = re.sub(r'```(?:json)?', '', raw_json).strip()
-                try:
-                    entities_data = json.loads(cleaned)
-                except json.JSONDecodeError:
-                    last_brace = cleaned.rfind('}')
-                    if last_brace > 0:
-                        repaired = cleaned[:last_brace + 1] + '\n]'
-                        try:
-                            entities_data = json.loads(repaired)
-                            print(f"[REPAIR] Recovered {len(entities_data)} objects from truncated JSON on page {page_number}")
-                        except json.JSONDecodeError:
-                            print(f"[DEBUG] JSON parse failed ({je}). Raw LLM output (first 1000 chars):\n{llm_output[:1000]}")
-                            return []
-                    else:
-                        print(f"[DEBUG] JSON parse failed ({je}). Raw LLM output (first 1000 chars):\n{llm_output[:1000]}")
-                        return []
+                print(f"[DEBUG] JSON parse failed ({je}). Raw LLM output (first 1000 chars):\n{llm_output[:1000]}")
+                return []
 
             results = []
             for e in entities_data:
@@ -372,8 +377,17 @@ class LLMExtractor:
         print(summary)
         return write_queue
 
+    def _load_validator(self, rel_name: str):
+        validator_path = os.path.join(self._relations_dir, rel_name, 'validate_entity.py')
+        if not os.path.exists(validator_path):
+            return None
+        spec = importlib.util.spec_from_file_location(f"validator_{rel_name}", validator_path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return getattr(mod, f"validate_{rel_name.lower()}", None)
+
     def extract_multiple_relations(self, relation_names: List[str]) -> List[str]:
-        """Extract all relations, write one JSON per relation, return list of JSON paths."""
+        """Extract all relations, validate inline, write one JSON per relation, return list of JSON paths."""
         print(f"\n{'='*60}\nMULTI-RELATION EXTRACTION\n{'='*60}")
         json_paths = []
         for rel in relation_names:
@@ -383,14 +397,25 @@ class LLMExtractor:
             json_path = os.path.join(rel_dir, f"extracted_{self._base}.json")
             with open(json_path, 'w', encoding='utf-8') as f:
                 json.dump({"main_company": self.main_company, "relations": {rel: items}}, f, indent=2, ensure_ascii=False)
-            print(f"\n✓ {rel} saved to: {json_path}")
+
+            validator = self._load_validator(rel)
+            if validator:
+                print(f"\n{'='*60}\nVALIDATING: {rel}\n{'='*60}")
+                validated = validator(json_path, llm_fn=make_llm_fn(self.bedrock, self.bedrock_model))
+                if validated is not None:
+                    with open(json_path, 'w', encoding='utf-8') as f:
+                        json.dump(validated, f, indent=2, ensure_ascii=False)
+                    print(f"✓ {rel} validated and saved to: {json_path}")
+                else:
+                    print(f"⚠ {rel} validation returned None, keeping raw extraction")
+            else:
+                print(f"\n✓ {rel} saved to: {json_path}")
+
             json_paths.append(json_path)
         return json_paths
 
     def close(self):
         self._save_log()
-
-
 def main():
     parser = argparse.ArgumentParser(description="LLM Extractor — reads parsed sections JSON and extracts entities page by page")
     parser.add_argument("relations", nargs="*", help="Relations to extract")
@@ -410,7 +435,7 @@ def main():
     default_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "parsing")
     output_dir = args.output_dir or os.getenv("OUTPUT_DIR", default_output)
 
-    default_sections = os.path.join(default_output, "parsed_sections_html.json")
+    default_sections = os.path.join(default_output, "parsed_sections_markdown.json")
     parsed_sections_file = (
         args.parsed_sections_file
         or os.getenv("PARSED_SECTIONS_FILE", default_sections)

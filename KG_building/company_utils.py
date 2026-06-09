@@ -1,9 +1,35 @@
-
-
 import re
 import os
+from groq import Groq
 from typing import Dict, List, Set, Optional
-from industry_node_to_sic import get_sic_code
+
+
+def get_sic_code(industry: str, api_key: str = None) -> str:
+    if api_key is None:
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            raise ValueError("GROQ_API_KEY not found. Set it as environment variable or pass as parameter.")
+
+    client = Groq(api_key=api_key)
+    prompt = f"""Given the industry field: "{industry}"
+
+Provide ONLY the 4-digit SIC (Standard Industrial Classification) code number.
+The code must be a valid SIC code that appears in SEC EDGAR's classification system.
+Return only the number, nothing else. No text, no explanation, just the 4-digit code."""
+
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are an expert in SEC EDGAR SIC codes. Return ONLY the 4-digit SIC code number that SEC EDGAR uses in its filings. Do not return codes that exist in general SIC manuals but are rarely or never used in EDGAR — prefer the parent or most commonly filed code. Return nothing else."
+            },
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.1,
+        max_tokens=10,
+    )
+    return response.choices[0].message.content.strip()
 
 
 _TOKEN_CLEAN_RE = re.compile(r'[^a-z0-9 ]')

@@ -55,6 +55,21 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 # All blocking pipeline work runs here, keeping the async event loop free
 _executor = ThreadPoolExecutor(max_workers=4)
 
+import boto3 as _boto3
+from neo4j import GraphDatabase as _GraphDatabase
+
+_bedrock_client = _boto3.client(
+    service_name="bedrock-runtime",
+    region_name=os.getenv("AWS_REGION", os.getenv("AWS_DEFAULT_REGION", "us-east-1")),
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+)
+
+_neo4j_driver = _GraphDatabase.driver(
+    os.getenv("NEO4J_URI", "bolt://localhost:7687"),
+    auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
+)
+
 _RELATIONS_DIR = os.path.join(ROOT, "KG_building", "relations")
 
 
@@ -160,14 +175,8 @@ async def _run_pipeline(
 
     if start_from_step > 2:
         def _reconstruct_ctx():
-            from neo4j import GraphDatabase
-            driver = GraphDatabase.driver(
-                os.getenv("NEO4J_URI", "neo4j://localhost:7687"),
-                auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
-            )
-            with driver.session() as s:
+            with _neo4j_driver.session() as s:
                 rec = s.run("MATCH (c:TargetCompany) RETURN c.name AS name LIMIT 1").single()
-            driver.close()
             return rec["name"] if rec else ""
         main_company = await loop.run_in_executor(_executor, _reconstruct_ctx)
         ctx["main_company"] = main_company
@@ -205,44 +214,26 @@ async def _run_pipeline(
                     parsed_sections_file=parsed_sections_path,
                     output_dir=job_dir,
                     source_file=file_path,
+                    bedrock_client=_bedrock_client,
                 )
                 json_paths = extractor.extract_multiple_relations(["HAS_METRIC", "FACES_RISK", "OPERATES_IN"])
                 _mc = extractor.main_company
                 extractor.close()
 
-                _validators = {
-                    "FACES_RISK": _import_validator("FACES_RISK", "validate_faces_risk"),
-                    "HAS_METRIC": _import_validator("HAS_METRIC", "validate_has_metric"),
-                    "OPERATES_IN": _import_validator("OPERATES_IN", "validate_operates_in"),
-                }
-
-                builder = Neo4jBuilder(
-                    os.getenv("NEO4J_URI", "bolt://localhost:7687"),
-                    os.getenv("NEO4J_USERNAME", "neo4j"),
-                    os.getenv("NEO4J_PASSWORD", ""),
-                    main_company=_mc,
-                )
+                builder = Neo4jBuilder(main_company=_mc, driver=_neo4j_driver)
                 total_written = 0
                 counts: Dict[str, int] = {}
 
                 combined_relations: Dict[str, list] = {}
                 for jp in json_paths:
-                    rel_name  = os.path.basename(os.path.dirname(jp))
-                    validator = _validators.get(rel_name)
-                    if validator:
-                        validated = validator(jp)
-                        if validated is None:
-                            continue
-                        if "validated_relation" in validated:
-                            item     = validated["validated_relation"]
-                            rel_type = item.get("rel", rel_name)
-                            combined_relations.setdefault(rel_type, []).append(item)
-                        else:
-                            for rel_type, items in validated.get("relations", {}).items():
-                                combined_relations.setdefault(rel_type, []).extend(items)
+                    rel_name = os.path.basename(os.path.dirname(jp))
+                    with open(jp, "r", encoding="utf-8") as fh:
+                        data = json.load(fh)
+                    if "validated_relation" in data:
+                        item = data["validated_relation"]
+                        rel_type = item.get("rel", rel_name)
+                        combined_relations.setdefault(rel_type, []).append(item)
                     else:
-                        with open(jp, "r", encoding="utf-8") as fh:
-                            data = json.load(fh)
                         for rel_type, items in data.get("relations", {}).items():
                             combined_relations.setdefault(rel_type, []).extend(items)
 
@@ -252,7 +243,6 @@ async def _run_pipeline(
                     total_written = builder._build_from_data({"main_company": _mc, "relations": combined_relations})
                     counts = {rel: len(items) for rel, items in combined_relations.items()}
 
-                builder.driver.close()
                 return _mc, counts, total_written
 
             _mc, entity_counts, total_written = await loop.run_in_executor(_executor, _step2)
@@ -365,15 +355,10 @@ async def _run_pipeline(
             from risks_kg_builder    import RisksKGBuilder
             from metrices_kg_builder import write_metrics_to_neo4j
 
-            neo_uri  = os.getenv("NEO4J_URI",      "bolt://localhost:7687")
-            neo_user = os.getenv("NEO4J_USERNAME",  "neo4j")
-            neo_pass = os.getenv("NEO4J_PASSWORD",  "")
-
             n_risks = 0
             if os.path.exists(structured_risks_path):
-                risk_builder = RisksKGBuilder(neo_uri, neo_user, neo_pass)
+                risk_builder = RisksKGBuilder(driver=_neo4j_driver)
                 n_risks      = risk_builder.build_from_structured_risks(structured_risks_path)
-                risk_builder.driver.close()
 
             if os.path.exists(peer_metrics_path):
                 write_metrics_to_neo4j(peer_metrics_path)
@@ -864,16 +849,10 @@ async def qa_ready():
 
     def _check():
         try:
-            from neo4j import GraphDatabase
-            driver = GraphDatabase.driver(
-                os.getenv("NEO4J_URI", "bolt://localhost:7687"),
-                auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
-            )
-            with driver.session() as s:
+            with _neo4j_driver.session() as s:
                 cnt = s.run(
                     "MATCH (n) WHERE n:TargetCompany OR n:Company RETURN count(n) AS cnt LIMIT 1"
                 ).single()["cnt"]
-            driver.close()
             return {"ready": cnt > 0, "node_count": cnt}
         except Exception as exc:
             return {"ready": False, "error": str(exc)}

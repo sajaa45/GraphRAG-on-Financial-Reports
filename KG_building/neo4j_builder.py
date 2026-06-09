@@ -11,22 +11,20 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
 
 from neo4j import GraphDatabase
-from industry_node_to_sic import get_sic_code
-from company_utils import CompanyDetector
+from company_utils import CompanyDetector, get_sic_code
 
 
 class Neo4jBuilder:
     """Reads extracted-entity JSON produced by LLMExtractor and writes the
     corresponding nodes and relationships into Neo4j."""
 
-    def __init__(self,
-                 neo4j_uri: str,
-                 neo4j_user: str,
-                 neo4j_password: str,
-                 main_company: str = ""):
+    def __init__(self,neo4j_uri: str = "",neo4j_user: str = "",neo4j_password: str = "",main_company: str = "",driver=None):
 
-        self.driver = GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_password))
-        print(f"✓ Connected to Neo4j at {neo4j_uri}")
+        if driver is not None:
+            self.driver = driver
+        else:
+            self.driver = GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_password))
+            print(f"✓ Connected to Neo4j at {neo4j_uri}")
 
         self.main_company = main_company
         self._sic_cache: Dict[str, str] = {}

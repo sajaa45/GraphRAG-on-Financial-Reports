@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from base import RelationConfig
+from relation_extraction_config import RelationConfig
 from typing import Dict, Optional
 
 

@@ -2,7 +2,10 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from base import RelationConfig, OCR_FIX_RE, CLEAN_VALUE_RE, TRAILING_X_RE, OCR_PERIOD_RE, ACCOUNTING_NEG_RE
+from relation_extraction_config import (
+    RelationConfig,
+    OCR_FIX_RE, CLEAN_VALUE_RE, TRAILING_X_RE, OCR_PERIOD_RE, ACCOUNTING_NEG_RE,
+)
 from typing import Dict, Optional
 
 

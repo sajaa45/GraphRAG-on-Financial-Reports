@@ -18,58 +18,27 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HEADERS = {"User-Agent": "YourName your_email@example.com"}
 
 # Configuration
-FISCAL_YEAR = 2024  # Extract only this fiscal year
+FISCAL_YEAR = int(os.getenv("FISCAL_YEAR", 2024))
 
 
 def get_sic_from_neo4j() -> list:
-    """Query Neo4j for the SIC code(s) of the target company (is_target=true)."""
     uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     user = os.getenv("NEO4J_USERNAME", "neo4j")
     password = os.getenv("NEO4J_PASSWORD", "")
-    
+    driver = GraphDatabase.driver(uri, auth=(user, password))
     try:
-        driver = GraphDatabase.driver(uri, auth=(user, password))
         with driver.session() as session:
-            # Try multiple query patterns
-            queries = [
-                # Pattern 1: Direct path through Industry
-                """
-                MATCH (c:Company {is_target: true})-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
+            records = list(session.run("""
+                MATCH (c:TargetCompany)-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
                 RETURN DISTINCT s.code AS sic_code
-                """,
-                # Pattern 2: Direct HAS_SIC_CODE from Company
-                """
-                MATCH (c:Company {is_target: true})-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN DISTINCT s.code AS sic_code
-                """,
-                # Pattern 3: Any Company with SIC code
-                """
-                MATCH (c:Company)-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN DISTINCT s.code AS sic_code
-                """,
-                # Pattern 4: Any SIC code in the database
-                """
-                MATCH (s:SICCode)
-                RETURN DISTINCT s.code AS sic_code
-                """
-            ]
-            
-            for i, query in enumerate(queries, 1):
-                result = session.run(query)
-                records = list(result)
-                if records:
-                    codes = [str(record["sic_code"]).strip() for record in records if record["sic_code"]]
-                    if codes:
-                        print(f"✓ SIC code(s) from Neo4j (pattern {i}): {codes}")
-                        driver.close()
-                        return codes
-        
+            """))
+        codes = [str(r["sic_code"]).strip() for r in records if r["sic_code"]]
+        if not codes:
+            raise ValueError("No SIC codes found in Neo4j for the target company.")
+        print(f"✓ SIC code(s) from Neo4j: {codes}")
+        return codes
+    finally:
         driver.close()
-    except Exception as e:
-        print(f"⚠ Could not connect to Neo4j: {e}")
-    
-    print("⚠ No SIC code found in Neo4j, using default: ['1311'] (Oil & Gas)")
-    return ["1311"]
 
 
 def get_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100):

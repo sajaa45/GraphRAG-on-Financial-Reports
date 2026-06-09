@@ -18,5 +18,8 @@ __pycache__/
 *.pyd
 retrival+eval/Ground_Truth/*.csv
 retrival+eval/Ground_Truth/*.txt
-retrival+eval\retrival_results
+retrival+eval/retrival_results
 uploads
+KG_building/relations/**/extracted**.json
+retrival+eval/Ground_Truth/results_minerals
+pipeline_output

@@ -1,6 +1,0 @@
-component,weight,score,weighted_contribution
-Faithfulness,30%,0.8889,0.2667
-Context Precision,25%,1.0000,0.2500
-Answer Relevancy,25%,0.6408,0.1602
-Extraction Quality,20%,0.9174,0.1835
-** OVERALL **,100%,0.8604,PASS

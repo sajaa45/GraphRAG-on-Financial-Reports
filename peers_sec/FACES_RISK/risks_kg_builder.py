@@ -25,11 +25,14 @@ class RisksKGBuilder:
     (:Company {is_peer:true})-[:COMPETES_WITH]->(:Company {is_target:true})
     """
 
-    def __init__(self, neo4j_uri: str, neo4j_user: str, neo4j_password: str,
-                 target_company_name: str = ""):
-        self.driver = GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_password))
+    def __init__(self, neo4j_uri: str = "", neo4j_user: str = "", neo4j_password: str = "",
+                 target_company_name: str = "", driver=None):
+        if driver is not None:
+            self.driver = driver
+        else:
+            self.driver = GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_password))
+            print(f"✓ Connected to Neo4j at {neo4j_uri}")
         self.target = target_company_name.strip()
-        print(f"✓ Connected to Neo4j at {neo4j_uri}")
 
     # ------------------------------------------------------------------
     # Internal helpers
