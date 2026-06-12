@@ -25,15 +25,8 @@ class RisksKGBuilder:
 
     def _resolve_target(self, session) -> bool:
         if not self.target or self.target.lower() in ('', 'the company', 'this company'):
-            record = session.run(
-                "MATCH (c:TargetCompany) RETURN c.name AS name LIMIT 1"
-            ).single()
-            if record:
-                self.target = record["name"]
-                print(f"✓ Auto-detected target company: '{self.target}'")
-            else:
-                print("⚠ No TargetCompany found in Neo4j. Run neo4j_builder.py first.")
-                return False
+            print("⚠ No target company name provided to RisksKGBuilder.")
+            return False
 
         found = session.run(
             "MATCH (c:TargetCompany {name: $name}) RETURN c LIMIT 1",
@@ -52,6 +45,19 @@ class RisksKGBuilder:
             MATCH (peer:Company {name: $peer})
             MATCH (tgt:TargetCompany {name: $target})
             MERGE (peer)-[:COMPETES_WITH]->(tgt)
+            """,
+            {"peer": peer_name, "target": self.target},
+        )
+
+    def _add_operates_in(self, session, peer_name: str):
+        """Link the peer to the same Industry nodes as the target company."""
+        if not self.target:
+            return
+        session.run(
+            """
+            MATCH (tgt:TargetCompany {name: $target})-[:OPERATES_IN]->(ind:Industry)
+            MATCH (peer:Company {name: $peer})
+            MERGE (peer)-[:OPERATES_IN]->(ind)
             """,
             {"peer": peer_name, "target": self.target},
         )
@@ -98,6 +104,7 @@ class RisksKGBuilder:
 
                 if target_found:
                     self._add_competes_with(session, peer_name=company_name)
+                    self._add_operates_in(session, peer_name=company_name)
 
                 for risk in risks:
                     risk_id = risk.get("risk_id", "")

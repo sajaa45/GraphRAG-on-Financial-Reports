@@ -28,5 +28,4 @@ pipeline_output
 **/results_minerals
 peers_sec/HAS_METRIC/.taxonomy_cache.json
 frontend/.lovable
-frontend
 **/**.json

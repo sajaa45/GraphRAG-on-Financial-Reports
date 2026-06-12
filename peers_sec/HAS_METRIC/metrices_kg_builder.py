@@ -77,7 +77,7 @@ def _write_metric(session, company_name, cik, category_map, peer_metric_counter,
     )
 
 
-def write_metrics_to_neo4j(driver, json_file: str):
+def write_metrics_to_neo4j(driver, json_file: str, target_company_name: str = None):
     with open(json_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
@@ -94,13 +94,8 @@ def write_metrics_to_neo4j(driver, json_file: str):
 
     try:
         with driver.session() as session:
-            record = session.run(
-                "MATCH (c:TargetCompany) RETURN c.name AS name LIMIT 1"
-            ).single()
-            target_company_name = record["name"] if record else None
-
             if not target_company_name:
-                print("⚠ No target company found in Neo4j — COMPETES_WITH edges will be skipped")
+                print("⚠ No target company name provided — COMPETES_WITH / OPERATES_IN edges will be skipped")
             else:
                 print(f"  ✓ Target company: {target_company_name}")
 
@@ -143,6 +138,14 @@ def write_metrics_to_neo4j(driver, json_file: str):
                         MATCH (tc:TargetCompany {name: $target_name})
                         MERGE (c)-[r:COMPETES_WITH]->(tc)
                         SET r.updated_at = datetime()
+                        """,
+                        {"company_name": company_name, "target_name": target_company_name}
+                    )
+                    session.run(
+                        """
+                        MATCH (tc:TargetCompany {name: $target_name})-[:OPERATES_IN]->(ind:Industry)
+                        MATCH (peer:Company {name: $company_name})
+                        MERGE (peer)-[:OPERATES_IN]->(ind)
                         """,
                         {"company_name": company_name, "target_name": target_company_name}
                     )

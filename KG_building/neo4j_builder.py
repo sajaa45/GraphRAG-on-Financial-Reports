@@ -118,18 +118,20 @@ class Neo4jBuilder:
 
             if relation_name == "FACES_RISK":
                 with self.driver.session() as _cleanup_session:
-                    _cleanup_session.run("MATCH (r:Risk) DETACH DELETE r")
+                    _cleanup_session.run(
+                        "MATCH (tc:TargetCompany {name: $name})-[:FACES_RISK]->(r:Risk) DETACH DELETE r",
+                        {"name": self.main_company},
+                    )
 
             if relation_name == "HAS_METRIC":
                 with self.driver.session() as _cleanup_session:
-                    _cleanup_session.run("MATCH (mc:MetricCategory) DETACH DELETE mc")
                     _cleanup_session.run(
                         """
-                        MATCH (m:Metric)
-                        WITH m.name AS nm, collect(m) AS dupes
-                        WHERE size(dupes) > 1
-                        FOREACH (d IN tail(dupes) | DETACH DELETE d)
-                        """
+                        MATCH (tc:TargetCompany {name: $name})-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)
+                        OPTIONAL MATCH (mc)-[:HAS_METRIC]->(m:Metric)
+                        DETACH DELETE m, mc
+                        """,
+                        {"name": self.main_company},
                     )
 
             def _write_batch(tx, batch=items):

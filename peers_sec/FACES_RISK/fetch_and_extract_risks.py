@@ -23,12 +23,23 @@ HEADERS = {"User-Agent": "YourName your_email@example.com"}
 FISCAL_YEAR = int(os.getenv("FISCAL_YEAR", 2024))
 
 
-def get_sic_from_neo4j(driver) -> list:
+def get_sic_from_neo4j(driver, target_company: str = None) -> list:
     with driver.session() as session:
-        records = list(session.run("""
-            MATCH (c:TargetCompany)-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
-            RETURN DISTINCT s.code AS sic_code
-        """))
+        if target_company:
+            records = list(session.run(
+                """
+                MATCH (c:TargetCompany {name: $name})-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN DISTINCT s.code AS sic_code
+                """,
+                {"name": target_company},
+            ))
+        else:
+            records = list(session.run(
+                """
+                MATCH (c:TargetCompany)-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
+                RETURN DISTINCT s.code AS sic_code
+                """
+            ))
     codes = [str(r["sic_code"]).strip() for r in records if r["sic_code"]]
     if not codes:
         raise ValueError("No SIC codes found in Neo4j for the target company.")

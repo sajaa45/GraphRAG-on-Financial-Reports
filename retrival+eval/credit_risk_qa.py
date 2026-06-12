@@ -74,9 +74,9 @@ Schema:
 Known MetricCategory names (use EXACT spelling):
 {categories}
 
-Target company in this graph: {target_company}
-CRITICAL: Never filter TargetCompany by name. The graph contains exactly ONE TargetCompany node.
-Always match it as (tc:TargetCompany) — no {{name: ...}} or other property filter.
+Target company to analyze: {target_company}
+CRITICAL: Always filter TargetCompany by name — the graph may contain multiple TargetCompany nodes.
+Always match it as (tc:TargetCompany {{name: '{target_company}'}}).
 
 Rules:
 1. Output ONLY the Cypher query — no markdown, no comments, no explanation.
@@ -111,7 +111,7 @@ Rules:
 Reference patterns:
 
 Risks with peer comparison — topic-filtered (e.g. question mentions "debt"):
-    MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
+    MATCH (tc:TargetCompany {{name: '{target_company}'}})-[:FACES_RISK]->(r:Risk)
     WHERE toLower(r.description) CONTAINS 'debt' OR toLower(r.name) CONTAINS 'debt'
            OR toLower(r.why) CONTAINS 'debt' OR toLower(r.source_text) CONTAINS 'debt'
     WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page}})[0..15] AS target_risks
@@ -124,7 +124,7 @@ Risks with peer comparison — topic-filtered (e.g. question mentions "debt"):
     LIMIT 20
 
 Risks with peer comparison — ALL risks (e.g. question asks "what are the main risks"):
-    MATCH (tc:TargetCompany)-[:FACES_RISK]->(r:Risk)
+    MATCH (tc:TargetCompany {{name: '{target_company}'}})-[:FACES_RISK]->(r:Risk)
     WITH tc, collect({{citation_id: r.citation_id, risk_id: r.risk_id, name: r.name, description: r.description, why: r.why, source_text: r.source_text, document_url: r.document_url, section_title: r.section_title, source_page: r.source_page}})[0..15] AS target_risks
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
     OPTIONAL MATCH (peer)-[:FACES_RISK]->(pr:Risk)
@@ -133,7 +133,7 @@ Risks with peer comparison — ALL risks (e.g. question asks "what are the main 
     LIMIT 20
 
 Metrics with peer comparison (fetch independently by category — let the LLM align by label):
-    MATCH (tc:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
+    MATCH (tc:TargetCompany {{name: '{target_company}'}})-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
     WHERE mc.name = 'Profitability'
     WITH tc, mc, collect({{citation_id: m.citation_id, name: m.name, label: m.label, gaap_concept: m.gaap_concept, value: m.value, unit: m.unit, year: m.year, metric_type: m.metric_type, xbrl_tag: m.xbrl_tag, source_page: m.source_page, section_title: m.section_title, source_text: m.source_text}}) AS target_metrics
     OPTIONAL MATCH (peer:Company {{is_peer:true}})-[:COMPETES_WITH]->(tc)
@@ -353,15 +353,16 @@ class CreditRiskQA:
 
     _CYPHER_FENCE_RE = re.compile(r'```(?:cypher)?\s*(.*?)```', re.DOTALL | re.IGNORECASE)
 
-    def _generate_cypher(self, question: str, error_context: str = "") -> str:
+    def _generate_cypher(self, question: str, error_context: str = "", target_company: str = "") -> str:
         """Call the LLM to generate (or fix) a Cypher query."""
-        if not error_context and question in self._cypher_cache:
-            return self._cypher_cache[question]
+        target_company = target_company or self._target_company
+        if not error_context and (question, target_company) in self._cypher_cache:
+            return self._cypher_cache[(question, target_company)]
 
         base_prompt = CYPHER_GENERATION_PROMPT.format(
             schema=GRAPH_SCHEMA,
             categories=", ".join(sorted(KNOWN_CATEGORIES)),
-            target_company=self._target_company,
+            target_company=target_company,
             question=question,
         )
         if error_context:
@@ -377,17 +378,17 @@ class CreditRiskQA:
             fallback = 20 if 'COLLECT' in cypher.upper() else 100
             cypher = cypher.rstrip(';').rstrip() + f'\nLIMIT {fallback}'
         if not error_context:
-            self._cypher_cache[question] = cypher
+            self._cypher_cache[(question, target_company)] = cypher
         return cypher
 
-    def _run_pipeline(self, question: str, max_retries: int = 2) -> dict:
+    def _run_pipeline(self, question: str, max_retries: int = 2, target_company: str = "") -> dict:
         """
         Step 1 — generate Cypher (with up to max_retries correction attempts on syntax errors).
         Step 2 — execute against Neo4j.
         Returns {cypher, results}. Answer generation is deferred to ask_multi()
         so results from all strategies are combined before a single QA call.
         """
-        cypher = self._generate_cypher(question)
+        cypher = self._generate_cypher(question, target_company=target_company)
         last_error = ""
 
         for attempt in range(max_retries):
@@ -398,7 +399,7 @@ class CreditRiskQA:
                 last_error = str(e)
                 if attempt < max_retries - 1:
                     print(f"             → Cypher error (attempt {attempt + 1}), retrying: {last_error[:120]}")
-                    cypher = self._generate_cypher(question, error_context=last_error)
+                    cypher = self._generate_cypher(question, error_context=last_error, target_company=target_company)
                 else:
                     print(f"             → Cypher failed after {max_retries} attempts: {last_error[:120]}")
                     return {"cypher": cypher, "results": [], "error": last_error}
@@ -433,7 +434,8 @@ class CreditRiskQA:
             pass
         return list(QUERY_STRATEGIES.keys())
 
-    def ask_multi(self, question: str, verbose: bool = False) -> dict:
+    def ask_multi(self, question: str, verbose: bool = False, target_company: str | None = None) -> dict:
+        _company = target_company or self._target_company
         all_results = []
         queries_run = []
 
@@ -442,7 +444,7 @@ class CreditRiskQA:
 
         def _run_strategy(strategy: str) -> tuple[str, dict]:
             sub_question = QUERY_STRATEGIES[strategy].format(question=question)
-            return strategy, self._run_pipeline(sub_question)
+            return strategy, self._run_pipeline(sub_question, target_company=_company)
 
         skipped = [s for s in QUERY_STRATEGIES if s not in active_strategies]
         for s in skipped:
@@ -483,7 +485,7 @@ class CreditRiskQA:
         # Generate unified answer from combined results using the QA prompt
         clean = self._clean_metadata(unique[:100])
         context = json.dumps(self._truncate(clean), indent=2, default=str)
-        answer_msg = QA_PROMPT.format(context=context, question=question, target_company=self._target_company)
+        answer_msg = QA_PROMPT.format(context=context, question=question, target_company=_company)
         unified_answer = self._call_llm_raw(answer_msg)
 
         return {

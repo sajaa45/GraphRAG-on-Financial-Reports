@@ -71,17 +71,6 @@ _neo4j_driver = _GraphDatabase.driver(
     auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
 )
 
-_RELATIONS_DIR = os.path.join(ROOT, "KG_building", "relations")
-
-
-def _import_validator(rel_name: str, fn_name: str):
-    path = os.path.join(_RELATIONS_DIR, rel_name, "validate_entity.py")
-    spec = importlib.util.spec_from_file_location(f"validator_{rel_name}", path)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return getattr(mod, fn_name)
-
-
 app = FastAPI(title="PeersGraphRAG Pipeline API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
@@ -92,11 +81,10 @@ app.add_middleware(
 
 STEPS = [
     {"id": 1, "name": "parse_document",          "label": "Parse & convert document"},
-    {"id": 2, "name": "extract_target_entities",  "label": "Extract target company entities & build KG"},
-    {"id": 3, "name": "find_peers",               "label": "Identify SIC code & find peers via EDGAR"},
-    {"id": 4, "name": "retrieve_peer_metrics",    "label": "Retrieve peer metrics via XBRL"},
-    {"id": 5, "name": "retrieve_peer_risks",      "label": "Retrieve peer risk factors from HTM filings"},
-    {"id": 6, "name": "build_peer_kg",            "label": "Build & populate peer knowledge graph"},
+    {"id": 2, "name": "extract_target_entities",  "label": "Extract target entities"},
+    {"id": 3, "name": "build_target_kg",          "label": "Build target knowledge graph"},
+    {"id": 4, "name": "retrieve_peer_data",       "label": "Find peers & retrieve metrics and risks"},
+    {"id": 5, "name": "build_peer_kg",            "label": "Build peer knowledge graph"},
 ]
 
 # In-memory SSE state: job_id → {queue, steps, completed, failed, error}
@@ -203,8 +191,8 @@ def _run_step1(job_id: str, state: dict) -> dict:
 
 
 def _run_step2(job_id: str, state: dict) -> tuple:
+    """Extract target entities from the parsed document — no graph writes."""
     from llm_extractor import LLMExtractor
-    from neo4j_builder import Neo4jBuilder
 
     parsed_path = os.path.join(_job_dir(job_id), "parsed_sections.json")
     extractor = LLMExtractor(
@@ -228,90 +216,105 @@ def _run_step2(job_id: str, state: dict) -> tuple:
             for rel_type, items in data.get("relations", {}).items():
                 combined_relations.setdefault(rel_type, []).extend(items)
 
-    builder = Neo4jBuilder(main_company=main_company, driver=_neo4j_driver)
-    builder.clear_database()
-    total_written = builder._build_from_data({"main_company": main_company, "relations": combined_relations})
+    out = os.path.join(_job_dir(job_id), "target_relations.json")
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump({"main_company": main_company, "relations": combined_relations}, f, ensure_ascii=False)
+
     counts = {rel: len(items) for rel, items in combined_relations.items()}
-    return main_company, counts, total_written
+    return main_company, counts
 
 
-def _run_step3(job_id: str, state: dict) -> tuple:
-    from fetch_and_extract_risks import get_sic_from_neo4j, get_companies_from_api
-    sic = get_sic_from_neo4j(_neo4j_driver)
+def _run_step3(job_id: str, state: dict) -> int:
+    """Write the extracted target relations into Neo4j."""
+    from neo4j_builder import Neo4jBuilder
+
+    relations_path = os.path.join(_job_dir(job_id), "target_relations.json")
+    with open(relations_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    builder = Neo4jBuilder(main_company=data["main_company"], driver=_neo4j_driver)
+    return builder._build_from_data(data)
+
+
+def _run_step4(job_id: str, state: dict) -> dict:
+    """Find peers via SIC code, then retrieve their metrics and risk filings."""
+    from fetch_and_extract_risks import get_sic_from_neo4j, get_companies_from_api, process_companies_from_api
+    from process_risks           import process_all_risks
+    from extract_metrices        import get_target_company_metrics, analyze_company_covenants
+
+    job_dir         = _job_dir(job_id)
+    peers_path      = os.path.join(job_dir, "peer_companies.json")
+    metrics_path    = os.path.join(job_dir, "peer_metrics.json")
+    risks_path      = os.path.join(job_dir, "companies_risks.json")
+    structured_path = os.path.join(job_dir, "structured_risks.json")
+    MAX             = int(os.getenv("MAX_PEER_COMPANIES", 3))
+    main_company    = state["main_company"]
+    fy              = state["fiscal_year"]
+
+    # --- find peers ---
+    sic = get_sic_from_neo4j(_neo4j_driver, target_company=main_company)
     if isinstance(sic, str):
         sic = [sic]
-    companies = get_companies_from_api(sic, fiscal_year=state["fiscal_year"])
-    out = os.path.join(_job_dir(job_id), "peer_companies.json")
-    with open(out, "w", encoding="utf-8") as f:
+    companies = get_companies_from_api(sic, fiscal_year=fy)[:MAX]
+    print(f"  SIC {', '.join(sic)} → {len(companies)} peers")
+    with open(peers_path, "w", encoding="utf-8") as f:
         json.dump(companies, f, ensure_ascii=False)
-    return sic, companies
 
-
-def _run_step4(job_id: str, state: dict) -> tuple:
-    from extract_metrices import get_target_company_metrics, analyze_company_covenants
-    peers_path = os.path.join(_job_dir(job_id), "peer_companies.json")
-    with open(peers_path, "r", encoding="utf-8") as f:
-        peer_companies = json.load(f)
-
+    # --- retrieve metrics ---
     target_metrics = get_target_company_metrics(_neo4j_driver)
-    fy = state["fiscal_year"]
-    main_company = state["main_company"]
-
+    candidates     = [c for c in companies if c.get("name") != main_company][:MAX]
+    print(f"  Fetching metrics for {len(candidates)} peers…")
     companies_with_metrics = []
-    for company in peer_companies:
-        if company.get("name") == main_company:
-            continue
+    for i, company in enumerate(candidates, 1):
         cik    = company["cik"]
         name   = company["name"]
         ticker = company.get("ticker", "N/A")
+        print(f"  [{i}/{len(candidates)}] {name}")
         results = analyze_company_covenants(cik, name, target_metrics, fy)
         if results:
             companies_with_metrics.append({
-                "company":       {"cik": cik, "name": name, "ticker": ticker},
+                "company":        {"cik": cik, "name": name, "ticker": ticker},
                 "target_metrics": results,
-                "total_matches": sum(len(v) for v in results.values()),
+                "total_matches":  sum(len(v) for v in results.values()),
             })
+    with open(metrics_path, "w", encoding="utf-8") as f:
+        json.dump({"companies_with_metrics": companies_with_metrics, "fiscal_year": fy}, f, indent=2, ensure_ascii=False)
 
-    out = os.path.join(_job_dir(job_id), "peer_metrics.json")
-    with open(out, "w", encoding="utf-8", indent=2) as f:
-        json.dump({"companies_with_metrics": companies_with_metrics, "fiscal_year": fy}, f, ensure_ascii=False)
-    return len(companies_with_metrics), len(target_metrics)
-
-
-def _run_step5(job_id: str, state: dict) -> tuple:
-    from fetch_and_extract_risks import process_companies_from_api
-    from process_risks import process_all_risks
-
-    risks_path      = os.path.join(_job_dir(job_id), "companies_risks.json")
-    structured_path = os.path.join(_job_dir(job_id), "structured_risks.json")
-
+    # --- retrieve & structure risks ---
     companies_data = process_companies_from_api(
         _neo4j_driver,
-        sic_codes=state["sic_codes"],
-        fiscal_year=state["fiscal_year"],
+        sic_codes=sic,
+        fiscal_year=fy,
         output_file=risks_path,
     )
-    total_risks = 0
+    n_risks_extracted = 0
     if companies_data:
-        structured  = process_all_risks(_bedrock_client, input_file=risks_path, output_file=structured_path)
-        total_risks = sum(c.get("total_risks", 0) for c in structured)
-    return len(companies_data), total_risks
+        structured        = process_all_risks(_bedrock_client, input_file=risks_path, output_file=structured_path)
+        n_risks_extracted = sum(c.get("total_risks", 0) for c in structured)
+
+    return {
+        "sic":               sic,
+        "n_peers":           len(companies),
+        "n_metrics":         len(companies_with_metrics),
+        "n_risks_extracted": n_risks_extracted,
+    }
 
 
-def _run_step6(job_id: str, state: dict) -> int:
+def _run_step5(job_id: str, state: dict) -> int:
+    """Write peer metrics and risks into the knowledge graph."""
     from risks_kg_builder    import RisksKGBuilder
     from metrices_kg_builder import write_metrics_to_neo4j
 
-    structured_path = os.path.join(_job_dir(job_id), "structured_risks.json")
-    metrics_path    = os.path.join(_job_dir(job_id), "peer_metrics.json")
+    job_dir         = _job_dir(job_id)
+    structured_path = os.path.join(job_dir, "structured_risks.json")
+    metrics_path    = os.path.join(job_dir, "peer_metrics.json")
+    main_company    = state["main_company"]
 
     n_risks = 0
     if os.path.exists(structured_path):
-        builder = RisksKGBuilder(driver=_neo4j_driver)
-        n_risks = builder.build_from_structured_risks(structured_path)
-
+        n_risks = RisksKGBuilder(driver=_neo4j_driver, target_company_name=main_company).build_from_structured_risks(structured_path)
     if os.path.exists(metrics_path):
-        write_metrics_to_neo4j(_neo4j_driver, metrics_path)
+        write_metrics_to_neo4j(_neo4j_driver, metrics_path, target_company_name=main_company)
 
     return n_risks
 
@@ -335,35 +338,33 @@ async def _execute_step(job_id: str, step_id: int, state: dict, loop) -> bool:
                   summary=f"Extracted {r['num_sections']} sections")
 
         elif step_id == 2:
-            main_company, counts, total = await loop.run_in_executor(_executor, _run_step2, job_id, state)
+            main_company, counts = await loop.run_in_executor(_executor, _run_step2, job_id, state)
             _mark_step_complete(state, 2, main_company=main_company)
             parts = [f"{v} {k.replace('_', ' ').lower()}" for k, v in counts.items()]
             _emit(job_id, 2, "done",
-                  summary=f"Extracted {', '.join(parts)} for {main_company}. {total} nodes written.")
+                  summary=f"Extracted {', '.join(parts)} for {main_company}.")
 
         elif step_id == 3:
-            sic, companies = await loop.run_in_executor(_executor, _run_step3, job_id, state)
-            _mark_step_complete(state, 3, sic_codes=sic)
+            total = await loop.run_in_executor(_executor, _run_step3, job_id, state)
+            _mark_step_complete(state, 3)
             _emit(job_id, 3, "done",
-                  summary=f"SIC {', '.join(sic)} → {len(companies)} peers found in EDGAR")
+                  summary=f"{total} target nodes written to Neo4j.")
 
         elif step_id == 4:
-            n_cos, n_types = await loop.run_in_executor(_executor, _run_step4, job_id, state)
-            _mark_step_complete(state, 4)
+            r = await loop.run_in_executor(_executor, _run_step4, job_id, state)
+            _mark_step_complete(state, 4, sic_codes=r["sic"])
             _emit(job_id, 4, "done",
-                  summary=f"Metrics retrieved for {n_cos} peers across {n_types} metric types")
+                  summary=(
+                      f"SIC {', '.join(r['sic'])} → {r['n_peers']} peers. "
+                      f"Metrics for {r['n_metrics']} peers, "
+                      f"{r['n_risks_extracted']} risks structured."
+                  ))
 
         elif step_id == 5:
-            n_cos, n_risks = await loop.run_in_executor(_executor, _run_step5, job_id, state)
+            n_risks = await loop.run_in_executor(_executor, _run_step5, job_id, state)
             _mark_step_complete(state, 5)
             _emit(job_id, 5, "done",
-                  summary=f"Extracted {n_risks} structured risks from {n_cos} peer filings")
-
-        elif step_id == 6:
-            n_risks = await loop.run_in_executor(_executor, _run_step6, job_id, state)
-            _mark_step_complete(state, 6)
-            _emit(job_id, 6, "done",
-                  summary=f"Knowledge graph complete. {n_risks} peer risks committed to Neo4j.")
+                  summary=f"{n_risks} peer risks committed to Neo4j.")
 
         return True
 
@@ -528,6 +529,7 @@ def _build_citations(results: list) -> Dict[str, Any]:
 class QARequest(BaseModel):
     question: str
     reasoning: bool = False
+    target_company: Optional[str] = None
 
 class EvalRequest(BaseModel):
     test_type: str
@@ -663,7 +665,7 @@ async def run_qa(request: QARequest):
 
     def _run():
         qa      = _get_qa()
-        data    = qa.ask_multi(request.question)
+        data    = qa.ask_multi(request.question, target_company=request.target_company)
         answer  = _THINK_RE.sub('', data["answer"]).strip()
         queries = data["queries"]
         results = data["results"]
@@ -687,6 +689,24 @@ async def run_qa(request: QARequest):
         return await loop.run_in_executor(_executor, _run)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/companies")
+async def list_companies():
+    """Return all TargetCompany names stored in the graph."""
+    loop = asyncio.get_running_loop()
+
+    def _fetch():
+        try:
+            with _neo4j_driver.session() as s:
+                rows = s.run(
+                    "MATCH (tc:TargetCompany) RETURN tc.name AS name, tc.cik AS cik ORDER BY tc.name"
+                ).data()
+            return {"companies": rows}
+        except Exception as exc:
+            return {"companies": [], "error": str(exc)}
+
+    return await loop.run_in_executor(_executor, _fetch)
 
 
 @app.get("/qa/ready")
