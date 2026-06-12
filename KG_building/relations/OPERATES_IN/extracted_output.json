@@ -2,12 +2,12 @@
   "main_company": "Kimco Realty Corporation",
   "validated_relation": {
     "src": {
-      "type": "Company",
+      "type": "TargetCompany",
       "name": "Kimco Realty Corporation"
     },
     "tgt": {
       "type": "Industry",
-      "name": "Real Estate Investment Trusts",
+      "name": "Real Estate Investment Trusts (REITs)",
       "properties": {
         "sector": "Real Estate",
         "sic_code": "6798"
@@ -20,10 +20,10 @@
     "source_page": 1,
     "sic": {
       "code": "6798",
-      "industry": "Real Estate Investment Trusts",
+      "industry": "Real Estate Investment Trusts (REITs)",
       "sector": "Real Estate",
       "src_type": "Industry",
-      "src_name": "Real Estate Investment Trusts"
+      "src_name": "Real Estate Investment Trusts (REITs)"
     }
   }
 }

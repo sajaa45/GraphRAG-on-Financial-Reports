@@ -49,7 +49,7 @@ def parse_metric_entity(entity: Dict, main_company: str = 'the Company') -> Opti
     # when we have access to a global counter
 
     return {
-        'source': {'type': 'Company', 'name': org},
+        'source': {'type': 'TargetCompany', 'name': org},
         'target': {
             'type': 'Metric',
             'name': metric_name,
@@ -69,7 +69,7 @@ def parse_metric_entity(entity: Dict, main_company: str = 'the Company') -> Opti
 
 CONFIG = RelationConfig(
     name='HAS_METRIC',
-    source_entity_type='Company',
+    source_entity_type='TargetCompany',
     target_entity_type='Metric',
     relationship_type='HAS_METRIC',
     required_fields=['metric', 'value', 'unit', 'year', 'category'],

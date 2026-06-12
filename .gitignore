@@ -23,3 +23,4 @@ uploads
 KG_building/relations/**/extracted**.json
 retrival+eval/Ground_Truth/results_minerals
 pipeline_output
+*/__pycache__/*

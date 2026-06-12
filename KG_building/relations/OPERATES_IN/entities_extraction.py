@@ -16,7 +16,7 @@ def parse_industry_entity(entity: Dict, main_company: str = 'the Company') -> Op
         return None
 
     return {
-        'source': {'type': 'Company', 'name': org},
+        'source': {'type': 'TargetCompany', 'name': org},
         'target': {
             'type': 'Industry',
             'name': industry,
@@ -29,7 +29,7 @@ def parse_industry_entity(entity: Dict, main_company: str = 'the Company') -> Op
 
 CONFIG = RelationConfig(
     name='OPERATES_IN',
-    source_entity_type='Company',
+    source_entity_type='TargetCompany',
     target_entity_type='Industry',
     relationship_type='OPERATES_IN',
     required_fields=['industry', 'sector'],

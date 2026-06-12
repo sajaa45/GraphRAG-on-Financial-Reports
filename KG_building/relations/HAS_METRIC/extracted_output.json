@@ -4,7 +4,7 @@
     "HAS_METRIC": [
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -27,30 +27,53 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "Net proceeds of $299.1 million (2024)",
+          "name": "interest expense would have increased by $0.2 million (2024)",
           "properties": {
-            "value": "299.1",
+            "value": "0.2",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "Net proceeds of $299.1 million",
-            "gaap_concept": "Cash and Cash Equivalents",
+            "metric_type": "interest expense would have increased by $0.2 million",
+            "gaap_concept": "Interest Expense",
+            "category": "Debt Structure"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "The Company’s primary market risk exposure is interest rate risk. The Company periodically evaluates its exposure to short-term interest rates and will, from time-to-time, enter into interest rate protection agreements which mitigate, but do not eliminate, the effect of changes in interest rates on its floating-rate debt. As of December 31, 2024, the Company has 26 interest rate swaps with notional amounts aggregating to $860.0 million. The interest rate swap agreements are designated as cash flow hedges and are held by the Company to reduce the impact of changes in interest rates on variable rate debt. The hedged debt is reflected as fixed rate unsecured debt in the table below. The Company has not entered, and does not plan to enter, into any derivative financial instruments for trading or speculative purposes.\n\nThe following table presents the carrying value of the Company’s aggregate fixed rate and variable rate debt obligations outstanding, including fair market value adjustments and unamortized deferred financing costs, as of December 31, 2024, with corresponding weighted-average interest rates sorted by maturity date. In addition, the following table presents the fair value of the Company’s debt obligations outstanding, including fair market value adjustments and unamortized deferred financing costs. The table does not include extension options where available (amounts in millions).\n\n|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---  \n|  | 2025 |  |  | 2026 |  |  | 2027 |  |  | 2028 |  |  | 2029 |  |  | Thereafter |  |  | Total |  |  | Fair Value |   \nSecured Debt |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \nFixed Rate |  | $ | 49.2 |  |  | $ | - |  |  | $ | 33.2 |  |  | $ | 132.4 |  |  | $ | 253.7 |  |  | $ | 11.1 |  |  | $ | 479.6 |  |  | $ | 452.9 |   \nAverage Interest Rate |  |  | 3.50 | % |  |  | - |  |  |  | 4.01 | % |  |  | 4.49 | % |  |  | 4.51 | % |  |  | 3.33 | % |  |  | 4.34 | % |  |  |   \nVariable Rate |  | $ | 16.8 |  |  | $ | - |  |  | $ | - |  |  | $ | - |  |  | $ | - |  |  | $ | - |  |  | $ | 16.8 |  |  | $ | 16.8 |   \nAverage Interest Rate |  |  | 5.85 | % |  |  | - |  |  |  | - |  |  |  | - |  |  |  | - |  |  |  | - |  |  |  | 5.85 | % |  |  |   \nUnsecured Debt |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \nFixed Rate |  | $ | 742.8 |  |  | $ | 1,376.9 |  |  | $ | 585.2 |  |  | $ | 517.7 |  |  | $ | - |  |  | $ | 4,742.1 |  |  | $ | 7,964.7 |  |  | $ | 7,400.1 |   \nAverage Interest Rate |  |  | 3.48 | % |  |  | 3.74 | % |  |  | 4.21 | % |  |  | 2.55 | % |  |  | - |  |  |  | 4.13 | % |  |  | 3.86 | % |  |  |   \n  \nBased on the Company’s variable-rate debt balances, interest expense would have increased by $0.2 million for the year ended December 31, 2024, if short-term interest rates were 1.0% higher.",
+        "section_title": "Item 7A. Quantitative and Qualitative D isclosures About Market Risk",
+        "source_page": 52
+      },
+      {
+        "src": {
+          "type": "TargetCompany",
+          "name": "Kimco Realty Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "$2.7 billion in immediate liquidity (2024)",
+          "properties": {
+            "value": "2700",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "$2.7 billion in immediate liquidity",
+            "gaap_concept": "Cash and Cash Equivalents and Restricted Cash",
             "category": "Liquidity"
           }
         },
         "rel": "HAS_METRIC",
         "props": {},
-        "chunk_text": "See Footnote 1 of the Notes to Consolidated Financial Statements included in this Form 10-K for further discussion of the Company’s accounting policies and estimates.\n\nExecutive Overview\n\nKimco Realty Corporation is the leading owner and operator of high-quality open-air, grocery-anchored shopping centers and mixed-use properties in the United States. The executive officers are engaged in the day-to-day management and operation of real estate exclusively with the Company, with nearly all operating functions, including leasing, asset management, maintenance, construction, legal, finance and accounting, administered by the Company.\n\nCorporate UPREIT Reorganization\n\nIn January of 2023, the Company completed the Reorganization into an UPREIT structure as described in the Explanatory Note at the beginning of this Annual Report. Prior to the Reorganization, the Company’s business was conducted through the Predecessor. This Annual Report includes the business and results of operations of the Predecessor for its fiscal year ended December 31, 2022. As a result of the Reorganization, the Company became the successor issuer to the Predecessor under the Exchange Act. The Company and Kimco OP have elected to co-file this Annual Report on Form 10-K to ensure continuity of information to investors. For additional information about the Reorganization, please see the Company’s Current Reports on Form 8-K filed with the SEC on January 3, 2023 and January 4, 2023.\n\nFinancial Highlights\n\nThe following highlights the Company’s significant transactions, events and results that occurred during the year ended December 31, 2024:\n\nFinancial and Portfolio Information:\n\n•\n\nNet income available to the Company’s common shareholders was $375.7 million, or $0.55 per diluted share, for the year ended December 31, 2024 as compared to $629.3 million, or $1.02 per diluted share, for the year ended December 31, 2023. \n\n•\n\nFunds From Operations (\"FFO\"), a supplemental non-GAAP financial measure of REIT performance, available to the Company’s common shareholders was $1.1 billion, or $1.65 per diluted share, for the year ended December 31, 2024, as compared to $970.0 million, or $1.57 per diluted share, for the corresponding period in 2023 (see additional disclosure on FFO beginning on page 43).\n\n•\n\nSame property net operating income (“Same property NOI”) was $1.53 billion and $1.47 billion for the years ended December 31, 2024 and December 31, 2023, respectively, an increase of 3.5% (see additional disclosure on Same property NOI beginning on page 44).\n\n•\n\nExecuted 1,556 new leases, renewals and options totaling approximately 10.3 million square feet in the consolidated operating portfolio during the year ended December 31, 2024.\n\n•\n\nConsolidated operating portfolio occupancy at December 31, 2024 was 96.4% as compared to 96.1% at December 31, 2023.\n\nAcquisitions, Dispositions and Other Activity (see Footnotes 2, 4, 5, and 9 of the Notes to Consolidated Financial Statements included in this Form 10-K):\n\n•\n\nAcquired 56 open-air shopping centers, including 43 wholly owned and 13 joint venture assets, in conjunction with the RPT Merger.\n\n•\n\nAcquired Waterford Lakes Town Center, located in Orlando, Florida, for a purchase price of $322.0 million,\n\n•\n\nDisposed of 11 operating properties and 10 parcels, in separate transactions, for an aggregate sales price of $255.1 million, which resulted in aggregate gains of $1.3 million, before noncontrolling interests and taxes.\n\n•\n\nMonetized the remaining 14.2 million shares of Albertsons Companies Inc. (“ACI”) common stock held by the Company, generating net proceeds of $299.1 million. \n\nCapital Activity (for additional details see Liquidity and Capital Resources below):\n\n•\n\nIssued $500.0 million of 4.85% unsecured notes maturing March 2035.\n\n•\n\nObtained a $550.0 million unsecured term loan credit facility, in separate transactions, maturing in January 2026 (with three one-year options to extend to January 2029).\n\n•\n\nAssumed $821.5 million of unsecured notes and term loans in conjunction with the RPT Merger, of which the Company repaid $511.5 million of unsecured notes in January 2024.\n\n•\n\nAssumed $164.6 million of mortgage debt through the acquisition of an operating property, and repaid $11.8 million of mortgage debt that encumbered three operating properties.\n\n31",
+        "chunk_text": "•\n\nIssued 5.4 million shares of common stock under the Company's At The Market (\"ATM\") Program for net proceeds after commissions and related expenses of $135.8 million.\n\n•\n\nIssued 53.0 million shares of common stock and 1,849 shares of Class N Preferred Stock to effect the RPT Merger.\n\n•\n\nRepurchased 409,772 Class N depositary shares for an aggregate cost of $26.7 million.\n\n•\n\nEntered into 26 interest rate swap agreements with notional amounts aggregating $860.0 million.\n\n•\n\nAs of December 31, 2024, had $2.7 billion in immediate liquidity, including $689.7 million of cash, cash equivalents and restricted cash.\n\nAs a result of the above debt activity, the Company’s consolidated debt maturity profile, including extension options as of December 31, 2024, is as follows:\n\n•\n\nAs of December 31, 2024, the Company’s consolidated debt had a weighted average interest rate of 3.89% and a weighted average maturity profile of 8.0 years.\n\nThe Company faces external factors which may influence its future results from operations. There remains significant uncertainty in the current macro-economic environment, driven by inflationary pressure and elevated interest rates. These factors have impacted, and are expected to continue to impact, consumer discretionary spending and many of our tenants. The convenience and availability of e-commerce has continued to impact the retail sector, which could affect our ability to increase or maintain rental rates and our ability to renew expiring leases and/or lease available space. To better position itself, the Company’s strategy has been to attract local area customers to its properties by providing a diverse and robust tenant base across a variety of retailers, including grocery stores, off-price retailers, discounters and service-oriented tenants, which offer buy online and pick up in store, off-price merchandise and day-to-day necessities rather than high-priced luxury items.\n\nThe Company’s portfolio is focused on first ring suburbs around major metropolitan-area U.S. markets, predominantly on the east and west coasts and in the Sun Belt region, which are supported by strong demographics, significant projected population growth, and where the Company perceives significant barriers to entry. The Company owns a predominantly grocery-anchored portfolio clustered in the nation’s top markets. The Company believes it can continue to increase its occupancy levels, rental rates and overall rental growth. In addition, the Company, on a selective basis, has developed or redeveloped projects, which include residential and mixed-use components.\n\nAs part of the Company’s investment strategy, each property is evaluated for its highest and best use, which may include residential and mixed-use components. In addition, the Company may consider other opportunistic investments related to retailer controlled real estate, such as, repositioning underperforming retail locations, retail real estate financing and bankruptcy transaction support. The Company may continue to dispose of certain properties. If the estimated fair value for any of these assets is less than their net carrying values, the Company would be required to take impairment charges and such amounts could be material. For a further discussion of these and other factors that could impact our future results, performance or transactions, see Item 1A. Risk Factors.\n\n32",
         "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 36
+        "source_page": 37
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -73,30 +96,7 @@
       },
       {
         "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "Rent (1) (2024)",
-          "properties": {
-            "value": "16837",
-            "unit": "$ thousand",
-            "year": "2024",
-            "metric_type": "Rent (1)",
-            "gaap_concept": "Rent Expense",
-            "category": "Profitability"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "Results of Operations\n\nComparison of the years ended December 31, 2024 and 2023\n\nThe following table presents the comparative results from the Company’s Consolidated Statements of Income for the year ended December 31, 2024, as compared to the corresponding period in 2023 (in thousands, except per share data):\n\n|  |  |  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---|---|---  \n|  | Year Ended December 31, |   \n|  | 2024 |  |  | 2023 |  |  | Change |   \nRevenues |  |  |  |  |  |  |  |  |   \nRevenues from rental properties, net |  | $ | 2,019,065 |  |  | $ | 1,767,057 |  |  | $ | 252,008 |   \nManagement and other fee income |  |  | 17,949 |  |  |  | 16,343 |  |  |  | 1,606 |   \nOperating expenses |  |  |  |  |  |  |  |  |   \nRent (1) |  |  | (16,837 | ) |  |  | (15,997 | ) |  |  | (840 | )  \nReal estate taxes |  |  | (261,700 | ) |  |  | (231,578 | ) |  |  | (30,122 | )  \nOperating and maintenance (2) |  |  | (359,116 | ) |  |  | (309,143 | ) |  |  | (49,973 | )  \nGeneral and administrative (3) |  |  | (138,140 | ) |  |  | (136,807 | ) |  |  | (1,333 | )  \nImpairment charges |  |  | (4,476 | ) |  |  | (14,043 | ) |  |  | 9,567 |   \nMerger charges |  |  | (25,246 | ) |  |  | (4,766 | ) |  |  | (20,480 | )  \nDepreciation and amortization |  |  | (603,685 | ) |  |  | (507,265 | ) |  |  | (96,420 | )  \nGain on sale of properties |  |  | 1,274 |  |  |  | 74,976 |  |  |  | (73,702 | )  \nOther income/(expense) |  |  |  |  |  |  |  |  |   \nSpecial dividend income |  |  | - |  |  |  | 194,116 |  |  |  | (194,116 | )  \nOther income, net |  |  | 57,605 |  |  |  | 39,960 |  |  |  | 17,645 |   \n(Loss)/gain on marketable securities, net |  |  | (27,679 | ) |  |  | 21,262 |  |  |  | (48,941 | )  \nInterest expense |  |  | (307,806 | ) |  |  | (250,201 | ) |  |  | (57,605 | )  \nProvision for income taxes, net |  |  | (25,417 | ) |  |  | (60,952 | ) |  |  | 35,535 |   \nEquity in income of joint ventures, net |  |  | 83,827 |  |  |  | 72,278 |  |  |  | 11,549 |   \nEquity in income of other investments, net |  |  | 9,821 |  |  |  | 10,709 |  |  |  | (888 | )  \nNet income attributable to noncontrolling interests |  |  | (8,654 | ) |  |  | (11,676 | ) |  |  | 3,022 |   \nPreferred stock redemption charges |  |  | (3,304 | ) |  |  | - |  |  |  | (3,304 | )  \nPreferred dividends, net |  |  | (31,763 | ) |  |  | (25,021 | ) |  |  | (6,742 | )  \nNet income available to the Company's common shareholders |  | $ | 375,718 |  |  | $ | 629,252 |  |  | $ | (253,534 | )  \nNet income available to the Company's common shareholders: |  |  |  |  |  |  |  |  |   \nDiluted per share |  | $ | 0.55 |  |  | $ | 1.02 |  |  | $ | (0.47 | )  \n  \n(1)\n\nRent expense relates to ground lease payments for which the Company is the lessee.\n\n(2)\n\nOperating and maintenance expense consists of property related costs including repairs and maintenance costs, roof repair, landscaping, parking lot repair, snow removal, utilities, property insurance costs, security and various other property related expenses. \n\n(3)\n\nGeneral and administrative expense includes employee-related expenses (including salaries, bonuses, equity awards, benefits, severance costs and payroll taxes), professional fees, office rent, travel and entertainment costs and other company-specific expenses.\n\nNet income available to the Company’s common shareholders was $375.7 million for the year ended December 31, 2024, as compared to $629.3 million for the comparable period in 2023. On a diluted per share basis, net income available to the Company’s common shareholders for the year ended December 31, 2024 was $0.55, as compared to $1.02 for the comparable period in 2023. For additional disclosure, see Footnote 29 of the Notes to Consolidated Financial Statements included in this Form 10-K.\n\nThe following describes the changes of certain line items included on the Company’s Consolidated Statements of Income that the Company believes changed significantly and affected Net income available to the Company’s common shareholders during the year ended December 31, 2024, as compared to the corresponding period in 2023:\n\nRevenues from rental properties, net –\n\nThe increase in Revenues from rental properties, net of $252.0 million is primarily from (i) a net increase in revenues of $178.6 million due to properties acquired through the RPT Merger, (ii) a net increase in revenues of $63.0 million, primarily due to an increase in leasing activity and net growth in the current portfolio, and (iii) an increase in revenues of $21.4 million due to properties acquired during 2024 and 2023, partially offset by (iv) a decrease in revenues of $6.1 million due to dispositions in 2024 and 2023 and (v) a decrease in net straight-line rental income of $4.9 million primarily due to tenants that are being accounted for on a cash basis.\n\n33",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 38
-      },
-      {
-        "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -119,40 +119,17 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "Interest expense (2024)",
+          "name": "Other income, net (2024)",
           "properties": {
-            "value": "307806",
+            "value": "57605",
             "unit": "$ thousand",
             "year": "2024",
-            "metric_type": "Interest expense",
-            "gaap_concept": "Interest Expense",
-            "category": "Coverage"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "Results of Operations\n\nComparison of the years ended December 31, 2024 and 2023\n\nThe following table presents the comparative results from the Company’s Consolidated Statements of Income for the year ended December 31, 2024, as compared to the corresponding period in 2023 (in thousands, except per share data):\n\n|  |  |  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---|---|---  \n|  | Year Ended December 31, |   \n|  | 2024 |  |  | 2023 |  |  | Change |   \nRevenues |  |  |  |  |  |  |  |  |   \nRevenues from rental properties, net |  | $ | 2,019,065 |  |  | $ | 1,767,057 |  |  | $ | 252,008 |   \nManagement and other fee income |  |  | 17,949 |  |  |  | 16,343 |  |  |  | 1,606 |   \nOperating expenses |  |  |  |  |  |  |  |  |   \nRent (1) |  |  | (16,837 | ) |  |  | (15,997 | ) |  |  | (840 | )  \nReal estate taxes |  |  | (261,700 | ) |  |  | (231,578 | ) |  |  | (30,122 | )  \nOperating and maintenance (2) |  |  | (359,116 | ) |  |  | (309,143 | ) |  |  | (49,973 | )  \nGeneral and administrative (3) |  |  | (138,140 | ) |  |  | (136,807 | ) |  |  | (1,333 | )  \nImpairment charges |  |  | (4,476 | ) |  |  | (14,043 | ) |  |  | 9,567 |   \nMerger charges |  |  | (25,246 | ) |  |  | (4,766 | ) |  |  | (20,480 | )  \nDepreciation and amortization |  |  | (603,685 | ) |  |  | (507,265 | ) |  |  | (96,420 | )  \nGain on sale of properties |  |  | 1,274 |  |  |  | 74,976 |  |  |  | (73,702 | )  \nOther income/(expense) |  |  |  |  |  |  |  |  |   \nSpecial dividend income |  |  | - |  |  |  | 194,116 |  |  |  | (194,116 | )  \nOther income, net |  |  | 57,605 |  |  |  | 39,960 |  |  |  | 17,645 |   \n(Loss)/gain on marketable securities, net |  |  | (27,679 | ) |  |  | 21,262 |  |  |  | (48,941 | )  \nInterest expense |  |  | (307,806 | ) |  |  | (250,201 | ) |  |  | (57,605 | )  \nProvision for income taxes, net |  |  | (25,417 | ) |  |  | (60,952 | ) |  |  | 35,535 |   \nEquity in income of joint ventures, net |  |  | 83,827 |  |  |  | 72,278 |  |  |  | 11,549 |   \nEquity in income of other investments, net |  |  | 9,821 |  |  |  | 10,709 |  |  |  | (888 | )  \nNet income attributable to noncontrolling interests |  |  | (8,654 | ) |  |  | (11,676 | ) |  |  | 3,022 |   \nPreferred stock redemption charges |  |  | (3,304 | ) |  |  | - |  |  |  | (3,304 | )  \nPreferred dividends, net |  |  | (31,763 | ) |  |  | (25,021 | ) |  |  | (6,742 | )  \nNet income available to the Company's common shareholders |  | $ | 375,718 |  |  | $ | 629,252 |  |  | $ | (253,534 | )  \nNet income available to the Company's common shareholders: |  |  |  |  |  |  |  |  |   \nDiluted per share |  | $ | 0.55 |  |  | $ | 1.02 |  |  | $ | (0.47 | )  \n  \n(1)\n\nRent expense relates to ground lease payments for which the Company is the lessee.\n\n(2)\n\nOperating and maintenance expense consists of property related costs including repairs and maintenance costs, roof repair, landscaping, parking lot repair, snow removal, utilities, property insurance costs, security and various other property related expenses. \n\n(3)\n\nGeneral and administrative expense includes employee-related expenses (including salaries, bonuses, equity awards, benefits, severance costs and payroll taxes), professional fees, office rent, travel and entertainment costs and other company-specific expenses.\n\nNet income available to the Company’s common shareholders was $375.7 million for the year ended December 31, 2024, as compared to $629.3 million for the comparable period in 2023. On a diluted per share basis, net income available to the Company’s common shareholders for the year ended December 31, 2024 was $0.55, as compared to $1.02 for the comparable period in 2023. For additional disclosure, see Footnote 29 of the Notes to Consolidated Financial Statements included in this Form 10-K.\n\nThe following describes the changes of certain line items included on the Company’s Consolidated Statements of Income that the Company believes changed significantly and affected Net income available to the Company’s common shareholders during the year ended December 31, 2024, as compared to the corresponding period in 2023:\n\nRevenues from rental properties, net –\n\nThe increase in Revenues from rental properties, net of $252.0 million is primarily from (i) a net increase in revenues of $178.6 million due to properties acquired through the RPT Merger, (ii) a net increase in revenues of $63.0 million, primarily due to an increase in leasing activity and net growth in the current portfolio, and (iii) an increase in revenues of $21.4 million due to properties acquired during 2024 and 2023, partially offset by (iv) a decrease in revenues of $6.1 million due to dispositions in 2024 and 2023 and (v) a decrease in net straight-line rental income of $4.9 million primarily due to tenants that are being accounted for on a cash basis.\n\n33",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 38
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "Equity in income of other investments, net (2024)",
-          "properties": {
-            "value": "9821",
-            "unit": "$ thousand",
-            "year": "2024",
-            "metric_type": "Equity in income of other investments, net",
+            "metric_type": "Other income, net",
             "gaap_concept": "Other Income",
             "category": "Profitability"
           }
@@ -165,7 +142,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -188,7 +165,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -211,7 +188,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -234,7 +211,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -257,18 +234,18 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "Impairment charges of $4.5 million (2024)",
+          "name": "Special dividend income (2023)",
           "properties": {
-            "value": "4.5",
+            "value": "194.1",
             "unit": "$ million",
-            "year": "2024",
-            "metric_type": "Impairment charges of $4.5 million",
-            "gaap_concept": "Impairment Losses",
+            "year": "2023",
+            "metric_type": "Special dividend income",
+            "gaap_concept": "Dividend Income",
             "category": "Profitability"
           }
         },
@@ -280,86 +257,17 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "Merger charges of $25.2 million (2024)",
+          "name": "(Loss)/gain on marketable securities, net (2024)",
           "properties": {
-            "value": "25.2",
+            "value": "-48.9",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "Merger charges of $25.2 million",
-            "gaap_concept": "Merger and Acquisition Expenses",
-            "category": "Profitability"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "Real estate taxes –\n\nThe increase in Real estate taxes of $30.1 million is primarily due to the RPT Merger and other properties acquired during 2024 and 2023, partially offset by dispositions during 2024 and 2023.\n\nOperating and maintenance –\n\nThe increase in Operating and maintenance expense of $50.0 million is primarily due to (i) an increase of $34.3 million resulting from properties acquired related to the RPT Merger, (ii) an increase in repairs and maintenance expense of $9.9 million and (iii) an overall increase in operating costs of $4.4 million.\n\nImpairment charges –\n\nDuring the years ended December 31, 2024 and 2023, the Company recognized impairment charges of $4.5 million and $14.0 million, respectively, primarily related to adjustments to property carrying values for which the Company’s estimated fair values were primarily based upon signed contracts or letters of intent from third-party offers. These adjustments to property carrying values were recognized in connection with the Company’s efforts to market certain properties and management’s assessment as to the likelihood and timing of such potential transactions. Certain of the calculations to determine fair values utilized unobservable inputs and, as such, were classified as Level 3 of the FASB’s fair value hierarchy. For additional disclosure, see Footnotes 6 and 18 of the Notes to Consolidated Financial Statements included in this Form 10-K.\n\nMerger charges –\n\nDuring the years ended December 31, 2024 and 2023, the Company incurred costs of $25.2 million and $4.8 million, respectively, associated with the RPT Merger, primarily comprised of severance and professional and legal fees (see Footnote 2 of the Notes to Consolidated Financial Statements included in this Form 10-K).\n\nDepreciation and amortization –\n\nThe increase in Depreciation and amortization of $96.4 million is primarily due to (i) an increase of $107.3 million resulting from properties acquired during 2024 and 2023, primarily related to the RPT Merger, and (ii) an increase of $38.7 million due to depreciation commencing on certain redevelopment and tenant improvement projects that were placed into service during 2024 and 2023, partially offset by (iii) a decrease of $45.1 million due to fully depreciated assets and (iv) a net decrease of $4.5 million primarily from write-offs due to demolition, vacated tenants, and dispositions during 2024 and 2023.\n\nGain on sale of properties –\n\nDuring 2024, the Company disposed of 11 operating properties and 10 parcels, in separate transactions, for an aggregate sales price of $255.1 million, which resulted in aggregate gains of $1.3 million. During 2023, the Company disposed of six operating properties and 13 parcels, in separate transactions, for an aggregate sales price of $214.2 million, which resulted in aggregate gains of $75.0 million.\n\nSpecial dividend income –\n\nDuring 2023, the Company received a $194.1 million special dividend payment on its shares of ACI common stock.\n\nOther income, net –\n\nThe increase in Other income, net of $17.6 million is primarily due to (i) a net increase in mortgage and other financing income of $17.6 million, primarily due to the issuance of new loan financing during 2024 and 2023, (ii) an increase in interest income of $6.4 million due to higher levels of cash on hand, (iii) a decrease in environmental remediation expense of $4.4 million, (iv) an increase in income of $3.8 million from settlement of contracts, and (v) an increase of $1.2 million from insurance proceeds, partially offset by (vi) a decrease of $8.7 million relating to net settlement gains recognized upon liquidation of the Company’s defined benefit plan during 2023 and (vii) a decrease in dividend income of $6.9 million, primarily due to the sale of the remaining shares of ACI common stock held by the Company.\n\n(Loss)/gain on marketable securities, net –\n\nThe change in (loss)/gain on marketable securities, net of $48.9 million is primarily the result of mark-to-market fluctuations and the sale of the remaining shares of ACI common stock held by the Company during 2024 and 2023.\n\n34",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 39
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "Aggregate gains of $1.3 million (2024)",
-          "properties": {
-            "value": "1.3",
-            "unit": "$ million",
-            "year": "2024",
-            "metric_type": "Aggregate gains of $1.3 million",
-            "gaap_concept": "Gain on Sale of Assets",
-            "category": "Profitability"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "Real estate taxes –\n\nThe increase in Real estate taxes of $30.1 million is primarily due to the RPT Merger and other properties acquired during 2024 and 2023, partially offset by dispositions during 2024 and 2023.\n\nOperating and maintenance –\n\nThe increase in Operating and maintenance expense of $50.0 million is primarily due to (i) an increase of $34.3 million resulting from properties acquired related to the RPT Merger, (ii) an increase in repairs and maintenance expense of $9.9 million and (iii) an overall increase in operating costs of $4.4 million.\n\nImpairment charges –\n\nDuring the years ended December 31, 2024 and 2023, the Company recognized impairment charges of $4.5 million and $14.0 million, respectively, primarily related to adjustments to property carrying values for which the Company’s estimated fair values were primarily based upon signed contracts or letters of intent from third-party offers. These adjustments to property carrying values were recognized in connection with the Company’s efforts to market certain properties and management’s assessment as to the likelihood and timing of such potential transactions. Certain of the calculations to determine fair values utilized unobservable inputs and, as such, were classified as Level 3 of the FASB’s fair value hierarchy. For additional disclosure, see Footnotes 6 and 18 of the Notes to Consolidated Financial Statements included in this Form 10-K.\n\nMerger charges –\n\nDuring the years ended December 31, 2024 and 2023, the Company incurred costs of $25.2 million and $4.8 million, respectively, associated with the RPT Merger, primarily comprised of severance and professional and legal fees (see Footnote 2 of the Notes to Consolidated Financial Statements included in this Form 10-K).\n\nDepreciation and amortization –\n\nThe increase in Depreciation and amortization of $96.4 million is primarily due to (i) an increase of $107.3 million resulting from properties acquired during 2024 and 2023, primarily related to the RPT Merger, and (ii) an increase of $38.7 million due to depreciation commencing on certain redevelopment and tenant improvement projects that were placed into service during 2024 and 2023, partially offset by (iii) a decrease of $45.1 million due to fully depreciated assets and (iv) a net decrease of $4.5 million primarily from write-offs due to demolition, vacated tenants, and dispositions during 2024 and 2023.\n\nGain on sale of properties –\n\nDuring 2024, the Company disposed of 11 operating properties and 10 parcels, in separate transactions, for an aggregate sales price of $255.1 million, which resulted in aggregate gains of $1.3 million. During 2023, the Company disposed of six operating properties and 13 parcels, in separate transactions, for an aggregate sales price of $214.2 million, which resulted in aggregate gains of $75.0 million.\n\nSpecial dividend income –\n\nDuring 2023, the Company received a $194.1 million special dividend payment on its shares of ACI common stock.\n\nOther income, net –\n\nThe increase in Other income, net of $17.6 million is primarily due to (i) a net increase in mortgage and other financing income of $17.6 million, primarily due to the issuance of new loan financing during 2024 and 2023, (ii) an increase in interest income of $6.4 million due to higher levels of cash on hand, (iii) a decrease in environmental remediation expense of $4.4 million, (iv) an increase in income of $3.8 million from settlement of contracts, and (v) an increase of $1.2 million from insurance proceeds, partially offset by (vi) a decrease of $8.7 million relating to net settlement gains recognized upon liquidation of the Company’s defined benefit plan during 2023 and (vii) a decrease in dividend income of $6.9 million, primarily due to the sale of the remaining shares of ACI common stock held by the Company.\n\n(Loss)/gain on marketable securities, net –\n\nThe change in (loss)/gain on marketable securities, net of $48.9 million is primarily the result of mark-to-market fluctuations and the sale of the remaining shares of ACI common stock held by the Company during 2024 and 2023.\n\n34",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 39
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "Other income, net of $17.6 million (2024)",
-          "properties": {
-            "value": "17.6",
-            "unit": "$ million",
-            "year": "2024",
-            "metric_type": "Other income, net of $17.6 million",
-            "gaap_concept": "Other Income, Net",
-            "category": "Profitability"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "Real estate taxes –\n\nThe increase in Real estate taxes of $30.1 million is primarily due to the RPT Merger and other properties acquired during 2024 and 2023, partially offset by dispositions during 2024 and 2023.\n\nOperating and maintenance –\n\nThe increase in Operating and maintenance expense of $50.0 million is primarily due to (i) an increase of $34.3 million resulting from properties acquired related to the RPT Merger, (ii) an increase in repairs and maintenance expense of $9.9 million and (iii) an overall increase in operating costs of $4.4 million.\n\nImpairment charges –\n\nDuring the years ended December 31, 2024 and 2023, the Company recognized impairment charges of $4.5 million and $14.0 million, respectively, primarily related to adjustments to property carrying values for which the Company’s estimated fair values were primarily based upon signed contracts or letters of intent from third-party offers. These adjustments to property carrying values were recognized in connection with the Company’s efforts to market certain properties and management’s assessment as to the likelihood and timing of such potential transactions. Certain of the calculations to determine fair values utilized unobservable inputs and, as such, were classified as Level 3 of the FASB’s fair value hierarchy. For additional disclosure, see Footnotes 6 and 18 of the Notes to Consolidated Financial Statements included in this Form 10-K.\n\nMerger charges –\n\nDuring the years ended December 31, 2024 and 2023, the Company incurred costs of $25.2 million and $4.8 million, respectively, associated with the RPT Merger, primarily comprised of severance and professional and legal fees (see Footnote 2 of the Notes to Consolidated Financial Statements included in this Form 10-K).\n\nDepreciation and amortization –\n\nThe increase in Depreciation and amortization of $96.4 million is primarily due to (i) an increase of $107.3 million resulting from properties acquired during 2024 and 2023, primarily related to the RPT Merger, and (ii) an increase of $38.7 million due to depreciation commencing on certain redevelopment and tenant improvement projects that were placed into service during 2024 and 2023, partially offset by (iii) a decrease of $45.1 million due to fully depreciated assets and (iv) a net decrease of $4.5 million primarily from write-offs due to demolition, vacated tenants, and dispositions during 2024 and 2023.\n\nGain on sale of properties –\n\nDuring 2024, the Company disposed of 11 operating properties and 10 parcels, in separate transactions, for an aggregate sales price of $255.1 million, which resulted in aggregate gains of $1.3 million. During 2023, the Company disposed of six operating properties and 13 parcels, in separate transactions, for an aggregate sales price of $214.2 million, which resulted in aggregate gains of $75.0 million.\n\nSpecial dividend income –\n\nDuring 2023, the Company received a $194.1 million special dividend payment on its shares of ACI common stock.\n\nOther income, net –\n\nThe increase in Other income, net of $17.6 million is primarily due to (i) a net increase in mortgage and other financing income of $17.6 million, primarily due to the issuance of new loan financing during 2024 and 2023, (ii) an increase in interest income of $6.4 million due to higher levels of cash on hand, (iii) a decrease in environmental remediation expense of $4.4 million, (iv) an increase in income of $3.8 million from settlement of contracts, and (v) an increase of $1.2 million from insurance proceeds, partially offset by (vi) a decrease of $8.7 million relating to net settlement gains recognized upon liquidation of the Company’s defined benefit plan during 2023 and (vii) a decrease in dividend income of $6.9 million, primarily due to the sale of the remaining shares of ACI common stock held by the Company.\n\n(Loss)/gain on marketable securities, net –\n\nThe change in (loss)/gain on marketable securities, net of $48.9 million is primarily the result of mark-to-market fluctuations and the sale of the remaining shares of ACI common stock held by the Company during 2024 and 2023.\n\n34",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 39
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "(Loss)/gain on marketable securities, net of $48.9 million (2024)",
-          "properties": {
-            "value": "48.9",
-            "unit": "$ million",
-            "year": "2024",
-            "metric_type": "(Loss)/gain on marketable securities, net of $48.9 million",
+            "metric_type": "(Loss)/gain on marketable securities, net",
             "gaap_concept": "Gain (Loss) on Sale of Marketable Securities",
             "category": "Profitability"
           }
@@ -372,18 +280,18 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "Net cash flow provided by operating activities (2024)",
+          "name": "Cash, cash equivalents and restricted cash, end of year (2024)",
           "properties": {
-            "value": "1005621",
+            "value": "689731",
             "unit": "$ thousand",
             "year": "2024",
-            "metric_type": "Net cash flow provided by operating activities",
-            "gaap_concept": "Net Cash Provided by Operating Activities",
+            "metric_type": "Cash, cash equivalents and restricted cash, end of year",
+            "gaap_concept": "Cash and Cash Equivalents",
             "category": "Liquidity"
           }
         },
@@ -395,7 +303,53 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
+          "name": "Kimco Realty Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Net cash flow provided by operating activities (2024)",
+          "properties": {
+            "value": "1005621",
+            "unit": "$ thousand",
+            "year": "2024",
+            "metric_type": "Net cash flow provided by operating activities",
+            "gaap_concept": "Operating Cash Flow",
+            "category": "Liquidity"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Interest expense –\n\nThe increase in Interest expense of $57.6 million is primarily due to (i) the issuance of unsecured notes during 2024 and 2023 and (ii) increased levels of borrowings and assumptions of unsecured notes and term loans in connection with the RPT Merger, partially offset by (iii) the paydown of unsecured notes during 2024 and 2023.\n\nProvision for income taxes, net –\n\nThe decrease in Provision for income taxes, net of $35.5 million is primarily due to lower gains from the sale of ACI common stock during 2024 as compared to 2023. The Company utilized available deductions to offset a portion of the gain from the sale of ACI common stock in 2024.\n\nEquity in income of joint ventures, net –\n\nThe increase in Equity in income of joint ventures, net of $11.5 million is primarily due to (i) higher equity in income in 2024 as compared to 2023 of $21.7 million, primarily due to newly acquired joint ventures in connection with the RPT Merger, and (ii) lower impairments in 2024 as compared to 2023 of $1.0 million, partially offset by (iii) higher gains of $7.5 million recognized on sale of properties within various joint venture investments during 2023 as compared to 2024 and (iv) an increase in interest expense of $3.7 million.\n\nPreferred stock redemption charges –\n\nDuring 2024, the Company incurred preferred stock redemption charges of $3.3 million in connection with the Class N Tender Offer.\n\nPreferred dividends, net –\n\nThe increase in Preferred dividends, net of $6.7 million is primarily due to the issuance of the Class N Preferred Stock in connection with the RPT Merger.\n\nComparison of the years ended December 31, 2023 and 2022\n\nInformation pertaining to fiscal year 2022 was included in the Company’s Annual Report on Form 10-K for the year ended December 31, 2023 under Part II, Item 7, “Management’s Discussion and Analysis of Financial Condition and Results of Operations,” which was filed with the SEC on February 26, 2024.\n\nLiquidity and Capital Resources\n\nThe Company’s capital resources include accessing the public debt and equity capital markets, unsecured term loans, mortgages and construction loan financing, and immediate access to the Credit Facility with bank commitments of $2.0 billion, which can be increased to $2.75 billion through an accordion feature.\n\nThe Company’s cash flow activities are summarized as follows (in thousands):\n\n|  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---  \n|  | Year Ended December 31, |   \n|  | 2024 |  |  | 2023 |   \nCash, cash equivalents and restricted cash, beginning of year |  | $ | 783,757 |  |  | $ | 149,829 |   \nNet cash flow provided by operating activities |  |  | 1,005,621 |  |  |  | 1,071,607 |   \nNet cash flow used for investing activities |  |  | (318,541 | ) |  |  | (136,983 | )  \nNet cash flow used for financing activities |  |  | (781,106 | ) |  |  | (300,696 | )  \nNet change in cash, cash equivalents and restricted cash |  |  | (94,026 | ) |  |  | 633,928 |   \nCash, cash equivalents and restricted cash, end of year |  | $ | 689,731 |  |  | $ | 783,757 |   \n  \nOperating Activities\n\nThe Company anticipates that cash on hand, net cash flow provided by operating activities, borrowings under its Credit Facility and the issuance of equity, public debt, as well as other debt and equity alternatives, will provide the necessary capital required by the Company. The Company will continue to evaluate its capital requirements for both its short-term and long-term liquidity needs, which could be affected by various risks and uncertainties, including, but not limited to, the effects of the current inflationary environment, elevated interest rates, and other risks detailed in Part I, Item 1A. Risk Factors.\n\n35",
+        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 40
+      },
+      {
+        "src": {
+          "type": "TargetCompany",
+          "name": "Kimco Realty Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Credit Facility with bank commitments (2024)",
+          "properties": {
+            "value": "2000",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Credit Facility with bank commitments",
+            "gaap_concept": "Commitments Under Credit Facility",
+            "category": "Leverage"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Interest expense –\n\nThe increase in Interest expense of $57.6 million is primarily due to (i) the issuance of unsecured notes during 2024 and 2023 and (ii) increased levels of borrowings and assumptions of unsecured notes and term loans in connection with the RPT Merger, partially offset by (iii) the paydown of unsecured notes during 2024 and 2023.\n\nProvision for income taxes, net –\n\nThe decrease in Provision for income taxes, net of $35.5 million is primarily due to lower gains from the sale of ACI common stock during 2024 as compared to 2023. The Company utilized available deductions to offset a portion of the gain from the sale of ACI common stock in 2024.\n\nEquity in income of joint ventures, net –\n\nThe increase in Equity in income of joint ventures, net of $11.5 million is primarily due to (i) higher equity in income in 2024 as compared to 2023 of $21.7 million, primarily due to newly acquired joint ventures in connection with the RPT Merger, and (ii) lower impairments in 2024 as compared to 2023 of $1.0 million, partially offset by (iii) higher gains of $7.5 million recognized on sale of properties within various joint venture investments during 2023 as compared to 2024 and (iv) an increase in interest expense of $3.7 million.\n\nPreferred stock redemption charges –\n\nDuring 2024, the Company incurred preferred stock redemption charges of $3.3 million in connection with the Class N Tender Offer.\n\nPreferred dividends, net –\n\nThe increase in Preferred dividends, net of $6.7 million is primarily due to the issuance of the Class N Preferred Stock in connection with the RPT Merger.\n\nComparison of the years ended December 31, 2023 and 2022\n\nInformation pertaining to fiscal year 2022 was included in the Company’s Annual Report on Form 10-K for the year ended December 31, 2023 under Part II, Item 7, “Management’s Discussion and Analysis of Financial Condition and Results of Operations,” which was filed with the SEC on February 26, 2024.\n\nLiquidity and Capital Resources\n\nThe Company’s capital resources include accessing the public debt and equity capital markets, unsecured term loans, mortgages and construction loan financing, and immediate access to the Credit Facility with bank commitments of $2.0 billion, which can be increased to $2.75 billion through an accordion feature.\n\nThe Company’s cash flow activities are summarized as follows (in thousands):\n\n|  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---  \n|  | Year Ended December 31, |   \n|  | 2024 |  |  | 2023 |   \nCash, cash equivalents and restricted cash, beginning of year |  | $ | 783,757 |  |  | $ | 149,829 |   \nNet cash flow provided by operating activities |  |  | 1,005,621 |  |  |  | 1,071,607 |   \nNet cash flow used for investing activities |  |  | (318,541 | ) |  |  | (136,983 | )  \nNet cash flow used for financing activities |  |  | (781,106 | ) |  |  | (300,696 | )  \nNet change in cash, cash equivalents and restricted cash |  |  | (94,026 | ) |  |  | 633,928 |   \nCash, cash equivalents and restricted cash, end of year |  | $ | 689,731 |  |  | $ | 783,757 |   \n  \nOperating Activities\n\nThe Company anticipates that cash on hand, net cash flow provided by operating activities, borrowings under its Credit Facility and the issuance of equity, public debt, as well as other debt and equity alternatives, will provide the necessary capital required by the Company. The Company will continue to evaluate its capital requirements for both its short-term and long-term liquidity needs, which could be affected by various risks and uncertainties, including, but not limited to, the effects of the current inflationary environment, elevated interest rates, and other risks detailed in Part I, Item 1A. Risk Factors.\n\n35",
+        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 40
+      },
+      {
+        "src": {
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -418,41 +372,18 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "expendited $152.9 million (2024)",
-          "properties": {
-            "value": "152.9",
-            "unit": "$ million",
-            "year": "2024",
-            "metric_type": "expendited $152.9 million",
-            "gaap_concept": "Cash Outflows from Investing Activities",
-            "category": "Liquidity"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "Acquisitions of Operating Real Estate and Other Related Net Assets\n\nDuring the years ended December 31, 2024 and 2023, the Company expended $152.9 million and $277.3 million, respectively, towards the acquisition/consolidation of operating real estate properties. The Company anticipates spending approximately $225.0 million to $275.0 million towards the acquisition of, or the purchase of additional interests in, operating properties during 2025, excluding amounts expended to purchase properties under finance leasing arrangements. The Company intends to fund these potential acquisitions with net cash flow provided by operating activities, cash on hand, proceeds from property dispositions, and/or availability under its Credit Facility.\n\nImprovements to Operating Real Estate\n\nDuring the years ended December 31, 2024 and 2023, the Company expended $324.5 million and $264.4 million, respectively, towards improvements to operating real estate. These amounts consist of the following (in thousands):\n\n|  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---  \n|  | Year Ended December 31, |   \n|  | 2024 |  |  | 2023 |   \nRedevelopment and renovations |  | $ | 156,240 |  |  | $ | 151,067 |   \nTenant improvements and tenant allowances |  |  | 168,225 |  |  |  | 113,328 |   \nTotal improvements |  | $ | 324,465 |  |  | $ | 264,395 |   \n  \nThe Company has an ongoing program to redevelop and re-tenant its properties to maintain or enhance its competitive position in the marketplace. The Company is actively pursuing redevelopment opportunities within its operating portfolio, which it believes will increase the overall value by bringing in new tenants and improving the assets’ value. The Company anticipates its capital commitment toward these redevelopment projects and re-tenanting efforts for 2025 will be approximately $225.0 million to $275.0 million. The funding of these capital requirements will be provided by net cash flow provided by operating activities, cash on hand, proceeds from property dispositions, and/or availability under the Company’s Credit Facility.\n\nFinancing Activities\n\nNet cash flow used for financing activities was $781.1 million for 2024, as compared to $300.7 million for 2023.\n\nFinancing activities during 2024 primarily consisted of the following:\n\nCash inflows:\n\n•\n\n$860.0 million in proceeds from issuance of unsecured term loans;\n\n•\n\n$500.0 million in proceeds from issuance of unsecured notes;\n\n•\n\n$135.8 million in proceeds from the issuance of common stock from the Company's at-the-market continuous offering program (the “ATM Program”) net of commissions and related expenses; and\n\n•\n\n$3.1 million from changes in tenants’ security deposits.\n\nCash outflows:\n\n•\n\n$1.2 billion for repayment of unsecured notes;\n\n•\n\n$685.9 million of dividends paid;\n\n•\n\n$310.0 million in repayments of unsecured term loans;\n\n•\n\n$52.9 million in redemption/distribution of noncontrolling interests;\n\n•\n\n$26.7 million for repurchase of preferred stock primarily due to the Class N Tender Offer;\n\n•\n\n$22.1 million in principal payment on debt (related to the repayment of debt on three encumbered properties), including normal amortization of rental property debt; \n\n•\n\n$15.8 million in shares repurchased for employee tax withholding on equity awards; and\n\n•\n\n$8.9 million in financing origination costs related to new unsecured term loans and unsecured notes.\n\nFinancing activities during 2023 primarily consisted of the following:\n\nCash inflows:\n\n•\n\n$500.0 million in proceeds from issuance of 6.4% senior unsecured notes due in 2034;\n\n•\n\n$3.7 million in proceeds from the issuance of common stock from stock option exercises; and\n\n•\n\n$2.5 million from changes in tenants’ security deposits.\n\n37",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 42
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "Net cash flow used for financing activities was $781.1 million (2024)",
+          "name": "Net cash flow used for financing activities (2024)",
           "properties": {
             "value": "781.1",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "Net cash flow used for financing activities was $781.1 million",
-            "gaap_concept": "Net Cash Flow from Financing Activities",
+            "metric_type": "Net cash flow used for financing activities",
+            "gaap_concept": "Net Cash Used in Financing Activities",
             "category": "Liquidity"
           }
         },
@@ -464,64 +395,18 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "$860.0 million in proceeds from issuance of unsecured term loans (2024)",
+          "name": "Cash inflows: $135.8 million in proceeds from the issuance of common stock from the Company's at-the-market continuous offering program (the “ATM Program”) net of commissions and related expenses (2024)",
           "properties": {
-            "value": "860.0",
+            "value": "135.8",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "$860.0 million in proceeds from issuance of unsecured term loans",
-            "gaap_concept": "Proceeds from Issuance of Debt",
-            "category": "Debt Structure"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "Acquisitions of Operating Real Estate and Other Related Net Assets\n\nDuring the years ended December 31, 2024 and 2023, the Company expended $152.9 million and $277.3 million, respectively, towards the acquisition/consolidation of operating real estate properties. The Company anticipates spending approximately $225.0 million to $275.0 million towards the acquisition of, or the purchase of additional interests in, operating properties during 2025, excluding amounts expended to purchase properties under finance leasing arrangements. The Company intends to fund these potential acquisitions with net cash flow provided by operating activities, cash on hand, proceeds from property dispositions, and/or availability under its Credit Facility.\n\nImprovements to Operating Real Estate\n\nDuring the years ended December 31, 2024 and 2023, the Company expended $324.5 million and $264.4 million, respectively, towards improvements to operating real estate. These amounts consist of the following (in thousands):\n\n|  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---  \n|  | Year Ended December 31, |   \n|  | 2024 |  |  | 2023 |   \nRedevelopment and renovations |  | $ | 156,240 |  |  | $ | 151,067 |   \nTenant improvements and tenant allowances |  |  | 168,225 |  |  |  | 113,328 |   \nTotal improvements |  | $ | 324,465 |  |  | $ | 264,395 |   \n  \nThe Company has an ongoing program to redevelop and re-tenant its properties to maintain or enhance its competitive position in the marketplace. The Company is actively pursuing redevelopment opportunities within its operating portfolio, which it believes will increase the overall value by bringing in new tenants and improving the assets’ value. The Company anticipates its capital commitment toward these redevelopment projects and re-tenanting efforts for 2025 will be approximately $225.0 million to $275.0 million. The funding of these capital requirements will be provided by net cash flow provided by operating activities, cash on hand, proceeds from property dispositions, and/or availability under the Company’s Credit Facility.\n\nFinancing Activities\n\nNet cash flow used for financing activities was $781.1 million for 2024, as compared to $300.7 million for 2023.\n\nFinancing activities during 2024 primarily consisted of the following:\n\nCash inflows:\n\n•\n\n$860.0 million in proceeds from issuance of unsecured term loans;\n\n•\n\n$500.0 million in proceeds from issuance of unsecured notes;\n\n•\n\n$135.8 million in proceeds from the issuance of common stock from the Company's at-the-market continuous offering program (the “ATM Program”) net of commissions and related expenses; and\n\n•\n\n$3.1 million from changes in tenants’ security deposits.\n\nCash outflows:\n\n•\n\n$1.2 billion for repayment of unsecured notes;\n\n•\n\n$685.9 million of dividends paid;\n\n•\n\n$310.0 million in repayments of unsecured term loans;\n\n•\n\n$52.9 million in redemption/distribution of noncontrolling interests;\n\n•\n\n$26.7 million for repurchase of preferred stock primarily due to the Class N Tender Offer;\n\n•\n\n$22.1 million in principal payment on debt (related to the repayment of debt on three encumbered properties), including normal amortization of rental property debt; \n\n•\n\n$15.8 million in shares repurchased for employee tax withholding on equity awards; and\n\n•\n\n$8.9 million in financing origination costs related to new unsecured term loans and unsecured notes.\n\nFinancing activities during 2023 primarily consisted of the following:\n\nCash inflows:\n\n•\n\n$500.0 million in proceeds from issuance of 6.4% senior unsecured notes due in 2034;\n\n•\n\n$3.7 million in proceeds from the issuance of common stock from stock option exercises; and\n\n•\n\n$2.5 million from changes in tenants’ security deposits.\n\n37",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 42
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "$1.2 billion for repayment of unsecured notes (2024)",
-          "properties": {
-            "value": "1200.0",
-            "unit": "$ million",
-            "year": "2024",
-            "metric_type": "$1.2 billion for repayment of unsecured notes",
-            "gaap_concept": "Repayment of Debt",
-            "category": "Debt Structure"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "Acquisitions of Operating Real Estate and Other Related Net Assets\n\nDuring the years ended December 31, 2024 and 2023, the Company expended $152.9 million and $277.3 million, respectively, towards the acquisition/consolidation of operating real estate properties. The Company anticipates spending approximately $225.0 million to $275.0 million towards the acquisition of, or the purchase of additional interests in, operating properties during 2025, excluding amounts expended to purchase properties under finance leasing arrangements. The Company intends to fund these potential acquisitions with net cash flow provided by operating activities, cash on hand, proceeds from property dispositions, and/or availability under its Credit Facility.\n\nImprovements to Operating Real Estate\n\nDuring the years ended December 31, 2024 and 2023, the Company expended $324.5 million and $264.4 million, respectively, towards improvements to operating real estate. These amounts consist of the following (in thousands):\n\n|  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---  \n|  | Year Ended December 31, |   \n|  | 2024 |  |  | 2023 |   \nRedevelopment and renovations |  | $ | 156,240 |  |  | $ | 151,067 |   \nTenant improvements and tenant allowances |  |  | 168,225 |  |  |  | 113,328 |   \nTotal improvements |  | $ | 324,465 |  |  | $ | 264,395 |   \n  \nThe Company has an ongoing program to redevelop and re-tenant its properties to maintain or enhance its competitive position in the marketplace. The Company is actively pursuing redevelopment opportunities within its operating portfolio, which it believes will increase the overall value by bringing in new tenants and improving the assets’ value. The Company anticipates its capital commitment toward these redevelopment projects and re-tenanting efforts for 2025 will be approximately $225.0 million to $275.0 million. The funding of these capital requirements will be provided by net cash flow provided by operating activities, cash on hand, proceeds from property dispositions, and/or availability under the Company’s Credit Facility.\n\nFinancing Activities\n\nNet cash flow used for financing activities was $781.1 million for 2024, as compared to $300.7 million for 2023.\n\nFinancing activities during 2024 primarily consisted of the following:\n\nCash inflows:\n\n•\n\n$860.0 million in proceeds from issuance of unsecured term loans;\n\n•\n\n$500.0 million in proceeds from issuance of unsecured notes;\n\n•\n\n$135.8 million in proceeds from the issuance of common stock from the Company's at-the-market continuous offering program (the “ATM Program”) net of commissions and related expenses; and\n\n•\n\n$3.1 million from changes in tenants’ security deposits.\n\nCash outflows:\n\n•\n\n$1.2 billion for repayment of unsecured notes;\n\n•\n\n$685.9 million of dividends paid;\n\n•\n\n$310.0 million in repayments of unsecured term loans;\n\n•\n\n$52.9 million in redemption/distribution of noncontrolling interests;\n\n•\n\n$26.7 million for repurchase of preferred stock primarily due to the Class N Tender Offer;\n\n•\n\n$22.1 million in principal payment on debt (related to the repayment of debt on three encumbered properties), including normal amortization of rental property debt; \n\n•\n\n$15.8 million in shares repurchased for employee tax withholding on equity awards; and\n\n•\n\n$8.9 million in financing origination costs related to new unsecured term loans and unsecured notes.\n\nFinancing activities during 2023 primarily consisted of the following:\n\nCash inflows:\n\n•\n\n$500.0 million in proceeds from issuance of 6.4% senior unsecured notes due in 2034;\n\n•\n\n$3.7 million in proceeds from the issuance of common stock from stock option exercises; and\n\n•\n\n$2.5 million from changes in tenants’ security deposits.\n\n37",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 42
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "$685.9 million of dividends paid (2024)",
-          "properties": {
-            "value": "685.9",
-            "unit": "$ million",
-            "year": "2024",
-            "metric_type": "$685.9 million of dividends paid",
-            "gaap_concept": "Dividends Paid",
+            "metric_type": "Cash inflows: $135.8 million in proceeds from the issuance of common stock from the Company's at-the-market continuous offering program (the “ATM Program”) net of commissions and related expenses",
+            "gaap_concept": "Proceeds from Issuance of Equity",
             "category": "Leverage"
           }
         },
@@ -533,17 +418,17 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "$52.9 million in redemption/distribution of noncontrolling interests (2024)",
+          "name": "Cash outflows: $52.9 million in redemption/distribution of noncontrolling interests (2024)",
           "properties": {
             "value": "52.9",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "$52.9 million in redemption/distribution of noncontrolling interests",
+            "metric_type": "Cash outflows: $52.9 million in redemption/distribution of noncontrolling interests",
             "gaap_concept": "Redemption of Noncontrolling Interests",
             "category": "Leverage"
           }
@@ -556,18 +441,18 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "$26.7 million for repurchase of preferred stock (2024)",
+          "name": "Cash outflows: $26.7 million for repurchase of preferred stock primarily due to the Class N Tender Offer (2024)",
           "properties": {
             "value": "26.7",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "$26.7 million for repurchase of preferred stock",
-            "gaap_concept": "Repurchase of Preferred Stock",
+            "metric_type": "Cash outflows: $26.7 million for repurchase of preferred stock primarily due to the Class N Tender Offer",
+            "gaap_concept": "Repurchase of Equity",
             "category": "Leverage"
           }
         },
@@ -579,18 +464,18 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "$15.8 million in shares repurchased for employee tax withholding (2024)",
+          "name": "Cash outflows: $22.1 million in principal payment on debt (related to the repayment of debt on three encumbered properties), including normal amortization of rental property debt (2024)",
           "properties": {
-            "value": "15.8",
+            "value": "22.1",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "$15.8 million in shares repurchased for employee tax withholding",
-            "gaap_concept": "Repurchase of Common Stock",
+            "metric_type": "Cash outflows: $22.1 million in principal payment on debt (related to the repayment of debt on three encumbered properties), including normal amortization of rental property debt",
+            "gaap_concept": "Repayment of Debt",
             "category": "Liquidity"
           }
         },
@@ -602,17 +487,17 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "$8.9 million in financing origination costs (2024)",
+          "name": "Cash outflows: $8.9 million in financing origination costs related to new unsecured term loans and unsecured notes (2024)",
           "properties": {
             "value": "8.9",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "$8.9 million in financing origination costs",
+            "metric_type": "Cash outflows: $8.9 million in financing origination costs related to new unsecured term loans and unsecured notes",
             "gaap_concept": "Financing Costs",
             "category": "Debt Structure"
           }
@@ -625,86 +510,40 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "consolidated debt (2025)",
+          "name": "Expenditures towards improvements to operating real estate (2024)",
           "properties": {
-            "value": "792.0",
+            "value": "324.5",
             "unit": "$ million",
-            "year": "2025",
-            "metric_type": "consolidated debt",
-            "gaap_concept": "Total Debt",
-            "category": "Debt Structure"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "Cash outflows:\n\n•\n\n$657.5 million of dividends paid;\n\n•\n\n$60.8 million in principal payment on debt, including normal amortization of rental property debt; \n\n•\n\n$58.4 million in redemption/distribution of noncontrolling interests;\n\n•\n\n$16.3 million in shares repurchased for employee tax withholding on equity awards; \n\n•\n\n$12.5 million in financing origination costs, in connection with the issuance of senior unsecured notes; and\n\n•\n\n$1.5 million for repurchase of preferred stock.\n\nThe Company continually evaluates its debt maturities, and, based on management’s current assessment, believes it has viable financing and refinancing alternatives that will not materially adversely impact its expected financial results. As of December 31, 2024, the Company had consolidated floating rate debt totaling $16.8 million. The Company continues to pursue borrowing opportunities with large commercial U.S. and global banks, select life insurance companies and certain regional and local banks.\n\nDebt maturities for 2025 consist of $792.0 million of consolidated debt and $29.7 million of unconsolidated joint venture debt, assuming the utilization of extension options where available. In February 2025, the Company repaid $500.0 million of 3.30% senior unsecured notes upon maturity. The 2025 remaining consolidated debt maturities are anticipated to be repaid with net cash flow provided by operating activities, cash on hand, and/or debt refinancing, as deemed appropriate. The 2025 debt maturities on properties in the Company’s unconsolidated joint ventures are anticipated to be repaid through net cash flow provided by operating activities, debt refinancing, proceeds from sales, and/or partner capital contributions, as deemed appropriate.\n\nThe Company intends to maintain strong debt service coverage and fixed charge coverage ratios as part of its commitment to maintain its unsecured debt ratings. The Company may, from time to time, seek to obtain funds through additional common and preferred equity offerings, unsecured debt financings, and/or mortgage/construction loan financings and other capital alternatives.\n\nThe Company utilizes the public debt and equity markets as its principal source of capital for its expansion needs through offerings of its public unsecured debt and equity. Proceeds from public capital market activities have been used for the purposes of, among other things, repaying indebtedness, acquiring interests in open-air, grocery anchored shopping centers and mixed-use assets, expanding and improving properties in the portfolio and other investments.\n\nDuring January 2023, the Company filed a shelf registration statement on Form S-3, which is effective for a term of three years, for future unlimited offerings, from time to time, of debt securities, preferred stock, depositary shares, common stock and common stock warrants. The Company, pursuant to this shelf registration statement may, from time to time, offer for sale its senior unsecured debt securities for any general corporate purposes, including (i) funding specific liquidity requirements in its business, including property acquisitions, development and redevelopment costs and (ii) managing the Company’s debt maturities.\n\nDuring January 2023, the Company filed a registration statement on Form S-8 for its 2020 Equity Participation Plan (the “2020 Plan”), which was previously approved by the Company’s stockholders and is a successor to the Restated Kimco Realty Corporation 2010 Equity Participation Plan that expired in March 2020. The 2020 Plan provides for a maximum of 10,000,000 shares of the Company’s common stock to be reserved for the issuance of stock options, stock appreciation rights, restricted stock, restricted stock units, performance awards, dividend equivalents, stock payments, deferred stock awards and long-term incentive plan units. At December 31, 2024, the Company had 2.9 million shares of common stock available for issuance under the 2020 Plan. (see Footnote 24 of the Notes to Consolidated Financial Statements included in this Form 10-K).\n\nPreferred Stock –\n\nUnder the terms of the Merger Agreement, each 7.25% Series D Cumulative Convertible Perpetual Preferred Share of RPT was converted into the right to receive one depositary share representing one one-thousandth of a share of Class N Preferred Stock of the Company, having the rights, preferences and privileges substantially as set forth in the Merger Agreement, in each case, without interest, and subject to any withholding required under applicable law, upon the terms and subject to the conditions set forth in the Merger Agreement.\n\nThe Company’s Board of Directors authorized the repurchase of up to 891,000 depositary shares of Class L Preferred Stock, 1,047,000 depositary shares of Class M Preferred Stock and 185,000 depositary shares of Class N Preferred Stock, representing an aggregate of up to 2,123 shares of the Company's preferred stock, par value $1.00 per share, through February 28, 2026. During the year ended December 31, 2024, the Company repurchased the following preferred stock:\n\n|  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---  \nClass of Preferred Stock |  | Depositary  \nShares  \nRepurchased |  |  | Purchase  \nPrice  \n(in thousands) |   \nClass N |  |  | 80 |  |  | $ | 5 |   \n  \n38",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 43
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "Unencumbered Asset Net Operating Income to Total Unsecured Interest Expense (2024)",
-          "properties": {
-            "value": "4.5",
-            "unit": "x",
             "year": "2024",
-            "metric_type": "Unencumbered Asset Net Operating Income to Total Unsecured Interest Expense",
-            "gaap_concept": "Interest Coverage Ratio",
-            "category": "Coverage"
+            "metric_type": "Expenditures towards improvements to operating real estate",
+            "gaap_concept": "Capital Expenditures",
+            "category": "Profitability"
           }
         },
         "rel": "HAS_METRIC",
         "props": {},
-        "chunk_text": "During 2024, the Company fully repaid the following notes payables (dollars in millions):\n\n|  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---  \nType |  | Date Paid |  | Amount Repaid |  |  | Interest Rate |  | Maturity Date  \nUnsecured note |  | Jan-24 |  | $ | 246.2 |  |  | 4.45% |  | Jan-24  \nUnsecured notes (1) |  | Jan-24 |  | $ | 511.5 |  |  | 3.64%-4.74% |  | Jun-25-Nov-31  \nUnsecured note |  | Mar-24 |  | $ | 400.0 |  |  | 2.70% |  | Mar-24  \n  \n(1)\n\nIn connection with the RPT Merger, the Company assumed $511.5 million of senior unsecured notes with maturities ranging from 2026 to 2031, which bore interest at rates ranging from 3.64% to 4.74%. The Merger triggered a change in control, and as such, in January 2024, the Company repaid these notes, any accrued interest, and make-whole requirements of $0.3 million resulting from the early repayment of these notes, which are included in Merger charges on the Company’s Consolidated Statements of Income.\n\nCredit Facility –\n\nOn September 9, 2024, Fitch Ratings assigned the Company a rating of A- for its senior unsecured debt, assigned a BBB credit rating for its preferred stock, and assigned its ‘Stable’ rating outlook. As a result, the Company achieved certain interest rate reductions and facility fee reduction for its Credit Facility and certain unsecured term loans.\n\nThe Company has a $2.0 billion Credit Facility with a group of banks. The Credit Facility is scheduled to expire in March 2027 with two additional six-month options to extend the maturity date, at the Company’s discretion, to March 2028. The Credit Facility is guaranteed by the Parent Company. The Credit Facility can be increased to $2.75 billion through an accordion feature. The Credit Facility is a green credit facility tied to sustainability metric targets, as described in the agreement. The Credit Facility accrues interest at a rate of Adjusted Term SOFR, as defined in the terms of the Credit Facility, plus an applicable spread determined by the Company’s credit ratings. The interest rate can be further adjusted upward or downward based on the sustainability metric targets and the Company’s credit rating outlook, as defined in the agreement. As of December 31, 2024, the interest rate on the Credit Facility is Adjusted Term SOFR plus 68.5 basis points (5.21% as of December 31, 2024) after reductions for sustainability metrics achieved and an upgraded credit rating profile. Pursuant to the terms of the Credit Facility, the Company is subject to certain covenants. As of December 31, 2024, the Credit Facility had no outstanding balance and no appropriations for letters of credit.\n\nPursuant to the terms of the Credit Facility, the Company, among other things, is subject to maintenance of various covenants. The Company is currently in compliance with these covenants. The financial covenants for the Credit Facility are as follows:\n\n|  |  |  |   \n---|---|---|---|---  \nCovenant |  | Must Be |  | As of December 31, 2024  \nTotal Indebtedness to Gross Asset Value (“GAV”) |  | <60% |  | 36%  \nTotal Priority Indebtedness to GAV |  | <35% |  | 2%  \nUnencumbered Asset Net Operating Income to Total Unsecured Interest Expense |  | >1.75x |  | 4.5x  \nFixed Charge Total Adjusted EBITDA to Total Debt Service |  | >1.50x |  | 4.0x  \n  \nFor a full description of the Credit Facility’s covenants, refer to the Amended and Restated Credit Agreement dated as of February 23, 2023, as filed with the SEC. See the Index to Exhibits included in this Form 10-K for specific filing information.\n\nTerm Loans –\n\nThe Company entered into a Seventh Amended and Restated Credit Agreement, through which the term loans assumed in connection with the RPT Merger were terminated (fully repaid) and new term loans were issued to replace the assumed loans. The new term loans retained the amounts and maturities of the assumed term loans, however, the rates (Adjusted Term SOFR plus 90.5 basis points which fluctuates based on credit rating profile and achieving sustainability metric targets, as described in the agreement) and covenants were revised to match those within the Company's Credit Facility. The following unsecured term loans were assumed, terminated and issued (dollars in millions):\n\n|  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---  \nType |  | Date Paid |  | Amount |  |  | Interest Rate (1) |  | Maturity Date  \nUnsecured term loan |  | Jan-24 |  | $ | 50.0 |  |  | 4.15% |  | Nov-26  \nUnsecured term loan |  | Jan-24 |  | $ | 100.0 |  |  | 4.11% |  | Feb-27  \nUnsecured term loan |  | Jan-24 |  | $ | 50.0 |  |  | 3.43% |  | Aug-27  \nUnsecured term loan |  | Jan-24 |  | $ | 110.0 |  |  | 3.71% |  | Feb-28  \n  \n(1)\n\nAs of December 31, 2024, the interest rate on these term loans is Adjusted Term SOFR plus 81.0 basis points after reductions for sustainability metrics achieved and an upgraded credit rating profile. The Company entered into 20 swap rate agreements with various lenders swapping the interest rates to all-in fixed rates (ranging from 4.5793% to 4.7801% as of December 31, 2024).\n\nOn January 2, 2024, Kimco OP entered into a new $200.0 million unsecured term loan credit facility (the “Term Loan Credit Facility”) pursuant to a credit agreement, among Kimco OP, TD Bank, N.A., as administrative agent, and the other parties thereto maturing in\n\n40",
+        "chunk_text": "Acquisitions of Operating Real Estate and Other Related Net Assets\n\nDuring the years ended December 31, 2024 and 2023, the Company expended $152.9 million and $277.3 million, respectively, towards the acquisition/consolidation of operating real estate properties. The Company anticipates spending approximately $225.0 million to $275.0 million towards the acquisition of, or the purchase of additional interests in, operating properties during 2025, excluding amounts expended to purchase properties under finance leasing arrangements. The Company intends to fund these potential acquisitions with net cash flow provided by operating activities, cash on hand, proceeds from property dispositions, and/or availability under its Credit Facility.\n\nImprovements to Operating Real Estate\n\nDuring the years ended December 31, 2024 and 2023, the Company expended $324.5 million and $264.4 million, respectively, towards improvements to operating real estate. These amounts consist of the following (in thousands):\n\n|  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---  \n|  | Year Ended December 31, |   \n|  | 2024 |  |  | 2023 |   \nRedevelopment and renovations |  | $ | 156,240 |  |  | $ | 151,067 |   \nTenant improvements and tenant allowances |  |  | 168,225 |  |  |  | 113,328 |   \nTotal improvements |  | $ | 324,465 |  |  | $ | 264,395 |   \n  \nThe Company has an ongoing program to redevelop and re-tenant its properties to maintain or enhance its competitive position in the marketplace. The Company is actively pursuing redevelopment opportunities within its operating portfolio, which it believes will increase the overall value by bringing in new tenants and improving the assets’ value. The Company anticipates its capital commitment toward these redevelopment projects and re-tenanting efforts for 2025 will be approximately $225.0 million to $275.0 million. The funding of these capital requirements will be provided by net cash flow provided by operating activities, cash on hand, proceeds from property dispositions, and/or availability under the Company’s Credit Facility.\n\nFinancing Activities\n\nNet cash flow used for financing activities was $781.1 million for 2024, as compared to $300.7 million for 2023.\n\nFinancing activities during 2024 primarily consisted of the following:\n\nCash inflows:\n\n•\n\n$860.0 million in proceeds from issuance of unsecured term loans;\n\n•\n\n$500.0 million in proceeds from issuance of unsecured notes;\n\n•\n\n$135.8 million in proceeds from the issuance of common stock from the Company's at-the-market continuous offering program (the “ATM Program”) net of commissions and related expenses; and\n\n•\n\n$3.1 million from changes in tenants’ security deposits.\n\nCash outflows:\n\n•\n\n$1.2 billion for repayment of unsecured notes;\n\n•\n\n$685.9 million of dividends paid;\n\n•\n\n$310.0 million in repayments of unsecured term loans;\n\n•\n\n$52.9 million in redemption/distribution of noncontrolling interests;\n\n•\n\n$26.7 million for repurchase of preferred stock primarily due to the Class N Tender Offer;\n\n•\n\n$22.1 million in principal payment on debt (related to the repayment of debt on three encumbered properties), including normal amortization of rental property debt; \n\n•\n\n$15.8 million in shares repurchased for employee tax withholding on equity awards; and\n\n•\n\n$8.9 million in financing origination costs related to new unsecured term loans and unsecured notes.\n\nFinancing activities during 2023 primarily consisted of the following:\n\nCash inflows:\n\n•\n\n$500.0 million in proceeds from issuance of 6.4% senior unsecured notes due in 2034;\n\n•\n\n$3.7 million in proceeds from the issuance of common stock from stock option exercises; and\n\n•\n\n$2.5 million from changes in tenants’ security deposits.\n\n37",
         "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 45
+        "source_page": 42
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "Fixed Charge Total Adjusted EBITDA to Total Debt Service (2024)",
-          "properties": {
-            "value": "4.0",
-            "unit": "x",
-            "year": "2024",
-            "metric_type": "Fixed Charge Total Adjusted EBITDA to Total Debt Service",
-            "gaap_concept": "Fixed Charge Coverage Ratio",
-            "category": "Coverage"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "During 2024, the Company fully repaid the following notes payables (dollars in millions):\n\n|  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---  \nType |  | Date Paid |  | Amount Repaid |  |  | Interest Rate |  | Maturity Date  \nUnsecured note |  | Jan-24 |  | $ | 246.2 |  |  | 4.45% |  | Jan-24  \nUnsecured notes (1) |  | Jan-24 |  | $ | 511.5 |  |  | 3.64%-4.74% |  | Jun-25-Nov-31  \nUnsecured note |  | Mar-24 |  | $ | 400.0 |  |  | 2.70% |  | Mar-24  \n  \n(1)\n\nIn connection with the RPT Merger, the Company assumed $511.5 million of senior unsecured notes with maturities ranging from 2026 to 2031, which bore interest at rates ranging from 3.64% to 4.74%. The Merger triggered a change in control, and as such, in January 2024, the Company repaid these notes, any accrued interest, and make-whole requirements of $0.3 million resulting from the early repayment of these notes, which are included in Merger charges on the Company’s Consolidated Statements of Income.\n\nCredit Facility –\n\nOn September 9, 2024, Fitch Ratings assigned the Company a rating of A- for its senior unsecured debt, assigned a BBB credit rating for its preferred stock, and assigned its ‘Stable’ rating outlook. As a result, the Company achieved certain interest rate reductions and facility fee reduction for its Credit Facility and certain unsecured term loans.\n\nThe Company has a $2.0 billion Credit Facility with a group of banks. The Credit Facility is scheduled to expire in March 2027 with two additional six-month options to extend the maturity date, at the Company’s discretion, to March 2028. The Credit Facility is guaranteed by the Parent Company. The Credit Facility can be increased to $2.75 billion through an accordion feature. The Credit Facility is a green credit facility tied to sustainability metric targets, as described in the agreement. The Credit Facility accrues interest at a rate of Adjusted Term SOFR, as defined in the terms of the Credit Facility, plus an applicable spread determined by the Company’s credit ratings. The interest rate can be further adjusted upward or downward based on the sustainability metric targets and the Company’s credit rating outlook, as defined in the agreement. As of December 31, 2024, the interest rate on the Credit Facility is Adjusted Term SOFR plus 68.5 basis points (5.21% as of December 31, 2024) after reductions for sustainability metrics achieved and an upgraded credit rating profile. Pursuant to the terms of the Credit Facility, the Company is subject to certain covenants. As of December 31, 2024, the Credit Facility had no outstanding balance and no appropriations for letters of credit.\n\nPursuant to the terms of the Credit Facility, the Company, among other things, is subject to maintenance of various covenants. The Company is currently in compliance with these covenants. The financial covenants for the Credit Facility are as follows:\n\n|  |  |  |   \n---|---|---|---|---  \nCovenant |  | Must Be |  | As of December 31, 2024  \nTotal Indebtedness to Gross Asset Value (“GAV”) |  | <60% |  | 36%  \nTotal Priority Indebtedness to GAV |  | <35% |  | 2%  \nUnencumbered Asset Net Operating Income to Total Unsecured Interest Expense |  | >1.75x |  | 4.5x  \nFixed Charge Total Adjusted EBITDA to Total Debt Service |  | >1.50x |  | 4.0x  \n  \nFor a full description of the Credit Facility’s covenants, refer to the Amended and Restated Credit Agreement dated as of February 23, 2023, as filed with the SEC. See the Index to Exhibits included in this Form 10-K for specific filing information.\n\nTerm Loans –\n\nThe Company entered into a Seventh Amended and Restated Credit Agreement, through which the term loans assumed in connection with the RPT Merger were terminated (fully repaid) and new term loans were issued to replace the assumed loans. The new term loans retained the amounts and maturities of the assumed term loans, however, the rates (Adjusted Term SOFR plus 90.5 basis points which fluctuates based on credit rating profile and achieving sustainability metric targets, as described in the agreement) and covenants were revised to match those within the Company's Credit Facility. The following unsecured term loans were assumed, terminated and issued (dollars in millions):\n\n|  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---  \nType |  | Date Paid |  | Amount |  |  | Interest Rate (1) |  | Maturity Date  \nUnsecured term loan |  | Jan-24 |  | $ | 50.0 |  |  | 4.15% |  | Nov-26  \nUnsecured term loan |  | Jan-24 |  | $ | 100.0 |  |  | 4.11% |  | Feb-27  \nUnsecured term loan |  | Jan-24 |  | $ | 50.0 |  |  | 3.43% |  | Aug-27  \nUnsecured term loan |  | Jan-24 |  | $ | 110.0 |  |  | 3.71% |  | Feb-28  \n  \n(1)\n\nAs of December 31, 2024, the interest rate on these term loans is Adjusted Term SOFR plus 81.0 basis points after reductions for sustainability metrics achieved and an upgraded credit rating profile. The Company entered into 20 swap rate agreements with various lenders swapping the interest rates to all-in fixed rates (ranging from 4.5793% to 4.7801% as of December 31, 2024).\n\nOn January 2, 2024, Kimco OP entered into a new $200.0 million unsecured term loan credit facility (the “Term Loan Credit Facility”) pursuant to a credit agreement, among Kimco OP, TD Bank, N.A., as administrative agent, and the other parties thereto maturing in\n\n40",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 45
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "recorded $26.1 million of federal and state income tax expense (2024)",
+          "name": "$26.1 million of federal and state income tax expense (2024)",
           "properties": {
             "value": "26.1",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "recorded $26.1 million of federal and state income tax expense",
+            "metric_type": "$26.1 million of federal and state income tax expense",
             "gaap_concept": "Income Tax Expense",
             "category": "Profitability"
           }
@@ -717,7 +556,53 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
+          "name": "Kimco Realty Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Cash dividends paid were $685.9 million (2024)",
+          "properties": {
+            "value": "685.9",
+            "unit": "$ million",
+            "year": "2024",
+            "metric_type": "Cash dividends paid were $685.9 million",
+            "gaap_concept": "Dividends Paid",
+            "category": "Liquidity"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "January 2026 (with three one-year options to extend to January 2029). The Term Loan Credit Facility accrues interest at a spread (currently 80.0 basis points after reductions for an upgraded credit rating profile) to the Adjusted Term SOFR Rate (as defined in the credit agreement), that fluctuates in accordance with changes in Kimco’s senior debt ratings. In addition, during 2024, the Company amended the Term Loan Credit Facility, in separate transactions, to increase the aggregate principal amount from $200.0 million to $550.0 million. The additional $350.0 million is subject to the same terms as the existing Term Loan Credit Facility. As of December 31, 2024, the Company had six swap rate agreements with various lenders swapping the overall interest rate on the $550.0 million Term Loan Credit Facility to an all-in fixed rate of 4.6122%.\n\nMortgages Payable –\n\nDuring 2024, the Company (i) assumed $164.6 million of non-recourse mortgage debt through the acquisition of an operating property and (ii) repaid $11.8 million of mortgage debt that encumbered three operating properties.\n\nIn addition to the public equity and debt markets as capital sources, the Company may, from time to time, obtain mortgage financing on selected properties to partially fund the capital needs of its real estate re-development and re-tenanting projects. As of December 31, 2024, the Company had over 525 unencumbered property interests in its portfolio.\n\nAlbertsons Companies, Inc. –\n\nIn February 2024, the Company sold its remaining 14.2 million shares of ACI common stock, generating net proceeds of $299.1 million. For tax purposes, the Company recognized a long-term capital gain of $288.7 million for the year ended December 31, 2024. The Company retained the proceeds from the ACI stock sales and applied available deductions to offset a portion of the gain from the sale and as a result, recorded $26.1 million of federal and state income tax expense.\n\nDividends –\n\nIn connection with its intention to continue to qualify as a REIT for U.S. federal income tax purposes, the Company expects to continue paying regular dividends to its stockholders. These dividends will be paid from operating cash flows. The Company’s Board of Directors will continue to evaluate the Company’s dividend policy on a quarterly basis as it monitors sources of capital and evaluates the impact of the economy and capital markets availability on operating fundamentals. Since cash used to pay dividends reduces amounts available for capital investment, the Company generally intends to maintain a dividend payout ratio which reserves such amounts as it considers necessary for the expansion and renovation of shopping centers in its portfolio, debt reduction, the acquisition of interests in new properties and other investments as suitable opportunities arise and such other factors as the Board of Directors considers appropriate. Cash dividends paid were $685.9 million, $657.5 million and $544.7 million in 2024, 2023 and 2022, respectively.\n\nAlthough the Company receives substantially all of its rental payments on a monthly basis, it generally intends to continue paying dividends quarterly. Amounts accumulated in advance of each quarterly distribution will be invested by the Company in short-term money market or other suitable instruments. The Company’s objective is to establish a dividend level that maintains compliance with the Company’s REIT taxable income distribution requirements. On October 29, 2024, the Company’s Board of Directors declared quarterly dividends with respect to the Company’s classes of preferred shares (Classes L, M and N) which were paid on January 15, 2025, to shareholders of record on January 2, 2025. Additionally, the Company’s Board of Directors declared a quarterly cash dividend of $0.25 per common share, representing a 4.2% increase from the prior quarterly dividend of $0.24, which was paid on December 19, 2024, to shareholders of record on December 5, 2024.\n\nOn February 6, 2025, the Company’s Board of Directors declared quarterly dividends with respect to the Company’s classes of cumulative redeemable preferred shares (Classes L, M and N), which are scheduled to be paid on April 15, 2025, to shareholders of record on April 1, 2025. Additionally, on February 6, 2025, the Company’s Board of Directors declared a quarterly cash dividend of $0.25 per common share payable on March 21, 2025 to shareholders of record on March 7, 2025.\n\nNatural Disaster Impact –\n\nThe Company incurred no significant damage to its properties in September and October 2024 as a result of hurricanes Helene and Milton, which primarily affected Florida, North Carolina, South Carolina and Georgia. In addition, the Company did not incur any significant damage to its properties in January 2025 as a result of the California wildfires, which have primarily impacted Los Angeles and the surrounding areas.\n\n41",
+        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 46
+      },
+      {
+        "src": {
+          "type": "TargetCompany",
+          "name": "Kimco Realty Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "Principal (1) | $ | 816.9 (2025)",
+          "properties": {
+            "value": "816.9",
+            "unit": "$ million",
+            "year": "2025",
+            "metric_type": "Principal (1) | $ | 816.9",
+            "gaap_concept": "Total Debt",
+            "category": "Debt Structure"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Contractual Obligations and Other Commitments\n\nContractual Obligations\n\nThe Company has debt obligations relating to its Credit Facility (no outstanding balance as of December 31, 2024), unsecured senior notes, unsecured term loans and mortgages with maturities ranging from less than two months to 25 years. As of December 31, 2024, the Company’s consolidated total debt had a weighted average term to maturity of 8.0 years. In addition, the Company has non-cancelable leases pertaining to its shopping center portfolio. As of December 31, 2024, the Company had 40 consolidated shopping center properties that are subject to long-term ground leases where a third party owns and has leased the underlying land or a portion of the underlying land to the Company to construct and/or operate a shopping center. Amounts due in 2025 in connection with these leases aggregate $12.1 million. The following table summarizes the Company’s consolidated debt maturities (excluding extension options, unamortized debt issuance costs of $66.1 million and fair market value of debt adjustments aggregating $12.3 million) and obligations under non-cancelable operating leases as of December 31, 2024:\n\n|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---  \n|  | Payments due by period (in millions) |  |  |  |   \n|  | 2025 |  |  | 2026 |  |  | 2027 |  |  | 2028 |  |  | 2029 |  |  | Thereafter |  |  | Total |   \nLong-Term Debt: |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \nPrincipal (1) |  | $ | 816.9 |  |  | $ | 1,384.0 |  |  | $ | 626.5 |  |  | $ | 637.3 |  |  | $ | 238.6 |  |  | $ | 4,811.8 |  |  | $ | 8,515.1 |   \nInterest (2) |  | $ | 308.7 |  |  | $ | 269.5 |  |  | $ | 232.3 |  |  | $ | 210.6 |  |  | $ | 199.2 |  |  | $ | 1,525.5 |  |  | $ | 2,745.8 |   \n|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \nNon-cancelable Leases: |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \nOperating leases (3) |  | $ | 12.1 |  |  | $ | 11.5 |  |  | $ | 11.2 |  |  | $ | 11.2 |  |  | $ | 10.4 |  |  | $ | 255.6 |  |  | $ | 312.0 |   \nFinancing leases (4) |  | $ | 24.2 |  |  | $ | - |  |  | $ | - |  |  | $ | - |  |  | $ | - |  |  | $ | - |  |  | $ | 24.2 |   \n  \n(1)\n\nMaturities utilized do not reflect extension options, which range from two to five years. For 2025, the Company has scheduled principal payments of $740.5 million for consolidated unsecured debt and $76.4 million for consolidated secured debt. In February 2025, the Company repaid $500.0 million of 3.30% senior unsecured notes upon maturity. The Company anticipates satisfying these remaining 2025 debt obligations with net cash flow provided by operating activities, cash on hand, debt financing, and/or availability under its Credit Facility. \n\n(2)\n\nFor loans which have interest at floating rates, future interest expense was calculated using the rate as of December 31, 2024.\n\n(3)\n\nFor leases which have inflationary increases, future ground and office rent expense was calculated using the rent based upon initial lease payment.\n\n(4)\n\nDuring 2024, the Company exercised its call option to purchase two properties under finance ground lease agreements for an aggregate purchase price of $24.2 million, which was completed in January 2025.\n\nCommitments\n\nThe Company has issued letters of credit in connection with the completion and repayment guarantees, primarily on certain of the Company’s redevelopment projects and guaranty of payment related to the Company’s insurance program. At December 31, 2024, these letters of credit aggregated $39.8 million.\n\nThe Company has other investments with funding commitments of $29.0 million, of which $20.0 million has been funded as of December 31, 2024.\n\nThe Parent Company guarantees the unsecured debt instruments of Kimco OP. These guarantees by the Parent Company are full, irrevocable, unconditional and absolute joint and several guarantees to the holders of each series of such unsecured debt instruments. See Footnote 13 of the Notes to Consolidated Financial Statements for these unsecured debt instruments.\n\nIn connection with the construction of its development/redevelopment projects and related infrastructure, certain public agencies require posting of performance and surety bonds to guarantee that the Company’s obligations are satisfied. These bonds expire upon the completion of the improvements and infrastructure. As of December 31, 2024, the Company had $16.2 million in performance and surety bonds outstanding.\n\nThe Company provides a guaranty for the payment of any debt service shortfalls on Series A bonds issued by the Sheridan Redevelopment Agency, which are tax increment revenue bonds issued in connection with a property owned by the Company in Sheridan, Colorado. These tax increment revenue bonds have a balance of $36.2 million outstanding at December 31, 2024. The bonds are to be repaid with incremental sales and property taxes and a public improvement fee (\"PIF\") to be assessed on current and future retail sales and, to the extent necessary, any amounts we may have to provide under a guaranty. The revenue generated from incremental sales, property taxes and PIF have satisfied the debt service requirements to date. The incremental taxes and PIF are to remain intact until the earlier of the payment of the bond liability in full or 2040.\n\n42",
+        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 47
+      },
+      {
+        "src": {
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -740,7 +625,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -763,7 +648,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -786,7 +671,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -809,7 +694,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -832,19 +717,19 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "Interest (2) | $ | 308.7 (2025)",
+          "name": "Principal (1) | $ | 8,515.1 (Total)",
           "properties": {
-            "value": "308.7",
+            "value": "8515.1",
             "unit": "$ million",
-            "year": "2025",
-            "metric_type": "Interest (2) | $ | 308.7",
-            "gaap_concept": "Interest Expense",
-            "category": "Coverage"
+            "year": "Total",
+            "metric_type": "Principal (1) | $ | 8,515.1",
+            "gaap_concept": "Total Debt",
+            "category": "Debt Structure"
           }
         },
         "rel": "HAS_METRIC",
@@ -855,7 +740,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -878,7 +763,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -901,7 +786,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -924,7 +809,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -947,7 +832,7 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
@@ -970,17 +855,40 @@
       },
       {
         "src": {
-          "type": "Company",
+          "type": "TargetCompany",
           "name": "Kimco Realty Corporation"
         },
         "tgt": {
           "type": "Metric",
-          "name": "the Company’s other investments were $107.3 million (2024)",
+          "name": "Interest (2) | $ | 2,745.8 (Total)",
+          "properties": {
+            "value": "2745.8",
+            "unit": "$ million",
+            "year": "Total",
+            "metric_type": "Interest (2) | $ | 2,745.8",
+            "gaap_concept": "Interest Expense",
+            "category": "Coverage"
+          }
+        },
+        "rel": "HAS_METRIC",
+        "props": {},
+        "chunk_text": "Contractual Obligations and Other Commitments\n\nContractual Obligations\n\nThe Company has debt obligations relating to its Credit Facility (no outstanding balance as of December 31, 2024), unsecured senior notes, unsecured term loans and mortgages with maturities ranging from less than two months to 25 years. As of December 31, 2024, the Company’s consolidated total debt had a weighted average term to maturity of 8.0 years. In addition, the Company has non-cancelable leases pertaining to its shopping center portfolio. As of December 31, 2024, the Company had 40 consolidated shopping center properties that are subject to long-term ground leases where a third party owns and has leased the underlying land or a portion of the underlying land to the Company to construct and/or operate a shopping center. Amounts due in 2025 in connection with these leases aggregate $12.1 million. The following table summarizes the Company’s consolidated debt maturities (excluding extension options, unamortized debt issuance costs of $66.1 million and fair market value of debt adjustments aggregating $12.3 million) and obligations under non-cancelable operating leases as of December 31, 2024:\n\n|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---  \n|  | Payments due by period (in millions) |  |  |  |   \n|  | 2025 |  |  | 2026 |  |  | 2027 |  |  | 2028 |  |  | 2029 |  |  | Thereafter |  |  | Total |   \nLong-Term Debt: |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \nPrincipal (1) |  | $ | 816.9 |  |  | $ | 1,384.0 |  |  | $ | 626.5 |  |  | $ | 637.3 |  |  | $ | 238.6 |  |  | $ | 4,811.8 |  |  | $ | 8,515.1 |   \nInterest (2) |  | $ | 308.7 |  |  | $ | 269.5 |  |  | $ | 232.3 |  |  | $ | 210.6 |  |  | $ | 199.2 |  |  | $ | 1,525.5 |  |  | $ | 2,745.8 |   \n|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \nNon-cancelable Leases: |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \nOperating leases (3) |  | $ | 12.1 |  |  | $ | 11.5 |  |  | $ | 11.2 |  |  | $ | 11.2 |  |  | $ | 10.4 |  |  | $ | 255.6 |  |  | $ | 312.0 |   \nFinancing leases (4) |  | $ | 24.2 |  |  | $ | - |  |  | $ | - |  |  | $ | - |  |  | $ | - |  |  | $ | - |  |  | $ | 24.2 |   \n  \n(1)\n\nMaturities utilized do not reflect extension options, which range from two to five years. For 2025, the Company has scheduled principal payments of $740.5 million for consolidated unsecured debt and $76.4 million for consolidated secured debt. In February 2025, the Company repaid $500.0 million of 3.30% senior unsecured notes upon maturity. The Company anticipates satisfying these remaining 2025 debt obligations with net cash flow provided by operating activities, cash on hand, debt financing, and/or availability under its Credit Facility. \n\n(2)\n\nFor loans which have interest at floating rates, future interest expense was calculated using the rate as of December 31, 2024.\n\n(3)\n\nFor leases which have inflationary increases, future ground and office rent expense was calculated using the rent based upon initial lease payment.\n\n(4)\n\nDuring 2024, the Company exercised its call option to purchase two properties under finance ground lease agreements for an aggregate purchase price of $24.2 million, which was completed in January 2025.\n\nCommitments\n\nThe Company has issued letters of credit in connection with the completion and repayment guarantees, primarily on certain of the Company’s redevelopment projects and guaranty of payment related to the Company’s insurance program. At December 31, 2024, these letters of credit aggregated $39.8 million.\n\nThe Company has other investments with funding commitments of $29.0 million, of which $20.0 million has been funded as of December 31, 2024.\n\nThe Parent Company guarantees the unsecured debt instruments of Kimco OP. These guarantees by the Parent Company are full, irrevocable, unconditional and absolute joint and several guarantees to the holders of each series of such unsecured debt instruments. See Footnote 13 of the Notes to Consolidated Financial Statements for these unsecured debt instruments.\n\nIn connection with the construction of its development/redevelopment projects and related infrastructure, certain public agencies require posting of performance and surety bonds to guarantee that the Company’s obligations are satisfied. These bonds expire upon the completion of the improvements and infrastructure. As of December 31, 2024, the Company had $16.2 million in performance and surety bonds outstanding.\n\nThe Company provides a guaranty for the payment of any debt service shortfalls on Series A bonds issued by the Sheridan Redevelopment Agency, which are tax increment revenue bonds issued in connection with a property owned by the Company in Sheridan, Colorado. These tax increment revenue bonds have a balance of $36.2 million outstanding at December 31, 2024. The bonds are to be repaid with incremental sales and property taxes and a public improvement fee (\"PIF\") to be assessed on current and future retail sales and, to the extent necessary, any amounts we may have to provide under a guaranty. The revenue generated from incremental sales, property taxes and PIF have satisfied the debt service requirements to date. The incremental taxes and PIF are to remain intact until the earlier of the payment of the bond liability in full or 2040.\n\n42",
+        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
+        "source_page": 47
+      },
+      {
+        "src": {
+          "type": "TargetCompany",
+          "name": "Kimco Realty Corporation"
+        },
+        "tgt": {
+          "type": "Metric",
+          "name": "As of December 31, 2024, the Company’s other investments were $107.3 million (2024)",
           "properties": {
             "value": "107.3",
             "unit": "$ million",
             "year": "2024",
-            "metric_type": "the Company’s other investments were $107.3 million",
+            "metric_type": "As of December 31, 2024, the Company’s other investments were $107.3 million",
             "gaap_concept": "Other Investments",
             "category": "no gaap"
           }
@@ -990,29 +898,6 @@
         "chunk_text": "In connection with the RPT Merger, the Company provides a guaranty for the payment of any debt service shortfalls on the City of Jacksonville Series 2005A bonds, which are tax increment revenue bonds issued in connection with a redevelopment project in Jacksonville, FL. Repayment of the bonds is to be made in accordance with a level-payment amortization schedule over 20 years, and repayments are made out of tax revenues generated by the redevelopment. The remaining debt service payments due over the life of the bonds, including principal and interest, are $3.4 million as of December 31, 2024. There have been no payments made by the Company under this guaranty agreement to date and the Company does not expect to make any payments over the life of the agreement.\n\nOff-Balance Sheet Arrangements\n\nUnconsolidated Real Estate Joint Ventures\n\nThe Company has investments in various unconsolidated real estate joint ventures with varying structures. These joint ventures primarily operate shopping centers or mixed-use properties. The properties owned by the joint ventures are primarily financed with individual non-recourse mortgage loans, however, the Company, on a selective basis, has obtained unsecured financing for certain joint ventures. As of December 31, 2024, the Company did not guarantee any joint venture unsecured debt. Non-recourse mortgage debt is generally defined as debt whereby the lenders’ sole recourse with respect to borrower defaults is limited to the value of the property collateralized by the mortgage. The lender generally does not have recourse against any other assets owned by the borrower or any of the constituent members of the borrower, except for certain specified exceptions listed in the particular loan documents (see Footnote 7 of the Notes to Consolidated Financial Statements included in this Form 10-K).\n\nDebt balances within the Company’s unconsolidated joint venture investments for which the Company held noncontrolling ownership interests at December 31, 2024, aggregated $1.5 billion. As of December 31, 2024, these loans had scheduled maturities ranging from five months to 7.2 years and bore interest at rates ranging from 2.81% to SOFR plus 225 basis points (6.65% as of December 31, 2024). Approximately $29.7 million of the aggregate outstanding loan balance matures in 2025. For these maturing loans, the Company will utilize extension options where available or repay them with operating cash flows, debt refinancing, unsecured credit facilities, proceeds from sales of properties, and partner capital contributions, as deemed appropriate (see Footnote 7 of the Notes to Consolidated Financial Statements included in this Form 10-K).\n\nOther Investments\n\nThe Company has provided capital to owners and developers of real estate properties through its Preferred Equity program, which is included in Other investments on the Company’s Consolidated Balance Sheets. In addition, the Company has invested capital in structured investments, which are primarily accounted for on the equity method of accounting. As of December 31, 2024, the Company’s other investments were $107.3 million, of which the Company’s net investment under the Preferred Equity program was $70.1 million. As of December 31, 2024, these preferred equity investment properties had non-recourse mortgage loans aggregating $93.3 million. These loans have scheduled maturities ranging from six months to 4.5 years and bear interest at rates ranging from 6.80% to 8.34%. For these maturing loans, the Company will utilize extension options where available or repay them with operating cash flows, debt refinancing, and/or partner capital contributions, as deemed appropriate. Due to the Company’s preferred position in these investments, the Company’s share of each investment is subject to fluctuation and is dependent upon property cash flows. The Company’s maximum exposure to losses associated with its preferred equity investments is limited to its invested capital.\n\nEffects of Inflation\n\nMany of the Company’s long-term leases contain provisions designed to help mitigate the adverse impact of inflation. Such provisions include clauses enabling the Company to receive payment of additional rent calculated as a percentage of tenants’ gross sales above pre-determined thresholds, which generally increase as prices rise, and/or as a result of escalation clauses, which generally increase rental rates during the terms of the leases. Such escalation clauses often include increases based upon changes in the consumer price index or similar inflation indices. In addition, many of the Company’s leases are for terms of less than 10 years, which permits the Company to seek to increase rents to market rates upon renewal. To assist in partially mitigating the Company’s exposure to increases in costs and operating expenses, including common area maintenance costs, real estate taxes and insurance, resulting from inflation, the Company’s leases include provisions that either (i) require the tenant to pay an allocable share of these operating expenses or (ii) contain fixed contractual amounts, which include escalation clauses, to reimburse these operating expenses.\n\nFunds From Operations (\"FFO\")\n\nFFO is a supplemental non-GAAP financial measure utilized to evaluate the operating performance of real estate companies. NAREIT defines FFO as net income available to the Company’s common shareholders computed in accordance with GAAP, excluding (i) depreciation and amortization related to real estate, (ii) gains or losses from sales of certain real estate assets, (iii) gains and losses from change in control, (iv) impairment write-downs of certain real estate assets and investments in entities when the impairment is directly attributable to decreases in the value of depreciable real estate held by the entity and (v) after adjustments for unconsolidated partnerships\n\n43",
         "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
         "source_page": 48
-      },
-      {
-        "src": {
-          "type": "Company",
-          "name": "Kimco Realty Corporation"
-        },
-        "tgt": {
-          "type": "Metric",
-          "name": "Net income available to the Company’s common shareholders (2023)",
-          "properties": {
-            "value": "629252",
-            "unit": "$ thousand",
-            "year": "2023",
-            "metric_type": "Net income available to the Company’s common shareholders",
-            "gaap_concept": "Net Income (Loss)",
-            "category": "Profitability"
-          }
-        },
-        "rel": "HAS_METRIC",
-        "props": {},
-        "chunk_text": "investors to measure only the net operating income of properties that have been owned by the Company for the entire current and prior year reporting periods. It excludes properties under redevelopment, development and pending stabilization; properties are deemed stabilized at the earlier of (i) reaching 90% leased or (ii) one year following a project’s inclusion in operating real estate. Same property NOI assists in eliminating disparities in net income due to the development, acquisition or disposition of properties during the particular period presented, and thus provides a more consistent performance measure for the comparison of the Company's properties.\n\nFor the three months and years ended December 31, 2024 and 2023, the Company included Same property NOI from the RPT properties acquired through the RPT Merger, as the Company owned these properties for the full three months and the majority of the year ended December 31, 2024. The amount of the adjustment relating to RPT same property NOI for the three months and years ended December 31, 2024 and 2023, included in the table below, represents the Same property NOI from RPT properties prior to the RPT Merger, which is not included in the Company's Net income available to the Company’s common shareholders.\n\nSame property NOI is calculated using revenues from rental properties (excluding straight-line rent adjustments, lease termination fees, TIFs and amortization of above/below-market rents) less charges for credit losses, operating and maintenance expense, real estate taxes and rent expense plus the Company’s proportionate share of Same property NOI from unconsolidated real estate joint ventures, calculated on the same basis. The Company’s method of calculating Same property NOI available to the Company’s common shareholders may differ from methods used by other REITs and, accordingly, may not be comparable to such other REITs.\n\nThe following is a reconciliation of Net income available to the Company’s common shareholders to Same property NOI (in thousands):\n\n|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |   \n---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---  \n|  | Three Months Ended December 31, |  |  | Year Ended December 31, |   \n|  | 2024 |  |  | 2023 |  |  | 2024 |  |  | 2023 |   \nNet income available to the Company’s common shareholders |  | $ | 154,835 |  |  | $ | 133,360 |  |  | $ | 375,718 |  |  | $ | 629,252 |   \nAdjustments: |  |  |  |  |  |  |  |  |  |  |  |   \nManagement and other fee income |  |  | (4,333 | ) |  |  | (3,708 | ) |  |  | (17,949 | ) |  |  | (16,343 | )  \nGeneral and administrative |  |  | 34,902 |  |  |  | 35,627 |  |  |  | 138,140 |  |  |  | 136,807 |   \nImpairment charges |  |  | 199 |  |  |  | - |  |  |  | 4,476 |  |  |  | 14,043 |   \nMerger charges |  |  | - |  |  |  | 1,016 |  |  |  | 25,246 |  |  |  | 4,766 |   \nDepreciation and amortization |  |  | 156,130 |  |  |  | 124,282 |  |  |  | 603,685 |  |  |  | 507,265 |   \nGain on sale of properties |  |  | (330 | ) |  |  | (22,600 | ) |  |  | (1,274 | ) |  |  | (74,976 | )  \nSpecial dividend income |  |  | - |  |  |  | - |  |  |  | - |  |  |  | (194,116 | )  \nInterest expense and other income, net |  |  | 66,032 |  |  |  | 46,917 |  |  |  | 250,201 |  |  |  | 210,241 |   \nLoss/(gain) on marketable securities, net |  |  | 66 |  |  |  | (3,620 | ) |  |  | 27,679 |  |  |  | (21,262 | )  \n(Benefit)/provision for income taxes, net |  |  | (46,938 | ) |  |  | (175 | ) |  |  | 25,417 |  |  |  | 60,952 |   \nEquity in income of other investments, net |  |  | (353 | ) |  |  | (1,968 | ) |  |  | (9,821 | ) |  |  | (10,709 | )  \nNet income attributable to noncontrolling interests |  |  | 1,961 |  |  |  | 2,468 |  |  |  | 8,654 |  |  |  | 11,676 |   \nPreferred stock redemption charges |  |  | 3,304 |  |  |  | - |  |  |  | 3,304 |  |  |  | - |   \nPreferred dividends, net |  |  | 7,899 |  |  |  | 6,285 |  |  |  | 31,763 |  |  |  | 25,021 |   \nRPT same property NOI (1) |  |  | - |  |  |  | 40,062 |  |  |  | 606 |  |  |  | 160,978 |   \nNon same property net operating income |  |  | (13,781 | ) |  |  | (9,727 | ) |  |  | (54,627 | ) |  |  | (55,508 | )  \nNon-operational expense from joint ventures, net |  |  | 30,066 |  |  |  | 24,713 |  |  |  | 115,695 |  |  |  | 86,625 |   \nSame property NOI |  | $ | 389,659 |  |  | $ | 372,932 |  |  | $ | 1,526,913 |  |  | $ | 1,474,712 |   \n  \n(1)\n\nAmounts for the respective periods, represent the Same property NOI from RPT properties, not included in the Company's Net income available to the Company's common shareholders.\n\nSame property NOI increased by $16.7 million, or 4.5%, for the three months ended December 31, 2024, as compared to the corresponding period in 2023. This increase is primarily the result of (i) an increase of $14.3 million, primarily related to an increase in rental revenue driven by strong leasing activity, (ii) an increase in other rental income of $1.7 million and (iii) a decrease in credit losses of $0.7 million.\n\nSame property NOI increased by $52.2 million, or 3.5%, for the year ended December 31, 2024, as compared to the corresponding period in 2023. This increase is primarily the result of (i) an increase of $48.2 million primarily related to an increase in rental revenue driven by strong leasing activity, (ii) a decrease in non-recoverable expenses $5.0 million and (iii) an increase in other rental income of $2.1 million, partially offset by (iv) a decrease in percentage rents of $2.5 million.\n\nNew Accounting Pronouncements\n\nSee Footnote 1 of the Notes to Consolidated Financial Statements included in this Form 10-K.\n\n45",
-        "section_title": "Item 7. Managem ent's Discussion and Analysis of Financial Condition and Results of Operations",
-        "source_page": 50
       }
     ]
   }

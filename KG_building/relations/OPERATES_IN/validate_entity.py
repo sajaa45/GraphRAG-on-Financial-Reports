@@ -15,7 +15,6 @@ load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..',
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-MODEL = os.getenv("BEDROCK_MODEL", "qwen.qwen3-next-80b-a3b")
 EDGAR_HEADERS = {"User-Agent": os.getenv("SEC_USER_AGENT", "YourName your_email@example.com")}
 _edgar_sic_cache: Dict[str, bool] = {}
 

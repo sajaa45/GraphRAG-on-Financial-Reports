@@ -19,7 +19,7 @@ def parse_risk_entity(entity: Dict, main_company: str = 'the Company') -> Option
     # when we have access to a global counter
 
     return {
-        'source': {'type': 'Company', 'name': org},
+        'source': {'type': 'TargetCompany', 'name': org},
         'target': {
             'type': 'Risk',
             'name': risk_name,
@@ -35,7 +35,7 @@ def parse_risk_entity(entity: Dict, main_company: str = 'the Company') -> Option
 
 CONFIG = RelationConfig(
     name='FACES_RISK',
-    source_entity_type='Company',
+    source_entity_type='TargetCompany',
     target_entity_type='Risk',
     relationship_type='FACES_RISK',
     required_fields=['risk_name', 'description', 'why'],
