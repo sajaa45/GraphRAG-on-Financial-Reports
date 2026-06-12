@@ -194,12 +194,12 @@ def _pipeline_fail(job_id: str, error: str) -> None:
 # ---------------------------------------------------------------------------
 
 def _run_step1(job_id: str, state: dict) -> dict:
-    from parsing_sections_html import sections_parser_html
+    from parsing_sections_markdown import sections_parser_markdown
     out = os.path.join(_job_dir(job_id), "parsed_sections.json")
-    result = sections_parser_html(state["file_path"], out)
+    result = sections_parser_markdown(state["file_path"], out)
     if result is None:
         raise RuntimeError("Parser returned no sections — check the HTML format")
-    return result  # {num_sections, num_pages}
+    return result
 
 
 def _run_step2(job_id: str, state: dict) -> tuple:
@@ -332,7 +332,7 @@ async def _execute_step(job_id: str, step_id: int, state: dict, loop) -> bool:
             r = await loop.run_in_executor(_executor, _run_step1, job_id, state)
             _mark_step_complete(state, 1)
             _emit(job_id, 1, "done",
-                  summary=f"Extracted {r['num_sections']} sections across {r['num_pages']} pages")
+                  summary=f"Extracted {r['num_sections']} sections")
 
         elif step_id == 2:
             main_company, counts, total = await loop.run_in_executor(_executor, _run_step2, job_id, state)

@@ -2,7 +2,6 @@
 import os
 import sys
 import json
-import argparse
 from typing import List, Dict, Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -300,34 +299,3 @@ class Neo4jBuilder:
 
     def close(self):
         self.driver.close()
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Neo4j Builder — loads extracted/validated JSON into Neo4j")
-
-    parser.add_argument(
-        "--validated-dir",
-        metavar="DIR",
-        required=True,
-        help="Directory containing relation subdirs with extracted_*.json files (e.g. KG_building/relations).",
-    )
-
-    parser.add_argument("--clear", action="store_true", help="Clear database before loading")
-
-    args = parser.parse_args()
-
-    builder = Neo4jBuilder(
-        neo4j_uri=os.getenv("NEO4J_URI", "neo4j://localhost:7687"),
-        neo4j_user=os.getenv("NEO4J_USERNAME", "neo4j"),
-        neo4j_password=os.getenv("NEO4J_PASSWORD", "Lexical12345*"),
-    )
-
-    try:
-        builder.build_from_validated_dirs(args.validated_dir, clear=args.clear)
-        builder.show_graph_stats()
-    finally:
-        builder.close()
-
-
-if __name__ == "__main__":
-    main()

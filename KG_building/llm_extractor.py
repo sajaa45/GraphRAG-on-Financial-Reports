@@ -2,7 +2,6 @@
 import os
 import sys
 import json
-import argparse
 import importlib.util
 import time
 import re
@@ -381,7 +380,7 @@ class LLMExtractor:
         json_paths = []
         for rel in relation_names:
             items = self.extract_relation(rel)
-            rel_dir = os.path.join(self._relations_dir, rel)
+            rel_dir = os.path.join(self.output_dir, rel)
             os.makedirs(rel_dir, exist_ok=True)
             json_path = os.path.join(rel_dir, f"extracted_{self._base}.json")
             with open(json_path, 'w', encoding='utf-8') as f:
@@ -405,46 +404,3 @@ class LLMExtractor:
 
     def close(self):
         self._save_log()
-def main():
-    parser = argparse.ArgumentParser(description="LLM Extractor — reads parsed sections JSON and extracts entities page by page")
-    parser.add_argument("relations", nargs="*", help="Relations to extract")
-    parser.add_argument("--all", action="store_true", help="Extract all relations")
-    parser.add_argument("--list", action="store_true", help="List available relations")
-    parser.add_argument("--parsed-sections-file", default=None, help="Path to parsed_sections_html.json")
-    parser.add_argument("--main-company", default=None, help="Main company name")
-    parser.add_argument("--source-file", default="", help="Source document filename (used to name output files)")
-    parser.add_argument("--output-dir", default=None, help="Directory for output files")
-
-    args = parser.parse_args()
-
-    if args.list:
-        print("Available relations:", list_available_relations())
-        return
-
-    default_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "parsing")
-    output_dir = args.output_dir or os.getenv("OUTPUT_DIR", default_output)
-
-    default_sections = os.path.join(default_output, "parsed_sections_markdown.json")
-    parsed_sections_file = (
-        args.parsed_sections_file
-        or os.getenv("PARSED_SECTIONS_FILE", default_sections)
-    )
-
-    relations = list_available_relations() if args.all else [r.upper() for r in args.relations]
-
-    extractor = LLMExtractor(
-        parsed_sections_file=parsed_sections_file,
-        output_dir=output_dir,
-        main_company=args.main_company or os.getenv("MAIN_COMPANY", "the Company"),
-        source_file=args.source_file or os.getenv("SOURCE_FILE", ""),
-    )
-
-    try:
-        json_path = extractor.extract_multiple_relations(relations)
-        print(f"\n✓ Done. JSON saved to: {json_path}")
-    finally:
-        extractor.close()
-
-
-if __name__ == "__main__":
-    main()

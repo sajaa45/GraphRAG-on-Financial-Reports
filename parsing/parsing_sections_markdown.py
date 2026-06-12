@@ -268,31 +268,3 @@ def sections_parser_markdown(
     return result
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Parse a Markdown (or HTML converted to Markdown) file and extract section hierarchy"
-    )
-    parser.add_argument(
-        "input_path",
-        nargs='?',
-        default="input/document.md",
-        help="Path to a .md or .html file",
-    )
-    parser.add_argument(
-        "--output", "-o",
-        default="parsing/parsed_sections_markdown.json",
-        help="Output JSON path",
-    )
-    parser.add_argument(
-        "--save-md",
-        default=None,
-        help="Save the intermediate Markdown to this path (HTML input only)",
-    )
-
-    args = parser.parse_args()
-    print(f"Parsing: {args.input_path}\n")
-    sections_parser_markdown(args.input_path, args.output, args.save_md)
-
-
-if __name__ == "__main__":
-    main()

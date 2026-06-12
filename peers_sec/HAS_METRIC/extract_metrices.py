@@ -339,6 +339,9 @@ def _resolve_metric_to_tags(metric_type: str) -> list:
 
 
 def analyze_company_covenants(cik, company_name, target_metrics=None, default_fiscal_year=2024):
+    fy = int(default_fiscal_year)
+    start_date = f"{fy}-07-01"
+    end_date   = f"{fy + 1}-06-30"
     url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
 
     try:
@@ -400,7 +403,7 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                     for e in entries
                     if e.get('fp') == 'FY'
                     and e.get('form') == '10-K'
-                    and START_DATE <= (e.get('end') or '') <= END_DATE
+                    and start_date <= (e.get('end') or '') <= end_date
                 ]
                 if filtered:
                     entry['units'][unit_name] = filtered
