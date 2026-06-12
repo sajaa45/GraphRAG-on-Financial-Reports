@@ -197,16 +197,12 @@ class Neo4jBuilder:
                             item.get('section_title'), item.get('source_page'),
                         )
                     else:
-                        raw_meta = {}
                         if item.get('source_page') is not None:
-                            raw_meta['source_page'] = item['source_page']
+                            tgt_props['source_page'] = item['source_page']
                         if item.get('section_title'):
-                            raw_meta['section_title'] = item['section_title']
+                            tgt_props['section_title'] = item['section_title']
                         if item.get('chunk_text'):
-                            raw_meta['source_text'] = item['chunk_text']
-                        if raw_meta:
-                            tgt_props['metadata'] = json.dumps(raw_meta)
-                            src_props['metadata'] = json.dumps(raw_meta)
+                            tgt_props['source_text'] = item['chunk_text']
 
                         self.create_node(tx, item['tgt']['type'], item['tgt']['name'], tgt_props)
                         self.create_relationship(
@@ -219,10 +215,9 @@ class Neo4jBuilder:
 
                     sic = item.get('sic')
                     if sic:
-                        s = sic
-                        self.create_node(tx, 'SICCode', s['code'],
-                                         {'code': s['code'], 'industry': s['industry'], 'sector': s['sector']})
-                        self.create_relationship(tx, s['src_type'], s['src_name'], 'SICCode', s['code'], 'HAS_SIC_CODE')
+                        self.create_node(tx, 'SICCode', sic['code'],
+                                         {'code': sic['code'], 'industry': sic['industry'], 'sector': sic['sector']})
+                        self.create_relationship(tx, sic['src_type'], sic['src_name'], 'SICCode', sic['code'], 'HAS_SIC_CODE')
 
             with self.driver.session() as session:
                 session.execute_write(_write_batch)
@@ -241,12 +236,6 @@ class Neo4jBuilder:
         """
         Scan each subdirectory of relations_dir for a extracted_*.json file,
         merge all relations across files, and write to Neo4j.
-
-        Expected layout:
-            relations_dir/
-                OPERATES_IN/validated_industry.json
-                FACES_RISK/validated_risks.json
-                HAS_METRIC/validated_metrics.json
         """
         if not os.path.isdir(relations_dir):
             raise FileNotFoundError(f"Relations directory not found: {relations_dir}")

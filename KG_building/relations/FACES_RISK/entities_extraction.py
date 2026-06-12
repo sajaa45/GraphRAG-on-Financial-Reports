@@ -19,8 +19,8 @@ def parse_risk_entity(entity: Dict, main_company: str = 'the Company') -> Option
     # when we have access to a global counter
 
     return {
-        'source': {'type': 'TargetCompany', 'name': org},
-        'target': {
+        'src': {'type': 'TargetCompany', 'name': org},
+        'tgt': {
             'type': 'Risk',
             'name': risk_name,
             'properties': {
@@ -28,7 +28,7 @@ def parse_risk_entity(entity: Dict, main_company: str = 'the Company') -> Option
                 'why': why,
             },
         },
-        'relationship': 'FACES_RISK',
+        'rel': 'FACES_RISK',
         'properties': {},
     }
 

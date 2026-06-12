@@ -122,9 +122,7 @@ class LLMExtractor:
             raise ImportError("rank_bm25 is not installed. Run: pip install rank-bm25")
 
         def _section_tokens(s: dict) -> list[str]:
-            text = s['title']
-            pages = s.get('page_contents') or []
-            return text.lower().split()
+            return s['title'].lower().split()
 
         tokenized_titles = [_section_tokens(s) for s in self._flat_sections]
         bm25 = BM25Okapi(tokenized_titles)
@@ -152,12 +150,6 @@ class LLMExtractor:
             raise ValueError(f"BM25 found no matching sections for queries: {section_queries}")
 
         return result
-
-    def _find_sections_for_relation(self, relation_config) -> list:
-        print(f"  Using BM25 section search ({len(relation_config.section_queries)} queries)")
-        return self._find_matching_sections_bm25(
-            relation_config.section_queries,
-        )
 
     def _log(self, message: str):
         self.log_buffer.append(message)
@@ -241,10 +233,6 @@ class LLMExtractor:
                 kwargs = {**relation_config.entity_parser_kwargs, 'main_company': self.main_company}
                 p = relation_config.entity_parser(e, **kwargs)
                 if p:
-                    for node_key in ('source', 'target'):
-                        node = p[node_key]
-                        if node['type'] in ('Company', 'Organization'):
-                            node['name'] = self.company_detector.normalize_company_name(node['name'])
                     results.append((p, page_info))
 
             return results
@@ -273,7 +261,8 @@ class LLMExtractor:
         print(f"\n{'='*80}\nEXTRACTING RELATION: {relation_config.name}\n{'='*80}")
         print(f"Source: {relation_config.source_entity_type} → {relation_config.relationship_type} → {relation_config.target_entity_type}")
 
-        matched_sections = self._find_sections_for_relation(relation_config)
+        print(f"  Using BM25 section search ({len(relation_config.section_queries)} queries)")
+        matched_sections = self._find_matching_sections_bm25(relation_config.section_queries)
 
         print(f"\n  Matched {len(matched_sections)} section(s):")
         for s in matched_sections:
@@ -309,9 +298,9 @@ class LLMExtractor:
                     self._log("    ✗ No entities extracted from this page")
 
                 for entity, page_info in batch_results:
-                    src = entity['source']
-                    tgt = entity['target']
-                    rel = entity['relationship']
+                    src = entity['src']
+                    tgt = entity['tgt']
+                    rel = entity['rel']
                     key = (src['name'], rel, tgt['name'])
 
                     

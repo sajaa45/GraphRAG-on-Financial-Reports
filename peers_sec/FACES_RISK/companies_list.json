@@ -1,225 +1,729 @@
 {
-  "total_count": 36,
+  "total_count": 90,
   "companies": [
     {
-      "name": "Vocodia Holdings Corp  (VHAI, VHABW, VHAIW)",
-      "cik": "0001880431",
+      "name": "Ellington Credit Co  (EARN)",
+      "cik": "0001560672",
       "ticker": "N/A",
-      "filing_date": "2025-06-18"
+      "filing_date": "2025-06-23",
+      "period_of_report": "2025-03-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"
     },
     {
-      "name": "Doximity, Inc.  (DOCS)",
-      "cik": "0001516513",
+      "name": "StratCap Digital Infrastructure REIT, Inc.",
+      "cik": "0001868516",
       "ticker": "N/A",
-      "filing_date": "2025-05-20"
+      "filing_date": "2025-05-09",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1868516/000110465925046353/tm2513520d1_10k.htm"
     },
     {
-      "name": "SpringBig Holdings, Inc.  (SBIG, SBIGW)",
-      "cik": "0001801602",
+      "name": "INNSUITES HOSPITALITY TRUST  (IHT)",
+      "cik": "0000082473",
       "ticker": "N/A",
-      "filing_date": "2025-04-30"
+      "filing_date": "2025-05-01",
+      "period_of_report": "2025-01-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/82473/000164117225007998/form10-k.htm"
     },
     {
-      "name": "Glidelogic Corp.  (GDLG)",
-      "cik": "0001848672",
+      "name": "Lodging Fund REIT III, Inc.",
+      "cik": "0001745032",
       "ticker": "N/A",
-      "filing_date": "2025-04-25"
+      "filing_date": "2025-04-29",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1745032/000155837025005729/lfr-20241231x10k.htm"
     },
     {
-      "name": "Nixxy, Inc.  (NIXX, NIXXW)",
-      "cik": "0001462223",
+      "name": "SELECTIS HEALTH, INC.  (GBCS)",
+      "cik": "0000727346",
       "ticker": "N/A",
-      "filing_date": "2025-04-21"
+      "filing_date": "2025-04-15",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/727346/000164117225004859/form10-k.htm"
     },
     {
-      "name": "Cycurion, Inc.  (CYCU, CYCUW)",
-      "cik": "0001868419",
+      "name": "CalEthos, Inc.  (GEDC)",
+      "cik": "0001174891",
       "ticker": "N/A",
-      "filing_date": "2025-04-17"
+      "filing_date": "2025-04-02",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1174891/000164117225002190/form10-k.htm"
     },
     {
-      "name": "APPYEA, INC  (APYP)",
-      "cik": "0001568969",
+      "name": "Moody National REIT II, Inc.",
+      "cik": "0001615222",
       "ticker": "N/A",
-      "filing_date": "2025-04-15"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1615222/000199937125003519/mnrtii-10k_123124.htm"
     },
     {
-      "name": "XTI Aerospace, Inc.  (XTIA)",
-      "cik": "0001529113",
+      "name": "Cottonwood Communities, Inc.",
+      "cik": "0001692951",
       "ticker": "N/A",
-      "filing_date": "2025-04-15"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1692951/000169295125000106/cci-20241231.htm"
     },
     {
-      "name": "Jubilant Flame International, Ltd  (JFIL)",
-      "cik": "0001517389",
+      "name": "Power REIT  (PW, PW-PA)",
+      "cik": "0001532619",
       "ticker": "N/A",
-      "filing_date": "2025-04-04"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1532619/000164117225001515/form10-k.htm"
     },
     {
-      "name": "Titan Environmental Solutions Inc.  (TESI)",
-      "cik": "0001514056",
+      "name": "Pacific Oak Strategic Opportunity REIT, Inc.  (PCOK)",
+      "cik": "0001452936",
       "ticker": "N/A",
-      "filing_date": "2025-03-31"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1452936/000145293625000013/sor-20241231.htm"
     },
     {
-      "name": "BLACKBOXSTOCKS INC.  (BLBX)",
-      "cik": "0001567900",
+      "name": "Presidio Property Trust, Inc.  (SQFT, SQFTP, SQFTW)",
+      "cik": "0001080657",
       "ticker": "N/A",
-      "filing_date": "2025-03-21"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1080657/000143774925010185/sqft20241231c_10k.htm"
     },
     {
-      "name": "TruBridge, Inc.  (TBRG)",
-      "cik": "0001169445",
+      "name": "Sachem Capital Corp.  (SACH, SCCC, SCCD, SCCE, SCCF, SCCG, SACH-PA)",
+      "cik": "0001682220",
       "ticker": "N/A",
-      "filing_date": "2025-03-17"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1682220/000141057825000587/sach-20241231x10k.htm"
     },
     {
-      "name": "Ankam, Inc.  (ANKM)",
-      "cik": "0001781629",
+      "name": "NEXPOINT DIVERSIFIED REAL ESTATE TRUST  (NXDT, NXDT-PA)",
+      "cik": "0001356115",
       "ticker": "N/A",
-      "filing_date": "2025-03-14"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1356115/000135611525000003/nxdt-20241231.htm"
     },
     {
-      "name": "RumbleOn, Inc.  (RMBL)",
-      "cik": "0001596961",
+      "name": "Lightstone Value Plus REIT I, Inc.",
+      "cik": "0001296884",
       "ticker": "N/A",
-      "filing_date": "2025-03-14"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1296884/000118518525000249/lvpr110k123124.htm"
     },
     {
-      "name": "SYNCHRONOSS TECHNOLOGIES INC  (SNCR, SNCRL)",
-      "cik": "0001131554",
+      "name": "Franklin BSP Real Estate Debt, Inc.",
+      "cik": "0002035428",
       "ticker": "N/A",
-      "filing_date": "2025-03-12"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/2035428/000110465925029919/tm2510676d1_10k.htm"
     },
     {
-      "name": "Bright Mountain Media, Inc.  (BMTM)",
-      "cik": "0001568385",
+      "name": "Cantor Fitzgerald Income Trust, Inc.",
+      "cik": "0001666244",
       "ticker": "N/A",
-      "filing_date": "2025-03-10"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1666244/000095017025047855/cfit-20241231.htm"
     },
     {
-      "name": "Rigetti Computing, Inc.  (RGTI, RGTIW)",
-      "cik": "0001838359",
+      "name": "New York REIT Liquidating LLC",
+      "cik": "0001474464",
       "ticker": "N/A",
-      "filing_date": "2025-03-07"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1474464/000095017025047685/ck0001474464-20241231.htm"
     },
     {
-      "name": "Cyngn Inc.  (CYN)",
-      "cik": "0001874097",
+      "name": "Sotherly Hotels Inc.  (SOHO, SOHOB, SOHON, SOHOO)",
+      "cik": "0001301236",
       "ticker": "N/A",
-      "filing_date": "2025-03-06"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1301236/000095017025047657/soho-20241231.htm"
     },
     {
-      "name": "AMJ Global Technology  (AMJT)",
-      "cik": "0001593773",
+      "name": "Strategic Storage Trust VI, Inc.",
+      "cik": "0001852575",
       "ticker": "N/A",
-      "filing_date": "2025-03-03"
+      "filing_date": "2025-03-31",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1852575/000095017025047586/sstvi-20241231.htm"
     },
     {
-      "name": "EPAM Systems, Inc.  (EPAM)",
-      "cik": "0001352010",
+      "name": "Fortress Net Lease REIT",
+      "cik": "0001966394",
       "ticker": "N/A",
-      "filing_date": "2025-02-28"
+      "filing_date": "2025-03-28",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1966394/000196639425000025/fnlr-20241231.htm"
     },
     {
-      "name": "Compass, Inc.  (COMP)",
-      "cik": "0001563190",
+      "name": "Sculptor Diversified Real Estate Income Trust, Inc.",
+      "cik": "0001914496",
       "ticker": "N/A",
-      "filing_date": "2025-02-25"
+      "filing_date": "2025-03-28",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1914496/000191449625000017/sdreit-20241231.htm"
     },
     {
-      "name": "VERISIGN INC/CA  (VRSN)",
-      "cik": "0001014473",
+      "name": "VINEBROOK HOMES TRUST, INC.",
+      "cik": "0001755755",
       "ticker": "N/A",
-      "filing_date": "2025-02-13"
+      "filing_date": "2025-03-28",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1755755/000175575525000005/vhti-20241231.htm"
     },
     {
-      "name": "PROS Holdings, Inc.  (PRO)",
-      "cik": "0001392972",
+      "name": "CIM REAL ESTATE FINANCE TRUST, INC.  (CMRF)",
+      "cik": "0001498547",
       "ticker": "N/A",
-      "filing_date": "2025-02-12"
+      "filing_date": "2025-03-28",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1498547/000149854725000018/cmft-20241231.htm"
     },
     {
-      "name": "COGNIZANT TECHNOLOGY SOLUTIONS CORP  (CTSH)",
-      "cik": "0001058290",
+      "name": "New Mountain Net Lease Trust",
+      "cik": "0002033695",
       "ticker": "N/A",
-      "filing_date": "2025-02-12"
+      "filing_date": "2025-03-28",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/2033695/000141057825000532/tmb-20241231x10k.htm"
     },
     {
-      "name": "INNOVATIVE SOLUTIONS & SUPPORT INC  (ISSC)",
-      "cik": "0000836690",
+      "name": "EQT Exeter Real Estate Income Trust, Inc.",
+      "cik": "0001946997",
       "ticker": "N/A",
-      "filing_date": "2025-01-23"
+      "filing_date": "2025-03-28",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1946997/000141057825000524/eqt-20241231x10k.htm"
     },
     {
-      "name": "GMTech Inc.  (GMTH)",
-      "cik": "0002000762",
+      "name": "GENERATION INCOME PROPERTIES, INC.  (GIPR, GIPRW)",
+      "cik": "0001651721",
       "ticker": "N/A",
-      "filing_date": "2025-01-10"
+      "filing_date": "2025-03-28",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1651721/000095017025046959/gipr-20241231.htm"
     },
     {
-      "name": "KHEOBA CORP.  (KHOB)",
-      "cik": "0001909770",
+      "name": "FORTRESS CREDIT REALTY INCOME TRUST",
+      "cik": "0002026738",
       "ticker": "N/A",
-      "filing_date": "2025-01-03"
+      "filing_date": "2025-03-28",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/2026738/000095017025046739/ck0002026738-20241231.htm"
     },
     {
-      "name": "TANICO Inc.",
-      "cik": "0001895939",
+      "name": "Stirling Hotels & Resorts, Inc.",
+      "cik": "0002003881",
       "ticker": "N/A",
-      "filing_date": "2024-12-31"
+      "filing_date": "2025-03-27",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/2003881/000200388125000020/shr-20241231.htm"
     },
     {
-      "name": "E-Smart Corp.",
-      "cik": "0001995920",
+      "name": "NexPoint Real Estate Finance, Inc.  (NREF, NREF-PA)",
+      "cik": "0001786248",
       "ticker": "N/A",
-      "filing_date": "2024-12-12"
+      "filing_date": "2025-03-27",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1786248/000178624825000004/nref-20241231.htm"
     },
     {
-      "name": "Guru App Factory Corp  (GAFC)",
-      "cik": "0001989788",
+      "name": "HG Holdings, Inc.  (STLY)",
+      "cik": "0000797465",
       "ticker": "N/A",
-      "filing_date": "2024-11-08"
+      "filing_date": "2025-03-27",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/797465/000143774925009465/stly20241231_10k.htm"
     },
     {
-      "name": "bowmo, Inc.  (BOMO)",
-      "cik": "0001381871",
+      "name": "Lightstone Value Plus REIT V, Inc.",
+      "cik": "0001387061",
       "ticker": "N/A",
-      "filing_date": "2024-10-09"
+      "filing_date": "2025-03-27",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1387061/000118518525000229/ltsv510k123124.htm"
     },
     {
-      "name": "VISIUM TECHNOLOGIES, INC.  (VISM)",
-      "cik": "0001082733",
+      "name": "Principal Credit Real Estate Income Trust",
+      "cik": "0002026448",
       "ticker": "N/A",
-      "filing_date": "2024-09-30"
+      "filing_date": "2025-03-26",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/2026448/000202644825000028/pg4-20241231.htm"
     },
     {
-      "name": "Glimpse Group, Inc.  (VRAR)",
-      "cik": "0001854445",
+      "name": "HINES GLOBAL INCOME TRUST, INC.",
+      "cik": "0001585101",
       "ticker": "N/A",
-      "filing_date": "2024-09-30"
+      "filing_date": "2025-03-26",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1585101/000158510125000017/hgit-20241231.htm"
     },
     {
-      "name": "Zscaler, Inc.  (ZS)",
-      "cik": "0001713683",
+      "name": "Summit Healthcare REIT, Inc",
+      "cik": "0001310383",
       "ticker": "N/A",
-      "filing_date": "2024-09-12"
+      "filing_date": "2025-03-26",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1310383/000141057825000476/shcr-20241231x10k.htm"
     },
     {
-      "name": "Londax Corp.",
-      "cik": "0001985554",
+      "name": "Lightstone Value Plus REIT IV, Inc.  (LTSV)",
+      "cik": "0001619312",
       "ticker": "N/A",
-      "filing_date": "2024-08-19"
+      "filing_date": "2025-03-26",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1619312/000118518525000226/ltsv410k123124.htm"
     },
     {
-      "name": "Aspen Technology, Inc.  (AZPN)",
-      "cik": "0001897982",
+      "name": "Lightstone Value Plus REIT III, Inc.",
+      "cik": "0001563756",
       "ticker": "N/A",
-      "filing_date": "2024-08-13"
+      "filing_date": "2025-03-26",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1563756/000118518525000225/lvpr310k123124.htm"
+    },
+    {
+      "name": "Lightstone Value Plus REIT II, Inc.",
+      "cik": "0001436975",
+      "ticker": "N/A",
+      "filing_date": "2025-03-26",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1436975/000118518525000224/lvpr210k123124.htm"
+    },
+    {
+      "name": "AB Commercial Real Estate Private Debt Fund, LLC",
+      "cik": "0001876255",
+      "ticker": "N/A",
+      "filing_date": "2025-03-26",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1876255/000095017025045464/ck0001876255-20241231.htm"
+    },
+    {
+      "name": "Global Self Storage, Inc.  (SELF)",
+      "cik": "0001031235",
+      "ticker": "N/A",
+      "filing_date": "2025-03-26",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1031235/000095017025045186/self-20241231.htm"
+    },
+    {
+      "name": "Invesco Commercial Real Estate Finance Trust, Inc.",
+      "cik": "0001976927",
+      "ticker": "N/A",
+      "filing_date": "2025-03-24",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1976927/000197692725000009/incref-20241231.htm"
+    },
+    {
+      "name": "Invesco Real Estate Income Trust Inc.",
+      "cik": "0001756761",
+      "ticker": "N/A",
+      "filing_date": "2025-03-24",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1756761/000175676125000020/inreit-20241231.htm"
+    },
+    {
+      "name": "PROCACCIANTI HOTEL REIT, INC.",
+      "cik": "0001692345",
+      "ticker": "N/A",
+      "filing_date": "2025-03-24",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1692345/000155837025003548/tmb-20241231x10k.htm"
+    },
+    {
+      "name": "BGO Industrial Real Estate Income Trust, Inc.",
+      "cik": "0001942722",
+      "ticker": "N/A",
+      "filing_date": "2025-03-24",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1942722/000155837025003489/bgo-20241231x10k.htm"
+    },
+    {
+      "name": "FS Credit Real Estate Income Trust, Inc.  (FSREI, FSREM)",
+      "cik": "0001690536",
+      "ticker": "N/A",
+      "filing_date": "2025-03-21",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1690536/000162828025014348/fscreit-20241231.htm"
+    },
+    {
+      "name": "Nuveen Global Cities REIT, Inc.",
+      "cik": "0001711799",
+      "ticker": "N/A",
+      "filing_date": "2025-03-21",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1711799/000162828025014230/nuveen-20241231.htm"
+    },
+    {
+      "name": "ASHFORD HOSPITALITY TRUST INC  (AHT, AHT-PD, AHT-PF, AHT-PG, AHT-PH, AHT-PI)",
+      "cik": "0001232582",
+      "ticker": "N/A",
+      "filing_date": "2025-03-21",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1232582/000123258225000055/aht-20241231.htm"
+    },
+    {
+      "name": "Apollo Realty Income Solutions, Inc.",
+      "cik": "0001882850",
+      "ticker": "N/A",
+      "filing_date": "2025-03-21",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1882850/000095017025043328/ck0001882850-20241231.htm"
+    },
+    {
+      "name": "Starwood Real Estate Income Trust, Inc.",
+      "cik": "0001711929",
+      "ticker": "N/A",
+      "filing_date": "2025-03-21",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1711929/000095017025043128/ck0001711929-20241231.htm"
+    },
+    {
+      "name": "Strategic Student & Senior Housing Trust, Inc.  (STSR)",
+      "cik": "0001698538",
+      "ticker": "N/A",
+      "filing_date": "2025-03-21",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1698538/000095017025043115/sssht-20241231.htm"
+    },
+    {
+      "name": "Starwood Credit Real Estate Income Trust",
+      "cik": "0001986395",
+      "ticker": "N/A",
+      "filing_date": "2025-03-21",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1986395/000095017025043063/ck0001986395-20241231.htm"
+    },
+    {
+      "name": "INCOME OPPORTUNITY REALTY INVESTORS INC /TX/  (IOR)",
+      "cik": "0000949961",
+      "ticker": "N/A",
+      "filing_date": "2025-03-20",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/949961/000199937125002901/ior-10k_123124.htm"
+    },
+    {
+      "name": "Bluerock Homes Trust, Inc.  (BHM)",
+      "cik": "0001903382",
+      "ticker": "N/A",
+      "filing_date": "2025-03-20",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1903382/000141057825000400/bhm-20241231x10k.htm"
+    },
+    {
+      "name": "FrontView REIT, Inc.  (FVR)",
+      "cik": "0001988494",
+      "ticker": "N/A",
+      "filing_date": "2025-03-20",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1988494/000095017025042774/fvr-20241231.htm"
+    },
+    {
+      "name": "GTJ REIT, INC.",
+      "cik": "0001368757",
+      "ticker": "N/A",
+      "filing_date": "2025-03-20",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1368757/000095017025042607/gttj-20241231.htm"
+    },
+    {
+      "name": "TRANSCONTINENTAL REALTY INVESTORS INC  (TCI)",
+      "cik": "0000733590",
+      "ticker": "N/A",
+      "filing_date": "2025-03-20",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/733590/000073359025000004/tci-20241231.htm"
+    },
+    {
+      "name": "Lument Finance Trust, Inc.  (LFT, LFT-PA)",
+      "cik": "0001547546",
+      "ticker": "N/A",
+      "filing_date": "2025-03-19",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1547546/000162828025013886/hcft-20241231.htm"
+    },
+    {
+      "name": "American Strategic Investment Co.  (NYC)",
+      "cik": "0001595527",
+      "ticker": "N/A",
+      "filing_date": "2025-03-19",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1595527/000162828025013880/nycr-20241231.htm"
+    },
+    {
+      "name": "Sterling Real Estate Trust",
+      "cik": "0001412502",
+      "ticker": "N/A",
+      "filing_date": "2025-03-19",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1412502/000155837025003293/sret-20241231x10k.htm"
+    },
+    {
+      "name": "IPC Alternative Real Estate Income Trust, Inc.",
+      "cik": "0001959961",
+      "ticker": "N/A",
+      "filing_date": "2025-03-19",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1959961/000095017025041898/ck0001959961-20241231.htm"
+    },
+    {
+      "name": "BROOKFIELD REAL ESTATE INCOME TRUST INC.",
+      "cik": "0001713407",
+      "ticker": "N/A",
+      "filing_date": "2025-03-18",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1713407/000171340725000032/oak-20241231.htm"
+    },
+    {
+      "name": "J.P. Morgan Real Estate Income Trust, Inc.",
+      "cik": "0001893262",
+      "ticker": "N/A",
+      "filing_date": "2025-03-18",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1893262/000095017025041182/ck0001893262-20241231.htm"
+    },
+    {
+      "name": "Whitestone REIT  (WSR)",
+      "cik": "0001175535",
+      "ticker": "N/A",
+      "filing_date": "2025-03-17",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1175535/000143774925007990/wstr20241231_10k.htm"
+    },
+    {
+      "name": "ACRES Commercial Realty Corp.  (ACR, ACR-PC, ACR-PD)",
+      "cik": "0001332551",
+      "ticker": "N/A",
+      "filing_date": "2025-03-17",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1332551/000095017025039661/acr-20241231.htm"
+    },
+    {
+      "name": "Terra Property Trust, Inc.  (TPTA)",
+      "cik": "0001674356",
+      "ticker": "N/A",
+      "filing_date": "2025-03-14",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1674356/000167435625000007/tpt-20241231.htm"
+    },
+    {
+      "name": "Highlands REIT, Inc.",
+      "cik": "0001661458",
+      "ticker": "N/A",
+      "filing_date": "2025-03-14",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1661458/000166145825000003/hri-20241231.htm"
+    },
+    {
+      "name": "Terra Income Fund 6, LLC  (TFSA)",
+      "cik": "0001577134",
+      "ticker": "N/A",
+      "filing_date": "2025-03-14",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1577134/000157713425000004/tfsa-20241231.htm"
+    },
+    {
+      "name": "NorthStar Healthcare Income, Inc.  (NHHS)",
+      "cik": "0001503707",
+      "ticker": "N/A",
+      "filing_date": "2025-03-14",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1503707/000150370725000019/nshi-20241231.htm"
+    },
+    {
+      "name": "KBS Real Estate Investment Trust III, Inc.  (KBSR)",
+      "cik": "0001482430",
+      "ticker": "N/A",
+      "filing_date": "2025-03-14",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1482430/000148243025000021/kbsriii-20241231.htm"
+    },
+    {
+      "name": "JLL Income Property Trust, Inc.",
+      "cik": "0001314152",
+      "ticker": "N/A",
+      "filing_date": "2025-03-14",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1314152/000131415225000031/jllipt-20241231.htm"
+    },
+    {
+      "name": "CROWN CASTLE INC.  (CCI)",
+      "cik": "0001051470",
+      "ticker": "N/A",
+      "filing_date": "2025-03-14",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1051470/000105147025000089/cci-20241231.htm"
+    },
+    {
+      "name": "InPoint Commercial Real Estate Income, Inc.  (ICRP, ICR-PA)",
+      "cik": "0001690012",
+      "ticker": "N/A",
+      "filing_date": "2025-03-14",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1690012/000095017025039459/ck0001690012-20241231.htm"
+    },
+    {
+      "name": "Cohen & Steers Income Opportunities REIT, Inc.",
+      "cik": "0001939433",
+      "ticker": "N/A",
+      "filing_date": "2025-03-13",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1939433/000193943325000041/cnsreit-20241231.htm"
+    },
+    {
+      "name": "RREEF Property Trust, Inc.",
+      "cik": "0001542447",
+      "ticker": "N/A",
+      "filing_date": "2025-03-13",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1542447/000154244725000019/rpt-20241231.htm"
+    },
+    {
+      "name": "Strawberry Fields REIT, Inc.  (STRW)",
+      "cik": "0001782430",
+      "ticker": "N/A",
+      "filing_date": "2025-03-13",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1782430/000149315225010144/form10-k.htm"
+    },
+    {
+      "name": "Braemar Hotels & Resorts Inc.  (BHR, BHR-PB, BHR-PD)",
+      "cik": "0001574085",
+      "ticker": "N/A",
+      "filing_date": "2025-03-12",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1574085/000157408525000024/bhr-20241231.htm"
+    },
+    {
+      "name": "MANHATTAN BRIDGE CAPITAL, INC  (LOAN)",
+      "cik": "0001080340",
+      "ticker": "N/A",
+      "filing_date": "2025-03-12",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1080340/000149315225009931/form10-k.htm"
+    },
+    {
+      "name": "MBC FUNDING II CORP.",
+      "cik": "0001664740",
+      "ticker": "N/A",
+      "filing_date": "2025-03-12",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1664740/000149315225009930/form10-k.htm"
+    },
+    {
+      "name": "SmartStop Self Storage REIT, Inc.  (SSST, STSFF)",
+      "cik": "0001585389",
+      "ticker": "N/A",
+      "filing_date": "2025-03-12",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1585389/000095017025037896/ck0001585389-20241231.htm"
+    },
+    {
+      "name": "Chicago Atlantic Real Estate Finance, Inc.  (REFI)",
+      "cik": "0001867949",
+      "ticker": "N/A",
+      "filing_date": "2025-03-12",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1867949/000095017025037616/refi-20241231.htm"
+    },
+    {
+      "name": "BRT Apartments Corp.  (BRT)",
+      "cik": "0000014846",
+      "ticker": "N/A",
+      "filing_date": "2025-03-12",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/14846/000001484625000005/brt-20241231.htm"
+    },
+    {
+      "name": "CNL Healthcare Properties, Inc.  (CHTH)",
+      "cik": "0001496454",
+      "ticker": "N/A",
+      "filing_date": "2025-03-10",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1496454/000149645425000005/chth-20241231.htm"
+    },
+    {
+      "name": "Blackstone Real Estate Income Trust, Inc.  (BSTT)",
+      "cik": "0001662972",
+      "ticker": "N/A",
+      "filing_date": "2025-03-07",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1662972/000166297225000027/breit-20241231.htm"
+    },
+    {
+      "name": "BIMINI CAPITAL MANAGEMENT, INC.  (BMNM)",
+      "cik": "0001275477",
+      "ticker": "N/A",
+      "filing_date": "2025-03-07",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1275477/000143774925006605/bcmi20241231c_10k.htm"
+    },
+    {
+      "name": "Creative Media & Community Trust Corp  (CMCT)",
+      "cik": "0000908311",
+      "ticker": "N/A",
+      "filing_date": "2025-03-07",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/908311/000090831125000017/cmct-20241231.htm"
+    },
+    {
+      "name": "Sunrise Realty Trust, Inc.  (SUNS)",
+      "cik": "0002012706",
+      "ticker": "N/A",
+      "filing_date": "2025-03-06",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/2012706/000201270625000004/suns-20241231.htm"
+    },
+    {
+      "name": "NewLake Capital Partners, Inc.  (NLCP)",
+      "cik": "0001854964",
+      "ticker": "N/A",
+      "filing_date": "2025-03-06",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1854964/000185496425000004/nlcp-20241231.htm"
+    },
+    {
+      "name": "ARES INDUSTRIAL REAL ESTATE INCOME TRUST Inc.",
+      "cik": "0001625941",
+      "ticker": "N/A",
+      "filing_date": "2025-03-06",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1625941/000155837025002412/aire-20241231x10k.htm"
+    },
+    {
+      "name": "Ares Real Estate Income Trust Inc.",
+      "cik": "0001327978",
+      "ticker": "N/A",
+      "filing_date": "2025-03-06",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1327978/000155837025002411/are-20241231x10k.htm"
+    },
+    {
+      "name": "ONE LIBERTY PROPERTIES INC  (OLP)",
+      "cik": "0000712770",
+      "ticker": "N/A",
+      "filing_date": "2025-03-06",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/712770/000155837025002406/olp-20241231x10k.htm"
+    },
+    {
+      "name": "Cherry Hill Mortgage Investment Corp  (CHMI, CHMI-PA, CHMI-PB)",
+      "cik": "0001571776",
+      "ticker": "N/A",
+      "filing_date": "2025-03-06",
+      "period_of_report": "2024-12-31",
+      "document_url": "https://www.sec.gov/Archives/edgar/data/1571776/000114036125007454/ef20038943_10k.htm"
     }
   ],
   "sic_codes": [
-    "7371"
+    "6798"
   ],
   "fiscal_year": 2024
 }

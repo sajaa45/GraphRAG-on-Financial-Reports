@@ -3,7 +3,9 @@ import requests
 import re
 import json
 import time
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+import warnings
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 import urllib3
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
@@ -21,136 +23,94 @@ HEADERS = {"User-Agent": "YourName your_email@example.com"}
 FISCAL_YEAR = int(os.getenv("FISCAL_YEAR", 2024))
 
 
-def get_sic_from_neo4j() -> list:
-    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-    user = os.getenv("NEO4J_USERNAME", "neo4j")
-    password = os.getenv("NEO4J_PASSWORD", "")
-    driver = GraphDatabase.driver(uri, auth=(user, password))
-    try:
-        with driver.session() as session:
-            records = list(session.run("""
-                MATCH (c:TargetCompany)-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN DISTINCT s.code AS sic_code
-            """))
-        codes = [str(r["sic_code"]).strip() for r in records if r["sic_code"]]
-        if not codes:
-            raise ValueError("No SIC codes found in Neo4j for the target company.")
-        print(f"✓ SIC code(s) from Neo4j: {codes}")
-        return codes
-    finally:
-        driver.close()
+def get_sic_from_neo4j(driver) -> list:
+    with driver.session() as session:
+        records = list(session.run("""
+            MATCH (c:TargetCompany)-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
+            RETURN DISTINCT s.code AS sic_code
+        """))
+    codes = [str(r["sic_code"]).strip() for r in records if r["sic_code"]]
+    if not codes:
+        raise ValueError("No SIC codes found in Neo4j for the target company.")
+    print(f"✓ SIC code(s) from Neo4j: {codes}")
+    return codes
 
 
 def get_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100):
-    """Fetch companies from EDGAR full-text search index filtered by SIC code and fiscal year."""
+    """Fetch companies with 10-K filing info directly from EDGAR search index."""
     if isinstance(sic_codes, str):
         sic_codes = [sic_codes]
 
     fiscal_year = int(fiscal_year)
-
-    # Companies file their FY annual report months after the fiscal year ends.
-    # Search the second half of the fiscal year through mid-next-year to capture
-    # all fiscal year-end dates (e.g. FY2023 ending Jun–Dec 2023 filed Jul 2023–Apr 2024).
     start_date = f"{fiscal_year}-07-01"
     end_date = f"{fiscal_year + 1}-06-30"
-    
+
     print(f"  Querying EDGAR search index for SIC codes: {sic_codes}, fiscal year {fiscal_year}")
 
     params = {
         "q": "",
-        "forms": "10-K",
         "dateRange": "custom",
         "startdt": start_date,
         "enddt": end_date,
-        "form": "10-K",
+        "forms": "10-K",
         "sics": sic_codes,
         "size": size,
     }
 
-    try:
-        response = requests.get(
-            "https://efts.sec.gov/LATEST/search-index",
-            params=params,
-            headers=HEADERS,
-            verify=False,
-        )
-        print(f"  Status: {response.status_code}")
-        data = response.json()
-        hits = data.get("hits", {}).get("hits", [])
+    response = requests.get(
+        "https://efts.sec.gov/LATEST/search-index",
+        params=params,
+        headers=HEADERS,
+        verify=False,
+    )
+    response.raise_for_status()
+    hits = response.json().get("hits", {}).get("hits", [])
 
-        seen_ciks = set()
-        companies = []
-        for hit in hits:
-            source = hit.get("_source", {})
-            cik = source.get("ciks", [None])[0]
-            if not cik or cik in seen_ciks:
-                continue
-            seen_ciks.add(cik)
-            name = source.get("display_names", ["Unknown"])[0]
-            # EDGAR appends " (CIK XXXXXXXXXX)" to display_names — strip it so the
-            # company name matches the clean name stored by risks_kg_builder and
-            # metrices_kg_builder (which use the name from the SEC submissions API).
-            name = re.sub(r'\s*\(CIK\s+\d+\)\s*$', '', name).strip()
-            ticker = source.get("tickers", ["N/A"])[0] if source.get("tickers") else "N/A"
-            companies.append({
-                "name": name,
-                "cik": str(cik).zfill(10),
-                "ticker": ticker,
-                "filing_date": source.get("file_date", "N/A"),
-            })
+    seen_ciks = set()
+    companies = []
+    for hit in hits:
+        source = hit.get("_source", {})
 
-        print(f"  Total unique companies found: {len(companies)}")
-        return companies
+        # Skip non-10-K forms that slip through the filter
+        if source.get("form") != "10-K":
+            continue
 
-    except Exception as e:
-        print(f"  ✗ Error fetching companies: {e}")
-        return []
+        cik = source.get("ciks", [None])[0]
+        if not cik or cik in seen_ciks:
+            continue
+        seen_ciks.add(cik)
 
+        # _id format: "{adsh}:{primary_document}" — adsh is the real company accession
+        hit_id = hit.get("_id", "")
+        if ":" not in hit_id:
+            continue
+        _, primary_document = hit_id.rsplit(":", 1)
+        adsh = source.get("adsh", "")
+        if not adsh:
+            continue
 
-def get_10k_filings(cik: str, fiscal_year: int = None, limit: int = 1):
-    cik_padded = cik.zfill(10)
-    data = requests.get(f"https://data.sec.gov/submissions/CIK{cik_padded}.json", headers=HEADERS, verify=False).json()
-    company_name = data.get("name", "N/A")
-    filings = data["filings"]["recent"]
-    
-    report_dates = filings.get("reportDate", [])
+        name = re.sub(r'\s*\(CIK\s+\d+\)\s*$', '', source.get("display_names", ["Unknown"])[0]).strip()
+        ticker = source.get("tickers", ["N/A"])[0] if source.get("tickers") else "N/A"
+        cik_padded = str(cik).zfill(10)
+        accession = adsh.replace("-", "")
+        doc_url = f"https://www.sec.gov/Archives/edgar/data/{int(cik_padded)}/{accession}/{primary_document}"
 
-    results = []
-    for i, form in enumerate(filings["form"]):
-        if form == "10-K":
-            filing_date = filings["filingDate"][i]
-            report_date = report_dates[i] if i < len(report_dates) else None
+        companies.append({
+            "name": name,
+            "cik": cik_padded,
+            "ticker": ticker,
+            "filing_date": source.get("file_date", "N/A"),
+            "period_of_report": source.get("period_ending"),
+            "document_url": doc_url,
+        })
 
-            if fiscal_year:
-                # Filter by the fiscal period end date (reportDate), not the submission date
-                if report_date:
-                    if int(report_date.split('-')[0]) != fiscal_year:
-                        continue
-                else:
-                    # Fallback: accept filings submitted in fiscal_year or fiscal_year+1
-                    if int(filing_date.split('-')[0]) not in (fiscal_year, fiscal_year + 1):
-                        continue
-
-            results.append({
-                "accession_raw": filings["accessionNumber"][i],
-                "date": filing_date,
-                "report_date": report_date,
-                "primary_document": filings["primaryDocument"][i],
-            })
-            
-            if len(results) >= limit:
-                break
-    
-    return results, cik_padded, company_name
-
-
-def get_doc_url(cik_padded, accession_raw, primary_document):
-    accession = accession_raw.replace("-", "")
-    return f"https://www.sec.gov/Archives/edgar/data/{int(cik_padded)}/{accession}/{primary_document}"
+    print(f"  Total unique companies found: {len(companies)}")
+    return companies
 
 
 def extract_risk_factors(doc_url):
     resp = requests.get(doc_url, headers=HEADERS, verify=False)
+    resp.raise_for_status()
     text = BeautifulSoup(resp.content, "html.parser").get_text(separator="\n")
     pattern = re.compile(
         r'(item\s+1a[\.\s]*risk\s+factors)(.*?)(item\s+1b|item\s+2)',
@@ -166,26 +126,16 @@ def split_risks(text):
     return [r.strip() for r in re.split(r'\n\s*\n', text) if len(r.split()) > 30]
 
 
-def get_risk_factor_data(cik: str, company_name: str, fiscal_year: int = None):
-    filings, cik_padded, real_name = get_10k_filings(cik, fiscal_year)
-    if not filings:
-        return None
-
-    if real_name and real_name != "N/A":
-        company_name = real_name
-
-    filing = filings[0]
-    doc_url = get_doc_url(cik_padded, filing["accession_raw"], filing["primary_document"])
-    risk_text = extract_risk_factors(doc_url)
+def get_risk_factor_data(company: dict):
+    risk_text = extract_risk_factors(company["document_url"])
     individual_risks = split_risks(risk_text)
-
-    print(f"  period_of_report={filing['report_date']}, filing_date={filing['date']}, chars={len(risk_text)}, words={len(risk_text.split())}, risks={len(individual_risks)}")
+    print(f"  period_of_report={company['period_of_report']}, filing_date={company['filing_date']}, chars={len(risk_text)}, words={len(risk_text.split())}, risks={len(individual_risks)}")
     return {
-        "company_name": company_name,
-        "cik": cik,
-        "period_of_report": filing["report_date"],
-        "filing_date": filing["date"],
-        "document_url": doc_url,
+        "company_name": company["name"],
+        "cik": company["cik"],
+        "period_of_report": company["period_of_report"],
+        "filing_date": company["filing_date"],
+        "document_url": company["document_url"],
         "section": "Item 1A - Risk Factors",
         "text": risk_text,
         "individual_risks": individual_risks,
@@ -195,91 +145,53 @@ def get_risk_factor_data(cik: str, company_name: str, fiscal_year: int = None):
 
 
 def is_target_company(company_name: str, target_name: str, threshold: float = 15.0) -> bool:
-    """
-    Check if company_name matches target_name using BM25 similarity.
-    Returns True if the BM25 score exceeds the threshold.
-    
-    Args:
-        company_name: Name to check
-        target_name: Target company name from Neo4j
-        threshold: BM25 score threshold (default 15.0, higher = stricter matching)
-    """
     if not target_name or not company_name:
         return False
-    
-    # Tokenize both names
-    target_tokens = target_name.lower().split()
-    company_tokens = company_name.lower().split()
-    
-    # Create BM25 index with just the target name
-    bm25 = BM25Okapi([target_tokens])
-    
-    # Score the company name against target
-    scores = bm25.get_scores(company_tokens)
-    score = scores[0] if len(scores) > 0 else 0.0
-    
+    bm25 = BM25Okapi([target_name.lower().split()])
+    score = bm25.get_scores(company_name.lower().split())[0]
     return score >= threshold
 
 
-def get_target_name() -> str | None:
-    """Return the name of the target company so it can be excluded from peers."""
-    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-    user = os.getenv("NEO4J_USERNAME", "neo4j")
-    password = os.getenv("NEO4J_PASSWORD", "")
-    try:
-        driver = GraphDatabase.driver(uri, auth=(user, password))
-        with driver.session() as session:
-            for query in [
-                "MATCH (c:TargetCompany) RETURN c.name AS name LIMIT 1",
-                "MATCH (c:Company {is_target: true}) RETURN c.name AS name LIMIT 1",
-            ]:
-                record = session.run(query).single()
-                if record and record["name"]:
-                    return record["name"].strip().lower()
-        driver.close()
-    except Exception:
-        pass
+def get_target_name(driver) -> str | None:
+    with driver.session() as session:
+        record = session.run("MATCH (c:TargetCompany) RETURN c.name AS name LIMIT 1").single()
+        if record and record["name"]:
+            return record["name"].strip().lower()
     return None
 
 
-def process_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100, delay=0.5,
+def process_companies_from_api(driver, sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100, delay=0.5,
                                output_file='peers_sec/FACES_RISK/companies_risks.json'):
-    """Process companies from SEC API for given SIC code(s) and fiscal year."""
     fiscal_year = int(fiscal_year)
     print(f"Filtering for fiscal year: {fiscal_year}")
     companies = get_companies_from_api(sic_codes, fiscal_year, size)
     print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes} [fiscal year {fiscal_year}]")
 
-    target_name = get_target_name()
+    target_name = get_target_name(driver)
     if target_name:
         print(f"Excluding target company: {target_name}")
-        companies = [c for c in companies if not is_target_company(c['name'], target_name, threshold=15.0)]
+        companies = [c for c in companies if not is_target_company(c['name'], target_name)]
 
     with open('peers_sec/FACES_RISK/companies_list.json', 'w', encoding='utf-8') as f:
         json.dump({"total_count": len(companies), "companies": companies, "sic_codes": sic_codes, "fiscal_year": fiscal_year}, f, indent=2, ensure_ascii=False)
 
     results = []
     for i, company in enumerate(companies, 1):
-        print(f"\n[{i}/{len(companies)}] CIK {company['cik']}")
+        print(f"\n[{i}/{len(companies)}] CIK {company['cik']} — {company['name']}")
         try:
-            data = get_risk_factor_data(company['cik'], company['name'], fiscal_year)
-            if data:
-                # Double-check: exclude target company using BM25 after fetching real company name
-                if target_name and is_target_company(data['company_name'], target_name, threshold=15.0):
-                    print(f"  Skipped — this is the target company: {data['company_name']}")
-                    continue
-                
-                if data['risk_count'] < 7:
-                    print(f"  Skipped — only {data['risk_count']} risks (minimum 10 required)")
-                elif data['length']['words'] > 4800:
-                    results.append(data)
-                    print(f"  Added ({len(results)}/3)")
-                    if len(results) >= 3:
-                        break
-                else:
-                    print(f"  Skipped — only {data['length']['words']} words")
+            data = get_risk_factor_data(company)
+            if is_target_company(data['company_name'], target_name):
+                print(f"  Skipped — this is the target company: {data['company_name']}")
+                continue
+            if data['risk_count'] < 7:
+                print(f"  Skipped — only {data['risk_count']} risks")
+            elif data['length']['words'] > 4800:
+                results.append(data)
+                print(f"  Added ({len(results)}/3)")
+                if len(results) >= 3:
+                    break
             else:
-                print(f"  Skipped — no 10-K filing found for fiscal year {fiscal_year}")
+                print(f"  Skipped — only {data['length']['words']} words")
         except Exception as e:
             print(f"  Error: {e}")
 
@@ -296,5 +208,12 @@ def process_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size
 
 
 if __name__ == "__main__":
-    sic_codes = get_sic_from_neo4j()
-    process_companies_from_api(sic_codes=sic_codes, fiscal_year=FISCAL_YEAR, size=100, delay=0.5)
+    driver = GraphDatabase.driver(
+        os.getenv("NEO4J_URI", "bolt://localhost:7687"),
+        auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
+    )
+    try:
+        sic_codes = get_sic_from_neo4j(driver)
+        process_companies_from_api(driver, sic_codes=sic_codes, fiscal_year=FISCAL_YEAR, size=100, delay=0.5)
+    finally:
+        driver.close()

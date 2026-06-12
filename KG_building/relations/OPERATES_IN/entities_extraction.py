@@ -16,13 +16,13 @@ def parse_industry_entity(entity: Dict, main_company: str = 'the Company') -> Op
         return None
 
     return {
-        'source': {'type': 'TargetCompany', 'name': org},
-        'target': {
+        'src': {'type': 'TargetCompany', 'name': org},
+        'tgt': {
             'type': 'Industry',
             'name': industry,
             'properties': {'sector': sector, 'sic_code': sic_code},
         },
-        'relationship': 'OPERATES_IN',
+        'rel': 'OPERATES_IN',
         'properties': {},
     }
 

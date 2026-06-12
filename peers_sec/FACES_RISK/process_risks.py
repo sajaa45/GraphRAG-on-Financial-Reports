@@ -10,13 +10,6 @@ load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..',
 MODEL_ID = "qwen.qwen3-next-80b-a3b"
 MIN_BATCH_CHARS = 5000
 
-client = boto3.client(
-    "bedrock-runtime",
-    region_name=os.getenv('AWS_REGION', 'us-east-1'),
-    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-)
-
 SYSTEM_PROMPT = "You are a financial analyst expert at extracting structured risk information from SEC filings."
 
 EXTRACT_PROMPT = """/no_think
@@ -45,13 +38,12 @@ Rules:
 - Return [] for preamble, introductory text, or passages with no concrete risk described."""
 
 
-def call_llm(prompt: str, max_retries: int = 5) -> str:
-    messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": prompt},
-    ]
+def call_llm(client, prompt: str, max_retries: int = 5) -> str:
     body = json.dumps({
-        "messages": messages,
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": prompt},
+        ],
         "max_tokens": 2048,
         "temperature": 0.3,
         "top_p": 0.9,
@@ -61,23 +53,10 @@ def call_llm(prompt: str, max_retries: int = 5) -> str:
         try:
             response = client.invoke_model(modelId=MODEL_ID, body=body)
             resp = json.loads(response["body"].read())
-
-            raw = None
-            if "output" in resp:
-                raw = resp["output"].get("text", "") if isinstance(resp["output"], dict) else resp["output"]
-            elif "content" in resp:
-                raw = resp["content"][0].get("text", "") if isinstance(resp["content"], list) else resp["content"]
-            elif "completion" in resp:
-                raw = resp["completion"]
-            elif "choices" in resp:
-                raw = resp["choices"][0].get("message", {}).get("content", "")
-            else:
-                raise ValueError(f"Unknown response format: {list(resp.keys())}")
-
+            raw = resp["choices"][0]["message"]["content"]
             if raw:
                 return raw.strip()
             raise ValueError("Empty text in response")
-
         except Exception as e:
             if "ThrottlingException" in str(e) or "Too many requests" in str(e):
                 wait = (2 ** attempt) + (attempt * 0.5)
@@ -88,54 +67,12 @@ def call_llm(prompt: str, max_retries: int = 5) -> str:
     raise RuntimeError(f"Failed after {max_retries} retries")
 
 
-def _repair_truncated_array(text: str):
-    start = text.find('[')
-    if start == -1:
-        return None
-    fragment = text[start:]
-    objects, i = [], 0
-    while i < len(fragment):
-        if fragment[i] == '{':
-            depth, j, in_str, escape = 0, i, False, False
-            while j < len(fragment):
-                ch = fragment[j]
-                if escape:
-                    escape = False
-                elif ch == '\\' and in_str:
-                    escape = True
-                elif ch == '"':
-                    in_str = not in_str
-                elif not in_str:
-                    if ch == '{':
-                        depth += 1
-                    elif ch == '}':
-                        depth -= 1
-                        if depth == 0:
-                            try:
-                                objects.append(json.loads(fragment[i:j + 1]))
-                            except json.JSONDecodeError:
-                                pass
-                            i = j
-                            break
-                j += 1
-        i += 1
-    return objects or None
-
-
 def extract_json_array(text: str):
     text = re.sub(r'```json\s*|\s*```', '', text)
     match = re.search(r'\[.*\]', text, re.DOTALL)
-    if match:
-        try:
-            return json.loads(match.group())
-        except json.JSONDecodeError:
-            pass
-    repaired = _repair_truncated_array(text)
-    if repaired:
-        return repaired
-    if '[]' in text or 'no risk' in text.lower():
-        return []
-    raise ValueError(f"No JSON array found. Preview: {text[:500]}")
+    if not match:
+        raise ValueError(f"No JSON array found. Preview: {text[:500]}")
+    return json.loads(match.group())
 
 
 def validate_risk(risk: dict, company_name: str):
@@ -173,12 +110,11 @@ def make_batches(paragraphs: list) -> list:
     return batches
 
 
-def extract_batch(paragraphs: list, company_name: str) -> list:
-    # Number each paragraph so the LLM can report which one each risk came from
+def extract_batch(client, paragraphs: list, company_name: str) -> list:
     numbered = "\n\n".join(f"[{i}]\n{p}" for i, p in enumerate(paragraphs))
     prompt = EXTRACT_PROMPT.format(main_company=company_name, text=numbered)
     try:
-        raw = call_llm(prompt)
+        raw = call_llm(client, prompt)
         results = extract_json_array(raw)
         if not isinstance(results, list):
             return []
@@ -200,6 +136,7 @@ def extract_batch(paragraphs: list, company_name: str) -> list:
 
 
 def process_all_risks(
+    client,
     input_file: str = "peers_sec/FACES_RISK/companies_risks.json",
     output_file: str = "peers_sec/FACES_RISK/structured_risks.json",
     batch_delay: float = 1.0,
@@ -225,7 +162,7 @@ def process_all_risks(
 
         for b, batch in enumerate(batches):
             print(f"  Batch {b + 1}/{len(batches)} ({len(batch)} paragraphs)...", end=" ")
-            found = extract_batch(batch, company_name)
+            found = extract_batch(client, batch, company_name)
 
             for risk in found:
                 # Get the specific source paragraph for this risk
@@ -271,4 +208,10 @@ def process_all_risks(
 
 
 if __name__ == "__main__":
-    process_all_risks()
+    client = boto3.client(
+        "bedrock-runtime",
+        region_name=os.getenv('AWS_REGION', 'us-east-1'),
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    )
+    process_all_risks(client)

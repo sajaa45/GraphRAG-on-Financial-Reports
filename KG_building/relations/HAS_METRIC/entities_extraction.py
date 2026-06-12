@@ -49,8 +49,8 @@ def parse_metric_entity(entity: Dict, main_company: str = 'the Company') -> Opti
     # when we have access to a global counter
 
     return {
-        'source': {'type': 'TargetCompany', 'name': org},
-        'target': {
+        'src': {'type': 'TargetCompany', 'name': org},
+        'tgt': {
             'type': 'Metric',
             'name': metric_name,
             'properties': {
@@ -62,7 +62,7 @@ def parse_metric_entity(entity: Dict, main_company: str = 'the Company') -> Opti
                 'category': category,
             },
         },
-        'relationship': 'HAS_METRIC',
+        'rel': 'HAS_METRIC',
         'properties': {},
     }
 
