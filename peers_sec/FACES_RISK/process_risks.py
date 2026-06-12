@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env'))
 
-MODEL_ID = "qwen.qwen3-next-80b-a3b"
+MODEL_ID = os.getenv("BEDROCK_MODEL", "qwen.qwen3-next-80b-a3b")
 MIN_BATCH_CHARS = 5000
 
 SYSTEM_PROMPT = "You are a financial analyst expert at extracting structured risk information from SEC filings."

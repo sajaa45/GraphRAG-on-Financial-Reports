@@ -10,258 +10,103 @@ from dotenv import load_dotenv
 from neo4j import GraphDatabase
 from rank_bm25 import BM25Okapi
 
-# Load environment variables
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env'))
 
-# Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-
-FISCAL_YEAR = 2024  # Extract only this fiscal year
-# Companies file their FY annual report months after the fiscal year ends.
-# Span second half of FY through mid-next-year to capture all fiscal year-end dates.
+FISCAL_YEAR = int(os.getenv("FISCAL_YEAR", 2024))
 START_DATE = f"{FISCAL_YEAR}-07-01"
 END_DATE = f"{FISCAL_YEAR + 1}-06-30"
-FORM_TYPE = "10-K"
-MAX_COMPANIES = 3
 
 headers = {"User-Agent": "User (your_email@example.com)"}
 
 
-def get_companies_from_neo4j():
-    """Get peer companies from the Neo4j graph via COMPETES_WITH → TargetCompany edges only."""
-    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-    user = os.getenv("NEO4J_USERNAME", "neo4j")
-    password = os.getenv("NEO4J_PASSWORD", "")
-
-    driver = GraphDatabase.driver(uri, auth=(user, password))
-    try:
-        with driver.session() as session:
-            result = session.run(
-                """
-                MATCH (c:Company {is_peer: true})-[:COMPETES_WITH]->(tc:TargetCompany)
-                RETURN c.name AS name, c.cik AS cik, c.ticker AS ticker
-                ORDER BY c.name
-                """
-            )
-            companies = []
-            for record in result:
-                name = record.get("name")
-                cik = record.get("cik")
-                ticker = record.get("ticker", "N/A")
-
-                if name:
-                    companies.append({
-                        'name': name,
-                        'cik': str(cik).zfill(10) if cik else None,
-                        'ticker': ticker or 'N/A',
-                        'source': 'neo4j'
-                    })
-
-            if companies:
-                print(f"✓ Found {len(companies)} peer companies in Neo4j graph:")
-                for c in companies:
-                    cik_str = c['cik'] if c['cik'] else 'No CIK'
-                    print(f"  - {c['name']} ({c['ticker']}) - {cik_str}")
-                print()
-            else:
-                print("⚠ No peer companies found in Neo4j graph\n")
-
-            return companies
-    except Exception as e:
-        print(f"⚠ Error querying Neo4j for companies: {e}\n")
-        return []
-    finally:
-        driver.close()
-
-
-def get_sic_from_neo4j() -> str:
-    """Query Neo4j for the SIC code of the target company (is_target=true)."""
-    print("  → Querying Neo4j for SIC code...")
-    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-    user = os.getenv("NEO4J_USERNAME", "neo4j")
-    password = os.getenv("NEO4J_PASSWORD", "")
-    
-    try:
-        driver = GraphDatabase.driver(uri, auth=(user, password))
-        with driver.session() as session:
-            # Try multiple query patterns
-            queries = [
-                # Pattern 1: TargetCompany node type
-                """
-                MATCH (c:TargetCompany)-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
-                """,
-                # Pattern 2: Company with is_target property
-                """
-                MATCH (c:Company {is_target: true})-[:OPERATES_IN]->(:Industry)-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
-                """,
-                # Pattern 3: Direct HAS_SIC_CODE from TargetCompany
-                """
-                MATCH (c:TargetCompany)-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
-                """,
-                # Pattern 4: Direct HAS_SIC_CODE from Company
-                """
-                MATCH (c:Company {is_target: true})-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
-                """,
-                # Pattern 5: SIC code stored directly on the Industry node
-                """
-                MATCH (c)-[:OPERATES_IN]->(i:Industry)
-                WHERE c:TargetCompany OR (c:Company AND c.is_target = true)
-                AND i.sic_code IS NOT NULL
-                RETURN i.sic_code AS sic_code
-                LIMIT 1
-                """,
-                # Pattern 6: Any company with a SIC code (same broad fallback used by risk extractor)
-                """
-                MATCH (c:Company)-[:HAS_SIC_CODE]->(s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
-                """,
-                # Pattern 7: Any SIC code node in the DB
-                """
-                MATCH (s:SICCode)
-                RETURN s.code AS sic_code
-                LIMIT 1
-                """
-            ]
-
-            for i, query in enumerate(queries, 1):
-                result = session.run(query)
-                record = result.single()
-                if record and record["sic_code"]:
-                    code = str(record["sic_code"]).strip()
-                    print(f"✓ SIC code from Neo4j (pattern {i}): {code}")
-                    driver.close()
-                    return code
-
-        driver.close()
-    except Exception as e:
-        print(f"⚠ Could not connect to Neo4j: {e}")
-
-    print("⚠ No SIC code found in Neo4j, using default: 1311 (Oil & Gas)")
-    return "1311"
-
-def get_target_company_metrics():
-    """Query Neo4j for metrics found in the target company."""
-    uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
-    user = os.getenv("NEO4J_USERNAME", "neo4j")
-    password = os.getenv("NEO4J_PASSWORD", "")
-    
-    driver = GraphDatabase.driver(uri, auth=(user, password))
-    try:
-        with driver.session() as session:
-            # Updated query to match new structure: Company -> MetricCategory -> Metric
-            result = session.run(
-                """
-                MATCH (c)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
-                WHERE c:TargetCompany OR (c:Company AND c.is_target = true)
-                RETURN m.name AS metric_name, m.metric_type AS metric_type,
-                       m.gaap_concept AS gaap_concept, m.year AS year, mc.name AS category
-                """
-            )
-            metrics = []
-            seen_types = set()
-
-            for record in result:
-                metric_name  = record["metric_name"]
-                metric_type  = record["metric_type"]
-                gaap_concept = record.get("gaap_concept") or ''
-                year         = record.get("year")
-                category     = record.get("category", "Uncategorised")
-
-                # If metric_type is not set, try to extract it from the name
-                if not metric_type and metric_name:
-                    if '(' in metric_name:
-                        metric_type = metric_name.split('(')[0].strip()
-                        year_part = metric_name.split('(')[1].split(')')[0].strip()
-                        if year_part.isdigit():
-                            year = int(year_part)
-                    else:
-                        metric_type = metric_name
-
-                # Convert year to int if it's a string
-                if year and isinstance(year, str) and year.isdigit():
-                    year = int(year)
-
-                # Only add unique metric types (not each year)
-                if metric_type and metric_type not in seen_types:
-                    metrics.append({
-                        "name":         metric_name,
-                        "type":         metric_type,
-                        "gaap_concept": gaap_concept or metric_type,
-                        "year":         year,
-                        "category":     category,
-                    })
-                    seen_types.add(metric_type)
-
-            if metrics:
-                print(f"✓ Found {len(metrics)} unique metric types in target company:")
-                for m in metrics:
-                    year_str = f" (year: {m['year']})" if m['year'] else " (using default year)"
-                    category_str = f" [{m['category']}]" if m.get('category') else ""
-                    gaap_str = f" ← {m['gaap_concept']}" if m['gaap_concept'] != m['type'] else ""
-                    print(f"  - {m['type']}{gaap_str}{year_str}{category_str}")
-                print()
-            else:
-                print("⚠ No metrics found in target company\n")
-            
-            return metrics
-    finally:
-        driver.close()
-
-
-
-def fetch_companies_by_sic(sic_codes, start_date, end_date, form_type, size=100):
-    """Fetch companies from SEC EDGAR search index by SIC code and date range."""
-    url = "https://efts.sec.gov/LATEST/search-index"
-    params = {
-        "q": "",
-        "forms": form_type,
-        "dateRange": "custom",
-        "startdt": start_date,
-        "enddt": end_date,
-        "form": form_type,
-        "sics": sic_codes,
-        "size": size
-    }
-    
-    print(f"Fetching companies with SIC codes: {sic_codes}")
-    print(f"Date range: {start_date} to {end_date}")
-    print(f"Form type: {form_type}\n")
-    
-    try:
-        response = requests.get(url, params=params, headers=headers)
-        response.raise_for_status()
-        data = response.json()
-        
-        hits = data.get('hits', {}).get('hits', [])
+def get_companies_from_neo4j(driver):
+    """Get peer companies from the Neo4j graph via COMPETES_WITH → TargetCompany edges."""
+    with driver.session() as session:
+        result = session.run(
+            """
+            MATCH (c:Company {is_peer: true})-[:COMPETES_WITH]->(tc:TargetCompany)
+            RETURN c.name AS name, c.cik AS cik, c.ticker AS ticker
+            ORDER BY c.name
+            """
+        )
         companies = []
-        
-        for hit in hits:
-            source = hit.get('_source', {})
-            cik = source.get('ciks', [None])[0]
-            if cik:
+        for record in result:
+            name = record.get("name")
+            cik = record.get("cik")
+            if name:
                 companies.append({
-                    'cik': str(cik).zfill(10),
-                    'name': source.get('display_names', ['Unknown'])[0],
-                    'ticker': source.get('tickers', ['N/A'])[0] if source.get('tickers') else 'N/A',
-                    'filing_date': source.get('file_date', 'N/A')
+                    'name': name,
+                    'cik': str(cik).zfill(10) if cik else None,
+                    'ticker': record.get("ticker") or 'N/A',
                 })
-        
-        print(f"Found {len(companies)} companies\n")
-        return companies
-    
-    except Exception as e:
-        print(f"Error fetching companies: {e}")
-        return []
+
+    if companies:
+        print(f"✓ Found {len(companies)} peer companies in Neo4j graph:")
+        for c in companies:
+            print(f"  - {c['name']} ({c['ticker']}) - {c['cik'] or 'No CIK'}")
+        print()
+    else:
+        print("⚠ No peer companies found in Neo4j graph\n")
+
+    return companies
+
+
+def get_target_company_metrics(driver):
+    """Query Neo4j for metrics of the target company."""
+    with driver.session() as session:
+        result = session.run(
+            """
+            MATCH (c:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
+            RETURN m.name AS metric_name, m.metric_type AS metric_type,
+                   m.gaap_concept AS gaap_concept, m.year AS year, mc.name AS category
+            """
+        )
+        metrics = []
+        seen_types = set()
+
+        for record in result:
+            metric_name  = record["metric_name"]
+            metric_type  = record["metric_type"]
+            gaap_concept = record.get("gaap_concept") or ''
+            year         = record.get("year")
+            category     = record.get("category", "Uncategorised")
+
+            if not metric_type and metric_name:
+                if '(' in metric_name:
+                    metric_type = metric_name.split('(')[0].strip()
+                    year_part = metric_name.split('(')[1].split(')')[0].strip()
+                    if year_part.isdigit():
+                        year = int(year_part)
+                else:
+                    metric_type = metric_name
+
+            if year and isinstance(year, str) and year.isdigit():
+                year = int(year)
+
+            if metric_type and metric_type not in seen_types:
+                metrics.append({
+                    "name":         metric_name,
+                    "type":         metric_type,
+                    "gaap_concept": gaap_concept or metric_type,
+                    "year":         year,
+                    "category":     category,
+                })
+                seen_types.add(metric_type)
+
+    if metrics:
+        print(f"✓ Found {len(metrics)} unique metric types in target company:")
+        for m in metrics:
+            year_str = f" (year: {m['year']})" if m['year'] else " (using default year)"
+            category_str = f" [{m['category']}]" if m.get('category') else ""
+            gaap_str = f" ← {m['gaap_concept']}" if m['gaap_concept'] != m['type'] else ""
+            print(f"  - {m['type']}{gaap_str}{year_str}{category_str}")
+        print()
+    else:
+        print("⚠ No metrics found in target company\n")
+
+    return metrics
 
 
 BM25_TOP_K = 1
@@ -270,27 +115,19 @@ BM25_MIN_SCORE = 3.0
 TAXONOMY_URL = "https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-lab-2024.xml"
 TAXONOMY_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".taxonomy_cache.json")
 TAXONOMY_CACHE_DAYS = 30
-GLOBAL_BM25_TOP_K = 15  # candidate tag names to try per metric against company facts
-GLOBAL_BM25_MIN_SCORE = 2.0  # lower threshold since taxonomy labels are authoritative
+GLOBAL_BM25_TOP_K = 15
+GLOBAL_BM25_MIN_SCORE = 2.0
 
-_global_taxonomy = None  # (tag_list[(name, label)], BM25Okapi) — built once per run
+_global_taxonomy = None
 
 
 def _tokenize_xbrl_tag(tag: str) -> list:
-    """Split a PascalCase/camelCase XBRL tag into lowercase tokens, preserving acronyms.
-
-    EBITDACoverageRatio -> ['ebitda', 'coverage', 'ratio']
-    NetIncomeLoss       -> ['net', 'income', 'loss']
-    """
-    # Separate acronym from next capitalised word: EBITDACoverage -> EBITDA Coverage
     s = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', tag)
-    # Separate camelCase boundary: netIncome -> net Income
     s = re.sub(r'([a-z])([A-Z])', r'\1 \2', s)
     return [t.lower() for t in s.split() if len(t) >= 2]
 
 
 def _stem(token: str) -> str:
-    """Minimal suffix-stripping so 'revenues'=='revenue', 'earnings'=='earning', etc."""
     for suffix in ('ings', 'ing', 'ies', 'es', 's'):
         if token.endswith(suffix) and len(token) - len(suffix) >= 3:
             return token[: -len(suffix)]
@@ -298,21 +135,14 @@ def _stem(token: str) -> str:
 
 
 def _tokenize_metric(metric: str) -> list:
-    """Tokenize a human-readable metric name into lowercase, stemmed tokens."""
     return [_stem(t.lower()) for t in re.split(r'[\s\-_/]+', metric) if len(t) >= 2]
 
 
 def _build_global_taxonomy_index():
-    """Fetch the full US-GAAP label linkbase once, cache to disk, build a BM25 index.
-
-    Returns (tags, bm25) where tags is a list of (tag_name, label) tuples.
-    Falls back to an empty index on any failure so callers can degrade gracefully.
-    """
     global _global_taxonomy
     if _global_taxonomy is not None:
         return _global_taxonomy
 
-    # Load from disk cache if fresh enough
     if os.path.exists(TAXONOMY_CACHE_FILE):
         try:
             with open(TAXONOMY_CACHE_FILE, 'r', encoding='utf-8') as f:
@@ -337,7 +167,7 @@ def _build_global_taxonomy_index():
         resp = requests.get(TAXONOMY_URL, headers=headers, verify=False, timeout=60)
         resp.raise_for_status()
     except Exception as e:
-        print(f"⚠ Could not fetch taxonomy ({e}). Global lookup disabled — falling back to per-company BM25.")
+        print(f"⚠ Could not fetch taxonomy ({e}). Global lookup disabled.")
         _global_taxonomy = ([], None)
         return _global_taxonomy
 
@@ -351,22 +181,19 @@ def _build_global_taxonomy_index():
         _global_taxonomy = ([], None)
         return _global_taxonomy
 
-    tag_label_map = {}  # concept_name -> label text
+    tag_label_map = {}
 
     for label_link in root.iter(f'{{{LINK}}}labelLink'):
-        # loc xlink:label -> concept name
         loc_to_concept = {}
         for loc in label_link.findall(f'{{{LINK}}}loc'):
             href  = loc.get(f'{{{XLINK}}}href', '')
             lbl   = loc.get(f'{{{XLINK}}}label', '')
             if '#' in href and lbl:
                 concept = href.split('#')[-1]
-                # strip namespace prefix: us-gaap_OperatingIncomeLoss -> OperatingIncomeLoss
                 if '_' in concept:
                     concept = concept.split('_', 1)[1]
                 loc_to_concept[lbl] = concept
 
-        # label xlink:label -> text  (standard label role only)
         lbl_to_text = {}
         for lbl_elem in label_link.findall(f'{{{LINK}}}label'):
             role = lbl_elem.get(f'{{{XLINK}}}role', '')
@@ -375,7 +202,6 @@ def _build_global_taxonomy_index():
             if role.endswith('/label') and lbl and text:
                 lbl_to_text[lbl] = text
 
-        # wire together via arcs
         for arc in label_link.findall(f'{{{LINK}}}labelArc'):
             arcrole  = arc.get(f'{{{XLINK}}}arcrole', '')
             from_lbl = arc.get(f'{{{XLINK}}}from', '')
@@ -390,7 +216,6 @@ def _build_global_taxonomy_index():
         _global_taxonomy = ([], None)
         return _global_taxonomy
 
-    # Persist to disk
     try:
         payload = {
             'cached_at': datetime.now().isoformat(),
@@ -415,61 +240,45 @@ def _build_global_taxonomy_index():
 _STOP_WORDS = {'the', 'and', 'or', 'of', 'in', 'to', 'a', 'an', 'for'}
 
 _CONCEPT_TAG_MAP: dict[str, list[str]] = {
-    # Revenue
     "revenue":                          ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"],
     "net sales":                        ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"],
     "net revenue":                      ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"],
-    # Cost of goods sold
     "cost of goods sold":               ["CostOfGoodsAndServicesSold", "CostOfRevenue", "CostOfGoodsSold"],
     "cost of sales":                    ["CostOfGoodsAndServicesSold", "CostOfRevenue", "CostOfGoodsSold"],
-    # Gross profit
     "gross profit":                     ["GrossProfit"],
-    # Operating income
     "operating income":                 ["OperatingIncomeLoss"],
     "operating income (loss)":          ["OperatingIncomeLoss"],
     "income from operations":           ["OperatingIncomeLoss"],
-    # Net income
     "net income":                       ["NetIncomeLoss"],
     "net income (loss)":                ["NetIncomeLoss"],
-    # NCI
     "net income attributable to non-controlling interests": ["NetIncomeLossAttributableToNoncontrollingInterest"],
     "net income attributable to noncontrolling interests":  ["NetIncomeLossAttributableToNoncontrollingInterest"],
-    # Equity method
     "equity in earnings of affiliates": ["IncomeLossFromEquityMethodInvestments"],
     "equity in earnings":               ["IncomeLossFromEquityMethodInvestments"],
-    # SG&A
     "selling general and administrative expenses": ["SellingGeneralAndAdministrativeExpense"],
     "marketing and administrative expenses":       ["SellingGeneralAndAdministrativeExpense"],
-    # R&D
     "research and development expenses": ["ResearchAndDevelopmentExpense"],
     "research and development":          ["ResearchAndDevelopmentExpense"],
-    # Taxes
     "income tax expense":               ["IncomeTaxExpenseBenefit"],
     "income tax expense (benefit)":     ["IncomeTaxExpenseBenefit"],
     "provision for income taxes":       ["IncomeTaxExpenseBenefit"],
     "provision for taxes on income":    ["IncomeTaxExpenseBenefit"],
     "total tax provision":              ["IncomeTaxExpenseBenefit"],
-    # Interest
     "interest expense":                 ["InterestExpense", "InterestAndDebtExpense"],
     "interest expense net":             ["InterestExpense", "InterestAndDebtExpense"],
-    # D&A
     "depreciation and amortization":    ["DepreciationDepletionAndAmortization", "DepreciationAndAmortization"],
     "depreciation and depletion":       ["DepreciationDepletionAndAmortization", "Depreciation"],
     "amortization expense":             ["AmortizationOfIntangibleAssets", "DepreciationDepletionAndAmortization"],
-    # EPS
     "earnings per share (basic)":       ["EarningsPerShareBasic"],
     "earnings per share (diluted)":     ["EarningsPerShareDiluted"],
     "basic earnings per share":         ["EarningsPerShareBasic"],
     "diluted earnings per share":       ["EarningsPerShareDiluted"],
-    # Shares
     "weighted average shares outstanding":           ["WeightedAverageNumberOfSharesOutstandingBasic", "WeightedAverageNumberOfDilutedSharesOutstanding"],
     "weighted average shares outstanding (diluted)": ["WeightedAverageNumberOfDilutedSharesOutstanding"],
-    # Debt
     "long-term debt":                   ["LongTermDebt", "LongTermDebtNoncurrent"],
     "short-term debt":                  ["ShortTermBorrowings", "NotesPayableCurrent"],
     "current maturities of long-term debt": ["LongTermDebtCurrent"],
     "debt extinguishment costs":        ["GainsLossesOnExtinguishmentOfDebt"],
-    # Balance sheet
     "total assets":                     ["Assets"],
     "total liabilities":                ["Liabilities"],
     "total equity":                     ["StockholdersEquity", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"],
@@ -483,18 +292,15 @@ _CONCEPT_TAG_MAP: dict[str, list[str]] = {
     "property plant and equipment":     ["PropertyPlantAndEquipmentNet", "PropertyPlantAndEquipmentGross"],
     "cash and cash equivalents":        ["CashAndCashEquivalentsAtCarryingValue", "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"],
     "total inventories":                ["InventoryNet"],
-    # Cash flow
     "capital expenditures":             ["PaymentsToAcquirePropertyPlantAndEquipment"],
     "capital expenditure":              ["PaymentsToAcquirePropertyPlantAndEquipment"],
     "net cash provided by operating activities": ["NetCashProvidedByUsedInOperatingActivities"],
     "cash dividends paid":              ["PaymentsOfDividends", "PaymentsOfDividendsCommonStock"],
     "dividends paid":                   ["PaymentsOfDividends", "PaymentsOfDividendsCommonStock"],
-    # Deferred taxes
     "deferred tax assets":              ["DeferredTaxAssetsGross", "DeferredTaxAssetsNet"],
     "deferred tax liabilities":         ["DeferredTaxLiabilities", "DeferredIncomeTaxLiabilitiesNet"],
     "net deferred tax liability":       ["DeferredIncomeTaxLiabilitiesNet", "DeferredTaxLiabilities"],
     "unrecognized tax benefits":        ["UnrecognizedTaxBenefits"],
-    # Restructuring / leases / other
     "restructuring charges":            ["RestructuringCharges"],
     "operating lease cost":             ["OperatingLeaseCost", "LeaseCost"],
     "operating lease liability":        ["OperatingLeaseLiability"],
@@ -508,65 +314,44 @@ _CONCEPT_TAG_MAP: dict[str, list[str]] = {
 
 
 def _lookup_hardcoded(concept: str) -> list[str]:
-    """Return canonical XBRL tags from the hardcoded map, or [] if not found.
-    Normalises case, collapses whitespace, and strips trailing 's' to handle
-    minor pluralisation differences before looking up.
-    """
     key = re.sub(r'\s+', ' ', concept.lower().strip())
     if key in _CONCEPT_TAG_MAP:
         return _CONCEPT_TAG_MAP[key]
-    # strip parenthetical suffixes like "(loss)", "(benefit)"
     key2 = re.sub(r'\s*\(.*?\)', '', key).strip()
     if key2 in _CONCEPT_TAG_MAP:
         return _CONCEPT_TAG_MAP[key2]
-    # try without trailing 's'
     if key.endswith('s') and key[:-1] in _CONCEPT_TAG_MAP:
         return _CONCEPT_TAG_MAP[key[:-1]]
     return []
 
 
 def _resolve_metric_to_tags(metric_type: str) -> list:
-    """Return up to GLOBAL_BM25_TOP_K XBRL tag names that best match metric_type
-    according to the full US-GAAP taxonomy index.  Returns [] if taxonomy unavailable.
-    """
     tags, bm25 = _build_global_taxonomy_index()
     if not tags or bm25 is None:
         return []
-
     raw_tokens = _tokenize_metric(metric_type)
     query_tokens = [t for t in raw_tokens if t not in _STOP_WORDS] or raw_tokens
     if not query_tokens:
         return []
-
     scores = bm25.get_scores(query_tokens)
     top_indices = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:GLOBAL_BM25_TOP_K]
     return [tags[i][0] for i in top_indices if scores[i] >= GLOBAL_BM25_MIN_SCORE]
 
 
 def analyze_company_covenants(cik, company_name, target_metrics=None, default_fiscal_year=2024):
-    """Analyze a single company for target metrics.
-    
-    Args:
-        cik: Company CIK number
-        company_name: Company name
-        target_metrics: List of target metrics to match (with optional year per metric)
-        default_fiscal_year: Default fiscal year to use if metric doesn't specify one
-    """
     url = f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
-    
+
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         data = response.json()
         facts = data.get('facts', {})
-        
+
         target_metric_results = {}
 
         if not target_metrics:
             return target_metric_results
 
-        # Phase 1: collect every (taxonomy, tag_name, tag_content) tuple once
-        #          and build a fast name→(taxonomy, content) lookup
         all_tags = [
             (taxonomy_name, tag_name, tag_content)
             for taxonomy_name, taxonomy_data in facts.items()
@@ -579,7 +364,6 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
         facts_by_tag = {tag_name: (taxonomy_name, tag_content)
                         for taxonomy_name, tag_name, tag_content in all_tags}
 
-        # Phase 2 (fallback): per-company BM25 index — only used when global lookup misses
         def _tag_tokens(tag_name, tag_content):
             label = tag_content.get('label', '')
             return _tokenize_metric(label) if label else _tokenize_xbrl_tag(tag_name)
@@ -622,7 +406,6 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                     entry['units'][unit_name] = filtered
             return entry if entry['units'] else None
 
-        # Phase 3: for each metric, try global taxonomy lookup first; fall back to per-company BM25
         for metric in target_metrics:
             metric_type = metric.get('type', '')
             if not metric_type:
@@ -634,12 +417,10 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
 
             search_term = gaap_concept if gaap_concept != metric_type else metric_type
 
-            # 1. Hardcoded map — highest precision for standard financial concepts
             candidate_tags = _lookup_hardcoded(search_term)
             if not candidate_tags and search_term != metric_type:
                 candidate_tags = _lookup_hardcoded(metric_type)
 
-            # 2. Global taxonomy BM25 — fallback for non-standard / long-tail metrics
             if not candidate_tags:
                 candidate_tags = _resolve_metric_to_tags(search_term)
                 if not candidate_tags and search_term != metric_type:
@@ -654,12 +435,11 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                     if entry:
                         target_metric_results.setdefault(metric_type, []).append(entry)
                         matched = True
-                        break  # first candidate with data wins
+                        break
 
             if matched:
                 continue
 
-            # --- Per-company BM25 fallback ---
             raw_tokens = _tokenize_metric(search_term)
             query_tokens = [t for t in raw_tokens if t not in _STOP_WORDS] or raw_tokens
             if not query_tokens:
@@ -678,10 +458,10 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
                     target_metric_results.setdefault(metric_type, []).append(entry)
 
         return target_metric_results
-    
+
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
-            return None  # Company data not available
+            return None
         print(f"  HTTP Error for {company_name}: {e}")
         return None
     except Exception as e:
@@ -690,154 +470,118 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
 
 
 def main():
-    """Main execution function."""
     print("=" * 80)
     print("TARGET METRICS ANALYSIS - BATCH PROCESSING")
     print("=" * 80)
     print()
-    
-    # Get target company metrics
+
+    driver = GraphDatabase.driver(
+        os.getenv("NEO4J_URI", "bolt://localhost:7687"),
+        auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
+    )
+
     try:
-        target_metrics = get_target_company_metrics()
-    except Exception as e:
-        print(f"Error getting target metrics: {e}\n")
-        target_metrics = []
-    
-    print("=" * 80)
-    print("STEP 1: CHECKING NEO4J GRAPH FOR PEER COMPANIES")
-    print("=" * 80)
-    print()
-    
-    companies = get_companies_from_neo4j()
-    
-    companies_with_cik = [c for c in companies if c.get('cik')]
-    companies_without_cik = [c for c in companies if not c.get('cik')]
+        target_metrics = get_target_company_metrics(driver)
+        companies = get_companies_from_neo4j(driver)
+    finally:
+        driver.close()
 
-    if companies_without_cik:
-        print(f"⚠ Skipping {len(companies_without_cik)} companies without CIK:")
-        for c in companies_without_cik:
-            print(f"  - {c['name']}")
-        print()
+    companies = [c for c in companies if c.get('cik')]
 
-    print(f"✓ Processing {len(companies_with_cik)} peer companies from Neo4j graph\n")
-    companies = companies_with_cik
-    
     if not companies:
-        print("No companies to analyze. Exiting.")
+        print("No companies with CIK to analyze. Exiting.")
         return
-    
-    all_results = {}
+
     companies_with_metrics = []
     companies_without_metrics = []
     companies_with_errors = []
-    
+
     print("=" * 80)
     print("ANALYZING COMPANIES")
     print("=" * 80)
     print()
-    
+
     for idx, company in enumerate(companies, 1):
         cik = company['cik']
         name = company['name']
         ticker = company['ticker']
-        
+
         print(f"[{idx}/{len(companies)}] {name} ({ticker}) - CIK: {cik}")
-        
-        metric_results = analyze_company_covenants(
-            cik, name, target_metrics, FISCAL_YEAR
-        )
-        
+
+        metric_results = analyze_company_covenants(cik, name, target_metrics, FISCAL_YEAR)
+
         if metric_results is None:
             companies_with_errors.append(company)
             print(f"  ⚠ Data not available or error occurred\n")
+        elif metric_results:
+            total_matches = sum(len(m) for m in metric_results.values())
+            companies_with_metrics.append({
+                'company': company,
+                'target_metric_count': total_matches,
+                'target_metrics': metric_results,
+            })
+            print(f"  ✓ Found {total_matches} target metric match(es)")
+            for metric_name, matches in metric_results.items():
+                if matches:
+                    print(f"    - {metric_name}: {len(matches)} match(es)")
+            print()
         else:
-            has_metrics = bool(metric_results)
-            
-            if has_metrics:
-                # Count total tags found
-                total_metric_matches = sum(len(matches) for matches in metric_results.values())
-                
-                company_data = {
-                    'company': company,
-                    'target_metric_count': total_metric_matches,
-                    'target_metrics': metric_results
-                }
-                
-                companies_with_metrics.append(company_data)
-                
-                print(f"  ✓ Found {total_metric_matches} target metric match(es)")
-                for metric_name, matches in metric_results.items():
-                    if matches:
-                        print(f"    - {metric_name}: {len(matches)} match(es)")
-                
-                print()
-            else:
-                companies_without_metrics.append(company)
-                print(f"  ✗ No target metrics found\n")
-        
+            companies_without_metrics.append(company)
+            print(f"  ✗ No target metrics found\n")
+
         time.sleep(0.2)
-    
+
     print("=" * 80)
     print("SUMMARY")
     print("=" * 80)
-    neo4j_count = sum(1 for c in companies if c.get('source') == 'neo4j')
-    sec_count = sum(1 for c in companies if c.get('source') == 'sec')
-    print(f"Companies from Neo4j graph: {neo4j_count}")
-    print(f"Companies from SEC EDGAR: {sec_count}")
-    print(f"Total companies analyzed: {len(companies)}")
-    print(f"Companies with target metrics: {len(companies_with_metrics)}")
-    print(f"Companies without target metrics: {len(companies_without_metrics)}")
-    print(f"Companies with errors: {len(companies_with_errors)}")
+    print(f"Total companies analyzed:        {len(companies)}")
+    print(f"Companies with target metrics:   {len(companies_with_metrics)}")
+    print(f"Companies without target metrics:{len(companies_without_metrics)}")
+    print(f"Companies with errors:           {len(companies_with_errors)}")
     print()
-    
+
     if companies_with_metrics:
         print("=" * 80)
         print("COMPANIES WITH TARGET METRICS")
         print("=" * 80)
         print()
-        
         for item in companies_with_metrics:
             company = item['company']
             print(f"{company['name']} ({company['ticker']}) - CIK: {company['cik']}")
             print(f"  Total metric matches: {item['target_metric_count']}")
-            
             for metric_type, matches in item['target_metrics'].items():
                 if matches:
                     print(f"  {metric_type}:")
                     for match in matches:
                         print(f"    - {match['tag']}")
-                        # Show latest value
                         for unit_name, entries in match['units'].items():
                             if entries:
                                 latest = entries[-1]
                                 print(f"      Latest: {latest['val']} ({unit_name}) as of {latest['end']}")
                                 break
             print()
-    
-    # Save comprehensive results
+
     output_data = {
         'metadata': {
-            'neo4j_companies': neo4j_count,
-            'sec_companies': sec_count,
             'target_metrics_searched': [m['name'] for m in target_metrics] if target_metrics else [],
             'date_range': {'start': START_DATE, 'end': END_DATE},
-            'form_type': FORM_TYPE,
+            'fiscal_year': FISCAL_YEAR,
             'analysis_date': datetime.now().isoformat(),
             'total_companies': len(companies),
             'companies_with_metrics': len(companies_with_metrics),
             'companies_without_metrics': len(companies_without_metrics),
-            'companies_with_errors': len(companies_with_errors)
+            'companies_with_errors': len(companies_with_errors),
         },
         'companies_with_metrics': companies_with_metrics,
         'companies_without_metrics': companies_without_metrics,
-        'companies_with_errors': companies_with_errors
+        'companies_with_errors': companies_with_errors,
     }
-    
+
     output_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "companies_metrices.json")
     with open(output_file, 'w') as f:
         json.dump(output_data, f, indent=2)
 
-    print(f"Complete results saved to: {output_file}")
+    print(f"Results saved to: {output_file}")
 
 
 if __name__ == "__main__":
