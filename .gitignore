@@ -7,6 +7,7 @@ qdrant_storage
 *.env
 pipeline_output
 sec_cache
+peers_sec\HAS_METRIC\__pycache__
 *.csv
 input
 retrival+eval/Ground_Truth/results_swi
@@ -25,3 +26,7 @@ retrival+eval/Ground_Truth/results_minerals
 pipeline_output
 */__pycache__/*
 **/results_minerals
+peers_sec/HAS_METRIC/.taxonomy_cache.json
+frontend/.lovable
+frontend
+**/**.json

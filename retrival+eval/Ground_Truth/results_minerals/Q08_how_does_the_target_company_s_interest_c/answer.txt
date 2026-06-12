@@ -1,7 +1,0 @@
-**Sources:**
-- Minerals Technologies Inc.: null
-- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm
-- Arcadium Lithium plc: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm
-- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm
-
-Interest coverage is not reported for Minerals Technologies Inc. or any of its peers in the provided graph results. Therefore, a comparison cannot be made. [CITE:TARGET_R0011] notes that Minerals Technologies Inc. must service $971.3 million of debt with significant cash outflows, but no EBITDA, EBIT, or interest expense figures are provided to calculate interest coverage. For all peers, no relevant metrics are available to assess interest coverage. [CITE:PEER_R0063] [CITE:PEER_R0119] [CITE:PEER_R0216]

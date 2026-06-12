@@ -1,7 +1,0 @@
-**Sources:**
-- Minerals Technologies Inc.: null
-- Global Gas Corp: https://www.sec.gov/Archives/edgar/data/1817232/000121390025026224/ea0234415-10k_global.htm
-- Arcadium Lithium plc: https://www.sec.gov/Archives/edgar/data/1977303/000197730325000006/lthm-20241231.htm
-- NL INDUSTRIES INC: https://www.sec.gov/Archives/edgar/data/72162/000155837025002417/nl-20241231x10k.htm
-
-Minerals Technologies Inc. does not disclose any cybersecurity or technology-related risks in its provided filings [CITE:TARGET_R0012]. In contrast, Global Gas Corp faces risks from information technology systems and data security breaches, insufficient insurance coverage for such breaches, and disruptions at third-party vendors with access to its data [CITE:PEER_R0063][CITE:PEER_R0064][CITE:PEER_R0065]. Arcadium Lithium plc and NL Industries Inc. do not report specific cybersecurity or IT system risks in their disclosed peer risks. However, NL Industries Inc. does cite physical impacts of climate change as a risk, which may indirectly affect operations but is not a technology risk [CITE:PEER_R0222]. Arcadium Lithium plc’s risks center on commodity demand, exploration uncertainty, and geopolitical exposure in Argentina, not technology systems [CITE:PEER_R0140][CITE:PEER_R0162]. Therefore, only Global Gas Corp faces explicit, comparable cybersecurity threats to those commonly found in technology-dependent industries, while Minerals Technologies Inc. and the other peers do not disclose similar exposures.
