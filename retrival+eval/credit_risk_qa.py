@@ -352,6 +352,22 @@ class CreditRiskQA:
         print(f"✓ Target company   : {self._target_company}")
 
     _CYPHER_FENCE_RE = re.compile(r'```(?:cypher)?\s*(.*?)```', re.DOTALL | re.IGNORECASE)
+    _TC_UNFILTERED_RE = re.compile(r'\((\w*):TargetCompany\)')
+
+    @staticmethod
+    def _enforce_company_filter(cypher: str, company: str) -> str:
+        """Inject {name: '...'} on every (alias:TargetCompany) node that has no property filter.
+
+        (tc:TargetCompany)            → (tc:TargetCompany {name: 'Acme'})
+        (tc:TargetCompany {name: 'X'} → unchanged  (already filtered, ) not adjacent to label)
+        """
+        if not company:
+            return cypher
+        escaped = company.replace("'", "\\'")
+        return CreditRiskQA._TC_UNFILTERED_RE.sub(
+            lambda m: f"({m.group(1)}:TargetCompany {{name: '{escaped}'}})",
+            cypher,
+        )
 
     def _generate_cypher(self, question: str, error_context: str = "", target_company: str = "") -> str:
         """Call the LLM to generate (or fix) a Cypher query."""
@@ -373,6 +389,9 @@ class CreditRiskQA:
         raw = self._call_llm_raw(base_prompt)
         m = self._CYPHER_FENCE_RE.search(raw)
         cypher = m.group(1).strip() if m else raw.strip()
+        # Enforce company isolation: inject {name: '...'} wherever the LLM matched
+        # TargetCompany without a property filter (e.g. (tc:TargetCompany) → filtered).
+        cypher = self._enforce_company_filter(cypher, target_company)
         # Safety net: prevent full-graph scans if LLM forgets LIMIT
         if 'LIMIT' not in cypher.upper():
             fallback = 20 if 'COLLECT' in cypher.upper() else 100
@@ -624,7 +643,7 @@ class CreditRiskQA:
             return [CreditRiskQA._truncate(i, max_str) for i in obj]
         return obj
 
-    def generate_reasoning_trace(self, question: str, queries_run: list, results: list) -> str:
+    def generate_reasoning_trace(self, question: str, queries_run: list, results: list, target_company: str = "") -> str:
         """
         Run REASONING_PROMPT over already-retrieved graph data.
         Produces a structured chain-of-thought with cited sources.
@@ -643,7 +662,7 @@ class CreditRiskQA:
         clean = self._clean_metadata(results[:150])
         context = json.dumps(clean, indent=2, default=str)
 
-        prompt = REASONING_PROMPT.format(queries=queries_text, context=context, question=question, target_company=self._target_company)
+        prompt = REASONING_PROMPT.format(queries=queries_text, context=context, question=question, target_company=target_company or self._target_company)
         response = self.llm.invoke(prompt)
         raw = response.content if hasattr(response, "content") else str(response)
 

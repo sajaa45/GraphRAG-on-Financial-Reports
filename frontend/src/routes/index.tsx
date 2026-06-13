@@ -15,6 +15,7 @@ import {
   Moon,
   Palette,
   Sun,
+  Database,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StepItem, type StepData, type StepStatus } from "@/components/StepItem";
@@ -37,7 +38,8 @@ interface CitationInfo {
   role: "target" | "peer";
   document_url: string | null;
   summary: string;
-  page?: number | string | null;
+  source_page?: number | string | null;
+  section_title?: string | null;
 }
 
 interface ChatMessage {
@@ -97,6 +99,45 @@ const QA_TRACE_STEPS = [
   "citation_attachment",
 ];
 
+function BrandLogo({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 1024 1024" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      {/* monitor outer frame */}
+      <path fillOpacity=".18" fill="currentColor" d="M912.9 732.5c-47 0-86.3 33.5-95.3 77.8H701.9c-11.7 0-20.2-2.3-23.2-6.3-2-2.7-2-7-2-9v-51.1h109.9c37.5 0 67.9-30.5 67.9-67.9V235.2c0-37.5-30.5-67.9-67.9-67.9h-706c-37.5 0-67.9 30.5-67.9 67.9v440.7c0 37.5 30.5 67.9 67.9 67.9h557.2V795c0 4.8 0 19.3 9.9 32.4 10.9 14.4 29.1 21.7 54.2 21.7h308.2v-19.4c0-53.6-43.6-97.2-97.2-97.2z"/>
+      {/* screen bezel */}
+      <path fillOpacity=".55" fill="currentColor" d="M815.6 675.9V235.2c0-16.1-13.1-29.1-29.1-29.1H80.6c-16.1 0-29.1 13.1-29.1 29.1v440.7c0 16.1 13.1 29.1 29.1 29.1h705.9c16.1.1 29.1-13 29.1-29.1zm-43.9-42c0 16-13.1 29.1-29.1 29.1h-618c-16 0-29.1-13.1-29.1-29.1V277.3c0-16 13.1-29.1 29.1-29.1h618c16 0 29.1 13.1 29.1 29.1v356.6z"/>
+      {/* screen glass */}
+      <path fillOpacity=".08" fill="currentColor" d="M742.6 248.2h-618c-16 0-29.1 13.1-29.1 29.1v356.6c0 16 13.1 29.1 29.1 29.1h618c16 0 29.1-13.1 29.1-29.1V277.3c0-16-13.1-29.1-29.1-29.1z"/>
+      {/* pie chart outer ring */}
+      <path fill="currentColor" d="M274 335.6h-9.7c-67.8 0-123 55.2-123 123s55.2 123 123 123 123-55.2 123-123v-9.7H274V335.6zm93.4 132.8c-4.9 52.6-49.3 93.9-103.1 93.9-57.1 0-103.6-46.5-103.6-103.6 0-53.8 41.3-98.2 93.9-103.1v112.8h112.8z"/>
+      {/* pie slice */}
+      <path fillOpacity=".5" fill="currentColor" d="M297.2 325.2v94.7h94.7c0-52.3-42.4-94.7-94.7-94.7z"/>
+      {/* data rows — full */}
+      <path fill="currentColor" d="M670.8 329.4H461.2c-5.4 0-9.7 4.3-9.7 9.7s4.3 9.7 9.7 9.7h209.7c5.4 0 9.7-4.3 9.7-9.7s-4.4-9.7-9.8-9.7z"/>
+      <path fill="currentColor" d="M670.8 402.7H461.2c-5.4 0-9.7 4.3-9.7 9.7s4.3 9.7 9.7 9.7h209.7c5.4 0 9.7-4.3 9.7-9.7s-4.4-9.7-9.8-9.7z"/>
+      {/* data rows — shorter */}
+      <path fillOpacity=".55" fill="currentColor" d="M670.8 476.1H525.2c-5.4 0-9.7 4.3-9.7 9.7s4.3 9.7 9.7 9.7h145.6c5.4 0 9.7-4.3 9.7-9.7s-4.3-9.7-9.7-9.7z"/>
+      <path fillOpacity=".55" fill="currentColor" d="M670.8 549.4H530.1c-5.4 0-9.7 4.3-9.7 9.7 0 5.4 4.3 9.7 9.7 9.7h140.7c5.4 0 9.7-4.3 9.7-9.7 0-5.4-4.3-9.7-9.7-9.7z"/>
+      {/* stand base */}
+      <path fillOpacity=".35" fill="currentColor" d="M594.7 800.4H272.4c-10.7 0-19.4 8.7-19.4 19.4s8.7 19.4 19.4 19.4h322.3c10.7 0 19.4-8.7 19.4-19.4 0-10.8-8.7-19.4-19.4-19.4z"/>
+      {/* title bar dots */}
+      <circle fillOpacity=".7" fill="currentColor" cx="150" cy="288.8" r="11.9"/>
+      <circle fillOpacity=".7" fill="currentColor" cx="189" cy="288.8" r="11.9"/>
+    </svg>
+  );
+}
+
+function uid(): string {
+  // crypto.randomUUID() requires a secure context (HTTPS/localhost) — use a
+  // Math.random fallback so HTTP network access (e.g. 192.168.x.x) works too.
+  try { return crypto.randomUUID(); } catch {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+}
+
 function Index() {
   // -------- Backend config --------
   const [backendUrl, setBackendUrlState] = useState(DEFAULT_BACKEND_URL);
@@ -107,6 +148,7 @@ function Index() {
   const [companies, setCompanies] = useState<CompanyOption[]>([]);
   const [selectedCompany, setSelectedCompany] = useState("");
   const [companiesLoading, setCompaniesLoading] = useState(false);
+  const [ingestionMode, setIngestionMode] = useState<"upload" | "select">("upload");
 
   useEffect(() => {
     setBackendUrlState(getBackendUrl());
@@ -130,7 +172,7 @@ function Index() {
     let cancelled = false;
     (async () => {
       try {
-        const r = await fetch(`${backendUrl}/docs`, { method: "GET" });
+        const r = await fetch(`${backendUrl}/`, { method: "GET" });
         if (!cancelled) setConnected(r.ok);
       } catch {
         if (!cancelled) setConnected(false);
@@ -183,36 +225,35 @@ function Index() {
   // -------- Phase 1 state --------
   const [file, setFile] = useState<File | null>(null);
   const [fiscalYear, setFiscalYear] = useState("2024");
-  const [previousFilename, setPreviousFilename] = useState<string | null>(() => {
-    try { return localStorage.getItem("verdant_filename"); } catch { return null; }
-  });
-  const [savedJobId, setSavedJobId] = useState<string | null>(() => {
-    try { return localStorage.getItem("verdant_job_id"); } catch { return null; }
-  });
-
-  // Restore completion from a previous session stored in localStorage
-  const [phase1Status, setPhase1Status] = useState<PhaseStatus>(() => {
-    try {
-      return localStorage.getItem("verdant_phase1_status") === "complete" ? "complete" : "idle";
-    } catch { return "idle"; }
-  });
+  const [previousFilename, setPreviousFilename] = useState<string | null>(null);
+  const [savedJobId, setSavedJobId] = useState<string | null>(null);
+  const [phase1Status, setPhase1Status] = useState<PhaseStatus>("idle");
   const [phase1Error, setPhase1Error] = useState<string | null>(null);
-  const [steps, setSteps] = useState<StepData[]>(() => {
-    try {
-      const saved = localStorage.getItem("verdant_steps");
-      if (saved) {
-        const parsed = JSON.parse(saved) as StepData[];
-        if (parsed.length === PIPELINE_STEPS.length) return parsed;
-      }
-    } catch { /* ignore */ }
-    return PIPELINE_STEPS.map((s) => ({
+  const [steps, setSteps] = useState<StepData[]>(() =>
+    PIPELINE_STEPS.map((s) => ({
       id: s.id,
       label: s.label,
       description: s.description,
       status: "pending" as StepStatus,
       logs: [],
-    }));
-  });
+    }))
+  );
+
+  // Restore persisted session state after hydration (client-only)
+  useEffect(() => {
+    try {
+      setPreviousFilename(localStorage.getItem("verdant_filename"));
+      setSavedJobId(localStorage.getItem("verdant_job_id"));
+      if (localStorage.getItem("verdant_phase1_status") === "complete") {
+        setPhase1Status("complete");
+      }
+      const saved = localStorage.getItem("verdant_steps");
+      if (saved) {
+        const parsed = JSON.parse(saved) as StepData[];
+        if (parsed.length === PIPELINE_STEPS.length) setSteps(parsed);
+      }
+    } catch { /* ignore */ }
+  }, []);
   const stepStartRef = useRef<Record<number, number>>({});
   const eventSourceRef = useRef<EventSource | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -222,6 +263,7 @@ function Index() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [question, setQuestion] = useState("");
   const [asking, setAsking] = useState(false);
+  const [withReasoning, setWithReasoning] = useState(false);
   const phase2Ref = useRef<HTMLDivElement>(null);
 
   const resetSteps = useCallback(() => {
@@ -383,78 +425,57 @@ function Index() {
   }, [phase1Status, loadCompanies]);
 
   // -------- QA submit --------
-  const askQuestion = useCallback(async () => {
+  const pendingMsgId = useRef<string | null>(null);
+
+  const askQuestion = () => {
     const q = question.trim();
     if (!q || asking) return;
-    const userMsg: ChatMessage = { id: crypto.randomUUID(), role: "user", content: q };
-    const placeholder: ChatMessage = {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: "",
-      trace: QA_TRACE_STEPS.map((s) => ({ step: s, status: "pending" })),
-    };
-    setMessages((m) => [...m, userMsg, placeholder]);
+
+    const userId = uid();
+    const assistantId = uid();
+    pendingMsgId.current = assistantId;
+
+    setMessages((m) => [
+      ...m,
+      { id: userId, role: "user", content: q },
+      { id: assistantId, role: "assistant", content: "", trace: QA_TRACE_STEPS.map((s) => ({ step: s, status: "pending" as const })) },
+    ]);
     setQuestion("");
     setAsking(true);
 
-    // Animate trace steps while the real request is in flight
-    let stepIdx = 0;
-    const stepTimer = setInterval(() => {
-      if (stepIdx >= QA_TRACE_STEPS.length) { clearInterval(stepTimer); return; }
-      const current = stepIdx;
-      setMessages((m) =>
-        m.map((msg) =>
-          msg.id === placeholder.id
-            ? {
-                ...msg,
-                trace: msg.trace?.map((t, idx) => ({
-                  ...t,
-                  status: idx < current ? "done" : idx === current ? "running" : "pending",
-                })),
-              }
-            : msg,
-        ),
-      );
-      stepIdx++;
-    }, 700);
+    const url = backendUrl;
+    const company = selectedCompany || null;
+    const reasoning = withReasoning;
 
-    let answer = "";
-    let citations: Record<string, CitationInfo> = {};
-    let reasoning_trace: string | null = null;
-    try {
-      const r = await fetch(`${backendUrl}/qa/run`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, reasoning: true, target_company: selectedCompany || null }),
+    fetch(`${url}/qa/run`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: q, reasoning, target_company: company }),
+    })
+      .then((r) => (r.ok ? r.json() : r.text().then((t) => Promise.reject(new Error(`${r.status}: ${t}`)))))
+      .then((data) => {
+        setMessages((m) =>
+          m.map((msg) =>
+            msg.id === assistantId
+              ? { ...msg, content: data.answer || "", citations: data.citations || {}, reasoning_trace: data.reasoning_trace || null, trace: msg.trace?.map((t) => ({ ...t, status: "done" as const })) }
+              : msg,
+          ),
+        );
+      })
+      .catch((e: Error) => {
+        setMessages((m) =>
+          m.map((msg) =>
+            msg.id === assistantId
+              ? { ...msg, content: e.message || "Request failed", trace: msg.trace?.map((t) => ({ ...t, status: "done" as const })) }
+              : msg,
+          ),
+        );
+      })
+      .finally(() => {
+        setAsking(false);
+        pendingMsgId.current = null;
       });
-      if (r.ok) {
-        const data = await r.json();
-        answer = data.answer || "";
-        citations = data.citations || {};
-        reasoning_trace = data.reasoning_trace || null;
-      } else {
-        answer = `Error ${r.status}: ${await r.text()}`;
-      }
-    } catch (e: unknown) {
-      answer = e instanceof Error ? e.message : "Request failed";
-    }
-
-    clearInterval(stepTimer);
-    setMessages((m) =>
-      m.map((msg) =>
-        msg.id === placeholder.id
-          ? {
-              ...msg,
-              content: answer,
-              citations,
-              reasoning_trace,
-              trace: msg.trace?.map((t) => ({ ...t, status: "done" })),
-            }
-          : msg,
-      ),
-    );
-    setAsking(false);
-  }, [question, asking, backendUrl, selectedCompany]);
+  };
 
   // -------- Evaluation (per-message, user-chosen test type) --------
   const runEvaluation = useCallback(
@@ -520,9 +541,7 @@ function Index() {
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-[var(--accent)]">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 text-white shadow-[var(--shadow-soft)]">
-              <ShieldCheck className="h-5 w-5" strokeWidth={2.25} />
-            </div>
+            <BrandLogo className="h-9 w-9 text-white" />
             <div className="flex flex-col leading-tight">
               <span className="font-sans text-lg italic tracking-tight text-white">
                 Performance Analysis
@@ -610,7 +629,38 @@ function Index() {
           />
 
           <div className="grid gap-6">
+            {/* Mode toggle */}
+            <div className="flex rounded-xl border border-border bg-card p-1 gap-1 shadow-[var(--shadow-soft)]">
+              <button
+                onClick={() => setIngestionMode("upload")}
+                disabled={phase1Status === "running"}
+                className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold transition-all disabled:cursor-not-allowed ${
+                  ingestionMode === "upload"
+                    ? "bg-[var(--accent)] text-white shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Upload className="h-3.5 w-3.5" /> Upload New Filing
+              </button>
+              <button
+                onClick={() => { setIngestionMode("select"); if (companies.length === 0) void loadCompanies(); }}
+                disabled={phase1Status === "running"}
+                className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+                  ingestionMode === "select"
+                    ? "bg-[var(--accent)] text-white shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Database className="h-3.5 w-3.5" />
+                Use Existing Company
+                <span className={`font-mono text-[10px] rounded-full px-1.5 py-0.5 ${ingestionMode === "select" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"}`}>
+                  {companiesLoading ? "…" : companies.length}
+                </span>
+              </button>
+            </div>
+
             {/* Upload card */}
+            {ingestionMode === "upload" && (
             <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]">
               <div className="border-b border-border bg-[var(--panel)] px-5 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-foreground">
@@ -622,29 +672,16 @@ function Index() {
 
               <div className="p-5">
                 <label
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    setDragOver(true);
-                  }}
+                  onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
                   onDragLeave={() => setDragOver(false)}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    setDragOver(false);
-                    handleFiles(e.dataTransfer.files);
-                  }}
+                  onDrop={(e) => { e.preventDefault(); setDragOver(false); handleFiles(e.dataTransfer.files); }}
                   className={`relative flex h-36 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed transition-all ${
                     dragOver
                       ? "border-[var(--accent)] bg-[color-mix(in_oklab,var(--accent)_5%,transparent)]"
                       : "border-border hover:border-[var(--accent)]/50"
                   }`}
                 >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".html,.htm,.pdf"
-                    className="hidden"
-                    onChange={(e) => handleFiles(e.target.files)}
-                  />
+                  <input ref={fileInputRef} type="file" accept=".html,.htm,.pdf" className="hidden" onChange={(e) => handleFiles(e.target.files)} />
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--elevated)] text-[var(--accent)]">
                     <Upload className="h-4 w-4" />
                   </div>
@@ -662,34 +699,17 @@ function Index() {
                       <FileText className="h-3.5 w-3.5 text-muted-foreground" />
                     </div>
                     <span className="text-sm font-medium truncate">
-                      {file
-                        ? file.name
-                        : previousFilename && phase1Status === "complete"
-                        ? previousFilename
-                        : "No file selected"}
+                      {file ? file.name : previousFilename && phase1Status === "complete" ? previousFilename : "No file selected"}
                     </span>
-                    {file && (
-                      <span className="font-mono text-[10px] text-muted-foreground uppercase shrink-0">
-                        {fmtBytes(file.size)}
-                      </span>
-                    )}
+                    {file && <span className="font-mono text-[10px] text-muted-foreground uppercase shrink-0">{fmtBytes(file.size)}</span>}
                     {!file && previousFilename && phase1Status === "complete" && (
-                      <span className="font-mono text-[10px] text-[var(--accent)] uppercase shrink-0">
-                        restored
-                      </span>
+                      <span className="font-mono text-[10px] text-[var(--accent)] uppercase shrink-0">restored</span>
                     )}
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-2 rounded-md border border-input bg-background px-2.5 py-1.5">
-                      <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                        FY
-                      </label>
-                      <input
-                        type="text"
-                        value={fiscalYear}
-                        onChange={(e) => setFiscalYear(e.target.value)}
-                        className="w-14 bg-transparent text-xs font-mono outline-none text-foreground"
-                      />
+                      <label className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">FY</label>
+                      <input type="text" value={fiscalYear} onChange={(e) => setFiscalYear(e.target.value)} className="w-14 bg-transparent text-xs font-mono outline-none text-foreground" />
                     </div>
                     <button
                       onClick={canResume ? resumePipeline : runPipeline}
@@ -697,17 +717,11 @@ function Index() {
                       className="group relative flex items-center gap-2 overflow-hidden rounded-md bg-[var(--elevated)] text-[var(--accent)] text-xs font-semibold px-4 py-2 transition-all hover:bg-[var(--elevated)] disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
                     >
                       {canResume ? (
-                        <>
-                          <RotateCcw className="h-3.5 w-3.5" /> Resume from step {resumeFromStep}
-                        </>
+                        <><RotateCcw className="h-3.5 w-3.5" /> Resume from step {resumeFromStep}</>
                       ) : phase1Status === "complete" || phase1Status === "failed" ? (
-                        <>
-                          <RotateCcw className="h-3.5 w-3.5" /> Re-ingest
-                        </>
+                        <><RotateCcw className="h-3.5 w-3.5" /> Re-ingest</>
                       ) : (
-                        <>
-                          <Play className="h-3.5 w-3.5 fill-current" /> Run Diligence
-                        </>
+                        <><Play className="h-3.5 w-3.5 fill-current" /> Run Diligence</>
                       )}
                     </button>
                   </div>
@@ -721,51 +735,72 @@ function Index() {
                 )}
               </div>
             </div>
+            )}
 
-            {/* Select existing company — shown when graph already has data */}
-            {companies.length > 0 && phase1Status !== "running" && (
-              <div
-                className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]"
-                style={{ animation: "fadeReveal 0.5s var(--ease-out-expo) both" }}
-              >
+            {/* Select existing company */}
+            {ingestionMode === "select" && (
+              <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]" style={{ animation: "fadeReveal 0.4s var(--ease-out-expo) both" }}>
                 <div className="border-b border-border bg-[var(--panel)] px-5 py-3 flex items-center gap-2">
-                  <Building2 className="h-3.5 w-3.5 text-[var(--accent)]" />
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    Existing Companies in Graph
-                  </span>
+                  <Database className="h-3.5 w-3.5 text-[var(--accent)]" />
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Knowledge Graph</span>
+                  <span className="ml-auto font-mono text-[10px] text-[var(--accent)]">{companies.length} {companies.length === 1 ? "company" : "companies"}</span>
                 </div>
-                <div className="p-5 flex flex-wrap items-center gap-3">
-                  <p className="text-sm text-muted-foreground flex-1 min-w-48">
-                    Skip the upload and query a company already in the knowledge graph.
-                  </p>
-                  <div className="flex items-center gap-2">
+                <div className="p-6 flex flex-col gap-5">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Select target company</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Choose a company already stored in the knowledge graph. All answers and peer comparisons will be scoped to this target.
+                    </p>
+                  </div>
+                  {companiesLoading ? (
+                    <div className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-muted-foreground">
+                      <span className="h-3 w-3 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
+                      Loading companies from graph…
+                    </div>
+                  ) : companies.length === 0 ? (
+                    <div className="rounded-lg border border-dashed border-border bg-background px-4 py-5 text-center">
+                      <Database className="h-5 w-5 mx-auto text-muted-foreground/40 mb-2" />
+                      <p className="text-xs text-muted-foreground">No target companies found in the graph.</p>
+                      <p className="text-xs text-muted-foreground/60 mt-0.5">Upload a filing first to populate the knowledge graph.</p>
+                    </div>
+                  ) : (
                     <select
                       value={selectedCompany}
                       onChange={(e) => setSelectedCompany(e.target.value)}
-                      className="rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
-                      aria-label="Select existing company"
+                      className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
+                      aria-label="Select target company"
                     >
                       {companies.map((c) => (
-                        <option key={`${c.name}-${c.cik ?? ""}`} value={c.name}>{c.name}</option>
+                        <option key={c.name} value={c.name}>{c.name}</option>
                       ))}
                     </select>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <button
+                      onClick={() => void loadCompanies()}
+                      disabled={companiesLoading}
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-40"
+                    >
+                      ↻ Refresh
+                    </button>
                     <button
                       onClick={() => {
                         setPhase1Status("complete");
                         try { localStorage.setItem("verdant_phase1_status", "complete"); } catch { /* ignore */ }
                         setTimeout(() => phase2Ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
                       }}
-                      className="flex items-center gap-2 rounded-md bg-[var(--elevated)] text-[var(--accent)] text-xs font-semibold px-4 py-2 transition-all hover:brightness-105 shadow-[var(--shadow-soft)]"
+                      disabled={!selectedCompany || companies.length === 0}
+                      className="flex items-center gap-2 rounded-md bg-[var(--accent)] text-white text-xs font-semibold px-5 py-2.5 transition-all hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
                     >
-                      <Play className="h-3.5 w-3.5 fill-current" /> Use this company
+                      <Play className="h-3.5 w-3.5 fill-current" /> Start Analysis
                     </button>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Stepper */}
-            {(phase1Status !== "idle" || steps.some((s) => s.status !== "pending")) && (
+            {/* Stepper — only relevant during / after upload pipeline */}
+            {ingestionMode === "upload" && (phase1Status !== "idle" || steps.some((s) => s.status !== "pending")) && (
               <div
                 className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]"
                 style={{ animation: "fadeReveal 0.5s var(--ease-out-expo) both" }}
@@ -829,21 +864,11 @@ function Index() {
             <div className="mb-4 flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-soft)] sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-semibold text-foreground">Company in focus</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">Answers and comparisons will be scoped to this target company.</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">Answers and comparisons are scoped to this target company.</p>
               </div>
-              <div className="flex items-center gap-2 sm:min-w-72">
+              <div className="flex items-center gap-2 rounded-lg border border-border bg-[var(--elevated)] px-3 py-2 sm:min-w-72">
                 <Building2 className="h-4 w-4 shrink-0 text-[var(--accent)]" />
-                <select
-                  value={selectedCompany}
-                  onChange={(event) => setSelectedCompany(event.target.value)}
-                  disabled={companiesLoading || companies.length === 0}
-                  className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-shadow focus:ring-2 focus:ring-ring disabled:opacity-60"
-                  aria-label="Target company"
-                >
-                  {companiesLoading && <option>Loading companies…</option>}
-                  {!companiesLoading && companies.length === 0 && <option value="">All available companies</option>}
-                  {companies.map((company) => <option key={`${company.name}-${company.cik ?? ""}`} value={company.name}>{company.name}</option>)}
-                </select>
+                <span className="text-sm font-medium text-foreground truncate">{selectedCompany || "—"}</span>
               </div>
             </div>
 
@@ -869,29 +894,37 @@ function Index() {
               </div>
 
               {/* Composer */}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  askQuestion();
-                }}
-                className="border-t border-border bg-[var(--panel)] p-3 flex items-center gap-2"
-              >
+              <div className="border-t border-border bg-[var(--panel)] p-3 flex items-center gap-2">
                 <input
                   type="text"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); askQuestion(); } }}
                   placeholder="Ask about risks, financials, peer comparisons…"
                   disabled={asking}
                   className="flex-1 rounded-lg bg-card border border-input px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ring transition-all placeholder:text-muted-foreground"
                 />
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={() => setWithReasoning((r) => !r)}
+                  title={withReasoning ? "Reasoning on — click to disable" : "Reasoning off — click to enable"}
+                  className={`flex items-center gap-1 rounded-lg border px-3 py-2.5 text-xs font-semibold transition-all ${
+                    withReasoning
+                      ? "border-[var(--accent)] bg-[color-mix(in_oklab,var(--accent)_12%,transparent)] text-[var(--accent)]"
+                      : "border-border bg-card text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <Sparkles className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={askQuestion}
                   disabled={!question.trim() || asking}
                   className="flex items-center gap-1.5 rounded-lg bg-[var(--warning)] text-white text-xs font-semibold px-4 py-2.5 transition-all hover:brightness-105 disabled:opacity-40 disabled:cursor-not-allowed shadow-[var(--shadow-soft)]"
                 >
                   <Send className="h-3.5 w-3.5" /> Ask
                 </button>
-              </form>
+              </div>
             </div>
           </section>
         )}
@@ -1025,9 +1058,9 @@ function CitedText({
       const info = citations?.[id];
       if (!info) return null;
       const href = info.document_url;
-      const page = info.page != null && String(info.page).trim() !== "" ? String(info.page) : null;
+      const page = info.source_page != null && String(info.source_page).trim() !== "" ? String(info.source_page) : null;
+      const section = info.section_title?.trim() || null;
       const isTarget = info.role === "target";
-      // For target citations without a URL, fall back to the uploaded filing.
       const showFileFallback = !href && isTarget && !!sourceFileName;
 
       return (
@@ -1041,6 +1074,7 @@ function CitedText({
             </span>
             {" · "}
             {info.summary.slice(0, 80)}
+            {section && <span className="text-muted-foreground"> · {section}</span>}
             {showFileFallback ? (
               <>
                 {" · "}

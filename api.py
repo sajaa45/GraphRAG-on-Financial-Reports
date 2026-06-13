@@ -79,6 +79,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def root():
+    return {"status": "ok", "api": "PeersGraphRAG", "docs": "/docs"}
+
 STEPS = [
     {"id": 1, "name": "parse_document",          "label": "Parse & convert document"},
     {"id": 2, "name": "extract_target_entities",  "label": "Extract target entities"},
@@ -677,8 +681,8 @@ async def run_qa(request: QARequest):
         qa._save_answer(answer)
 
         reasoning_trace: Optional[str] = None
-        if request.reasoning and results:
-            reasoning_trace = qa.generate_reasoning_trace(request.question, queries, results) or None
+        if request.reasoning and queries:
+            reasoning_trace = qa.generate_reasoning_trace(request.question, queries, results, target_company=request.target_company or "") or None
             if reasoning_trace:
                 qa._save_reasoning(reasoning_trace)
 
@@ -693,20 +697,23 @@ async def run_qa(request: QARequest):
 
 @app.get("/companies")
 async def list_companies():
-    """Return all TargetCompany names stored in the graph."""
+    """Return all TargetCompany nodes (name + cik) ordered alphabetically.
+
+    Cypher: MATCH (tc:TargetCompany) RETURN tc.name AS name ORDER BY tc.name
+    """
     loop = asyncio.get_running_loop()
 
     def _fetch():
-        try:
-            with _neo4j_driver.session() as s:
-                rows = s.run(
-                    "MATCH (tc:TargetCompany) RETURN tc.name AS name, tc.cik AS cik ORDER BY tc.name"
-                ).data()
-            return {"companies": rows}
-        except Exception as exc:
-            return {"companies": [], "error": str(exc)}
+        with _neo4j_driver.session() as s:
+            rows = s.run(
+                "MATCH (tc:TargetCompany) RETURN tc.name AS name ORDER BY tc.name"
+            ).data()
+        return {"companies": rows}
 
-    return await loop.run_in_executor(_executor, _fetch)
+    try:
+        return await loop.run_in_executor(_executor, _fetch)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
 
 
 @app.get("/qa/ready")
@@ -918,3 +925,8 @@ async def run_eval(request: EvalRequest):
         return await loop.run_in_executor(_executor, _run)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8080)

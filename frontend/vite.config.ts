@@ -31,5 +31,6 @@ export default defineConfig({
   },
   vite: {
     plugins: [injectedHeadScriptsStub],
+    server: { host: "0.0.0.0", port: 5173 },
   },
 });
