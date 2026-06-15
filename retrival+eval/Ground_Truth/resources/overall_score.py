@@ -5,11 +5,11 @@ Aggregates the five individual evaluation CSVs into a single weighted score.
 This is NOT a standard RAGAS score — it is a custom pipeline quality metric.
 
 Weights:
-  Faithfulness        (answer_source_traceability) : 30%
-  Context Precision   (context_precision_results)  : 25%
-  Answer Relevancy    (answer_relevancy_results)   : 25%
-  Extraction Quality  (avg of risks + metrics +
-                       target validation)           : 20%
+  Adapted Faithfulness       (answer_source_traceability) : 30%
+  Adapted Context Precision  (context_precision_results)  : 25%
+  Adapted Answer Relevancy   (answer_relevancy_results)   : 25%
+  ExtractionQuality          (avg of risks + metrics +
+                              target validation)           : 20%
    
 Faithfulness scoring:
   correct source      → 1.0
@@ -107,12 +107,12 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
     errors: dict[str, str] = {}
 
     checks = [
-        ("Answer Relevancy",   score_answer_relevancy,  p("answer_relevancy_results.csv")),
-        ("Context Precision",  score_context_precision, p("context_precision_results.csv")),
-        ("Faithfulness",       score_faithfulness,      p("answer_source_traceability.csv")),
-        ("Risks Validation",   score_risks_validation,  p("risks_validation_results.csv")),
-        ("Metrics Validation", score_metrics_validation, p("metrics_validation_results.csv")),
-        ("Target Validation",  score_target_validation, p("target_validation_results.csv")),
+        ("Adapted Answer Relevancy",   score_answer_relevancy,  p("answer_relevancy_results.csv")),
+        ("Adapted Context Precision",  score_context_precision, p("context_precision_results.csv")),
+        ("Adapted Faithfulness",       score_faithfulness,      p("answer_source_traceability.csv")),
+        ("Risks Validation",           score_risks_validation,  p("risks_validation_results.csv")),
+        ("Metrics Validation",         score_metrics_validation, p("metrics_validation_results.csv")),
+        ("Target Validation",          score_target_validation, p("target_validation_results.csv")),
     ]
 
     print()
@@ -144,7 +144,7 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
 
     skipped = [k for k in eq_components if k not in scores]
     bar = "█" * int(extraction_quality * 20) + "░" * (20 - int(extraction_quality * 20))
-    print(f"\n  {'~':<3} {'Extraction Quality':<22}  {bar}  {extraction_quality:.1%}")
+    print(f"\n  {'~':<3} {'ExtractionQuality':<22}  {bar}  {extraction_quality:.1%}")
     detail = "  ".join(
         f"{k.split()[0]} {scores[k]:.1%}" for k in eq_components if k in scores
     )
@@ -155,22 +155,22 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
 
     # ── Weighted overall ──────────────────────────────────────────────────
     weights = {
-        "Faithfulness":        0.30,
-        "Context Precision":   0.25,
-        "Answer Relevancy":    0.25,
-        "Extraction Quality":  0.20,
+        "Adapted Faithfulness":        0.30,
+        "Adapted Context Precision":   0.25,
+        "Adapted Answer Relevancy":    0.25,
+        "ExtractionQuality":           0.20,
     }
 
     # Missing components score 0.0 — weights are NOT renormalised to prevent
     # a missing file from silently inflating the overall score.
     component_scores = {
-        "Faithfulness":       scores.get("Faithfulness", 0.0),
-        "Context Precision":  scores.get("Context Precision", 0.0),
-        "Answer Relevancy":   scores.get("Answer Relevancy", 0.0),
-        "Extraction Quality": extraction_quality,
+        "Adapted Faithfulness":       scores.get("Adapted Faithfulness", 0.0),
+        "Adapted Context Precision":  scores.get("Adapted Context Precision", 0.0),
+        "Adapted Answer Relevancy":   scores.get("Adapted Answer Relevancy", 0.0),
+        "ExtractionQuality":          extraction_quality,
     }
 
-    if not any(k in scores for k in ("Faithfulness", "Context Precision", "Answer Relevancy")) \
+    if not any(k in scores for k in ("Adapted Faithfulness", "Adapted Context Precision", "Adapted Answer Relevancy")) \
             and not any(scores.get(k) for k in eq_components):
         print("\n✗ No scores computed — cannot produce overall score")
         return

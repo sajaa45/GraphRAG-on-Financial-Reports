@@ -77,11 +77,10 @@ const PALETTES: { value: PaletteName; label: string; previewClass: string }[] = 
 ];
 
 const EVAL_TESTS: { value: string; label: string }[] = [
-  { value: "answer_relevancy",           label: "Answer Relevancy" },
-  { value: "context_precision",          label: "Context Precision" },
-  { value: "answer_source_traceability", label: "Source Traceability" },
-  { value: "target_validation",          label: "Target Extraction" },
-  { value: "risk_peers_validation",      label: "Peer Risk Validation" },
+  { value: "answer_relevancy",           label: "Adapted Answer Relevancy" },
+  { value: "context_precision",          label: "Adapted Context Precision" },
+  { value: "answer_source_traceability", label: "Adapted Faithfulness" },
+  { value: "context_recall",             label: "ExtractionQuality" },
   { value: "overall_score",              label: "Overall Score" },
 ];
 
@@ -101,29 +100,12 @@ const QA_TRACE_STEPS = [
 
 function BrandLogo({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 1024 1024" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      {/* monitor outer frame */}
-      <path fillOpacity=".18" fill="currentColor" d="M912.9 732.5c-47 0-86.3 33.5-95.3 77.8H701.9c-11.7 0-20.2-2.3-23.2-6.3-2-2.7-2-7-2-9v-51.1h109.9c37.5 0 67.9-30.5 67.9-67.9V235.2c0-37.5-30.5-67.9-67.9-67.9h-706c-37.5 0-67.9 30.5-67.9 67.9v440.7c0 37.5 30.5 67.9 67.9 67.9h557.2V795c0 4.8 0 19.3 9.9 32.4 10.9 14.4 29.1 21.7 54.2 21.7h308.2v-19.4c0-53.6-43.6-97.2-97.2-97.2z"/>
-      {/* screen bezel */}
-      <path fillOpacity=".55" fill="currentColor" d="M815.6 675.9V235.2c0-16.1-13.1-29.1-29.1-29.1H80.6c-16.1 0-29.1 13.1-29.1 29.1v440.7c0 16.1 13.1 29.1 29.1 29.1h705.9c16.1.1 29.1-13 29.1-29.1zm-43.9-42c0 16-13.1 29.1-29.1 29.1h-618c-16 0-29.1-13.1-29.1-29.1V277.3c0-16 13.1-29.1 29.1-29.1h618c16 0 29.1 13.1 29.1 29.1v356.6z"/>
-      {/* screen glass */}
-      <path fillOpacity=".08" fill="currentColor" d="M742.6 248.2h-618c-16 0-29.1 13.1-29.1 29.1v356.6c0 16 13.1 29.1 29.1 29.1h618c16 0 29.1-13.1 29.1-29.1V277.3c0-16-13.1-29.1-29.1-29.1z"/>
-      {/* pie chart outer ring */}
-      <path fill="currentColor" d="M274 335.6h-9.7c-67.8 0-123 55.2-123 123s55.2 123 123 123 123-55.2 123-123v-9.7H274V335.6zm93.4 132.8c-4.9 52.6-49.3 93.9-103.1 93.9-57.1 0-103.6-46.5-103.6-103.6 0-53.8 41.3-98.2 93.9-103.1v112.8h112.8z"/>
-      {/* pie slice */}
-      <path fillOpacity=".5" fill="currentColor" d="M297.2 325.2v94.7h94.7c0-52.3-42.4-94.7-94.7-94.7z"/>
-      {/* data rows — full */}
-      <path fill="currentColor" d="M670.8 329.4H461.2c-5.4 0-9.7 4.3-9.7 9.7s4.3 9.7 9.7 9.7h209.7c5.4 0 9.7-4.3 9.7-9.7s-4.4-9.7-9.8-9.7z"/>
-      <path fill="currentColor" d="M670.8 402.7H461.2c-5.4 0-9.7 4.3-9.7 9.7s4.3 9.7 9.7 9.7h209.7c5.4 0 9.7-4.3 9.7-9.7s-4.4-9.7-9.8-9.7z"/>
-      {/* data rows — shorter */}
-      <path fillOpacity=".55" fill="currentColor" d="M670.8 476.1H525.2c-5.4 0-9.7 4.3-9.7 9.7s4.3 9.7 9.7 9.7h145.6c5.4 0 9.7-4.3 9.7-9.7s-4.3-9.7-9.7-9.7z"/>
-      <path fillOpacity=".55" fill="currentColor" d="M670.8 549.4H530.1c-5.4 0-9.7 4.3-9.7 9.7 0 5.4 4.3 9.7 9.7 9.7h140.7c5.4 0 9.7-4.3 9.7-9.7 0-5.4-4.3-9.7-9.7-9.7z"/>
-      {/* stand base */}
-      <path fillOpacity=".35" fill="currentColor" d="M594.7 800.4H272.4c-10.7 0-19.4 8.7-19.4 19.4s8.7 19.4 19.4 19.4h322.3c10.7 0 19.4-8.7 19.4-19.4 0-10.8-8.7-19.4-19.4-19.4z"/>
-      {/* title bar dots */}
-      <circle fillOpacity=".7" fill="currentColor" cx="150" cy="288.8" r="11.9"/>
-      <circle fillOpacity=".7" fill="currentColor" cx="189" cy="288.8" r="11.9"/>
-    </svg>
+    <img
+      src="/id4Ns_eP1o_1781529991551.png"
+      alt="Logo"
+      className={className}
+      style={{ objectFit: "contain" }}
+    />
   );
 }
 
@@ -264,9 +246,6 @@ function Index() {
   const [question, setQuestion] = useState("");
   const [asking, setAsking] = useState(false);
   const [withReasoning, setWithReasoning] = useState(false);
-  const [graphData, setGraphData] = useState<GraphData | null>(null);
-  const [showGraph, setShowGraph] = useState(false);
-  const [graphLoading, setGraphLoading] = useState(false);
   const phase2Ref = useRef<HTMLDivElement>(null);
 
   const resetSteps = useCallback(() => {
@@ -419,22 +398,13 @@ function Index() {
     };
   }, []);
 
-  // Smooth scroll to QA when Phase 1 completes; clear stale graph cache so
-  // the next "Explore graph" click fetches fresh data including new peers/metrics.
+  // Smooth scroll to QA when Phase 1 completes
   useEffect(() => {
     if (phase1Status === "complete") {
       void loadCompanies();
-      setGraphData(null);
-      setShowGraph(false);
       setTimeout(() => phase2Ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 400);
     }
   }, [phase1Status, loadCompanies]);
-
-  // Clear graph cache whenever the selected company changes.
-  useEffect(() => {
-    setGraphData(null);
-    setShowGraph(false);
-  }, [selectedCompany]);
 
   // -------- QA submit --------
   const pendingMsgId = useRef<string | null>(null);
@@ -553,31 +523,18 @@ function Index() {
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-[var(--accent)]">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <BrandLogo className="h-9 w-9 text-white" />
+            <BrandLogo className="h-18 w-20 text-white" />
             <div className="flex flex-col leading-tight">
               <span className="font-sans text-lg italic tracking-tight text-white">
-                Performance Analysis
+                Axe Finance
               </span>
               <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/60">
-                KYC Intelligence
+                Performance Analysis Using GraphRAG
               </span>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5">
-              <div
-                className={`h-1.5 w-1.5 rounded-full ${
-                  connected === null
-                    ? "bg-white/30"
-                    : connected
-                    ? "bg-white"
-                    : "bg-red-300"
-                }`}
-              />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-white/70">
-                {connected === null ? "Checking" : connected ? "Engine online" : "Engine offline"}
-              </span>
-            </div>
+           
             <Button
               variant="ghost"
               size="icon"
@@ -617,12 +574,7 @@ function Index() {
       <main className="mx-auto max-w-5xl px-6 pt-12 pb-24">
         {/* Hero */}
         <header className="mb-14 max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 mb-5">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              Counterparty Due Diligence
-            </span>
-          </div>
+          
           <h1 className="font-sans text-5xl sm:text-6xl leading-[1.02] tracking-tight text-foreground">
             Know who you're <em className="text-[var(--accent)]">really</em> dealing with.
           </h1>
@@ -883,29 +835,8 @@ function Index() {
                   <Building2 className="h-4 w-4 shrink-0 text-[var(--accent)]" />
                   <span className="text-sm font-medium text-foreground truncate">{selectedCompany || "—"}</span>
                 </div>
-                <button
-                  onClick={async () => {
-                    if (showGraph && graphData) { setShowGraph(false); return; }
-                    setGraphLoading(true);
-                    try {
-                      const r = await fetch(`${backendUrl}/graph/explore?company=${encodeURIComponent(selectedCompany)}`);
-                      if (r.ok) { setGraphData(await r.json()); setShowGraph(true); }
-                    } finally { setGraphLoading(false); }
-                  }}
-                  disabled={!selectedCompany || graphLoading}
-                  className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-[var(--accent)] transition-all disabled:opacity-40"
-                >
-                  {graphLoading
-                    ? <span className="h-3 w-3 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
-                    : <Database className="h-3.5 w-3.5" />}
-                  Explore graph
-                </button>
               </div>
             </div>
-
-            {showGraph && graphData && (
-              <GraphExplorer data={graphData} onClose={() => setShowGraph(false)} />
-            )}
 
             <div className="rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)] overflow-hidden">
               {/* Messages */}
@@ -966,10 +897,7 @@ function Index() {
 
         {/* Footer */}
         <footer className="mt-24 pt-8 border-t border-border flex items-center gap-2 text-muted-foreground">
-          <ShieldCheck className="h-3.5 w-3.5 text-[var(--accent)]" />
-          <span className="text-[10px] font-mono uppercase tracking-widest">
-            KYC Engine · Auditable by design
-          </span>
+          
         </footer>
       </main>
     </div>
@@ -1414,545 +1342,6 @@ function Scorecard({ data }: { data: EvaluationResult }) {
           ))}
         </tbody>
       </table>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// GraphExplorer — Canvas-based knowledge graph viewer
-// ---------------------------------------------------------------------------
-
-interface GNode { id: string; name: string; type: string; group: string; [key: string]: unknown; }
-interface GLink { source: string; target: string; type: string; }
-interface GraphData { nodes: GNode[]; links: GLink[]; }
-
-const GROUP_COLOR: Record<string, string> = {
-  target:          "#7d141c",
-  peer:            "#fbf5f7",
-  industry:        "#9f4780",
-  metric:          "#24454d",
-  metric_category: "#24454d",
-  metric_value:    "#f9e091",
-  risk:            "#e3726c",
-  peer_risk:       "#e3726c",
-  siccode:         "#959aa1",
-};
-
-// Base unit = 10. target = ×4, peer = ×2, everything else = ×1
-const BASE_RADIUS = 10;
-const GROUP_RADIUS: Record<string, number> = {
-  target:          BASE_RADIUS * 4,
-  peer:            BASE_RADIUS * 2,
-  industry:        BASE_RADIUS,
-  metric:          BASE_RADIUS,
-  metric_category: BASE_RADIUS,
-  metric_value:    BASE_RADIUS,
-  risk:            BASE_RADIUS,
-  peer_risk:       BASE_RADIUS,
-  siccode:         BASE_RADIUS,
-};
-
-const SKIP_PROPS = new Set(["id", "name", "type", "group"]);
-
-function GraphExplorer({ data, onClose }: { data: GraphData; onClose: () => void }) {
-  const canvasRef    = useRef<HTMLCanvasElement>(null);
-  const posRef       = useRef<Map<string, { x: number; y: number }>>(new Map());
-  const velRef       = useRef<Map<string, { vx: number; vy: number }>>(new Map());
-  const dragRef      = useRef<{ id: string | null; ox: number; oy: number; moved: boolean }>({ id: null, ox: 0, oy: 0, moved: false });
-  const panRef       = useRef<{ dragging: boolean; sx: number; sy: number; ox: number; oy: number }>({ dragging: false, sx: 0, sy: 0, ox: 0, oy: 0 });
-  const offsetRef    = useRef({ x: 0, y: 0 });
-  const scaleRef     = useRef(1);
-  const selectedRef  = useRef<string | null>(null);
-  const rafRef       = useRef<number>(0);
-  const [tooltip, setTooltip]       = useState<{ x: number; y: number; text: string } | null>(null);
-  const [selectedNode, setSelectedNode] = useState<GNode | null>(null);
-  const [cursor, setCursor]         = useState<string>("grab");
-
-  // Map from node id to neighbouring node ids (for the detail panel)
-  const neighborMap = useRef<Map<string, string[]>>(new Map());
-  useEffect(() => {
-    const m = new Map<string, string[]>();
-    data.nodes.forEach((n) => m.set(n.id, []));
-    data.links.forEach((l) => {
-      m.get(l.source)?.push(l.target);
-      m.get(l.target)?.push(l.source);
-    });
-    neighborMap.current = m;
-  }, [data]);
-
-  // Translate a CSS-pixel canvas event position to canvas pixel coords
-  const toCv = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current!;
-    const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-    return {
-      x: (e.clientX - rect.left) * (canvas.width  / rect.width),
-      y: (e.clientY - rect.top)  * (canvas.height / rect.height),
-    };
-  }, []);
-
-  // World ↔ screen transform
-  const toScreen = (wx: number, wy: number) => ({
-    x: wx * scaleRef.current + offsetRef.current.x,
-    y: wy * scaleRef.current + offsetRef.current.y,
-  });
-  const toWorld = (sx: number, sy: number) => ({
-    x: (sx - offsetRef.current.x) / scaleRef.current,
-    y: (sy - offsetRef.current.y) / scaleRef.current,
-  });
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !data.nodes.length) return;
-    const W = canvas.width, H = canvas.height;
-    const cx = W / 2, cy = H / 2;
-
-    // Centre the view initially
-    offsetRef.current = { x: cx, y: cy };
-
-    // Radial initial positions (world space, centred at 0,0)
-    const groups = ["target", "peer", "metric", "industry", "risk", "peer_risk", "metric_category", "metric_value", "siccode"];
-    const radii  = [0, 160, 280, 280, 380, 380, 380, 480, 280];
-    const byGroup: Record<string, GNode[]> = {};
-    data.nodes.forEach((n) => { (byGroup[n.group] = byGroup[n.group] || []).push(n); });
-
-    data.nodes.forEach((n) => {
-      const gIdx  = groups.indexOf(n.group);
-      const r     = gIdx >= 0 ? radii[gIdx] : 250;
-      const peers = byGroup[n.group] || [];
-      const idx   = peers.indexOf(n);
-      const total = peers.length;
-      const angle = total > 1 ? (idx / total) * 2 * Math.PI - Math.PI / 2 : 0;
-      posRef.current.set(n.id, { x: r * Math.cos(angle), y: r * Math.sin(angle) });
-      velRef.current.set(n.id, { x: 0, y: 0 } as any);
-    });
-
-    const resolveColor = (g: string) => GROUP_COLOR[g] || "#888";
-
-    const draw = () => {
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-      const scale = scaleRef.current;
-      const { x: ox, y: oy } = offsetRef.current;
-      ctx.clearRect(0, 0, W, H);
-
-      // links
-      data.links.forEach((l) => {
-        const s = posRef.current.get(l.source), t = posRef.current.get(l.target);
-        if (!s || !t) return;
-        const ss = toScreen(s.x, s.y), ts = toScreen(t.x, t.y);
-        ctx.beginPath();
-        ctx.moveTo(ss.x, ss.y);
-        ctx.lineTo(ts.x, ts.y);
-
-        // highlight edges connected to selected node
-        const selId = selectedRef.current;
-        const isHighlight = selId && (l.source === selId || l.target === selId);
-        ctx.strokeStyle = isHighlight ? "rgba(180,180,255,0.6)" : "rgba(128,128,128,0.22)";
-        ctx.lineWidth   = isHighlight ? 2 : 1;
-        ctx.stroke();
-
-        // edge label
-        if (scale > 0.7 && l.type) {
-          const mx = (ss.x + ts.x) / 2, my = (ss.y + ts.y) / 2;
-          ctx.save();
-          ctx.font = `${Math.round(9 * scale)}px sans-serif`;
-          ctx.fillStyle = "rgba(150,150,150,0.8)";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.fillText(l.type, mx, my);
-          ctx.restore();
-        }
-      });
-
-      // nodes
-      data.nodes.forEach((n) => {
-        const p = posRef.current.get(n.id);
-        if (!p) return;
-        const { x: px, y: py } = toScreen(p.x, p.y);
-        const baseR = GROUP_RADIUS[n.group] ?? 10;
-        const r = baseR * scale;
-        const isSelected = selectedRef.current === n.id;
-        const color = resolveColor(n.group);
-
-        if (isSelected) {
-          ctx.beginPath();
-          ctx.arc(px, py, r + 5, 0, 2 * Math.PI);
-          ctx.fillStyle = "rgba(255,255,255,0.18)";
-          ctx.fill();
-        }
-
-        ctx.beginPath();
-        ctx.arc(px, py, r, 0, 2 * Math.PI);
-        ctx.fillStyle = color;
-        ctx.fill();
-
-        if (isSelected) {
-          ctx.strokeStyle = "#fff";
-          ctx.lineWidth = 2.5;
-          ctx.stroke();
-        }
-
-        if (scale > 0.45) {
-          ctx.fillStyle = "#fff";
-          ctx.font = `${Math.round((n.group === "target" ? 11 : 9) * Math.min(scale, 1.4))}px sans-serif`;
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          const label = n.name.length > 20 ? n.name.slice(0, 19) + "…" : n.name;
-          ctx.fillText(label, px, py + r + Math.round(11 * Math.min(scale, 1.2)));
-        }
-      });
-    };
-
-    // Simple force sim
-    const tick = () => {
-      const alpha   = 0.05;
-      const repulse = 1800;
-      const attract = 0.04;
-      const ids     = data.nodes.map((n) => n.id);
-
-      ids.forEach((id) => {
-        if (dragRef.current.id === id) return; // don't simulate dragged node
-        const p = posRef.current.get(id)!;
-        const v = velRef.current.get(id) as any;
-
-        ids.forEach((other) => {
-          if (other === id) return;
-          const o = posRef.current.get(other)!;
-          const dx = p.x - o.x, dy = p.y - o.y;
-          const d2 = dx * dx + dy * dy + 1;
-          const f = repulse / d2;
-          v.x += f * dx; v.y += f * dy;
-        });
-
-        data.links.forEach((l) => {
-          let other: string | null = null;
-          if (l.source === id) other = l.target;
-          if (l.target === id) other = l.source;
-          if (!other) return;
-          const o = posRef.current.get(other)!;
-          const dx = o.x - p.x, dy = o.y - p.y;
-          v.x += dx * attract; v.y += dy * attract;
-        });
-
-        // gentle gravity toward world origin
-        v.x += (0 - p.x) * 0.003;
-        v.y += (0 - p.y) * 0.003;
-
-        v.x *= 0.85; v.y *= 0.85;
-        p.x += v.x * alpha; p.y += v.y * alpha;
-      });
-
-      draw();
-      rafRef.current = requestAnimationFrame(tick);
-    };
-
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
-  const hitTest = useCallback((cvx: number, cvy: number) => {
-    const { x: wx, y: wy } = toWorld(cvx, cvy);
-    for (const n of [...data.nodes].reverse()) {
-      const p = posRef.current.get(n.id);
-      if (!p) continue;
-      const r = GROUP_RADIUS[n.group] ?? 10;
-      const dx = wx - p.x, dy = wy - p.y;
-      if (dx * dx + dy * dy <= r * r) return n;
-    }
-    return null;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
-  const onWheel = useCallback((e: React.WheelEvent<HTMLCanvasElement>) => {
-    e.preventDefault();
-    const canvas = canvasRef.current!;
-    const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-    const cvx = (e.clientX - rect.left) * (canvas.width  / rect.width);
-    const cvy = (e.clientY - rect.top)  * (canvas.height / rect.height);
-    const factor   = e.deltaY < 0 ? 1.12 : 0.89;
-    const newScale = Math.max(0.08, Math.min(6, scaleRef.current * factor));
-    const ratio    = newScale / scaleRef.current;
-    offsetRef.current = {
-      x: cvx - (cvx - offsetRef.current.x) * ratio,
-      y: cvy - (cvy - offsetRef.current.y) * ratio,
-    };
-    scaleRef.current = newScale;
-  }, []);
-
-  const onMouseDown = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    const cv = toCv(e);
-    const hit = hitTest(cv.x, cv.y);
-    if (hit) {
-      const wp = posRef.current.get(hit.id)!;
-      dragRef.current = { id: hit.id, ox: cv.x - toScreen(wp.x, wp.y).x, oy: cv.y - toScreen(wp.x, wp.y).y, moved: false };
-      setCursor("grabbing");
-    } else {
-      panRef.current = { dragging: true, sx: e.clientX, sy: e.clientY, ox: offsetRef.current.x, oy: offsetRef.current.y };
-      setCursor("grabbing");
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hitTest, toCv]);
-
-  const onMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    const cv = toCv(e);
-    if (dragRef.current.id) {
-      dragRef.current.moved = true;
-      const wp = toWorld(cv.x - dragRef.current.ox, cv.y - dragRef.current.oy);
-      // ox/oy in dragRef are CSS offset, but we need to map directly:
-      // screen pos of node = cv - (ox, oy) → world pos
-      const p = posRef.current.get(dragRef.current.id);
-      if (p) {
-        const ws = toWorld(cv.x - dragRef.current.ox, cv.y - dragRef.current.oy);
-        p.x = ws.x; p.y = ws.y;
-      }
-      setCursor("grabbing");
-    } else if (panRef.current.dragging) {
-      const canvas = canvasRef.current!;
-      const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      offsetRef.current = {
-        x: panRef.current.ox + (e.clientX - panRef.current.sx) * scaleX,
-        y: panRef.current.oy + (e.clientY - panRef.current.sy) * scaleY,
-      };
-      setCursor("grabbing");
-    } else {
-      const hit = hitTest(cv.x, cv.y);
-      setTooltip(hit ? { x: e.clientX, y: e.clientY, text: `${hit.type}: ${hit.name}` } : null);
-      setCursor(hit ? "pointer" : "grab");
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hitTest, toCv]);
-
-  const onMouseUp = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (dragRef.current.id && !dragRef.current.moved) {
-      // treat as click — select the node
-      const n = data.nodes.find((n) => n.id === dragRef.current.id) ?? null;
-      selectedRef.current = n?.id ?? null;
-      setSelectedNode(n);
-    }
-    if (!dragRef.current.id && !panRef.current.dragging) {
-      // click on empty canvas → deselect
-      const cv = toCv(e);
-      const hit = hitTest(cv.x, cv.y);
-      if (!hit) { selectedRef.current = null; setSelectedNode(null); }
-    }
-    dragRef.current.id = null;
-    dragRef.current.moved = false;
-    panRef.current.dragging = false;
-    setCursor("grab");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, hitTest, toCv]);
-
-  const onMouseLeave = useCallback(() => {
-    dragRef.current.id = null;
-    panRef.current.dragging = false;
-    setTooltip(null);
-    setCursor("grab");
-  }, []);
-
-  const onClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    const cv = toCv(e);
-    const hit = hitTest(cv.x, cv.y);
-    selectedRef.current = hit?.id ?? null;
-    setSelectedNode(hit ?? null);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hitTest, toCv]);
-
-  const GROUP_LABEL: Record<string, string> = {
-    target: "Target Company", peer: "Company", industry: "Industry",
-    metric: "Metric", metric_category: "Metric Category",
-    risk: "Risk", peer_risk: "Peer Risk", siccode: "SIC Code",
-  };
-  const legend = Object.entries(GROUP_COLOR).map(([g, c]) => ({ group: g, label: GROUP_LABEL[g] ?? g, color: c }));
-
-  // Extra properties of the selected node (beyond id/name/type/group)
-  const extraProps = selectedNode
-    ? Object.entries(selectedNode).filter(([k]) => !SKIP_PROPS.has(k))
-    : [];
-  const neighbors = selectedNode
-    ? (neighborMap.current.get(selectedNode.id) ?? [])
-        .map((nid) => data.nodes.find((n) => n.id === nid))
-        .filter(Boolean) as GNode[]
-    : [];
-  const nodeColor = selectedNode ? (GROUP_COLOR[selectedNode.group] || "#888") : "#888";
-
-  return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-sm">
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-6 py-3 border-b border-border shrink-0">
-        <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Knowledge Graph Explorer</span>
-        <div className="flex items-center gap-4">
-          <div className="hidden sm:flex items-center gap-3 flex-wrap">
-            {legend.map(({ group, label, color }) => (
-              <span key={group} className="flex items-center gap-1 text-[10px] font-mono text-muted-foreground">
-                <span className="h-2.5 w-2.5 rounded-full inline-block border border-white/10" style={{ background: color }} />
-                {label}
-              </span>
-            ))}
-          </div>
-          <span className="font-mono text-[10px] text-muted-foreground/60">Scroll to zoom · Drag to pan · Click node for details</span>
-          <button onClick={onClose} className="rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted transition-colors">
-            Close
-          </button>
-        </div>
-      </div>
-
-      {/* Body */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Canvas */}
-        <div className="relative flex-1 overflow-hidden">
-          <canvas
-            ref={canvasRef}
-            width={1600}
-            height={900}
-            style={{ width: "100%", height: "100%", cursor }}
-            onMouseDown={onMouseDown}
-            onMouseMove={onMouseMove}
-            onMouseUp={onMouseUp}
-            onMouseLeave={onMouseLeave}
-            onClick={onClick}
-            onWheel={onWheel}
-          />
-          {tooltip && !selectedNode && (
-            <div
-              className="pointer-events-none fixed rounded-md border border-border bg-card px-2.5 py-1.5 text-xs shadow-lg max-w-xs z-10"
-              style={{ left: tooltip.x + 14, top: tooltip.y + 14 }}
-            >
-              {tooltip.text}
-            </div>
-          )}
-          {/* Zoom controls */}
-          <div className="absolute bottom-4 right-4 flex flex-col gap-1">
-            {[
-              { label: "+", delta: -1 },
-              { label: "−", delta: 1 },
-              { label: "⊙", delta: 0 },
-            ].map(({ label, delta }) => (
-              <button
-                key={label}
-                onClick={() => {
-                  if (delta === 0) {
-                    scaleRef.current = 1;
-                    offsetRef.current = { x: (canvasRef.current?.width ?? 800) / 2, y: (canvasRef.current?.height ?? 600) / 2 };
-                  } else {
-                    const factor = delta < 0 ? 1.25 : 0.8;
-                    const cx = (canvasRef.current?.width ?? 800) / 2;
-                    const cy = (canvasRef.current?.height ?? 600) / 2;
-                    const newScale = Math.max(0.08, Math.min(6, scaleRef.current * factor));
-                    const ratio = newScale / scaleRef.current;
-                    offsetRef.current = {
-                      x: cx - (cx - offsetRef.current.x) * ratio,
-                      y: cy - (cy - offsetRef.current.y) * ratio,
-                    };
-                    scaleRef.current = newScale;
-                  }
-                }}
-                className="w-8 h-8 rounded-md border border-border bg-card text-foreground text-sm font-mono flex items-center justify-center hover:bg-muted transition-colors shadow-sm"
-                title={delta < 0 ? "Zoom in" : delta > 0 ? "Zoom out" : "Reset zoom"}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Node detail panel — Neo4j style */}
-        {selectedNode && (
-          <div
-            className="w-72 shrink-0 border-l border-border bg-card flex flex-col overflow-hidden"
-            style={{ animation: "fadeReveal 0.25s var(--ease-out-expo) both" }}
-          >
-            {/* Header */}
-            <div className="px-4 py-3 border-b border-border flex items-start justify-between gap-2">
-              <div className="min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span
-                    className="h-3 w-3 rounded-full shrink-0"
-                    style={{ background: nodeColor }}
-                  />
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground capitalize">
-                    {selectedNode.group.replace("_", " ")}
-                  </span>
-                </div>
-                <p className="text-sm font-semibold text-foreground break-words leading-snug">
-                  {selectedNode.name}
-                </p>
-              </div>
-              <button
-                onClick={() => { selectedRef.current = null; setSelectedNode(null); }}
-                className="shrink-0 text-muted-foreground hover:text-foreground transition-colors text-lg leading-none mt-0.5"
-                aria-label="Close panel"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto">
-              {/* Core properties */}
-              <div className="px-4 py-3 border-b border-border">
-                <p className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground mb-2">Properties</p>
-                <dl className="space-y-2">
-                  {[
-                    ["id",   selectedNode.id],
-                    ["type", selectedNode.type],
-                  ].map(([k, v]) => (
-                    <div key={k} className="grid grid-cols-[80px_1fr] gap-1 text-xs">
-                      <dt className="font-mono text-muted-foreground truncate">{k}</dt>
-                      <dd className="text-foreground break-words">{String(v)}</dd>
-                    </div>
-                  ))}
-                  {extraProps.map(([k, v]) => (
-                    <div key={k} className="grid grid-cols-[80px_1fr] gap-1 text-xs">
-                      <dt className="font-mono text-muted-foreground truncate">{k}</dt>
-                      <dd className="text-foreground break-words">
-                        {typeof v === "object" ? JSON.stringify(v) : String(v ?? "—")}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-
-              {/* Relationships */}
-              {neighbors.length > 0 && (
-                <div className="px-4 py-3">
-                  <p className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground mb-2">
-                    Relationships · {neighbors.length}
-                  </p>
-                  <ul className="space-y-1.5">
-                    {neighbors.map((nb) => {
-                      const link = data.links.find(
-                        (l) =>
-                          (l.source === selectedNode.id && l.target === nb.id) ||
-                          (l.target === selectedNode.id && l.source === nb.id),
-                      );
-                      const nbColor = GROUP_COLOR[nb.group] || "#888";
-                      return (
-                        <li
-                          key={nb.id}
-                          className="flex items-start gap-2 text-xs cursor-pointer group rounded-md px-2 py-1.5 hover:bg-muted transition-colors"
-                          onClick={() => { selectedRef.current = nb.id; setSelectedNode(nb); }}
-                        >
-                          <span className="h-2 w-2 rounded-full mt-0.5 shrink-0" style={{ background: nbColor }} />
-                          <div className="min-w-0">
-                            {link?.type && (
-                              <span className="font-mono text-[9px] text-muted-foreground block">{link.type}</span>
-                            )}
-                            <span className="text-foreground group-hover:text-[var(--accent)] transition-colors break-words">
-                              {nb.name}
-                            </span>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
