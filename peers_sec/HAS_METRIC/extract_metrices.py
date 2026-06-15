@@ -53,16 +53,27 @@ def get_companies_from_neo4j(driver):
     return companies
 
 
-def get_target_company_metrics(driver):
+def get_target_company_metrics(driver, company_name: str = None):
     """Query Neo4j for metrics of the target company."""
     with driver.session() as session:
-        result = session.run(
-            """
-            MATCH (c:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
-            RETURN m.name AS metric_name, m.metric_type AS metric_type,
-                   m.gaap_concept AS gaap_concept, m.year AS year, mc.name AS category
-            """
-        )
+        if company_name:
+            result = session.run(
+                """
+                MATCH (c:TargetCompany {name: $name})-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: $name})-[:HAS_METRIC]->(m:Metric {company: $name})
+                RETURN m.name AS metric_name, m.metric_type AS metric_type,
+                       m.gaap_concept AS gaap_concept, m.year AS year, mc.name AS category
+                """,
+                {"name": company_name},
+            )
+        else:
+            result = session.run(
+                """
+                MATCH (c:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
+                WHERE mc.company = c.name AND m.company = c.name
+                RETURN m.name AS metric_name, m.metric_type AS metric_type,
+                       m.gaap_concept AS gaap_concept, m.year AS year, mc.name AS category
+                """
+            )
         metrics = []
         seen_types = set()
 

@@ -172,35 +172,53 @@ def get_target_name(driver) -> str | None:
 
 
 def process_companies_from_api(driver, sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100, delay=0.5,
-                               output_file='peers_sec/FACES_RISK/companies_risks.json'):
+                               output_file='peers_sec/FACES_RISK/companies_risks.json',
+                               target_company_name: str = None,
+                               peer_companies: list = None):
+    """Extract risk factors for peer companies.
+
+    If *peer_companies* is supplied (a list of company dicts already selected for
+    metrics), risks are extracted only for those companies — guaranteeing that every
+    peer ends up with both metrics and risks.  When omitted the function falls back
+    to querying the EDGAR search index and picking the first qualifying companies.
+    """
     fiscal_year = int(fiscal_year)
     print(f"Filtering for fiscal year: {fiscal_year}")
-    companies = get_companies_from_api(sic_codes, fiscal_year, size)
-    print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes} [fiscal year {fiscal_year}]")
 
-    target_name = get_target_name(driver)
-    if target_name:
-        print(f"Excluding target company: {target_name}")
-        companies = [c for c in companies if not is_target_company(c['name'], target_name)]
+    if peer_companies is not None:
+        # Use the pre-selected list so metrics and risks cover the same companies.
+        companies = peer_companies
+        print(f"Using {len(companies)} pre-selected peer companies for risk extraction")
+    else:
+        companies = get_companies_from_api(sic_codes, fiscal_year, size)
+        print(f"Fetched {len(companies)} companies for SIC code(s): {sic_codes} [fiscal year {fiscal_year}]")
 
-    with open('peers_sec/FACES_RISK/companies_list.json', 'w', encoding='utf-8') as f:
-        json.dump({"total_count": len(companies), "companies": companies, "sic_codes": sic_codes, "fiscal_year": fiscal_year}, f, indent=2, ensure_ascii=False)
+        # Use the explicitly supplied name; fall back to Neo4j only when not provided.
+        target_name = (target_company_name or "").strip().lower() or get_target_name(driver)
+        if target_name:
+            print(f"Excluding target company: {target_name}")
+            companies = [c for c in companies if not is_target_company(c['name'], target_name)]
 
+    # Write companies list next to the output file so each job keeps its own copy.
+    list_file = os.path.join(os.path.dirname(output_file), 'companies_list.json')
+    with open(list_file, 'w', encoding='utf-8') as f:
+        json.dump({"total_count": len(companies), "companies": companies,
+                   "sic_codes": sic_codes, "fiscal_year": fiscal_year}, f, indent=2, ensure_ascii=False)
+
+    target_name = (target_company_name or "").strip().lower() or get_target_name(driver)
     results = []
     for i, company in enumerate(companies, 1):
         print(f"\n[{i}/{len(companies)}] CIK {company['cik']} — {company['name']}")
         try:
             data = get_risk_factor_data(company)
-            if is_target_company(data['company_name'], target_name):
+            if target_name and is_target_company(data['company_name'], target_name):
                 print(f"  Skipped — this is the target company: {data['company_name']}")
                 continue
             if data['risk_count'] < 7:
                 print(f"  Skipped — only {data['risk_count']} risks")
             elif data['length']['words'] > 4800:
                 results.append(data)
-                print(f"  Added ({len(results)}/3)")
-                if len(results) >= 3:
-                    break
+                print(f"  Added ({len(results)}/{len(companies)})")
             else:
                 print(f"  Skipped — only {data['length']['words']} words")
         except Exception as e:

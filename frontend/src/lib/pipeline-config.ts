@@ -1,12 +1,12 @@
 const KEY = "equitygraph.backend_url";
 
-export const DEFAULT_BACKEND_URL = "http://192.168.100.9:8080";
+export const DEFAULT_BACKEND_URL = "http://192.168.4.25:8080";
 
 export function getBackendUrl(): string {
   if (typeof window === "undefined") return DEFAULT_BACKEND_URL;
   const stored = localStorage.getItem(KEY);
-  // If the stored value is the old default (localhost:8000), replace it.
-  if (!stored || stored === "http://localhost:8000") {
+  const staleDefaults = ["http://localhost:8000", "http://localhost:8080", "http://192.168.100.9:8080"];
+  if (!stored || staleDefaults.includes(stored)) {
     localStorage.setItem(KEY, DEFAULT_BACKEND_URL);
     return DEFAULT_BACKEND_URL;
   }

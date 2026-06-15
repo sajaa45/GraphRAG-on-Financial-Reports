@@ -118,13 +118,14 @@ def _save_state(state: dict) -> None:
 
 def _create_state(job_id: str, fiscal_year: str, file_path: str) -> dict:
     state = {
-        "job_id":          job_id,
-        "fiscal_year":     fiscal_year,
-        "file_path":       file_path,
-        "main_company":    "",
-        "sic_codes":       [],
-        "completed_steps": [],
-        "created_at":      datetime.utcnow().isoformat(),
+        "job_id":           job_id,
+        "fiscal_year":      fiscal_year,
+        "file_path":        file_path,
+        "main_company":     "",
+        "sic_codes":        [],
+        "extraction_paths": [],
+        "completed_steps":  [],
+        "created_at":       datetime.utcnow().isoformat(),
     }
     os.makedirs(_job_dir(job_id), exist_ok=True)
     _save_state(state)
@@ -209,6 +210,45 @@ def _run_step2(job_id: str, state: dict) -> tuple:
     main_company = extractor.main_company
     extractor.close()
 
+    counts: Dict[str, int] = {}
+    for jp in json_paths:
+        with open(jp, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+        if "validated_relation" in data:
+            rel = data["validated_relation"].get("rel", "")
+            counts[rel] = counts.get(rel, 0) + 1
+        else:
+            for rel_type, items in data.get("relations", {}).items():
+                counts[rel_type] = counts.get(rel_type, 0) + len(items)
+
+    # Store the extractor's own output paths in state — step 3 reads them directly
+    return main_company, counts, json_paths
+
+
+def _run_step3(job_id: str, state: dict) -> int:
+    """Write the extracted target relations into Neo4j using the extractor's files."""
+    from neo4j_builder import Neo4jBuilder
+    import glob as _glob
+
+    main_company = state["main_company"]
+    json_paths: list[str] = [p for p in state.get("extraction_paths", []) if os.path.exists(p)]
+
+    # Fallback 1 — old jobs that saved target_relations.json
+    if not json_paths:
+        old_path = os.path.join(_job_dir(job_id), "target_relations.json")
+        if os.path.exists(old_path):
+            with open(old_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            builder = Neo4jBuilder(main_company=data["main_company"], driver=_neo4j_driver)
+            return builder._build_from_data(data)
+
+    # Fallback 2 — scan relation subdirs: {job_dir}/{RELATION}/extracted_{job_id}.json
+    if not json_paths:
+        json_paths = _glob.glob(os.path.join(_job_dir(job_id), "*", f"extracted_{job_id}.json"))
+
+    if not json_paths:
+        raise RuntimeError("No extraction output found for this job — re-run step 2 first.")
+
     combined_relations: Dict[str, list] = {}
     for jp in json_paths:
         with open(jp, "r", encoding="utf-8") as fh:
@@ -220,31 +260,17 @@ def _run_step2(job_id: str, state: dict) -> tuple:
             for rel_type, items in data.get("relations", {}).items():
                 combined_relations.setdefault(rel_type, []).extend(items)
 
-    out = os.path.join(_job_dir(job_id), "target_relations.json")
-    with open(out, "w", encoding="utf-8") as f:
-        json.dump({"main_company": main_company, "relations": combined_relations}, f, ensure_ascii=False)
-
-    counts = {rel: len(items) for rel, items in combined_relations.items()}
-    return main_company, counts
-
-
-def _run_step3(job_id: str, state: dict) -> int:
-    """Write the extracted target relations into Neo4j."""
-    from neo4j_builder import Neo4jBuilder
-
-    relations_path = os.path.join(_job_dir(job_id), "target_relations.json")
-    with open(relations_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    builder = Neo4jBuilder(main_company=data["main_company"], driver=_neo4j_driver)
-    return builder._build_from_data(data)
+    builder = Neo4jBuilder(main_company=main_company, driver=_neo4j_driver)
+    return builder._build_from_data({"main_company": main_company, "relations": combined_relations})
 
 
 def _run_step4(job_id: str, state: dict) -> dict:
     """Find peers via SIC code, then retrieve their metrics and risk filings."""
-    from fetch_and_extract_risks import get_sic_from_neo4j, get_companies_from_api, process_companies_from_api
-    from process_risks           import process_all_risks
-    from extract_metrices        import get_target_company_metrics, analyze_company_covenants
+    from fetch_and_extract_risks import (
+        get_sic_from_neo4j, get_companies_from_api, get_risk_factor_data, is_target_company,
+    )
+    from process_risks  import process_all_risks
+    from extract_metrices import get_target_company_metrics, analyze_company_covenants
 
     job_dir         = _job_dir(job_id)
     peers_path      = os.path.join(job_dir, "peer_companies.json")
@@ -255,51 +281,80 @@ def _run_step4(job_id: str, state: dict) -> dict:
     main_company    = state["main_company"]
     fy              = state["fiscal_year"]
 
-    # --- find peers ---
+    # --- find peer candidates from EDGAR ---
     sic = get_sic_from_neo4j(_neo4j_driver, target_company=main_company)
     if isinstance(sic, str):
         sic = [sic]
-    companies = get_companies_from_api(sic, fiscal_year=fy)[:MAX]
-    print(f"  SIC {', '.join(sic)} → {len(companies)} peers")
+    all_candidates = get_companies_from_api(sic, fiscal_year=fy)
+    # Exclude the target company itself from the candidate pool.
+    candidates = [
+        c for c in all_candidates
+        if not is_target_company(c.get("name", ""), main_company)
+    ]
+    print(f"  SIC {', '.join(sic)} → {len(candidates)} candidates after excluding target")
     with open(peers_path, "w", encoding="utf-8") as f:
-        json.dump(companies, f, ensure_ascii=False)
+        json.dump(candidates, f, ensure_ascii=False)
 
-    # --- retrieve metrics ---
-    target_metrics = get_target_company_metrics(_neo4j_driver)
-    candidates     = [c for c in companies if c.get("name") != main_company][:MAX]
-    print(f"  Fetching metrics for {len(candidates)} peers…")
-    companies_with_metrics = []
+    # --- single unified pass: accept only companies that have BOTH metrics and risks ---
+    target_metrics     = get_target_company_metrics(_neo4j_driver, company_name=main_company)
+    accepted_metrics   = []   # entries for peer_metrics.json
+    accepted_risks     = []   # entries for companies_risks.json
+
+    print(f"  Scanning up to {len(candidates)} candidates for peers with both metrics and risks…")
     for i, company in enumerate(candidates, 1):
+        if len(accepted_metrics) >= MAX:
+            break
+
         cik    = company["cik"]
         name   = company["name"]
         ticker = company.get("ticker", "N/A")
         print(f"  [{i}/{len(candidates)}] {name}")
-        results = analyze_company_covenants(cik, name, target_metrics, fy)
-        if results:
-            companies_with_metrics.append({
-                "company":        {"cik": cik, "name": name, "ticker": ticker},
-                "target_metrics": results,
-                "total_matches":  sum(len(v) for v in results.values()),
-            })
-    with open(metrics_path, "w", encoding="utf-8") as f:
-        json.dump({"companies_with_metrics": companies_with_metrics, "fiscal_year": fy}, f, indent=2, ensure_ascii=False)
 
-    # --- retrieve & structure risks ---
-    companies_data = process_companies_from_api(
-        _neo4j_driver,
-        sic_codes=sic,
-        fiscal_year=fy,
-        output_file=risks_path,
-    )
+        # 1. Check metrics via SEC XBRL API.
+        metric_results = analyze_company_covenants(cik, name, target_metrics, fy)
+        if not metric_results:
+            print(f"    → no metrics, skipping")
+            continue
+
+        # 2. Check risks — fetch 10-K and verify sufficient risk-factor text.
+        try:
+            risk_data = get_risk_factor_data(company)
+        except Exception as e:
+            print(f"    → risk fetch failed ({e}), skipping")
+            continue
+
+        if risk_data["risk_count"] < 7:
+            print(f"    → only {risk_data['risk_count']} risks, skipping")
+            continue
+        if risk_data["length"]["words"] <= 4800:
+            print(f"    → only {risk_data['length']['words']} words, skipping")
+            continue
+
+        # Both checks passed — accept this company.
+        print(f"    → accepted ({len(accepted_metrics) + 1}/{MAX}): {metric_results and len(metric_results)} metric types, {risk_data['risk_count']} risks")
+        accepted_metrics.append({
+            "company":        {"cik": cik, "name": name, "ticker": ticker},
+            "target_metrics": metric_results,
+            "total_matches":  sum(len(v) for v in metric_results.values()),
+        })
+        accepted_risks.append(risk_data)
+
+    # --- write outputs ---
+    with open(metrics_path, "w", encoding="utf-8") as f:
+        json.dump({"companies_with_metrics": accepted_metrics, "fiscal_year": fy}, f, indent=2, ensure_ascii=False)
+
+    with open(risks_path, "w", encoding="utf-8") as f:
+        json.dump(accepted_risks, f, indent=2, ensure_ascii=False)
+
     n_risks_extracted = 0
-    if companies_data:
+    if accepted_risks:
         structured        = process_all_risks(_bedrock_client, input_file=risks_path, output_file=structured_path)
         n_risks_extracted = sum(c.get("total_risks", 0) for c in structured)
 
     return {
         "sic":               sic,
-        "n_peers":           len(companies),
-        "n_metrics":         len(companies_with_metrics),
+        "n_peers":           len(accepted_metrics),
+        "n_metrics":         len(accepted_metrics),
         "n_risks_extracted": n_risks_extracted,
     }
 
@@ -342,8 +397,8 @@ async def _execute_step(job_id: str, step_id: int, state: dict, loop) -> bool:
                   summary=f"Extracted {r['num_sections']} sections")
 
         elif step_id == 2:
-            main_company, counts = await loop.run_in_executor(_executor, _run_step2, job_id, state)
-            _mark_step_complete(state, 2, main_company=main_company)
+            main_company, counts, json_paths = await loop.run_in_executor(_executor, _run_step2, job_id, state)
+            _mark_step_complete(state, 2, main_company=main_company, extraction_paths=json_paths)
             parts = [f"{v} {k.replace('_', ' ').lower()}" for k, v in counts.items()]
             _emit(job_id, 2, "done",
                   summary=f"Extracted {', '.join(parts)} for {main_company}.")
@@ -448,7 +503,8 @@ def _enrich_metric_source_info(citations: Dict[str, Any]) -> None:
             rows = session.run(
                 """
                 MATCH (m:Metric)
-                WHERE m.company IS NULL AND m.citation_id IN $ids
+                WHERE m.citation_id IN $ids
+                  AND EXISTS { MATCH (:TargetCompany {name: m.company}) }
                 RETURN m.citation_id AS cid,
                        m.source_page   AS source_page,
                        m.section_title AS section_title,
@@ -712,6 +768,175 @@ async def list_companies():
 
     try:
         return await loop.run_in_executor(_executor, _fetch)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/graph/explore")
+async def explore_graph(company: str):
+    """Return nodes + links for the knowledge graph explorer."""
+    loop = asyncio.get_running_loop()
+
+    def _fetch():
+        nodes: dict[str, dict] = {}
+        links: list[dict] = []
+
+        def _add(nid: str, name: str, ntype: str, group: str, extra: dict | None = None):
+            if nid not in nodes:
+                nodes[nid] = {"id": nid, "name": name, "type": ntype, "group": group, **(extra or {})}
+
+        with _neo4j_driver.session() as s:
+            # Target company
+            tc_row = s.run(
+                "MATCH (tc:TargetCompany {name: $n}) RETURN id(tc) AS i", {"n": company}
+            ).single()
+            if not tc_row:
+                return {"nodes": [], "links": []}
+            tc_id = str(tc_row["i"])
+            _add(tc_id, company, "TargetCompany", "target")
+
+            # Peers — strictly via COMPETES_WITH to THIS target only
+            peer_rows = s.run("""
+                MATCH (p:Company)-[:COMPETES_WITH]->(tc:TargetCompany {name: $n})
+                RETURN DISTINCT id(p) AS i, p.name AS name LIMIT 8
+            """, {"n": company}).data()
+
+            for r in peer_rows:
+                pid = str(r["i"])
+                _add(pid, r["name"] or "Peer", "Company", "peer")
+                links.append({"source": pid, "target": tc_id, "type": "COMPETES_WITH"})
+
+            # Target metric categories
+            for r in s.run("""
+                MATCH (tc:TargetCompany {name: $n})-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: $n})
+                RETURN id(mc) AS i, mc.name AS name
+            """, {"n": company}).data():
+                mid = str(r["i"])
+                _add(mid, r["name"] or "Category", "MetricCategory", "metric")
+                links.append({"source": tc_id, "target": mid, "type": "HAS_METRIC_CATEGORY"})
+
+            # Target risks
+            for r in s.run("""
+                MATCH (tc:TargetCompany {name: $n})-[:FACES_RISK]->(rk:Risk)
+                RETURN id(rk) AS i, rk.name AS name LIMIT 10
+            """, {"n": company}).data():
+                rid = str(r["i"])
+                _add(rid, (r["name"] or "Risk")[:40], "Risk", "risk")
+                links.append({"source": tc_id, "target": rid, "type": "FACES_RISK"})
+
+            # Industries
+            for r in s.run("""
+                MATCH (tc:TargetCompany {name: $n})-[:OPERATES_IN]->(ind:Industry)
+                RETURN id(ind) AS i, ind.name AS name LIMIT 1
+            """, {"n": company}).data():
+                iid = str(r["i"])
+                _add(iid, r["name"] or "Industry", "Industry", "industry")
+                links.append({"source": tc_id, "target": iid, "type": "OPERATES_IN"})
+
+            # Peer metric categories — only for peers of THIS target
+            for r in s.run("""
+                MATCH (p:Company)-[:COMPETES_WITH]->(tc:TargetCompany {name: $n})
+                MATCH (p)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: p.name})
+                RETURN id(p) AS pid, id(mc) AS mid, mc.name AS mname
+            """, {"n": company}).data():
+                pid, mid = str(r["pid"]), str(r["mid"])
+                if pid in nodes:
+                    _add(mid, r["mname"] or "Category", "MetricCategory", "metric")
+                    links.append({"source": pid, "target": mid, "type": "HAS_METRIC_CATEGORY"})
+
+            # Target individual metrics
+            for r in s.run("""
+                MATCH (tc:TargetCompany {name: $n})-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: $n})-[:HAS_METRIC]->(m:Metric {company: $n})
+                RETURN id(mc) AS mcid, id(m) AS mid, m.name AS mname
+            """, {"n": company}).data():
+                mcid, mid = str(r["mcid"]), str(r["mid"])
+                if mcid in nodes:
+                    _add(mid, (r["mname"] or "Metric")[:50], "Metric", "metric_value")
+                    links.append({"source": mcid, "target": mid, "type": "HAS_METRIC"})
+
+            # Peer individual metrics — only for peers of THIS target
+            for r in s.run("""
+                MATCH (p:Company)-[:COMPETES_WITH]->(tc:TargetCompany {name: $n})
+                MATCH (p)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: p.name})-[:HAS_METRIC]->(m:Metric {company: p.name})
+                RETURN id(p) AS pid, id(mc) AS mcid, id(m) AS mid, m.name AS mname
+            """, {"n": company}).data():
+                pid, mcid, mid = str(r["pid"]), str(r["mcid"]), str(r["mid"])
+                if pid in nodes and mcid in nodes:
+                    _add(mid, (r["mname"] or "Metric")[:50], "Metric", "metric_value")
+                    links.append({"source": mcid, "target": mid, "type": "HAS_METRIC"})
+
+            # Peer risks — only for peers of THIS target
+            for r in s.run("""
+                MATCH (p:Company)-[:COMPETES_WITH]->(tc:TargetCompany {name: $n})
+                MATCH (p)-[:FACES_RISK]->(rk:Risk)
+                RETURN id(p) AS pid, id(rk) AS rid, rk.name AS rname LIMIT 15
+            """, {"n": company}).data():
+                pid, rid = str(r["pid"]), str(r["rid"])
+                if pid in nodes:
+                    _add(rid, (r["rname"] or "Risk")[:40], "Risk", "peer_risk")
+                    links.append({"source": pid, "target": rid, "type": "FACES_RISK"})
+
+        return {"nodes": list(nodes.values()), "links": links}
+
+    try:
+        return await loop.run_in_executor(_executor, _fetch)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.post("/graph/repair-peers")
+async def repair_peer_relationships():
+    """Re-wire COMPETES_WITH edges using the saved pipeline job files as the
+    ground truth for which peers belong to which target company."""
+    loop = asyncio.get_running_loop()
+
+    def _repair():
+        # Collect (target_company_name → set of peer names) from every job dir
+        target_to_peers: dict[str, set[str]] = {}
+
+        if os.path.isdir(OUTPUT_DIR):
+            for job_id in os.listdir(OUTPUT_DIR):
+                state_path = os.path.join(OUTPUT_DIR, job_id, "state.json")
+                peers_path = os.path.join(OUTPUT_DIR, job_id, "peer_companies.json")
+                if not (os.path.exists(state_path) and os.path.exists(peers_path)):
+                    continue
+                try:
+                    with open(state_path, encoding="utf-8") as f:
+                        state = json.load(f)
+                    with open(peers_path, encoding="utf-8") as f:
+                        peers = json.load(f)
+                    target = state.get("main_company", "").strip()
+                    if not target:
+                        continue
+                    names = {p["name"] for p in peers if p.get("name")}
+                    target_to_peers.setdefault(target, set()).update(names)
+                except Exception:
+                    continue
+
+        if not target_to_peers:
+            return {"repaired": 0, "detail": "No job output files found — re-run the pipeline first"}
+
+        fixed = 0
+        with _neo4j_driver.session() as s:
+            s.run("MATCH ()-[r:COMPETES_WITH]->() DELETE r")
+            for target, peer_names in target_to_peers.items():
+                for peer_name in peer_names:
+                    result = s.run(
+                        """
+                        MATCH (tc:TargetCompany {name: $target})
+                        MATCH (p:Company {name: $peer})
+                        MERGE (p)-[:COMPETES_WITH]->(tc)
+                        RETURN count(*) AS n
+                        """,
+                        {"target": target, "peer": peer_name},
+                    ).single()
+                    if result:
+                        fixed += result["n"]
+
+        return {"repaired": fixed, "targets": list(target_to_peers.keys())}
+
+    try:
+        return await loop.run_in_executor(_executor, _repair)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

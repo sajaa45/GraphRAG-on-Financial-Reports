@@ -103,14 +103,15 @@ def write_metrics_to_neo4j(driver, json_file: str, target_company_name: str = No
             if target_company_name:
                 rows = session.run(
                     """
-                    MATCH (c:TargetCompany)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)-[:HAS_METRIC]->(m:Metric)
+                    MATCH (c:TargetCompany {name: $name})-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: $name})-[:HAS_METRIC]->(m:Metric {company: $name})
                     RETURN m.metric_type AS metric_type, mc.name AS category
-                    """
+                    """,
+                    {"name": target_company_name},
                 )
                 for row in rows:
                     if row["metric_type"]:
                         category_map[row["metric_type"]] = row["category"]
-                print(f"  ✓ Loaded {len(category_map)} category mappings from target company")
+                print(f"  ✓ Loaded {len(category_map)} category mappings from {target_company_name}")
             print()
 
             for item in companies_with_metrics:
@@ -130,6 +131,7 @@ def write_metrics_to_neo4j(driver, json_file: str, target_company_name: str = No
                     """,
                     {"name": company_name, "cik": cik, "ticker": ticker}
                 )
+
 
                 if target_company_name:
                     session.run(

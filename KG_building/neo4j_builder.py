@@ -123,25 +123,13 @@ class Neo4jBuilder:
                         {"name": self.main_company},
                     )
 
-            if relation_name == "HAS_METRIC":
-                with self.driver.session() as _cleanup_session:
-                    _cleanup_session.run(
-                        """
-                        MATCH (tc:TargetCompany {name: $name})-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory)
-                        OPTIONAL MATCH (mc)-[:HAS_METRIC]->(m:Metric)
-                        DETACH DELETE m, mc
-                        """,
-                        {"name": self.main_company},
-                    )
 
             def _write_batch(tx, batch=items):
                 for item in batch:
-                    src_props = dict(item['src'].get('properties', {}))
-                    self.create_node(tx, item['src']['type'], item['src']['name'], src_props)
-
                     tgt_props = dict(item['tgt'].get('properties', {}))
+                    rel = item.get('rel', '')
 
-                    if item.get('rel') == 'HAS_METRIC':
+                    if rel == 'HAS_METRIC':
                         self._target_metric_counter += 1
                         tgt_props['citation_id'] = f"TARGET_M{self._target_metric_counter:04d}"
 
@@ -158,27 +146,28 @@ class Neo4jBuilder:
                         if item.get('chunk_text'):
                             tgt_props['source_text'] = item['chunk_text']
 
-                        # Structure: TargetCompany -[HAS_METRIC_CATEGORY]-> MetricCategory -[HAS_METRIC]-> Metric
                         _raw_cat = (tgt_props.get('category') or '').strip()
                         _KNOWN = {'Leverage', 'Coverage', 'Liquidity', 'Profitability', 'Debt Structure'}
                         category = _raw_cat if _raw_cat in _KNOWN else 'Other'
+                        src_company = item['src']['name']
 
-                        self.create_node(tx, 'MetricCategory', category, {'name': category})
-                        self.create_relationship(
-                            tx,
-                            item['src']['type'], item['src']['name'],
-                            'MetricCategory', category,
-                            'HAS_METRIC_CATEGORY',
+                        tx.run(
+                            """
+                            MERGE (tc:TargetCompany {name: $company})
+                            MERGE (mc:MetricCategory {name: $category, company: $company})
+                            MERGE (tc)-[:HAS_METRIC_CATEGORY]->(mc)
+                            MERGE (m:Metric {name: $metric_name, company: $company})
+                            SET m += $props
+                            MERGE (mc)-[:HAS_METRIC]->(m)
+                            """,
+                            {
+                                "company":      src_company,
+                                "category":     category,
+                                "metric_name":  item['tgt']['name'],
+                                "props":        tgt_props,
+                            },
                         )
-                        self.create_node(tx, item['tgt']['type'], item['tgt']['name'], tgt_props)
-                        self.create_relationship(
-                            tx,
-                            'MetricCategory', category,
-                            item['tgt']['type'], item['tgt']['name'],
-                            'HAS_METRIC', item.get('props', {}),
-                            item.get('section_title'), item.get('source_page'),
-                        )
-                    elif item.get('rel') == 'FACES_RISK':
+                    elif rel == 'FACES_RISK':
                         self._target_risk_counter += 1
                         tgt_props['citation_id'] = f"TARGET_R{self._target_risk_counter:04d}"
 
@@ -189,15 +178,21 @@ class Neo4jBuilder:
                         if item.get('chunk_text'):
                             tgt_props['source_text'] = item['chunk_text']
 
+                        # Ensure the TargetCompany source exists before writing the risk.
+                        tx.run(
+                            "MERGE (tc:TargetCompany {name: $name})",
+                            {"name": item['src']['name']},
+                        )
                         self.create_node(tx, item['tgt']['type'], item['tgt']['name'], tgt_props)
                         self.create_relationship(
                             tx,
                             item['src']['type'], item['src']['name'],
                             item['tgt']['type'], item['tgt']['name'],
-                            item['rel'], item.get('props', {}),
+                            rel, item.get('props', {}),
                             item.get('section_title'), item.get('source_page'),
                         )
                     else:
+                        # OPERATES_IN and any other relation type.
                         if item.get('source_page') is not None:
                             tgt_props['source_page'] = item['source_page']
                         if item.get('section_title'):
@@ -205,12 +200,17 @@ class Neo4jBuilder:
                         if item.get('chunk_text'):
                             tgt_props['source_text'] = item['chunk_text']
 
+                        # Ensure the TargetCompany source exists before writing the relation.
+                        tx.run(
+                            "MERGE (tc:TargetCompany {name: $name})",
+                            {"name": item['src']['name']},
+                        )
                         self.create_node(tx, item['tgt']['type'], item['tgt']['name'], tgt_props)
                         self.create_relationship(
                             tx,
                             item['src']['type'], item['src']['name'],
                             item['tgt']['type'], item['tgt']['name'],
-                            item['rel'], item.get('props', {}),
+                            rel, item.get('props', {}),
                             item.get('section_title'), item.get('source_page'),
                         )
 
