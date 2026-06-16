@@ -1081,7 +1081,7 @@ async def run_eval(request: EvalRequest):
     extraction_path = os.path.join(_RETRIVAL_DIR, "extraction_result.json")
     answer_path     = os.path.join(_RETRIVAL_DIR, "answer.txt")
 
-    if request.test_type not in {"overall_score", "context_recall"}:
+    if request.test_type not in {"overall_score"}:
         for p in (extraction_path, answer_path):
             if not os.path.exists(p):
                 raise HTTPException(status_code=404, detail="No QA results found — ask a question first.")
@@ -1111,6 +1111,25 @@ async def run_eval(request: EvalRequest):
             return _csv_to_scorecard(_read_csv(out), tt)
 
         if tt == "context_recall":
+            # Run the three sub-evals from scratch before reading their results
+            tv_out  = os.path.join(gt, "target_validation_results.csv")
+            rsk_out = os.path.join(gt, "risks_validation_results.csv")
+            met_out = os.path.join(gt, "metrics_validation_results.csv")
+
+            tv_mod  = _load_eval_module("target_validation")
+            rsk_mod = _load_eval_module("risk_peers")
+            met_mod = _load_eval_module("num_values_peers")
+
+            def _safe(fn, *args):
+                try:
+                    fn(*args)
+                except Exception:
+                    pass
+
+            _safe(tv_mod.validate_target,       extraction_path, tv_out)
+            _safe(rsk_mod.validate_risk_chunks, extraction_path, rsk_out)
+            _safe(met_mod.validate_metrics,     extraction_path, met_out)
+
             os_mod = _load_eval_module("overall_score")
             def _try(fn, path):
                 try:
@@ -1118,12 +1137,12 @@ async def run_eval(request: EvalRequest):
                 except Exception:
                     return None
             components = {
-                "Target Validation": _try(os_mod.score_target_validation,  os.path.join(gt, "target_validation_results.csv")),
-                "Peer Risk Recall":  _try(os_mod.score_risks_validation,   os.path.join(gt, "risks_validation_results.csv")),
-                "Metric Accuracy":   _try(os_mod.score_metrics_validation, os.path.join(gt, "metrics_validation_results.csv")),
+                "Target Validation": _try(os_mod.score_target_validation,  tv_out),
+                "Peer Risk Recall":  _try(os_mod.score_risks_validation,   rsk_out),
+                "Metric Accuracy":   _try(os_mod.score_metrics_validation, met_out),
             }
-            scores = [v if v is not None else 0.0 for v in components.values()]
-            recall = sum(scores) / len(scores)
+            valid_scores = [v for v in components.values() if v is not None]
+            recall = sum(valid_scores) / len(valid_scores) if valid_scores else 0.0
             items  = [{"dimension": k, "score": v if v is not None else 0.0,
                        "note": "" if v is not None else "not run yet"} for k, v in components.items()]
             return {"test_type": "context_recall", "rows": items, "weighted": recall}

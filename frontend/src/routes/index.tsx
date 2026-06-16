@@ -952,17 +952,19 @@ function CitedText({
   const citeOrder: string[] = [];
   const seen = new Set<string>();
   for (const m of text.matchAll(_CITE_RE)) {
-    if (!seen.has(m[1])) { seen.add(m[1]); citeOrder.push(m[1]); }
+    const id = m[1];
+    if (!seen.has(id)) { seen.add(id); citeOrder.push(id); }
   }
 
-  // Render the Sources section as links too (lines starting with "- [")
   const renderLine = (line: string, lineIdx: number) => {
+    // Strip ** bold markers before rendering
+    const cleaned = line.replace(/\*\*/g, "");
     // Markdown link: [label](url)
     const mdLink = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
     const linkParts: React.ReactNode[] = [];
     let pos = 0;
-    for (const m of line.matchAll(new RegExp(mdLink.source, "g"))) {
-      if (m.index! > pos) linkParts.push(line.slice(pos, m.index));
+    for (const m of cleaned.matchAll(new RegExp(mdLink.source, "g"))) {
+      if (m.index! > pos) linkParts.push(cleaned.slice(pos, m.index));
       linkParts.push(
         <a key={m.index} href={m[2]} target="_blank" rel="noopener noreferrer"
            className="text-[var(--accent)] underline underline-offset-2 hover:opacity-80 break-all">
@@ -971,12 +973,29 @@ function CitedText({
       );
       pos = m.index! + m[0].length;
     }
-    if (pos < line.length) linkParts.push(line.slice(pos));
+    if (pos < cleaned.length) linkParts.push(cleaned.slice(pos));
     return <span key={lineIdx}>{linkParts}</span>;
   };
 
-  // Split answer into lines to handle Sources section markdown
-  const lines = text.split("\n");
+  // Split answer into lines; move any Sources/References section to the end
+  const rawLines = text.split("\n");
+  const sourceHeaderRe = /^\*{0,2}\s*(sources?|references?)\s*:?\s*\*{0,2}$/i;
+  const mainLines: string[] = [];
+  const sourceLines: string[] = [];
+  let inSources = false;
+  for (const ln of rawLines) {
+    if (sourceHeaderRe.test(ln.trim())) {
+      inSources = true;
+      sourceLines.push(ln);
+    } else if (inSources && (ln.trim() === "" || ln.trim().startsWith("-") || ln.trim().startsWith("[") || ln.trim().startsWith("*"))) {
+      sourceLines.push(ln);
+    } else {
+      inSources = false;
+      mainLines.push(ln);
+    }
+  }
+  const lines = sourceLines.length > 0 ? [...mainLines, "", ...sourceLines] : mainLines;
+
   const lineNodes = lines.map((rawLine, li) => {
     const isBold = rawLine.startsWith("**") || rawLine.startsWith("## ");
     const isListItem = rawLine.startsWith("- ") || rawLine.startsWith("* ");
@@ -985,11 +1004,12 @@ function CitedText({
     let lpos = 0;
     for (const m of rawLine.matchAll(new RegExp(_CITE_RE.source, "g"))) {
       if (m.index! > lpos) lineSegments.push(renderLine(rawLine.slice(lpos, m.index!), lpos));
-      const n = citeOrder.indexOf(m[1]) + 1;
       const info = citations?.[m[1]];
+      const n = citeOrder.indexOf(m[1]) + 1;
       const href = info?.document_url;
+      const isTargetCite = info?.role === "target";
       lineSegments.push(
-        href ? (
+        href && !isTargetCite ? (
           <a key={m.index} href={href} target="_blank" rel="noopener noreferrer"
              title={info.summary || m[1]}
              className="ml-0.5 align-super text-[9px] font-mono text-[var(--accent)] hover:underline">
@@ -1024,7 +1044,6 @@ function CitedText({
       const page = info.source_page != null && String(info.source_page).trim() !== "" ? String(info.source_page) : null;
       const section = info.section_title?.trim() || null;
       const isTarget = info.role === "target";
-      const showFileFallback = !href && isTarget && !!sourceFileName;
 
       return (
         <div key={id} className="flex gap-2 text-[10px] font-mono text-muted-foreground">
@@ -1038,13 +1057,7 @@ function CitedText({
             {" · "}
             {info.summary.slice(0, 80)}
             {section && <span className="text-muted-foreground"> · {section}</span>}
-            {showFileFallback ? (
-              <>
-                {" · "}
-                <span className="text-foreground">Source: {sourceFileName}</span>
-                {page && <span className="text-muted-foreground"> · p. {page}</span>}
-              </>
-            ) : href ? (
+            {href && !isTarget && (
               <>
                 {" "}
                 <a href={href} target="_blank" rel="noopener noreferrer"
@@ -1053,9 +1066,8 @@ function CitedText({
                 </a>
                 {page && <span className="text-muted-foreground"> · p. {page}</span>}
               </>
-            ) : (
-              page && <span className="text-muted-foreground"> · p. {page}</span>
             )}
+            {(isTarget || !href) && page && <span className="text-muted-foreground"> · p. {page}</span>}
           </span>
         </div>
       );
@@ -1139,21 +1151,6 @@ function MessageBubble({
   const isThinking = !message.content;
   const traceDone = message.trace?.every((t) => t.status === "done");
 
-  // Auto-run an overall score once the answer is ready, so the user always
-  // sees a score under the answer. They can still switch tests afterwards.
-  const autoEvalFiredRef = useRef(false);
-  useEffect(() => {
-    if (
-      !isThinking &&
-      traceDone &&
-      !message.evaluation &&
-      !message.evaluating &&
-      !autoEvalFiredRef.current
-    ) {
-      autoEvalFiredRef.current = true;
-      onEvaluate("overall_score");
-    }
-  }, [isThinking, traceDone, message.evaluation, message.evaluating, onEvaluate]);
 
   return (
     <div className="p-5" style={{ animation: "fadeReveal 0.4s var(--ease-out-expo) both" }}>
@@ -1269,7 +1266,7 @@ function MessageBubble({
                 </div>
               )}
 
-              {message.evaluation && !message.evaluating && (
+              {message.evaluation && !message.evaluating && message.evalType === selectedEval && (
                 <Scorecard data={message.evaluation} />
               )}
             </div>
@@ -1312,16 +1309,15 @@ function Scorecard({ data }: { data: EvaluationResult }) {
             Score
           </span>
           <span className="font-sans text-2xl text-[var(--accent)]">
-            {(data.weighted * 100).toFixed(0)}
+            {(data.weighted * 100).toFixed(0)}%
           </span>
-          <span className="text-xs text-muted-foreground">/100</span>
         </div>
       </div>
       <table className="w-full text-left">
         <tbody className="divide-y divide-border text-sm">
           {data.rows.map((r, i) => (
             <tr key={i}>
-              <td className="px-4 py-2.5 font-medium text-foreground w-1/3 truncate max-w-[160px]" title={r.dimension}>
+              <td className="px-4 py-2.5 font-medium text-foreground w-1/3 break-words">
                 {r.dimension}
               </td>
               <td className="px-4 py-2.5 text-xs text-muted-foreground">{r.note}</td>
@@ -1334,7 +1330,7 @@ function Scorecard({ data }: { data: EvaluationResult }) {
                     />
                   </div>
                   <span className="font-mono text-[10px] text-foreground w-8 text-right">
-                    {(r.score * 100).toFixed(0)}
+                    {(r.score * 100).toFixed(0)}%
                   </span>
                 </div>
               </td>
