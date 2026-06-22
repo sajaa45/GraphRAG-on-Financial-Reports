@@ -1,18 +1,7 @@
 """
-Ground Truth Evaluation — Context Precision (RAGAS)
-
+Extraction quality:
 For every chunk retrieved by the pipeline (risk or metric), judges whether
 it is relevant to the original question — not to its own label or category.
-
-Score = relevant_chunks / total_chunks
-
-This answers: "Did the pipeline fetch the right data for this question?"
-
-Input files (from retrival_results/):
-  - extraction_result.json  — question + all retrieved risks and metrics
-
-Output:
-  - context_precision_results.csv
 """
 
 import csv
@@ -22,17 +11,6 @@ import re
 import sys
 import time
 
-import boto3
-from dotenv import load_dotenv
-
-if sys.platform == 'win32' and hasattr(sys.stdout, 'buffer'):
-    import codecs
-    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
-
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '.env'))
-
-# Max items per LLM call — keeps prompts manageable
 MAX_EVALS_PER_CALL = 20
 
 
@@ -45,9 +23,7 @@ def _llm_call(bedrock_client, model_id: str, prompt: str, max_tokens: int = 1024
     return response['output']['message']['content'][0]['text'].strip()
 
 
-# ---------------------------------------------------------------------------
-# Build flat list of chunks from extraction_result
-# ---------------------------------------------------------------------------
+#flat list of chunks from extraction_result
 
 def collect_chunks(extraction_data: dict) -> list[dict]:
     """
@@ -57,14 +33,13 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
     """
     chunks = []
     seen_citations = set()
-    seen_gaap = set()  # (company, gaap_concept) — dedup same concept from multiple XBRL tags
-
+    seen_gaap = set()  
     for row in extraction_data.get('results', []):
         target_name = row.get('target', 'Target')
         peer_name   = row.get('peer', '')
         category    = row.get('category', '')
 
-        # ── target risks ────────────────────────────────────────────────
+        #  target risks 
         for r in (row.get('target_risks') or []):
             cid = r.get('citation_id', '')
             if not cid or cid in seen_citations:
@@ -78,7 +53,7 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
                 'summary':     f"{r.get('name', '')} — {(r.get('description') or r.get('why') or '')}",
             })
 
-        # ── peer risks ───────────────────────────────────────────────────
+        #  peer risks 
         for r in (row.get('peer_risks') or []):
             cid = r.get('citation_id', '')
             if not cid or cid in seen_citations:
@@ -92,7 +67,7 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
                 'summary':     f"{r.get('name', '')} — {(r.get('description') or r.get('why') or '')}",
             })
 
-        # ── target metrics ───────────────────────────────────────────────
+        #  target metrics 
         for m in (row.get('target_metrics') or []):
             cid = m.get('citation_id', '')
             if not cid or cid in seen_citations:
@@ -111,7 +86,7 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
                 'summary':     f"[{category or 'Metric'}] {label} = {m.get('value', '')} {m.get('unit', '')} ({m.get('year', '')})",
             })
 
-        # ── peer metrics ─────────────────────────────────────────────────
+        #  peer metrics 
         for m in (row.get('peer_metrics') or []):
             cid = m.get('citation_id', '')
             if not cid or cid in seen_citations:
@@ -133,10 +108,6 @@ def collect_chunks(extraction_data: dict) -> list[dict]:
     return chunks
 
 
-# ---------------------------------------------------------------------------
-# LLM batch judge
-# ---------------------------------------------------------------------------
-
 def judge_batch(
     question: str,
     batch: list[dict],   
@@ -147,7 +118,6 @@ def judge_batch(
     Ask the LLM whether each chunk in the batch is relevant to the question.
     Returns [(is_relevant, explanation), ...] parallel to batch.
     """
-    # Build company context so the LLM knows which names are target vs peers
     target_names = sorted({c['company'] for c in batch if c['role'] == 'target' and c['company']})
     peer_names   = sorted({c['company'] for c in batch if c['role'] == 'peer'   and c['company']})
     company_context = ""
@@ -207,13 +177,11 @@ def judge_batch(
     return results
 
 
-# ---------------------------------------------------------------------------
-# Main orchestrator
-# ---------------------------------------------------------------------------
-
 def evaluate_context_precision(
     extraction_result_path: str,
     output_csv_path: str,
+    bedrock_client,
+    model_id: str,
 ):
     log_path = output_csv_path.replace('.csv', '_log.txt')
 
@@ -222,10 +190,7 @@ def evaluate_context_precision(
             self.terminal = sys.__stdout__
             self.log = open(filename, 'w', encoding='utf-8')
         def write(self, msg):
-            try:
-                self.terminal.write(msg)
-            except UnicodeEncodeError:
-                self.terminal.write(msg.encode('utf-8', errors='replace').decode('utf-8', errors='replace'))
+            self.terminal.write(msg)
             self.log.write(msg)
         def flush(self):
             self.terminal.flush()
@@ -237,20 +202,19 @@ def evaluate_context_precision(
     logger = TeeLogger(log_path)
     sys.stdout = logger
     try:
-        _run(extraction_result_path, output_csv_path)
+        _run(extraction_result_path, output_csv_path, bedrock_client, model_id)
     finally:
         sys.stdout = original_stdout
         logger.close()
         print(f"\n✓ Log saved to {log_path}")
 
 
-def _run(extraction_result_path: str, output_csv_path: str):
+def _run(extraction_result_path: str, output_csv_path: str, bedrock_client, model_id: str):
     print("=" * 70)
     print("Context Precision — RAGAS-style Ground Truth Evaluation")
     print("=" * 70)
 
-    # ── Load inputs ──────────────────────────────────────────────────────
-    print(f"\n[1/4] Loading extraction results")
+    print(f"\n[1/3] Loading extraction results")
     with open(extraction_result_path, 'r', encoding='utf-8') as f:
         extraction_data = json.load(f)
 
@@ -260,8 +224,7 @@ def _run(extraction_result_path: str, output_csv_path: str):
         return
     print(f"  Question : {question}")
 
-    # ── Collect chunks ────────────────────────────────────────────────────
-    print(f"\n[2/4] Collecting retrieved chunks")
+    print(f"\n[2/3] Collecting retrieved chunks")
     chunks = collect_chunks(extraction_data)
 
     risk_count   = sum(1 for c in chunks if c['type'] == 'risk')
@@ -276,7 +239,6 @@ def _run(extraction_result_path: str, output_csv_path: str):
         print("\n✗ No chunks found — aborting")
         return
 
-    # ── Init Bedrock ──────────────────────────────────────────────────────
     print(f"\n[3/4] Initialising LLM (AWS Bedrock)")
     aws_region = os.getenv("AWS_REGION", "us-east-1")
     model_id   = os.getenv("BEDROCK_MODEL_EVAL", "us.meta.llama3-3-70b-instruct-v1:0")
@@ -285,10 +247,8 @@ def _run(extraction_result_path: str, output_csv_path: str):
         region_name=aws_region,
     )
     print(f"  Region: {aws_region}  |  Model: {model_id}")
-
-    # ── Judge relevance in batches ────────────────────────────────────────
     n_batches = (len(chunks) + MAX_EVALS_PER_CALL - 1) // MAX_EVALS_PER_CALL
-    print(f"\n[4/4] Judging relevance — {len(chunks)} chunks in {n_batches} batch(es)")
+    print(f"\n[3/3] Judging relevance — {len(chunks)} chunks in {n_batches} batch(es)")
 
     verdicts: list[tuple[bool, str]] = []
     for i in range(0, len(chunks), MAX_EVALS_PER_CALL):
@@ -301,7 +261,6 @@ def _run(extraction_result_path: str, output_csv_path: str):
         print(f"    → parsed {parsed}/{len(batch)}")
         time.sleep(0.4)
 
-    # ── Metrics ───────────────────────────────────────────────────────────
     total     = len(chunks)
     relevant  = sum(1 for v, _ in verdicts if v)
     precision = relevant / total if total else 0.0
@@ -359,20 +318,3 @@ def _run(extraction_result_path: str, output_csv_path: str):
     print("=" * 70)
 
 
-# ---------------------------------------------------------------------------
-# Entry point
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    import argparse
-    ap = argparse.ArgumentParser(); ap.add_argument('--out-dir', default=None)
-    args, _ = ap.parse_known_args()
-    script_dir   = os.path.dirname(os.path.abspath(__file__))
-    retrival_dir = os.path.join(script_dir, '..', '..', 'retrival_results')
-    out_dir      = args.out_dir or os.path.join(script_dir, '..')
-    ext_path     = os.path.join(out_dir, 'extraction_result.json') if args.out_dir else os.path.join(retrival_dir, 'extraction_result.json')
-
-    evaluate_context_precision(
-        extraction_result_path=ext_path,
-        output_csv_path=os.path.join(out_dir, 'context_precision_results.csv'),
-    )

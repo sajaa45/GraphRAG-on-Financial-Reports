@@ -7,54 +7,19 @@ from datetime import datetime, timedelta
 import urllib3
 import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
-from neo4j import GraphDatabase
 from rank_bm25 import BM25Okapi
 
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env'))
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-FISCAL_YEAR = int(os.getenv("FISCAL_YEAR", 2024))
-START_DATE = f"{FISCAL_YEAR}-07-01"
-END_DATE = f"{FISCAL_YEAR + 1}-06-30"
+
 
 headers = {"User-Agent": "User (your_email@example.com)"}
 
 
-def get_companies_from_neo4j(driver):
-    """Get peer companies from the Neo4j graph via COMPETES_WITH → TargetCompany edges."""
-    with driver.session() as session:
-        result = session.run(
-            """
-            MATCH (c:Company {is_peer: true})-[:COMPETES_WITH]->(tc:TargetCompany)
-            RETURN c.name AS name, c.cik AS cik, c.ticker AS ticker
-            ORDER BY c.name
-            """
-        )
-        companies = []
-        for record in result:
-            name = record.get("name")
-            cik = record.get("cik")
-            if name:
-                companies.append({
-                    'name': name,
-                    'cik': str(cik).zfill(10) if cik else None,
-                    'ticker': record.get("ticker") or 'N/A',
-                })
-
-    if companies:
-        print(f"✓ Found {len(companies)} peer companies in Neo4j graph:")
-        for c in companies:
-            print(f"  - {c['name']} ({c['ticker']}) - {c['cik'] or 'No CIK'}")
-        print()
-    else:
-        print("⚠ No peer companies found in Neo4j graph\n")
-
-    return companies
-
 
 def get_target_company_metrics(driver, company_name: str = None):
-    """Query Neo4j for metrics of the target company."""
     with driver.session() as session:
         if company_name:
             result = session.run(
@@ -483,120 +448,3 @@ def analyze_company_covenants(cik, company_name, target_metrics=None, default_fi
         return None
 
 
-def main():
-    print("=" * 80)
-    print("TARGET METRICS ANALYSIS - BATCH PROCESSING")
-    print("=" * 80)
-    print()
-
-    driver = GraphDatabase.driver(
-        os.getenv("NEO4J_URI", "bolt://localhost:7687"),
-        auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
-    )
-
-    try:
-        target_metrics = get_target_company_metrics(driver)
-        companies = get_companies_from_neo4j(driver)
-    finally:
-        driver.close()
-
-    companies = [c for c in companies if c.get('cik')]
-
-    if not companies:
-        print("No companies with CIK to analyze. Exiting.")
-        return
-
-    companies_with_metrics = []
-    companies_without_metrics = []
-    companies_with_errors = []
-
-    print("=" * 80)
-    print("ANALYZING COMPANIES")
-    print("=" * 80)
-    print()
-
-    for idx, company in enumerate(companies, 1):
-        cik = company['cik']
-        name = company['name']
-        ticker = company['ticker']
-
-        print(f"[{idx}/{len(companies)}] {name} ({ticker}) - CIK: {cik}")
-
-        metric_results = analyze_company_covenants(cik, name, target_metrics, FISCAL_YEAR)
-
-        if metric_results is None:
-            companies_with_errors.append(company)
-            print(f"  ⚠ Data not available or error occurred\n")
-        elif metric_results:
-            total_matches = sum(len(m) for m in metric_results.values())
-            companies_with_metrics.append({
-                'company': company,
-                'target_metric_count': total_matches,
-                'target_metrics': metric_results,
-            })
-            print(f"  ✓ Found {total_matches} target metric match(es)")
-            for metric_name, matches in metric_results.items():
-                if matches:
-                    print(f"    - {metric_name}: {len(matches)} match(es)")
-            print()
-        else:
-            companies_without_metrics.append(company)
-            print(f"  ✗ No target metrics found\n")
-
-        time.sleep(0.2)
-
-    print("=" * 80)
-    print("SUMMARY")
-    print("=" * 80)
-    print(f"Total companies analyzed:        {len(companies)}")
-    print(f"Companies with target metrics:   {len(companies_with_metrics)}")
-    print(f"Companies without target metrics:{len(companies_without_metrics)}")
-    print(f"Companies with errors:           {len(companies_with_errors)}")
-    print()
-
-    if companies_with_metrics:
-        print("=" * 80)
-        print("COMPANIES WITH TARGET METRICS")
-        print("=" * 80)
-        print()
-        for item in companies_with_metrics:
-            company = item['company']
-            print(f"{company['name']} ({company['ticker']}) - CIK: {company['cik']}")
-            print(f"  Total metric matches: {item['target_metric_count']}")
-            for metric_type, matches in item['target_metrics'].items():
-                if matches:
-                    print(f"  {metric_type}:")
-                    for match in matches:
-                        print(f"    - {match['tag']}")
-                        for unit_name, entries in match['units'].items():
-                            if entries:
-                                latest = entries[-1]
-                                print(f"      Latest: {latest['val']} ({unit_name}) as of {latest['end']}")
-                                break
-            print()
-
-    output_data = {
-        'metadata': {
-            'target_metrics_searched': [m['name'] for m in target_metrics] if target_metrics else [],
-            'date_range': {'start': START_DATE, 'end': END_DATE},
-            'fiscal_year': FISCAL_YEAR,
-            'analysis_date': datetime.now().isoformat(),
-            'total_companies': len(companies),
-            'companies_with_metrics': len(companies_with_metrics),
-            'companies_without_metrics': len(companies_without_metrics),
-            'companies_with_errors': len(companies_with_errors),
-        },
-        'companies_with_metrics': companies_with_metrics,
-        'companies_without_metrics': companies_without_metrics,
-        'companies_with_errors': companies_with_errors,
-    }
-
-    output_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "companies_metrices.json")
-    with open(output_file, 'w') as f:
-        json.dump(output_data, f, indent=2)
-
-    print(f"Results saved to: {output_file}")
-
-
-if __name__ == "__main__":
-    main()

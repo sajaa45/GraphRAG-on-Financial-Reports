@@ -1,25 +1,14 @@
+import copy
 import os
 import re
 import json
-import time
-import boto3
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from neo4j import GraphDatabase
 from langchain_aws import ChatBedrockConverse
 from langchain_core.prompts import PromptTemplate
-from dotenv import load_dotenv
 
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
-
-# LangSmith tracing — activate by setting LANGCHAIN_API_KEY in .env
-os.environ.setdefault("LANGCHAIN_TRACING_V2",
-                      "true" if os.getenv("LANGCHAIN_API_KEY") else "false")
-os.environ.setdefault("LANGCHAIN_PROJECT", "PeersGraphRAG")
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
 
-# ---------------------------------------------------------------------------
-# Graph schema (injected into every Cypher-generation prompt)
-# ---------------------------------------------------------------------------
 
 GRAPH_SCHEMA = """
 Node labels and key properties:
@@ -57,9 +46,6 @@ Key rules:
   - CRITICAL: Always return citation_id for every Risk and Metric node for citation traceability.
 """
 
-# ---------------------------------------------------------------------------
-# Prompts — tune these to change how the LLM generates and answers queries
-# ---------------------------------------------------------------------------
 
 KNOWN_CATEGORIES = {"Leverage", "Coverage", "Liquidity", "Profitability", "Debt Structure"}
 
@@ -425,9 +411,6 @@ class CreditRiskQA:
 
         return {"cypher": cypher, "results": results}
 
-    # ------------------------------------------------------------------
-    # Multi-strategy mode: one pipeline call per strategy, unified answer.
-    # ------------------------------------------------------------------
 
     def _select_strategies(self, question: str) -> list[str]:
         """
@@ -453,7 +436,7 @@ class CreditRiskQA:
             pass
         return list(QUERY_STRATEGIES.keys())
 
-    def ask_multi(self, question: str, verbose: bool = False, target_company: str | None = None) -> dict:
+    def ask_multi(self, question: str, target_company: str | None = None) -> dict:
         _company = target_company or self._target_company
         all_results = []
         queries_run = []
@@ -510,65 +493,9 @@ class CreditRiskQA:
         return {
             "answer": unified_answer,
             "queries": queries_run,
-            "results": unique,  # Return original uncleaned results for saving
+            "results": unique,  
         }
 
-    # ------------------------------------------------------------------
-    # Main entry point — choose single or multi strategy
-    # ------------------------------------------------------------------
-
-    def _normalize_question(self, question: str) -> str:
-        """Replace the known target company name with 'the target company'."""
-        if self._target_company and self._target_company.lower() != "unknown":
-            question = re.sub(re.escape(self._target_company), "the target company", question, flags=re.IGNORECASE)
-        return question
-
-    def ask(self, question: str, verbose: bool = False, reasoning: bool = False) -> str:
-        """
-        Runs one pipeline call per strategy, then generates a unified answer.
-        reasoning=True  → also run REASONING_PROMPT for a cited chain-of-thought trace.
-        """
-        question = self._normalize_question(question)
-        print(f"\n{'='*70}")
-        print(f"Question : {question}")
-        print(f"Mode     : multi{'  +reasoning' if reasoning else ''}")
-        print('='*70)
-
-        print("\n[1/2] Generating Cypher and querying graph per strategy …")
-        data = self.ask_multi(question, verbose=verbose)
-        print(f"      → {len(data['results'])} unique records across {len(data['queries'])} queries")
-        print("\n[2/2] Unified answer generated.")
-        answer = data["answer"]
-        queries_run = data["queries"]
-        results = data["results"]
-
-        answer = _THINK_RE.sub('', answer).strip()
-
-        if results:
-            self._save_extraction_result(question, queries_run, results)
-        
-        self._save_answer(answer)
-
-        print(f"\n{'='*70}")
-        print("Answer:")
-        print('='*70)
-        print(answer)
-
-        if reasoning and results:
-            print(f"\n{'='*70}")
-            print("Reasoning Trace:")
-            print('='*70)
-            trace = self.generate_reasoning_trace(question, queries_run, results)
-            trace = _THINK_RE.sub('', trace).strip()
-            print(trace)
-            self._save_reasoning(trace)
-            return answer + "\n\n---\n\n" + trace
-
-        return answer
-
-    # ------------------------------------------------------------------
-    # Helpers
-    # ------------------------------------------------------------------
 
     @staticmethod
     def _dedup_list_fields(
@@ -583,7 +510,7 @@ class CreditRiskQA:
         - peer_* fields: per-peer dedup — scoped by the row's 'peer' value so
           two different peers can legitimately share the same risk/metric name.
         """
-        seen: dict[str, set] = {}  # namespace -> set of seen item keys
+        seen: dict[str, set] = {} 
         result = []
         for row in rows:
             new_row = dict(row)
@@ -611,13 +538,6 @@ class CreditRiskQA:
 
     @staticmethod
     def _clean_metadata(results: list) -> list:
-        """
-        Strip source_text and cik before sending to LLM.
-        xbrl_tag is kept so it is available in the saved JSON for eval.
-        Deep-copies every row so the originals (saved to JSON) are never mutated.
-        """
-        import copy
-
         def _strip(obj):
             if isinstance(obj, dict):
                 return {k: _strip(v) for k, v in obj.items() if k not in ('source_text', 'cik')}
@@ -658,7 +578,6 @@ class CreditRiskQA:
             for q in queries_run
         ) if queries_run else "N/A"
 
-        # Strip source_text — only page number and section title are needed for citations.
         clean = self._clean_metadata(results[:150])
         context = json.dumps(clean, indent=2, default=str)
 
@@ -666,11 +585,7 @@ class CreditRiskQA:
         response = self.llm.invoke(prompt)
         raw = response.content if hasattr(response, "content") else str(response)
 
-        # Extract content outside <think> blocks
         outside = _THINK_RE.sub('', raw).strip()
-
-        # If the model put all the structured reasoning inside <think> (Qwen3
-        # thinking mode), fall back to that content so the trace is not empty.
         if len(outside) < 100:
             think_match = re.search(r'<think>(.*?)</think>', raw, re.DOTALL)
             if think_match:
@@ -713,46 +628,3 @@ class CreditRiskQA:
 
     def close(self):
         self.graph.close()
-
-
-# ---------------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------------
-
-def main():
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        description="Credit Risk Q&A — natural language → Cypher (via LangChain) → answer"
-    )
-    parser.add_argument("question", nargs="?", help="Question (omit for interactive mode)")
-    parser.add_argument("--verbose", "-v", action="store_true")
-    parser.add_argument(
-        "--reasoning", "-r", action="store_true",
-        help="After answering, run the reasoning-trace prompt showing step-by-step "
-             "analysis with source citations (filing dates, document URLs, source text).",
-    )
-    args = parser.parse_args()
-
-    qa = CreditRiskQA()
-    try:
-        if args.question:
-            qa.ask(args.question, verbose=args.verbose, reasoning=args.reasoning)
-        else:
-            print("\nCredit Risk Q&A — interactive mode  (type 'exit' to quit)\n")
-            while True:
-                try:
-                    question = input("Question> ").strip()
-                except (EOFError, KeyboardInterrupt):
-                    break
-                if not question:
-                    continue
-                if question.lower() in ("exit", "quit", "q"):
-                    break
-                qa.ask(question, verbose=args.verbose, reasoning=args.reasoning)
-    finally:
-        qa.close()
-
-
-if __name__ == "__main__":
-    main()

@@ -10,18 +10,11 @@ import urllib3
 from dotenv import load_dotenv
 from neo4j import GraphDatabase
 from rank_bm25 import BM25Okapi
-
-# Load .env from project root (two levels up from this file)
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '.env'))
 
-# Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 HEADERS = {"User-Agent": "YourName your_email@example.com"}
-
-# Configuration
-FISCAL_YEAR = int(os.getenv("FISCAL_YEAR", 2024))
-
 
 def get_sic_from_neo4j(driver, target_company: str = None) -> list:
     with driver.session() as session:
@@ -47,7 +40,7 @@ def get_sic_from_neo4j(driver, target_company: str = None) -> list:
     return codes
 
 
-def get_companies_from_api(sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100):
+def get_companies_from_api(sic_codes=['1311'], fiscal_year=None, size=100):
     """Fetch companies with 10-K filing info directly from EDGAR search index."""
     if isinstance(sic_codes, str):
         sic_codes = [sic_codes]
@@ -171,17 +164,11 @@ def get_target_name(driver) -> str | None:
     return None
 
 
-def process_companies_from_api(driver, sic_codes=['1311'], fiscal_year=FISCAL_YEAR, size=100, delay=0.5,
+def process_companies_from_api(driver, sic_codes=['1311'], fiscal_year=None, size=100, delay=0.5,
                                output_file='peers_sec/FACES_RISK/companies_risks.json',
                                target_company_name: str = None,
                                peer_companies: list = None):
-    """Extract risk factors for peer companies.
-
-    If *peer_companies* is supplied (a list of company dicts already selected for
-    metrics), risks are extracted only for those companies — guaranteeing that every
-    peer ends up with both metrics and risks.  When omitted the function falls back
-    to querying the EDGAR search index and picking the first qualifying companies.
-    """
+   
     fiscal_year = int(fiscal_year)
     print(f"Filtering for fiscal year: {fiscal_year}")
 
@@ -235,14 +222,3 @@ def process_companies_from_api(driver, sic_codes=['1311'], fiscal_year=FISCAL_YE
         print(f"  {i}. {c['company_name']} — {c['length']['words']} words, {c['risk_count']} risks")
     return results
 
-
-if __name__ == "__main__":
-    driver = GraphDatabase.driver(
-        os.getenv("NEO4J_URI", "bolt://localhost:7687"),
-        auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
-    )
-    try:
-        sic_codes = get_sic_from_neo4j(driver)
-        process_companies_from_api(driver, sic_codes=sic_codes, fiscal_year=FISCAL_YEAR, size=100, delay=0.5)
-    finally:
-        driver.close()

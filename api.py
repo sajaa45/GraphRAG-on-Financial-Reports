@@ -1,15 +1,11 @@
 """
-PeersGraphRAG — REST API
-
-POST /pipeline/run                      upload HTML/PDF filing + fiscal year, run all 6 steps
-POST /pipeline/{job_id}/step/{step_id}  run or re-run a single step (1–6)
-POST /pipeline/{job_id}/run             run all remaining incomplete steps
-GET  /pipeline/{job_id}/stream          live step progress via server-sent events
-GET  /pipeline/{job_id}/status          JSON status snapshot (polling alternative)
-GET  /pipeline/jobs                     list all jobs saved on disk
-POST /qa/run                            ask a question against the knowledge graph
-POST /eval/run                          run an evaluation test against the last QA answer
-GET  /qa/ready                          check whether the graph has data
+POST /pipeline/run              upload HTML/PDF filing + fiscal year, run all pipeline steps
+POST /pipeline/{job_id}/run     run all remaining incomplete steps
+GET  /pipeline/{job_id}/stream  live step progress via server-sent events
+GET  /companies                 list all TargetCompany nodes
+POST /qa/run                    ask a question against the knowledge graph
+GET  /qa/ready                  check whether the graph has data
+POST /eval/run                  run an evaluation test against the last QA answer
 """
 
 from __future__ import annotations
@@ -25,7 +21,7 @@ import traceback
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from dotenv import load_dotenv
 from fastapi import BackgroundTasks, FastAPI, File, Form, HTTPException, UploadFile
@@ -48,6 +44,7 @@ for _subdir in [
         sys.path.insert(0, _path)
 
 _THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL)
+_BEDROCK_MODEL_EVAL = _BEDROCK_MODEL_EVAL
 
 UPLOAD_DIR = os.path.join(ROOT, "uploads")
 OUTPUT_DIR = os.path.join(ROOT, "pipeline_output")
@@ -206,7 +203,7 @@ def _run_step2(job_id: str, state: dict) -> tuple:
         source_file=state["file_path"],
         bedrock_client=_bedrock_client,
     )
-    json_paths = extractor.extract_multiple_relations(["HAS_METRIC", "FACES_RISK", "OPERATES_IN"])
+    json_paths = extractor.extract_relations(["HAS_METRIC", "FACES_RISK", "OPERATES_IN"])
     main_company = extractor.main_company
     extractor.close()
 
@@ -228,23 +225,9 @@ def _run_step2(job_id: str, state: dict) -> tuple:
 def _run_step3(job_id: str, state: dict) -> int:
     """Write the extracted target relations into Neo4j using the extractor's files."""
     from neo4j_builder import Neo4jBuilder
-    import glob as _glob
 
     main_company = state["main_company"]
     json_paths: list[str] = [p for p in state.get("extraction_paths", []) if os.path.exists(p)]
-
-    # Fallback 1 — old jobs that saved target_relations.json
-    if not json_paths:
-        old_path = os.path.join(_job_dir(job_id), "target_relations.json")
-        if os.path.exists(old_path):
-            with open(old_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            builder = Neo4jBuilder(main_company=data["main_company"], driver=_neo4j_driver)
-            return builder._build_from_data(data)
-
-    # Fallback 2 — scan relation subdirs: {job_dir}/{RELATION}/extracted_{job_id}.json
-    if not json_paths:
-        json_paths = _glob.glob(os.path.join(_job_dir(job_id), "*", f"extracted_{job_id}.json"))
 
     if not json_paths:
         raise RuntimeError("No extraction output found for this job — re-run step 2 first.")
@@ -377,11 +360,6 @@ def _run_step5(job_id: str, state: dict) -> int:
 
     return n_risks
 
-
-# ---------------------------------------------------------------------------
-# Step dispatcher — runs one step, emits SSE, updates state
-# ---------------------------------------------------------------------------
-
 async def _execute_step(job_id: str, step_id: int, state: dict, loop) -> bool:
     """Run step_id, emit SSE events, update state. Returns True on success."""
     _ensure_memory_job(job_id)
@@ -453,10 +431,6 @@ async def _run_pipeline(job_id: str, from_step: int = 1) -> None:
         _pipeline_fail(job_id, str(exc))
 
 
-# ---------------------------------------------------------------------------
-# SSE generator
-# ---------------------------------------------------------------------------
-
 async def _sse_generator(job_id: str):
     job = _jobs.get(job_id)
     if not job:
@@ -472,11 +446,6 @@ async def _sse_generator(job_id: str):
         yield f"data: {json.dumps(event)}\n\n"
         if event.get("type") in ("pipeline_complete", "pipeline_failed"):
             break
-
-
-# ---------------------------------------------------------------------------
-# QA helpers
-# ---------------------------------------------------------------------------
 
 _qa_instance = None
 _qa_lock = asyncio.Lock()
@@ -582,10 +551,6 @@ def _build_citations(results: list) -> Dict[str, Any]:
     return citations
 
 
-# ---------------------------------------------------------------------------
-# Request/response models
-# ---------------------------------------------------------------------------
-
 class QARequest(BaseModel):
     question: str
     reasoning: bool = False
@@ -593,11 +558,6 @@ class QARequest(BaseModel):
 
 class EvalRequest(BaseModel):
     test_type: str
-
-
-# ---------------------------------------------------------------------------
-# Pipeline endpoints
-# ---------------------------------------------------------------------------
 
 @app.post("/pipeline/run")
 async def run_pipeline(
@@ -631,59 +591,6 @@ async def resume_pipeline(job_id: str, background_tasks: BackgroundTasks):
     return {"job_id": job_id, "resuming_from_step": next_step}
 
 
-@app.post("/pipeline/{job_id}/step/{step_id}")
-async def run_step(job_id: str, step_id: int, background_tasks: BackgroundTasks):
-    """Run or re-run a single step for an existing job."""
-    if step_id not in {s["id"] for s in STEPS}:
-        raise HTTPException(status_code=400, detail=f"Invalid step_id: {step_id}. Must be 1–6.")
-
-    state = _load_state(job_id)
-
-    # Verify prerequisites: all previous steps must be complete
-    for prereq in range(1, step_id):
-        if prereq not in state["completed_steps"]:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Step {prereq} must be completed before running step {step_id}.",
-            )
-
-    _ensure_memory_job(job_id)
-
-    async def _run():
-        loop = asyncio.get_running_loop()
-        ok = await _execute_step(job_id, step_id, state, loop)
-        if ok:
-            _pipeline_done(job_id) if step_id == 6 else None
-        else:
-            _pipeline_fail(job_id, f"Step {step_id} failed")
-
-    background_tasks.add_task(_run)
-    return {"job_id": job_id, "step_id": step_id, "status": "started"}
-
-
-@app.get("/pipeline/jobs")
-async def list_jobs():
-    """List all jobs saved on disk."""
-    jobs: List[dict] = []
-    if not os.path.isdir(OUTPUT_DIR):
-        return {"jobs": jobs}
-    for name in sorted(os.listdir(OUTPUT_DIR)):
-        path = os.path.join(OUTPUT_DIR, name, "state.json")
-        if os.path.exists(path):
-            try:
-                with open(path, "r", encoding="utf-8") as f:
-                    s = json.load(f)
-                jobs.append({
-                    "job_id":          s["job_id"],
-                    "fiscal_year":     s.get("fiscal_year"),
-                    "main_company":    s.get("main_company"),
-                    "completed_steps": s.get("completed_steps", []),
-                    "created_at":      s.get("created_at"),
-                })
-            except Exception:
-                pass
-    return {"jobs": jobs}
-
 
 @app.get("/pipeline/{job_id}/stream")
 async def stream_pipeline(job_id: str):
@@ -696,22 +603,6 @@ async def stream_pipeline(job_id: str):
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
-
-@app.get("/pipeline/{job_id}/status")
-async def get_status(job_id: str):
-    """Return the current state of all steps as a JSON snapshot."""
-    state = _load_state(job_id)
-    job   = _jobs.get(job_id, {})
-    return {
-        "job_id":          job_id,
-        "main_company":    state.get("main_company"),
-        "fiscal_year":     state.get("fiscal_year"),
-        "completed_steps": state.get("completed_steps", []),
-        "completed":       job.get("completed", len(state.get("completed_steps", [])) == len(STEPS)),
-        "failed":          job.get("failed", False),
-        "error":           job.get("error"),
-        "steps":           job.get("steps", {}),
-    }
 
 
 # ---------------------------------------------------------------------------
@@ -772,174 +663,6 @@ async def list_companies():
         raise HTTPException(status_code=500, detail=str(exc))
 
 
-@app.get("/graph/explore")
-async def explore_graph(company: str):
-    """Return nodes + links for the knowledge graph explorer."""
-    loop = asyncio.get_running_loop()
-
-    def _fetch():
-        nodes: dict[str, dict] = {}
-        links: list[dict] = []
-
-        def _add(nid: str, name: str, ntype: str, group: str, extra: dict | None = None):
-            if nid not in nodes:
-                nodes[nid] = {"id": nid, "name": name, "type": ntype, "group": group, **(extra or {})}
-
-        with _neo4j_driver.session() as s:
-            # Target company
-            tc_row = s.run(
-                "MATCH (tc:TargetCompany {name: $n}) RETURN id(tc) AS i", {"n": company}
-            ).single()
-            if not tc_row:
-                return {"nodes": [], "links": []}
-            tc_id = str(tc_row["i"])
-            _add(tc_id, company, "TargetCompany", "target")
-
-            # Peers — strictly via COMPETES_WITH to THIS target only
-            peer_rows = s.run("""
-                MATCH (p:Company)-[:COMPETES_WITH]->(tc:TargetCompany {name: $n})
-                RETURN DISTINCT id(p) AS i, p.name AS name LIMIT 8
-            """, {"n": company}).data()
-
-            for r in peer_rows:
-                pid = str(r["i"])
-                _add(pid, r["name"] or "Peer", "Company", "peer")
-                links.append({"source": pid, "target": tc_id, "type": "COMPETES_WITH"})
-
-            # Target metric categories
-            for r in s.run("""
-                MATCH (tc:TargetCompany {name: $n})-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: $n})
-                RETURN id(mc) AS i, mc.name AS name
-            """, {"n": company}).data():
-                mid = str(r["i"])
-                _add(mid, r["name"] or "Category", "MetricCategory", "metric")
-                links.append({"source": tc_id, "target": mid, "type": "HAS_METRIC_CATEGORY"})
-
-            # Target risks
-            for r in s.run("""
-                MATCH (tc:TargetCompany {name: $n})-[:FACES_RISK]->(rk:Risk)
-                RETURN id(rk) AS i, rk.name AS name LIMIT 10
-            """, {"n": company}).data():
-                rid = str(r["i"])
-                _add(rid, (r["name"] or "Risk")[:40], "Risk", "risk")
-                links.append({"source": tc_id, "target": rid, "type": "FACES_RISK"})
-
-            # Industries
-            for r in s.run("""
-                MATCH (tc:TargetCompany {name: $n})-[:OPERATES_IN]->(ind:Industry)
-                RETURN id(ind) AS i, ind.name AS name LIMIT 1
-            """, {"n": company}).data():
-                iid = str(r["i"])
-                _add(iid, r["name"] or "Industry", "Industry", "industry")
-                links.append({"source": tc_id, "target": iid, "type": "OPERATES_IN"})
-
-            # Peer metric categories — only for peers of THIS target
-            for r in s.run("""
-                MATCH (p:Company)-[:COMPETES_WITH]->(tc:TargetCompany {name: $n})
-                MATCH (p)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: p.name})
-                RETURN id(p) AS pid, id(mc) AS mid, mc.name AS mname
-            """, {"n": company}).data():
-                pid, mid = str(r["pid"]), str(r["mid"])
-                if pid in nodes:
-                    _add(mid, r["mname"] or "Category", "MetricCategory", "metric")
-                    links.append({"source": pid, "target": mid, "type": "HAS_METRIC_CATEGORY"})
-
-            # Target individual metrics
-            for r in s.run("""
-                MATCH (tc:TargetCompany {name: $n})-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: $n})-[:HAS_METRIC]->(m:Metric {company: $n})
-                RETURN id(mc) AS mcid, id(m) AS mid, m.name AS mname
-            """, {"n": company}).data():
-                mcid, mid = str(r["mcid"]), str(r["mid"])
-                if mcid in nodes:
-                    _add(mid, (r["mname"] or "Metric")[:50], "Metric", "metric_value")
-                    links.append({"source": mcid, "target": mid, "type": "HAS_METRIC"})
-
-            # Peer individual metrics — only for peers of THIS target
-            for r in s.run("""
-                MATCH (p:Company)-[:COMPETES_WITH]->(tc:TargetCompany {name: $n})
-                MATCH (p)-[:HAS_METRIC_CATEGORY]->(mc:MetricCategory {company: p.name})-[:HAS_METRIC]->(m:Metric {company: p.name})
-                RETURN id(p) AS pid, id(mc) AS mcid, id(m) AS mid, m.name AS mname
-            """, {"n": company}).data():
-                pid, mcid, mid = str(r["pid"]), str(r["mcid"]), str(r["mid"])
-                if pid in nodes and mcid in nodes:
-                    _add(mid, (r["mname"] or "Metric")[:50], "Metric", "metric_value")
-                    links.append({"source": mcid, "target": mid, "type": "HAS_METRIC"})
-
-            # Peer risks — only for peers of THIS target
-            for r in s.run("""
-                MATCH (p:Company)-[:COMPETES_WITH]->(tc:TargetCompany {name: $n})
-                MATCH (p)-[:FACES_RISK]->(rk:Risk)
-                RETURN id(p) AS pid, id(rk) AS rid, rk.name AS rname LIMIT 15
-            """, {"n": company}).data():
-                pid, rid = str(r["pid"]), str(r["rid"])
-                if pid in nodes:
-                    _add(rid, (r["rname"] or "Risk")[:40], "Risk", "peer_risk")
-                    links.append({"source": pid, "target": rid, "type": "FACES_RISK"})
-
-        return {"nodes": list(nodes.values()), "links": links}
-
-    try:
-        return await loop.run_in_executor(_executor, _fetch)
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
-
-
-@app.post("/graph/repair-peers")
-async def repair_peer_relationships():
-    """Re-wire COMPETES_WITH edges using the saved pipeline job files as the
-    ground truth for which peers belong to which target company."""
-    loop = asyncio.get_running_loop()
-
-    def _repair():
-        # Collect (target_company_name → set of peer names) from every job dir
-        target_to_peers: dict[str, set[str]] = {}
-
-        if os.path.isdir(OUTPUT_DIR):
-            for job_id in os.listdir(OUTPUT_DIR):
-                state_path = os.path.join(OUTPUT_DIR, job_id, "state.json")
-                peers_path = os.path.join(OUTPUT_DIR, job_id, "peer_companies.json")
-                if not (os.path.exists(state_path) and os.path.exists(peers_path)):
-                    continue
-                try:
-                    with open(state_path, encoding="utf-8") as f:
-                        state = json.load(f)
-                    with open(peers_path, encoding="utf-8") as f:
-                        peers = json.load(f)
-                    target = state.get("main_company", "").strip()
-                    if not target:
-                        continue
-                    names = {p["name"] for p in peers if p.get("name")}
-                    target_to_peers.setdefault(target, set()).update(names)
-                except Exception:
-                    continue
-
-        if not target_to_peers:
-            return {"repaired": 0, "detail": "No job output files found — re-run the pipeline first"}
-
-        fixed = 0
-        with _neo4j_driver.session() as s:
-            s.run("MATCH ()-[r:COMPETES_WITH]->() DELETE r")
-            for target, peer_names in target_to_peers.items():
-                for peer_name in peer_names:
-                    result = s.run(
-                        """
-                        MATCH (tc:TargetCompany {name: $target})
-                        MATCH (p:Company {name: $peer})
-                        MERGE (p)-[:COMPETES_WITH]->(tc)
-                        RETURN count(*) AS n
-                        """,
-                        {"target": target, "peer": peer_name},
-                    ).single()
-                    if result:
-                        fixed += result["n"]
-
-        return {"repaired": fixed, "targets": list(target_to_peers.keys())}
-
-    try:
-        return await loop.run_in_executor(_executor, _repair)
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc))
-
 
 @app.get("/qa/ready")
 async def qa_ready():
@@ -958,10 +681,6 @@ async def qa_ready():
 
     return await loop.run_in_executor(_executor, _check)
 
-
-# ---------------------------------------------------------------------------
-# Eval endpoints
-# ---------------------------------------------------------------------------
 
 _RETRIVAL_DIR     = os.path.join(ROOT, "retrival+eval", "retrival_results")
 _GROUND_TRUTH_DIR = os.path.join(ROOT, "retrival+eval", "Ground_Truth")
@@ -1072,8 +791,7 @@ async def run_eval(request: EvalRequest):
     """Run an evaluation test and return a scorecard."""
     valid_types = {
         "answer_relevancy", "context_precision", "answer_source_traceability",
-        "faithfulness", "context_recall", "target_validation",
-        "risk_peers_validation", "overall_score",
+        "context_recall", "target_validation", "risk_peers_validation", "overall_score",
     }
     if request.test_type not in valid_types:
         raise HTTPException(status_code=400, detail=f"Unknown test_type: {request.test_type}")
@@ -1095,19 +813,19 @@ async def run_eval(request: EvalRequest):
         if tt == "answer_relevancy":
             mod = _load_eval_module("answer_relevancy")
             out = os.path.join(gt, "answer_relevancy_results.csv")
-            mod.evaluate_relevancy(extraction_path, answer_path, out)
+            mod.evaluate_relevancy(extraction_path, answer_path, out, _bedrock_client, _BEDROCK_MODEL_EVAL)
             return _csv_to_scorecard(_read_csv(out), tt)
 
         if tt == "context_precision":
             mod = _load_eval_module("context_precision")
             out = os.path.join(gt, "context_precision_results.csv")
-            mod.evaluate_context_precision(extraction_path, out)
+            mod.evaluate_context_precision(extraction_path, out, _bedrock_client, _BEDROCK_MODEL_EVAL)
             return _csv_to_scorecard(_read_csv(out), tt)
 
-        if tt in ("answer_source_traceability", "faithfulness"):
+        if tt == "answer_source_traceability":
             mod = _load_eval_module("answer_source_traceability")
             out = os.path.join(gt, "answer_source_traceability.csv")
-            mod.evaluate_traceability(extraction_path, answer_path, out)
+            mod.evaluate_traceability(extraction_path, answer_path, out, _bedrock_client, _BEDROCK_MODEL_EVAL)
             return _csv_to_scorecard(_read_csv(out), tt)
 
         if tt == "context_recall":
@@ -1126,8 +844,8 @@ async def run_eval(request: EvalRequest):
                 except Exception:
                     pass
 
-            _safe(tv_mod.validate_target,       extraction_path, tv_out)
-            _safe(rsk_mod.validate_risk_chunks, extraction_path, rsk_out)
+            _safe(tv_mod.validate_target,       extraction_path, tv_out, _bedrock_client, _BEDROCK_MODEL_EVAL)
+            _safe(rsk_mod.validate_risk_chunks, extraction_path, rsk_out, _bedrock_client, _BEDROCK_MODEL_EVAL)
             _safe(met_mod.validate_metrics,     extraction_path, met_out)
 
             os_mod = _load_eval_module("overall_score")
@@ -1137,9 +855,9 @@ async def run_eval(request: EvalRequest):
                 except Exception:
                     return None
             components = {
-                "Target Validation": _try(os_mod.score_target_validation,  tv_out),
-                "Peer Risk Recall":  _try(os_mod.score_risks_validation,   rsk_out),
-                "Metric Accuracy":   _try(os_mod.score_metrics_validation, met_out),
+                "Target Validation":  _try(os_mod.score_target_validation,  tv_out),
+                "Risks Validation":   _try(os_mod.score_risks_validation,   rsk_out),
+                "Metrics Validation": _try(os_mod.score_metrics_validation, met_out),
             }
             valid_scores = [v for v in components.values() if v is not None]
             recall = sum(valid_scores) / len(valid_scores) if valid_scores else 0.0
@@ -1150,13 +868,13 @@ async def run_eval(request: EvalRequest):
         if tt == "target_validation":
             mod = _load_eval_module("target_validation")
             out = os.path.join(gt, "target_validation_results.csv")
-            mod.validate_target(extraction_path, out)
+            mod.validate_target(extraction_path, out, _bedrock_client, _BEDROCK_MODEL_EVAL)
             return _csv_to_scorecard(_read_csv(out), tt)
 
         if tt == "risk_peers_validation":
             mod = _load_eval_module("risk_peers")
             out = os.path.join(gt, "risks_validation_results.csv")
-            mod.validate_risk_chunks(extraction_path, out)
+            mod.validate_risk_chunks(extraction_path, out, _bedrock_client, _BEDROCK_MODEL_EVAL)
             return _csv_to_scorecard(_read_csv(out), tt)
 
         if tt == "overall_score":

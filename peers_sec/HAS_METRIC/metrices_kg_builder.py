@@ -194,19 +194,3 @@ def write_metrics_to_neo4j(driver, json_file: str, target_company_name: str = No
         return 0, 0
 
 
-if __name__ == "__main__":
-    _default = os.path.join(os.path.dirname(os.path.abspath(__file__)), "companies_metrices.json")
-    json_file = sys.argv[1] if len(sys.argv) > 1 else _default
-
-    if not os.path.exists(json_file):
-        print(f"Error: File '{json_file}' not found")
-        sys.exit(1)
-
-    driver = GraphDatabase.driver(
-        os.getenv("NEO4J_URI", "bolt://localhost:7687"),
-        auth=(os.getenv("NEO4J_USERNAME", "neo4j"), os.getenv("NEO4J_PASSWORD", "")),
-    )
-    try:
-        write_metrics_to_neo4j(driver, json_file)
-    finally:
-        driver.close()

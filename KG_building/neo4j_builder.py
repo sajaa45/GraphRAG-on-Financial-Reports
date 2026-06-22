@@ -13,8 +13,6 @@ from neo4j import GraphDatabase
 
 
 class Neo4jBuilder:
-    """Reads extracted-entity JSON produced by LLMExtractor and writes the
-    corresponding nodes and relationships into Neo4j."""
 
     def __init__(self,neo4j_uri: str = "",neo4j_user: str = "",neo4j_password: str = "",main_company: str = "",driver=None):
 
@@ -74,10 +72,6 @@ class Neo4jBuilder:
         RETURN r
         """
         session.run(query, {"source_name": source_name, "target_name": target_name, **props})
-
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
 
     @staticmethod
     def _normalise_validated_file(filepath: str) -> Optional[Dict]:
@@ -229,15 +223,9 @@ class Neo4jBuilder:
         print(f"\n✓ Total items written to Neo4j: {total_written}")
         return total_written
 
-    # ------------------------------------------------------------------
-    # Public build methods
-    # ------------------------------------------------------------------
-
+   
     def build_from_validated_dirs(self, relations_dir: str, clear: bool = False):
-        """
-        Scan each subdirectory of relations_dir for a extracted_*.json file,
-        merge all relations across files, and write to Neo4j.
-        """
+       
         if not os.path.isdir(relations_dir):
             raise FileNotFoundError(f"Relations directory not found: {relations_dir}")
 

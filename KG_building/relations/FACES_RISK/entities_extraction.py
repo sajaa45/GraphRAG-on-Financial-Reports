@@ -15,9 +15,6 @@ def parse_risk_entity(entity: Dict, main_company: str = 'the Company') -> Option
     if not risk_name:
         return None
     
-    # citation_id will be assigned during Neo4j building phase
-    # when we have access to a global counter
-
     return {
         'src': {'type': 'TargetCompany', 'name': org},
         'tgt': {

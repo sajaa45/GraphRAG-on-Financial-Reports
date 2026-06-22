@@ -10,15 +10,6 @@ Weights:
   Adapted Answer Relevancy   (answer_relevancy_results)   : 25%
   ExtractionQuality          (avg of risks + metrics +
                               target validation)           : 20%
-   
-Faithfulness scoring:
-  correct source      → 1.0
-  wrong-but-real source → 0.5  (pipeline used a real source, just the wrong one)
-  fabricated citation → 0.0  (no source in the graph supports the claim)
-
-Missing components score 0.0 (not excluded) to avoid silent score inflation.
-
-Output: prints a dashboard and writes overall_score.csv
 """
 
 import csv
@@ -26,12 +17,7 @@ import os
 import sys
 
 
-# ---------------------------------------------------------------------------
-# CSV readers — each returns a float in [0, 1]
-# ---------------------------------------------------------------------------
-
 def _read_csv(path: str) -> list[dict]:
-    import sys
     csv.field_size_limit(min(sys.maxsize, 10_000_000))
     with open(path, newline='', encoding='utf-8') as f:
         return list(csv.DictReader(f))
@@ -90,9 +76,6 @@ def score_target_validation(path: str) -> float:
     return correct / len(rows)
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
 
 def compute_overall(ground_truth_dir: str, output_csv_path: str):
     print("=" * 70)
@@ -102,7 +85,7 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
     def p(label: str) -> str:
         return os.path.join(ground_truth_dir, label)
 
-    # ── Individual scores ─────────────────────────────────────────────────
+    # Individual scores 
     scores: dict[str, float] = {}
     errors: dict[str, str] = {}
 
@@ -130,11 +113,6 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
             errors[name] = str(e)
             print(f"  {'✗':<3} {name:<22} — ERROR: {e}")
 
-    # ── Extraction Quality = average of available validators ─────────────
-    # NOTE: this is NOT RAGAS Context Recall — it measures extraction accuracy
-    # and data integrity, not retrieval completeness vs a ground-truth answer.
-    # Components that errored or have no data are SKIPPED (not scored as 0.0)
-    # so that e.g. having no peer risks doesn't silently deflate the score.
     eq_components = ["Risks Validation", "Metrics Validation", "Target Validation"]
     eq_available = {k: scores[k] for k in eq_components if k in scores}
     if eq_available:
@@ -153,16 +131,12 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
         print(f"  — skipped: {', '.join(skipped)} (no data)", end="")
     print()
 
-    # ── Weighted overall ──────────────────────────────────────────────────
     weights = {
         "Adapted Faithfulness":        0.30,
         "Adapted Context Precision":   0.25,
         "Adapted Answer Relevancy":    0.25,
         "ExtractionQuality":           0.20,
     }
-
-    # Missing components score 0.0 — weights are NOT renormalised to prevent
-    # a missing file from silently inflating the overall score.
     component_scores = {
         "Adapted Faithfulness":       scores.get("Adapted Faithfulness", 0.0),
         "Adapted Context Precision":  scores.get("Adapted Context Precision", 0.0),
@@ -191,7 +165,6 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
         for name, msg in errors.items():
             print(f"    - {name}: {msg}")
 
-    # ── Write CSV ─────────────────────────────────────────────────────────
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
     rows = []
     for name, score in component_scores.items():
@@ -217,20 +190,3 @@ def compute_overall(ground_truth_dir: str, output_csv_path: str):
     print("=" * 70)
 
 
-# ---------------------------------------------------------------------------
-# Entry point
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    import argparse
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--in-dir',  default=None)
-    ap.add_argument('--out-dir', default=None)
-    args, _ = ap.parse_known_args()
-
-    script_dir       = os.path.dirname(os.path.abspath(__file__))
-    in_dir           = args.in_dir  or os.path.join(script_dir, "..")
-    out_dir          = args.out_dir or in_dir
-    output_csv_path  = os.path.join(out_dir, "overall_score.csv")
-
-    compute_overall(in_dir, output_csv_path)

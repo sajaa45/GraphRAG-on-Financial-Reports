@@ -16,14 +16,8 @@ import sys
 import time
 from typing import List, Tuple
 import csv
-from dotenv import load_dotenv
-import boto3
 
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '.env'))
 
-# Max characters per chunk to avoid exceeding LLM context limits
-# Qwen 3 Next 80B has 32K token context (~128K chars), so we can handle longer chunks
-# Set to 15K to be conservative while allowing full risk paragraphs
 MAX_CHUNK_CHARS = 15000
 
 
@@ -35,21 +29,18 @@ def _best_chunk_text(*candidates: str) -> str:
     return ""
 
 
-# Max (chunk, theme) evaluations per LLM call — keep small for reliable parsing.
 MAX_EVALS_PER_CALL = 10
 
 
 def check_chunks_against_themes(
-    chunk_theme_groups: List[Tuple[str, List[str]]],  # (chunk_text, [risk_theme, ...])
+    chunk_theme_groups: List[Tuple[str, List[str]]],  
     bedrock_client,
     model_id: str,
 ) -> List[List[Tuple[bool, str]]]:
     """
     Evaluate each chunk against all of its associated risk themes in one LLM call.
-
     chunk_theme_groups: list of (chunk_text, [theme1, theme2, ...])
     Returns a parallel list of lists: results[chunk_idx][theme_idx] = (is_relevant, explanation)
-    Falls back to (False, error_msg) for any item that cannot be parsed.
     """
     prompt_body = ""
     total_evaluations = 0
@@ -85,8 +76,7 @@ def check_chunks_against_themes(
         )
         response_text = response['output']['message']['content'][0]['text'].strip()
         
-        # Debug: Print first response to see format
-        if total_evaluations <= 3:  # Only for small batches
+        if total_evaluations <= 3:  
             print(f"  [DEBUG] LLM Response:\n{response_text[:500]}")
             
     except (KeyError, IndexError, TypeError) as e:
@@ -96,7 +86,6 @@ def check_chunks_against_themes(
         print(f"  ✗ LLM call failed: {e}")
         return [[(False, f"Error: {e}")] * len(themes) for _, themes in chunk_theme_groups]
 
-    # Initialize with default fallback
     results: List[List] = [[None] * len(themes) for _, themes in chunk_theme_groups]
 
     # Parse "C.T: YES|NO — explanation" lines
@@ -149,9 +138,9 @@ def check_chunks_against_themes(
 def validate_risk_chunks(
     extraction_result_path: str,
     output_csv_path: str,
-    use_llm_judge: bool = True
+    bedrock_client,
+    model_id: str,
 ):
-    # Set up logging to both console and file
     log_file_path = output_csv_path.replace('.csv', '_log.txt')
     
     class TeeLogger:
@@ -176,7 +165,7 @@ def validate_risk_chunks(
     sys.stdout = logger
     
     try:
-        _run_validation(extraction_result_path, output_csv_path, use_llm_judge)
+        _run_validation(extraction_result_path, output_csv_path, bedrock_client, model_id)
     finally:
         sys.stdout = original_stdout
         logger.close()
@@ -186,7 +175,8 @@ def validate_risk_chunks(
 def _run_validation(
     extraction_result_path: str,
     output_csv_path: str,
-    use_llm_judge: bool = True
+    bedrock_client,
+    model_id: str,
 ):
     print("="*70)
     print("Risk Factor Chunks — Semantic Relevance Validation")
@@ -196,21 +186,6 @@ def _run_validation(
     with open(extraction_result_path, 'r', encoding='utf-8') as f:
         extraction_data = json.load(f)
 
-    # Initialize AWS Bedrock client
-    bedrock_client = None
-    bedrock_model = None
-    if use_llm_judge:
-        try:
-            aws_region = os.getenv("AWS_REGION", "us-east-1")
-            bedrock_model = os.getenv("BEDROCK_MODEL_EVAL", "us.meta.llama3-3-70b-instruct-v1:0")
-            bedrock_client = boto3.client(
-                service_name='bedrock-runtime',
-                region_name=aws_region,
-            )
-            print(f"  ✓ Bedrock client initialized (region: {aws_region}, model: {bedrock_model})")
-        except Exception as e:
-            print(f"  ⚠ Failed to initialize Bedrock client: {e} — skipping LLM checks")
-            use_llm_judge = False
 
     # Collect chunks
     chunks_to_validate = []
@@ -281,9 +256,7 @@ def _run_validation(
         }
         for chunk in chunks_to_validate
     ]
-
-    # --- Grouped LLM semantic relevance ---
-    if use_llm_judge and bedrock_client:
+    if True:
         eligible, skipped = [], []
         too_long_chunks = []
         
@@ -308,7 +281,6 @@ def _run_validation(
             else:
                 eligible.append((row_idx, row))
         
-        # Report chunks that are too long
         if too_long_chunks:
             print(f"\n  ⚠ WARNING: {len(too_long_chunks)} chunks exceed {MAX_CHUNK_CHARS} chars and will be skipped:")
             for item in too_long_chunks[:5]:  # Show first 5
@@ -316,39 +288,17 @@ def _run_validation(
             if len(too_long_chunks) > 5:
                 print(f"    ... and {len(too_long_chunks) - 5} more")
             
-            # Ask user if they want to continue
-            print(f"\n  These chunks have source_text that is too long.")
-            print(f"  This likely means the risk extraction didn't properly isolate individual paragraphs.")
-            print(f"  You should re-run the extraction with the updated process_risks.py")
-            print(f"\n  Continue validation anyway? (y/n): ", end="")
-            
-            # For non-interactive environments, default to continue
-            try:
-                import sys
-                if sys.stdin.isatty():
-                    response = input().strip().lower()
-                    if response != 'y':
-                        print("\n  Validation aborted. Please re-run risk extraction first.")
-                        return
-                else:
-                    print("y (non-interactive mode)")
-            except:
-                print("y (input not available)")
         
-        # Group row indices by chunk_text so repeated chunks are evaluated once.
-        # chunk_groups: {chunk_text: [(row_idx, risk_theme), ...]}
         chunk_groups: dict = {}
         for row_idx, row in eligible:
             key = row['chunk_text']
             chunk_groups.setdefault(key, []).append((row_idx, row['risk_theme']))
 
-        unique_chunks = list(chunk_groups.items())  # [(chunk_text, [(row_idx, theme), ...]), ...]
+        unique_chunks = list(chunk_groups.items())  
         total_evaluations = sum(len(rows) for _, rows in unique_chunks)
         dedup_savings = len(eligible) - len(unique_chunks)
 
-        # Build calls capped at MAX_EVALS_PER_CALL evaluations each.
-        # A single chunk with more themes than the cap is split across calls.
-        calls: List[List[Tuple[str, list]]] = []  # each call: [(chunk_text, [(row_idx, theme)]), ...]
+        calls: List[List[Tuple[str, list]]] = []  
         current_call: list = []
         current_evals = 0
         for chunk_text, rows in unique_chunks:
@@ -376,7 +326,7 @@ def _run_validation(
             print(f"  Call [{call_num}/{len(calls)}] — {len(call)} chunk(s), {total_evals_in_call} evaluations...")
 
             llm_input = [(chunk_text, [theme for _, theme in rows]) for chunk_text, rows in call]
-            call_results = check_chunks_against_themes(llm_input, bedrock_client, bedrock_model)
+            call_results = check_chunks_against_themes(llm_input, bedrock_client, model_id)
 
             for (chunk_text, rows), theme_verdicts in zip(call, call_results):
                 for (row_idx, _), (is_relevant, explanation) in zip(rows, theme_verdicts):
@@ -385,11 +335,10 @@ def _run_validation(
 
             time.sleep(0.5)
 
-    # Metrics
     print(f"\n[3/4] Metrics")
     total_chunks = len(results_table)
     print(f"  Total chunks: {total_chunks}")
-    if use_llm_judge:
+    if True:
         relevant_chunks = sum(1 for r in results_table if r['is_semantically_relevant'] is True)
         irrelevant_chunks = sum(1 for r in results_table if r['is_semantically_relevant'] is False)
         semantic_precision = (relevant_chunks / total_chunks * 100) if total_chunks > 0 else 0
@@ -397,7 +346,6 @@ def _run_validation(
         print(f"  Irrelevant: {irrelevant_chunks}")
         print(f"  Precision:  {semantic_precision:.2f}%")
 
-    # Write CSV
     print(f"\n[4/4] Writing results to {output_csv_path}")
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
     with open(output_csv_path, 'w', newline='', encoding='utf-8') as f:
@@ -413,10 +361,9 @@ def _run_validation(
 
     print("\n" + "="*70)
     print("Validation Complete")
-    if use_llm_judge:
+    if True:
         print(f"Semantic Precision: {semantic_precision:.2f}%")
         
-        # Analyze correlation between chunk length and relevance
         print("\n" + "-"*70)
         print("Chunk Length Analysis")
         print("-"*70)
@@ -433,7 +380,7 @@ def _run_validation(
             print(f"\nIrrelevant chunks (n={len(irrelevant_lengths)}):")
             print(f"  Avg length: {sum(irrelevant_lengths)/len(irrelevant_lengths):,.0f} chars")
             print(f"  Min: {min(irrelevant_lengths):,} | Max: {max(irrelevant_lengths):,}")
-        
+    
         # Check for truncation patterns
         if irrelevant_lengths:
             very_long = sum(1 for l in irrelevant_lengths if l > 8000)
@@ -442,19 +389,3 @@ def _run_validation(
                 print(f"  This suggests chunks may contain multiple risks")
     
     print("="*70)
-
-
-if __name__ == "__main__":
-    import argparse
-    ap = argparse.ArgumentParser(); ap.add_argument('--out-dir', default=None)
-    args, _ = ap.parse_known_args()
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    out_dir      = args.out_dir or os.path.join(script_dir, '..')
-    retrival_dir = os.path.join(script_dir, '..', '..', 'retrival_results')
-    ext_path     = os.path.join(out_dir, 'extraction_result.json') if args.out_dir else os.path.join(retrival_dir, 'extraction_result.json')
-
-    validate_risk_chunks(
-        ext_path,
-        os.path.join(out_dir, 'risks_validation_results.csv'),
-        use_llm_judge=True
-    )

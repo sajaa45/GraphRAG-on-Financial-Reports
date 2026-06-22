@@ -23,10 +23,7 @@ import re
 import sys
 import time
 
-import boto3
-from dotenv import load_dotenv
 
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '.env'))
 
 MAX_SOURCE_CHARS   = 6000
 MAX_EVALS_PER_CALL = 8
@@ -40,9 +37,6 @@ def _llm_call(bedrock_client, model_id: str, prompt: str, max_tokens: int = 1024
     return response['output']['message']['content'][0]['text'].strip()
 
 
-# ---------------------------------------------------------------------------
-# Collect target chunks
-# ---------------------------------------------------------------------------
 
 def collect_target_chunks(extraction_data: dict) -> list[dict]:
     chunks = []
@@ -52,7 +46,7 @@ def collect_target_chunks(extraction_data: dict) -> list[dict]:
         target_name = row.get('target', 'Target')
         category    = row.get('category', '')
 
-        # ── target risks ────────────────────────────────────────────────
+        #  target risks 
         for r in (row.get('target_risks') or []):
             cid = r.get('citation_id', '')
             if not cid or cid in seen:
@@ -84,7 +78,7 @@ def collect_target_chunks(extraction_data: dict) -> list[dict]:
                 'category':        '',
             })
 
-        # ── target metrics ───────────────────────────────────────────────
+        #  target metrics 
         for m in (row.get('target_metrics') or []):
             cid = m.get('citation_id', '')
             if not cid or cid in seen:
@@ -128,11 +122,6 @@ def collect_target_chunks(extraction_data: dict) -> list[dict]:
 
     return chunks
 
-
-# ---------------------------------------------------------------------------
-# LLM batch judges — separate prompts for risks vs metrics
-# ---------------------------------------------------------------------------
-
 def judge_risk_batch(
     batch: list[dict],
     bedrock_client,
@@ -141,7 +130,6 @@ def judge_risk_batch(
     """
     For each risk: does the source_text actually support the extracted name + description?
     Groups risks by source text so the full text is shown once per chunk, not repeated.
-    Falls back to internal consistency check when source_text is absent.
     """
     # Group by source_text so each unique chunk is shown once in full
     from collections import OrderedDict
@@ -257,13 +245,12 @@ def _parse_verdicts(raw: str, n: int) -> list[tuple[bool, str]]:
     return results
 
 
-# ---------------------------------------------------------------------------
-# Main orchestrator
-# ---------------------------------------------------------------------------
 
 def validate_target(
     extraction_result_path: str,
     output_csv_path: str,
+    bedrock_client,
+    model_id: str,
 ):
     log_path = output_csv_path.replace('.csv', '_log.txt')
 
@@ -272,10 +259,7 @@ def validate_target(
             self.terminal = sys.__stdout__
             self.log = open(filename, 'w', encoding='utf-8')
         def write(self, msg):
-            try:
-                self.terminal.write(msg)
-            except UnicodeEncodeError:
-                self.terminal.write(msg.encode('utf-8', errors='replace').decode('utf-8', errors='replace'))
+            self.terminal.write(msg)
             self.log.write(msg)
         def flush(self):
             self.terminal.flush()
@@ -287,24 +271,24 @@ def validate_target(
     logger = TeeLogger(log_path)
     sys.stdout = logger
     try:
-        _run(extraction_result_path, output_csv_path)
+        _run(extraction_result_path, output_csv_path, bedrock_client, model_id)
     finally:
         sys.stdout = original_stdout
         logger.close()
         print(f"\n✓ Log saved to {log_path}")
 
 
-def _run(extraction_result_path: str, output_csv_path: str):
+def _run(extraction_result_path: str, output_csv_path: str, bedrock_client, model_id: str):
     print("=" * 70)
     print("Target Company — Extraction Accuracy Validation (Risks + Metrics)")
     print("=" * 70)
 
-    print(f"\n[1/4] Loading extraction results")
+    print(f"\n[1/3] Loading extraction results")
     with open(extraction_result_path, 'r', encoding='utf-8') as f:
         extraction_data = json.load(f)
     print(f"  Question : {extraction_data.get('question', '')[:100]}")
 
-    print(f"\n[2/4] Collecting target chunks")
+    print(f"\n[2/3] Collecting target chunks")
     chunks = collect_target_chunks(extraction_data)
     risks   = [c for c in chunks if c['type'] == 'risk']
     metrics = [c for c in chunks if c['type'] == 'metric']
@@ -314,19 +298,10 @@ def _run(extraction_result_path: str, output_csv_path: str):
         print("\n✗ No target chunks found — aborting")
         return
 
-    print(f"\n[3/4] Initialising LLM (AWS Bedrock)")
-    aws_region = os.getenv("AWS_REGION", "us-east-1")
-    model_id   = os.getenv("BEDROCK_MODEL_EVAL", "us.meta.llama3-3-70b-instruct-v1:0")
-    bedrock_client = boto3.client(
-        service_name='bedrock-runtime',
-        region_name=aws_region,
-    )
-    print(f"  Region: {aws_region}  |  Model: {model_id}")
-
-    print(f"\n[4/4] Judging extraction accuracy")
+    print(f"\n[3/3] Judging extraction accuracy")
     verdict_map: dict[str, tuple[bool, str]] = {}
 
-    # ── risks ─────────────────────────────────────────────────────────────
+    #  risks 
     if risks:
         n_batches = (len(risks) + MAX_EVALS_PER_CALL - 1) // MAX_EVALS_PER_CALL
         print(f"  Risks — {len(risks)} items in {n_batches} batch(es)")
@@ -339,7 +314,7 @@ def _run(extraction_result_path: str, output_csv_path: str):
                 verdict_map[c['citation_id']] = v
             time.sleep(0.4)
 
-    # ── metrics ───────────────────────────────────────────────────────────
+    #  metrics 
     if metrics:
         n_batches = (len(metrics) + MAX_EVALS_PER_CALL - 1) // MAX_EVALS_PER_CALL
         print(f"  Metrics — {len(metrics)} items in {n_batches} batch(es)")
@@ -352,7 +327,7 @@ def _run(extraction_result_path: str, output_csv_path: str):
                 verdict_map[c['citation_id']] = v
             time.sleep(0.4)
 
-    # ── Build results table ───────────────────────────────────────────────
+    #  Build results table 
     rows = []
     for c in chunks:
         is_correct, expl = verdict_map.get(c['citation_id'], (False, 'Not evaluated'))
@@ -373,7 +348,6 @@ def _run(extraction_result_path: str, output_csv_path: str):
             }.get(c.get('source_origin', ''), ''),
         })
 
-    # ── Summary ───────────────────────────────────────────────────────────
     total       = len(rows)
     correct     = sum(1 for r in rows if r['is_correctly_extracted'] is True)
     risk_ok     = sum(1 for r in rows if r['type'] == 'risk'   and r['is_correctly_extracted'] is True)
@@ -402,22 +376,3 @@ def _run(extraction_result_path: str, output_csv_path: str):
     print("=" * 70)
     print(f"Extraction Accuracy : {accuracy:.2f}  (risks {risk_ok}/{len(risks)}, metrics {metric_ok}/{len(metrics)})")
     print("=" * 70)
-
-
-# ---------------------------------------------------------------------------
-# Entry point
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    import argparse
-    ap = argparse.ArgumentParser(); ap.add_argument('--out-dir', default=None)
-    args, _ = ap.parse_known_args()
-    script_dir   = os.path.dirname(os.path.abspath(__file__))
-    retrival_dir = os.path.join(script_dir, '..', '..', 'retrival_results')
-    out_dir      = args.out_dir or os.path.join(script_dir, '..')
-    ext_path     = os.path.join(out_dir, 'extraction_result.json') if args.out_dir else os.path.join(retrival_dir, 'extraction_result.json')
-
-    validate_target(
-        extraction_result_path=ext_path,
-        output_csv_path=os.path.join(out_dir, 'target_validation_results.csv'),
-    )

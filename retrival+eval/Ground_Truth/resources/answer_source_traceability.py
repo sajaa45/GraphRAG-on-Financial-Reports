@@ -1,20 +1,10 @@
 """
-Ground Truth Evaluation — Answer-Source Traceability (Phase 1)
-
+Ground Truth Evaluation: Adapted Faithfulness:
 For each atomic claim in the narrative answer:
   1. Identify which source(s) it should come from (risk chunk / metric node)
   2. Check whether the pipeline used the correct source to generate that claim
   3. Store as {claim_id, claim_text, correct_source_id,
                pipeline_used_source_id, is_correct_source}
-
-This answers: "Did the pipeline pick the right data to answer this question?"
-
-Input files (from retrival_results/):
-  - extraction_result.json  — retrieved graph data (risks + metrics)
-  - answer.txt              — the narrative answer produced by the pipeline
-
-Output:
-  - answer_source_traceability.csv
 """
 
 import csv
@@ -22,23 +12,7 @@ import json
 import os
 import re
 import sys
-from typing import Any
 
-import boto3
-from dotenv import load_dotenv
-
-# Fix Windows console encoding — guard against double-wrapping when loaded
-# multiple times from the API (codecs StreamWriter has no .buffer attribute).
-if sys.platform == 'win32' and hasattr(sys.stdout, 'buffer'):
-    import codecs
-    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
-
-load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '.env'))
-
-# ---------------------------------------------------------------------------
-# Source registry builder
-# ---------------------------------------------------------------------------
 
 def _make_metric_id(metric: dict, cik: str) -> str:
     tag = metric.get('xbrl_tag') or metric.get('metric_type') or metric.get('name', 'unknown')
@@ -48,12 +22,7 @@ def _make_metric_id(metric: dict, cik: str) -> str:
 
 def build_source_registry(extraction_data: dict) -> dict[str, dict]:
     """
-    Build a flat registry of every retrieved source item.
-
-    Keys are citation_ids directly (e.g., 'TARGET_M0024', 'PEER_R0042').
-    
-    Each entry keeps:
-      citation_id, type, company, role, summary, full (for LLM context)
+    citation_id, type, company, role, summary, full (for LLM context)
     """
     registry: dict[str, dict] = {}
 
@@ -82,7 +51,7 @@ def build_source_registry(extraction_data: dict) -> dict[str, dict]:
                 },
             }
 
-        # ── peer risks ───────────────────────────────────────────────────
+        #  peer risks 
         if peer_name:
             for r in (row.get('peer_risks') or []):
                 citation_id = r.get('citation_id', '')
@@ -104,7 +73,7 @@ def build_source_registry(extraction_data: dict) -> dict[str, dict]:
                     },
                 }
 
-        # ── target metrics ───────────────────────────────────────────────
+        #  target metrics 
         for m in (row.get('target_metrics') or []):
             citation_id = m.get('citation_id', '')
             if not citation_id:
@@ -130,7 +99,7 @@ def build_source_registry(extraction_data: dict) -> dict[str, dict]:
                 },
             }
 
-        # ── peer metrics ─────────────────────────────────────────────────
+        #  peer metrics 
         if peer_name:
             for m in (row.get('peer_metrics') or []):
                 citation_id = m.get('citation_id', '')
@@ -159,10 +128,6 @@ def build_source_registry(extraction_data: dict) -> dict[str, dict]:
     return registry
 
 
-# ---------------------------------------------------------------------------
-# LLM helpers
-# ---------------------------------------------------------------------------
-
 def _llm_call(bedrock_client, model_id: str, prompt: str, max_tokens: int = 2048) -> str:
     response = bedrock_client.converse(
         modelId=model_id,
@@ -170,11 +135,6 @@ def _llm_call(bedrock_client, model_id: str, prompt: str, max_tokens: int = 2048
         inferenceConfig={"maxTokens": max_tokens, "temperature": 0.0},
     )
     return response['output']['message']['content'][0]['text'].strip()
-
-
-# ---------------------------------------------------------------------------
-# Citation parsing — inline [CITE:...] tags
-# ---------------------------------------------------------------------------
 
 _CITATION_RE = re.compile(r'\[CITE:([^\]]+)\]', re.IGNORECASE)
 
@@ -185,8 +145,6 @@ def _resolve_citation(raw_citation: str, registry: dict[str, dict]) -> str:
     Returns the citation_id if found, or '?<raw>' if not found.
     """
     raw = raw_citation.strip()
-    
-    # Direct lookup by citation_id (which is now the registry key)
     if raw in registry:
         return raw
     
@@ -350,12 +308,9 @@ def extract_claims(answer_text: str, registry: dict[str, dict]) -> list[dict]:
     return claims
 
 
-# ---------------------------------------------------------------------------
-# Step 2 — Judge whether the cited source is correct (one LLM call per claim)
-# ---------------------------------------------------------------------------
+#Step 2 — Judge whether the cited source is correct (one LLM call per claim)
 
-_MAX_SOURCE_TEXT_CHARS = 600   # per source in the LLM prompt
-
+_MAX_SOURCE_TEXT_CHARS = 600 
 
 def _source_content(src: dict) -> str:
     """Return a human-readable content block for one registry entry."""
@@ -483,9 +438,7 @@ def attribute_claims(
 ) -> list[dict]:
     """
     Judge whether the pipeline used the correct source for every claim in one
-    batched LLM call (all claims + all sources in a single prompt).
-
-    Falls back to an error record per claim if the LLM call fails.
+    batched LLM call (all claims + all sources in a single prompt)
     """
     if not registry:
         for c in claims:
@@ -500,7 +453,7 @@ def attribute_claims(
     source_listing = _build_source_listing(registry)
     valid_ids = set(registry.keys())
 
-    # ── Build per-claim sections ──────────────────────────────────────────
+    #per-claim sections
     claim_sections: list[str] = []
     for claim in claims:
         cid      = claim['claim_id']
@@ -562,7 +515,7 @@ def attribute_claims(
         "  - FABRICATED means no source in the list supports this fact\n"
     )
 
-    # ── Single LLM call ───────────────────────────────────────────────────
+    #  Single LLM call
     max_tokens = max(300, len(claims) * 80)
     try:
         raw = _llm_call(bedrock_client, model_id, prompt, max_tokens=max_tokens)
@@ -581,7 +534,7 @@ def attribute_claims(
 
     parsed = _parse_batch_response(raw, claims, registry, valid_ids)
 
-    # ── Assemble results, falling back gracefully for missing claim blocks ──
+    #  Assemble results, falling back gracefully for missing claim blocks 
     results = []
     for claim in claims:
         cid      = claim['claim_id']
@@ -601,7 +554,6 @@ def attribute_claims(
             })
             continue
 
-        # For resolved/unresolved, the used source is already known
         if is_resolved:
             used_sid = cited_id
         elif is_unresolved:
@@ -612,11 +564,9 @@ def attribute_claims(
         correct_sid = block.get('correct_sid', 'UNKNOWN')
         is_correct  = block.get('is_correct', False)
 
-        # For resolved YES, correct_sid should point to the used (cited) source
         if is_correct and correct_sid == 'UNKNOWN':
             correct_sid = used_sid
 
-        # Unresolved: is_correct is true only if LLM found the cited source itself
         if is_unresolved and is_correct:
             is_correct = False
 
@@ -631,14 +581,12 @@ def attribute_claims(
     return results
 
 
-# ---------------------------------------------------------------------------
-# Main orchestrator
-# ---------------------------------------------------------------------------
-
 def evaluate_traceability(
     extraction_result_path: str,
     answer_path: str,
     output_csv_path: str,
+    bedrock_client,
+    model_id: str,
 ):
     log_path = output_csv_path.replace('.csv', '_log.txt')
 
@@ -647,12 +595,7 @@ def evaluate_traceability(
             self.terminal = sys.__stdout__
             self.log = open(filename, 'w', encoding='utf-8')
         def write(self, msg):
-            # Ensure msg is properly encoded for terminal
-            try:
-                self.terminal.write(msg)
-            except UnicodeEncodeError:
-                # Fallback: replace problematic characters
-                self.terminal.write(msg.encode('utf-8', errors='replace').decode('utf-8', errors='replace'))
+            self.terminal.write(msg)
             self.log.write(msg)
         def flush(self):
             self.terminal.flush()
@@ -664,20 +607,19 @@ def evaluate_traceability(
     logger = TeeLogger(log_path)
     sys.stdout = logger
     try:
-        _run(extraction_result_path, answer_path, output_csv_path)
+        _run(extraction_result_path, answer_path, output_csv_path, bedrock_client, model_id)
     finally:
         sys.stdout = original_stdout
         logger.close()
         print(f"\n✓ Log saved to {log_path}")
 
 
-def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
+def _run(extraction_result_path: str, answer_path: str, output_csv_path: str, bedrock_client, model_id: str):
     print("=" * 70)
     print("Answer-Source Traceability — Phase 1 Ground Truth Evaluation")
     print("=" * 70)
 
-    # ── Load inputs ──────────────────────────────────────────────────────
-    print(f"\n[1/5] Loading inputs")
+    print(f"\n[1/4] Loading inputs")
     with open(extraction_result_path, 'r', encoding='utf-8') as f:
         extraction_data = json.load(f)
     with open(answer_path, 'r', encoding='utf-8') as f:
@@ -688,8 +630,7 @@ def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
     print(f"  Answer chars: {len(answer_text)}")
     print(f"  Result rows : {extraction_data.get('record_count', len(extraction_data.get('results', [])))}")
 
-    # ── Build source registry ─────────────────────────────────────────────
-    print(f"\n[2/5] Building source registry")
+    print(f"\n[2/4] Building source registry")
     registry = build_source_registry(extraction_data)
     risk_count   = sum(1 for s in registry.values() if s['type'] == 'risk')
     metric_count = sum(1 for s in registry.values() if s['type'] == 'metric')
@@ -699,25 +640,13 @@ def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
     if len(registry) > 5:
         print(f"    ... and {len(registry) - 5} more")
 
-    # ── Init Bedrock ──────────────────────────────────────────────────────
-    print(f"\n[3/5] Initialising LLM (AWS Bedrock)")
-    aws_region  = os.getenv("AWS_REGION", "us-east-1")
-    model_id   = os.getenv("BEDROCK_MODEL_EVAL", "us.meta.llama3-3-70b-instruct-v1:0")
-    bedrock_client = boto3.client(
-        service_name='bedrock-runtime',
-        region_name=aws_region,
-    )
-    print(f"  Region: {aws_region}  |  Model: {model_id}")
-
-    # ── Extract claims + parse inline citations ───────────────────────────
-    print(f"\n[4/5] Parsing claims and inline citations from answer")
+    print(f"\n[3/4] Parsing claims and inline citations from answer")
     claims = extract_claims(answer_text, registry)
     cited   = sum(1 for c in claims if c['resolved_citation'] != 'NONE' and not c['resolved_citation'].startswith('?'))
     unresolved = sum(1 for c in claims if c['resolved_citation'].startswith('?'))
     uncited = sum(1 for c in claims if c['resolved_citation'] == 'NONE')
     print(f"  → {len(claims)} claims  |  {cited} cited  |  {unresolved} unresolved  |  {uncited} uncited")
     for c in claims[:5]:
-        # Show the citation and whether it resolved
         raw_cite = c.get('raw_citation', 'NONE')
         resolved = c.get('resolved_citation', 'NONE')
         if raw_cite != 'NONE':
@@ -734,11 +663,9 @@ def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
         print("\n✗ No claims found — aborting")
         return
 
-    # ── Judge source correctness (LLM) ────────────────────────────────────
-    print(f"\n[5/5] Judging source correctness ({len(claims)} claims — 1 batched LLM call)")
+    print(f"\n[4/4] Judging source correctness ({len(claims)} claims — 1 batched LLM call)")
     records = attribute_claims(claims, registry, question, bedrock_client, model_id)
 
-    # ── Metrics ───────────────────────────────────────────────────────────
     total         = len(records)
     correct       = sum(1 for r in records if r['is_correct_source'])
     fabricated    = sum(1 for r in records if r.get('correct_source') == 'FABRICATED')
@@ -752,8 +679,6 @@ def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
     print(f"  Correct source     : {correct}  ({traceability:.1f}%)")
     print(f"  Wrong source       : {wrong_source}")
     print(f"  Fabricated (no src): {fabricated}")
-
-    # ── Write CSV ─────────────────────────────────────────────────────────
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
     fieldnames = [
         'claim_id', 'claim_text',
@@ -769,24 +694,3 @@ def _run(extraction_result_path: str, answer_path: str, output_csv_path: str):
     print("=" * 70)
     print(f"Source Traceability Score: {traceability:.1f}%")
     print("=" * 70)
-
-
-# ---------------------------------------------------------------------------
-# Entry point
-# ---------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    import argparse
-    ap = argparse.ArgumentParser(); ap.add_argument('--out-dir', default=None)
-    args, _ = ap.parse_known_args()
-    script_dir   = os.path.dirname(os.path.abspath(__file__))
-    retrival_dir = os.path.join(script_dir, '..', '..', 'retrival_results')
-    out_dir      = args.out_dir or os.path.join(script_dir, '..')
-    ext_path     = os.path.join(out_dir, 'extraction_result.json') if args.out_dir else os.path.join(retrival_dir, 'extraction_result.json')
-    ans_path     = os.path.join(out_dir, 'answer.txt') if args.out_dir else os.path.join(retrival_dir, 'answer.txt')
-
-    evaluate_traceability(
-        extraction_result_path=ext_path,
-        answer_path=ans_path,
-        output_csv_path=os.path.join(out_dir, 'answer_source_traceability.csv'),
-    )

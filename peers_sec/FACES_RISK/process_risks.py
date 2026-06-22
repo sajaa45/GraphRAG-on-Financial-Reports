@@ -94,7 +94,6 @@ def make_batches(paragraphs: list) -> list:
     for para in paragraphs:
         chars = len(para)
         if chars >= MIN_BATCH_CHARS:
-            # Large paragraph: flush any accumulated small ones first, then send alone
             if current:
                 batches.append(current)
                 current, current_chars = [], 0
@@ -126,7 +125,6 @@ def extract_batch(client, paragraphs: list, company_name: str) -> list:
                 if isinstance(idx, int) and 0 <= idx < len(paragraphs):
                     risk["_source_paragraph"] = paragraphs[idx]
                 else:
-                    # Fallback: use the full batch text if index is missing/invalid
                     risk["_source_paragraph"] = "\n\n".join(paragraphs)
                 validated.append(risk)
         return validated
@@ -207,11 +205,3 @@ def process_all_risks(
     return structured_results
 
 
-if __name__ == "__main__":
-    client = boto3.client(
-        "bedrock-runtime",
-        region_name=os.getenv('AWS_REGION', 'us-east-1'),
-        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-    )
-    process_all_risks(client)
